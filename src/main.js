@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import Mint from 'mint-ui';
+import 'amfe-flexible'
 Vue.use(Mint);
 Vue.config.productionTip = false
 new Vue({

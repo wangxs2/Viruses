@@ -2,6 +2,19 @@
   <div class="home">
     <div class="header">新型肺炎物资捐赠实时动态</div>
     <div id="myMap" class="container"></div>
+    <van-action-sheet v-model="isDetail" title="">
+      <div class="contentDetail">
+        <div style="font-size:18px;text-align:left">华中科技大学同济医院附属同济医院</div>
+        <div class="address"> 
+          <div class="left-font" style="color:#666666"><img src="@/assets/image/address.png" /> <div>武汉市硚口区解放大道1095号</div></div>
+          <div class="right-btn">定点医院</div>
+        </div>
+        <div class="address" style="font-size:12px"> 
+          <div style="color:#666666">信息来源：人民网  <span style="color:#216AFF;cursor:pointer"> 点击查看</span></div>
+          <div>发布日期：2020-01-26 22:27</div>
+        </div>
+      </div>
+    </van-action-sheet>
   </div>
 </template>
 
@@ -12,6 +25,7 @@ export default {
   data() {
     return {
       myMap:null,
+      isDetail:true
     };
   },
   created() {},
@@ -50,6 +64,30 @@ export default {
   .container{
     flex:1;
     margin-top:6px;
+  }
+  .contentDetail{
+     padding: 12px;
+     padding-top:20px;
+     .address{
+       margin-top:14px;
+       font-size:15px;
+       display:flex;
+       justify-content:space-between;
+       align-items: center;
+       .left-font{
+         display:flex;
+         align-items: center;
+       }
+       .right-btn{
+        width:64px;
+        height:20px;
+        background:linear-gradient(90deg,rgba(255,122,15,1),rgba(255,188,60,1));
+        border-radius:10px;
+        font-size:12px;
+        color:#fff;
+        line-height:21px;
+       }
+     }
   }
 }
 </style>

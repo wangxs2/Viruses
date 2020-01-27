@@ -77,7 +77,7 @@
       </div>
       <div class="btn" @click="rightModel" >
         <van-icon name="wap-nav" />
-        <span>111</span>
+        <span v-if="showDataLengthPoint">{{dataList.length}}</span>
       </div>
     </div>
 
@@ -111,10 +111,12 @@ export default {
       isDetail:false,
       downUpImg:true,
       showSearch:false,
-      wuziList:["hsh","hs5525522h1","hsh","hsh1","hsh","hsh1","hsh","hsh1",],
-      cityList:["hsh","hsh2"],
+      showDataLengthPoint:1, //显示当前搜索数据是否点击指针
+      wuziList:["N95口罩","外科口罩","手术衣","防护面罩","外科口罩","外科口罩",],
+      cityList:["武汉","鄂州","枝江","仙桃","潜江","黄冈","赤壁","荆门",],
       timeList:["最近24小时","最近48小时","最近72小时"],
-      dataList:[{
+      dataList:[ //搜索查询数据
+        {
         city:"武汉市",//市
         createTime:"2020-01-07 20:00:00",//发布时间
         descr:"11",//发布描述
@@ -174,8 +176,9 @@ export default {
         type:1,//医院类型1:定点医院/2:发热门诊/0:普通医疗机构）
         needsName:"手套,医用口罩,防护服", //发布的物资，以逗号分隔
         needsDescr:"手套:11,医用口罩:22,防护服:33", //物资：对应的描述、标准等
-      }],
-      searchText:"",
+       }
+      ],
+      searchText:"", 
       show:true,
       showModel:false,
       message:'',
@@ -217,6 +220,7 @@ export default {
     },
     // 右边弹框显示
     rightModel(){
+      this.showDataLengthPoint=0,
       this.showModel=true
     },
     // 显示默认搜索
@@ -232,13 +236,13 @@ export default {
         this.show=false
       }else {
         this.$toast('请输入或选择搜索关键字');
-
       }
     },
     // 返回第一搜索
     goback(){
       this.show=true
       this.showSearch=false
+      this.showDataLengthPoint=1
     },
     // 清除第二搜索框内容
     clearText(){
@@ -449,7 +453,7 @@ export default {
         }   
         &.list2{
           span {
-            padding: 8px 15px;
+            padding: 8px 18px;
             color:#FF7800;
             margin-right:15px;
             border:1px solid rgba(255,120,0,1);

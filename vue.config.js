@@ -14,8 +14,8 @@ module.exports = {
     // host: 'localhost',
     open: true, //配置自动启动浏览器
     proxy: {
-      '/vehiclerepair': {
-        target: 'http://114.80.231.180:8088//vehiclerepair',
+      '/kindnessplatform': {
+        target: 'http://47.100.200.255:9966/kindnessplatform',
         // target: 'http://10.1.30.208:50067/vehiclerepair',
         // target: 'http://192.168.1.115:8080/vehiclerepair',
         // target: 'http://10.1.30.207:50045/vehiclerepair',
@@ -23,7 +23,7 @@ module.exports = {
         // target: 'http://10.1.4.106:8080/vehiclerepair',
         changeOrigin: true,
         pathRewrite: {
-          '^/vehiclerepair': '/'
+          '^/kindnessplatform': '/'
         }
       }
     }

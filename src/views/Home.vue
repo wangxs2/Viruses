@@ -56,7 +56,7 @@
       </div>
       <div class="input-wrapper">
         <img src="../assets/image/search.png" alt="" @click="search">
-        <input type="text" placeholder="查询继续支援医院、物资、区域" v-model="searchText" @focus="inputFocus">
+        <input type="text" placeholder="查询继续支援医院、物资、区域" v-model="searchText" @focus="inputFocus" >
       </div>
       <div class="tab-list-wrapper" v-if="!downUpImg">
 
@@ -193,7 +193,7 @@ export default {
       }
 
       this.$fetchGet("hospital/selectHospital",params).then(res=> {
-        
+        this.mapinit(res)
         res.forEach(item=> {
           if (item.linkTel){
             if (item.linkTel.indexOf(",") != -1 ||item.linkTel.indexOf("，") != -1) {
@@ -297,6 +297,32 @@ export default {
       });
       this.initMap()
 
+    },
+    mapinit(res){
+      this.myMap.clearMap()
+      const markerslist=[]
+      res.forEach(item => {
+            if(item.linkTel!==undefined){
+              item.linkTelarr=item.linkTel.split("、")
+            }
+            if(item.linkPeople!==undefined){
+              item.linkPeoplearr=item.linkPeople.split("、")
+            }
+            if(item.needsName!==undefined){
+              item.needsNamearr=item.needsName.split(",")
+            }
+            if(item.needsDescr!==undefined){
+              item.needsDescrarr=item.needsDescr.split(",")
+            }
+            if(item.longitude){
+              AMap.convertFrom([item.longitude,item.latitude], 'gps',  (status, result)=> {
+                console.log(result)
+                 item.lacal=result.locations[0];
+              })
+            }
+            markerslist.push(this.createPoint(item))
+          })
+          this.myMap.add(markerslist)
     },
     initMap(){
       this.myMap.clearMap()

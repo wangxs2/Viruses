@@ -196,7 +196,7 @@ export default {
         this.mapinit(res)
         res.forEach(item=> {
           if (item.linkTel){
-            if (item.linkTel.indexOf(",") != -1 ||item.linkTel.indexOf(",") != -1) {
+            if (item.linkTel.indexOf(",") != -1 ||item.linkTel.indexOf("，") != -1) {
               item.linkTel=item.linkTel.split(",") || item.linkTel.split("，") 
             } else if (item.linkTel.indexOf("、") != -1) {
               item.linkTel=item.linkTel.split("、")
@@ -240,6 +240,9 @@ export default {
     search(){
       if (this.searchText){
         this.show=false
+        this.showSearch=true
+        this.getDataList(this.searchText,1)
+
       }else {
         this.$toast('请输入或选择搜索关键字');
       }
@@ -588,7 +591,7 @@ export default {
         padding: 10px 15px;
       }
       input{
-        // width: 590px;
+        width: 280px;
         font-size:16px;
         font-family:PingFang SC;
         font-weight:500;

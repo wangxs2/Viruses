@@ -6,7 +6,7 @@
       <div class="contentDetail">
         <div style="font-size:18px;text-align:left">华中科技大学同济医院附属同济医院</div>
         <div class="address"> 
-          <div class="left-font" style="color:#666666"><img src="@/assets/image/address.png" /> <div style="margin-left:4px">武汉市硚口区解放大道1095号</div></div>
+          <div class="left-font" style="color:#666666"><van-icon name="location-o" size="20" /> <div style="margin-left:2px">武汉市硚口区解放大道1095号</div></div>
           <div class="right-btn">定点医院</div>
         </div>
         <div class="address" style="font-size:12px"> 
@@ -14,9 +14,23 @@
           <div>发布日期：2020-01-26 22:27</div>
         </div>
         <div class="tel-phone">
-          <div class="left-font"><img src="@/assets/image/phone.png" /> <div style="font-size:15px;margin-left:4px">张医生  (027)83662688</div></div>
+          <div class="left-font"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">张医生  (027)83662688</div></div>
         </div>
-        <div style="font-weight:bold;font-size:16px;text-align:left">所需疫情防控物资</div>
+        <div style="font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">所需疫情防控物资</div>
+        <div class="material">
+          <div class="boll-item"><span class="boll"></span>N95防护口罩</div>
+          <div class="boll-item"><span class="boll"></span>医用一次性乳胶手套</div>
+          <div class="boll-item"><span class="boll"></span>医用帽子</div>
+          <div class="boll-item"><span class="boll"></span>一次性手术衣</div>
+        </div>
+        <div class="remark">医用防护口罩GB 19083-2010</div>
+        <div class="remark">医用外科口罩YY0469-2010</div>
+        <div class="remark">防护服 符合《医用一次性防护服技术要求》GB19082-2003</div>
+        <van-divider />
+        <div>
+          <van-button round color="#216AFF" style="margin-right:12px">我要联系</van-button>
+          <van-button round color="linear-gradient(to right, #FF6600, #FF7B10)" icon="good-job-o" type="info">为医院点赞加油 162,803,106次</van-button>
+        </div>
       </div>
     </van-action-sheet>
   </div>
@@ -99,6 +113,33 @@ export default {
        padding: 12px;
        font-size:15px;
         margin:14px 0;
+     }
+     .material{
+       display: flex;
+       flex-wrap: wrap;
+       color: #216AFF;
+        font-size: 15px;
+        margin-bottom: 6px;
+      .boll{
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #216AFF;
+        margin-right: 6px;
+      }
+      .boll-item{
+        display: flex;
+        align-items: center;
+        width: 50%;
+        margin-bottom: 8px;
+      }
+     }
+     .remark{
+       color: #999999;
+       font-size: 12px;
+       text-align: left;
+       margin-bottom: 6px;
      }
   }
 }

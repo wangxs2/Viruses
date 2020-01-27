@@ -93,7 +93,7 @@
       </div>
       <div class="btn" @click="rightModel" >
         <van-icon name="wap-nav" size="24"/>
-        <span v-if="showDataLengthPoint">{{dataList.length}}</span>
+        <span v-if="showDataLengthPoint" >{{total || 0}}</span>
       </div>
     </div>
     <!-- 搜索2右边弹框 -->
@@ -132,28 +132,8 @@ export default {
       cityList:["武汉","荆州","随州","恩施市","宜昌市","荆门市"],
       timeList:["最近24小时","最近48小时","最近72小时"],
       phonwList:[],
-      dataList:[ //搜索查询数据
-        {
-        city:"武汉市",//市
-        createTime:"2020-01-07 20:00:00",//发布时间
-        descr:"11",//发布描述
-        encourageNum:11,//点赞数
-        hospitalAddress:"11",//医院地址
-        hospitalName:"武汉人民医院",//医院名称
-        id:1,
-        isLack:1,//是否缺物资，1表示缺
-        latitude:11.000000,//纬度
-        linkAddress:"11",//捐赠物资联系地址
-        linkPeople:"11,22",//捐赠物资联系人，多个人以逗号分隔
-        linkTel:"11,22",//捐赠物资联系电话，按照人的顺序逗号分隔，如：第一个代表第一个人的电话号码
-        longitude:11.000000,//经度
-        province:"湖北省",//省
-        source:"11",//捐赠信息来源
-        sourceLink:"11",//来源链接
-        type:1,//医院类型1:定点医院/2:发热门诊/0:普通医疗机构）
-        needsName:"手套,医用口罩,防护服", //发布的物资，以逗号分隔
-        needsDescr:"手套:11,医用口罩:22,防护服:33", //物资：对应的描述、标准等
-      }],
+      dataList:[],
+      total:0,
       searchText:"",
       show:true,
       showModel:false,
@@ -216,6 +196,9 @@ export default {
           }
         })
         this.dataList=res
+        if (this.dataList) {
+          this.total=this.dataList.length
+        }
       })
     },
     // 选择时间

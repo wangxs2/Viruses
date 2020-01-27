@@ -5,7 +5,8 @@ import store from './store'
 import 'amfe-flexible'
 import Vant from 'vant';
 import common from './libs/common.js'
-import 'vant/lib/index.css';
+import 'vant/lib/index.css'
+import $ from 'n-zepto'
 Vue.use(Vant);
 Vue.use(common);
 Vue.config.productionTip = false

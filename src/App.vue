@@ -17,4 +17,5 @@ html,body,#app {
   width: 100%;
   height: 100%;
 }
+img {pointer-event:none;-webkit-user-select:none;-moz-user-select:none;user-select:none;}
 </style>

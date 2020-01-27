@@ -5,12 +5,13 @@
       <div class="top-fix">定点物资缺乏地图</div>
     </div>
     <!-- 医院的详情弹框 -->
-    <van-action-sheet v-model="isDetail" title="123">
+    <van-action-sheet v-model="isDetail" title="">
       <div class="contentDetail">
         <div style="font-size:18px;text-align:left">华中科技大学同济医院附属同济医院</div>
         <div class="address"> 
           <div class="left-font" style="color:#666666"><van-icon name="location-o" size="20" /> <div style="margin-left:2px">武汉市硚口区解放大道1095号</div></div>
-          <div class="right-btn">定点医院</div>
+          <!-- <div class="right-btn">定点医院</div> -->
+          <div class="right-btn right-btn1">发热门诊</div>
         </div>
         <div class="address" style="font-size:12px"> 
           <div style="color:#666666">信息来源：人民网  <span style="color:#216AFF;cursor:pointer"> 点击查看</span></div>
@@ -19,7 +20,7 @@
         <div class="tel-phone">
           <div class="left-font"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">张医生  (027)83662688</div></div>
         </div>
-        <div style="font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">所需疫情防控物资</div>
+        <div style="font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">所需疫情防控物资 <span class="person">接受个人捐赠</span></div>
         <div class="material">
           <div class="boll-item"><span class="boll"></span>N95防护口罩</div>
           <div class="boll-item"><span class="boll"></span>医用一次性乳胶手套</div>
@@ -47,7 +48,7 @@ export default {
   data() {
     return {
       myMap:null,
-      isDetail:true,
+      isDetail:false,
       mapDate:[
       {
         centerLng:114.378779,
@@ -63,11 +64,10 @@ export default {
     };
   },
   created() {
-    
+   
   },
  mounted () {
-   this.getMap()
-   this.initMap()
+  this.getMap()
   },
   methods:{
     getMap () {
@@ -79,16 +79,15 @@ export default {
         zoom:6,
         mapStyle:'amap://styles/9fb204085bdb47adb66e074fca3376be',
       });
-       console.log(this.myMap)
+         this.initMap()
+
     },
     initMap(){
-      let markerslist=[]
+      const markerslist=[]
       this.mapDate.forEach(item => {
         markerslist.push(this.createPoint(item))
       })
-     
       this.myMap.add(markerslist)
-
     },
     createPoint(row) {
     let marker = new AMap.Marker({
@@ -105,8 +104,7 @@ export default {
       zIndex: 100,
       extData: { row }
     })
-    marker.on("click", (e) => {
-      console.log(this.isDetail)
+    marker.on("touchstart", (e) => {
       this.isDetail=true
       console.log(this.isDetail)
     })
@@ -175,12 +173,28 @@ export default {
         color:#fff;
         line-height:21px;
        }
+       .right-btn1{
+         background:linear-gradient(90deg,rgba(232,52,248,1),rgba(209,97,255,1));
+       }
      }
      .tel-phone{
        background: #F2F5FF;
        padding: 12px;
        font-size:15px;
         margin:14px 0;
+     }
+     .person{
+       display: inline-block;
+       width:90px;
+        height:22px;
+        background:linear-gradient(90deg,rgba(130,124,255,1),rgba(164,119,255,1));
+        border-radius:0px 11px 11px 11px;
+        color:#fff;
+        font-size:12px;
+        font-weight:none;
+        text-align:center;
+        line-height:22px;
+        margin-left:6px;
      }
      .material{
        display: flex;

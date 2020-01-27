@@ -33,6 +33,103 @@
         </div>
       </div>
     </van-action-sheet>
+
+      <div class="search-wrapper" v-if="show">
+        <img class="down-up" @click="downUp" src="../assets/image/up.png" alt="" v-if="downUpImg">
+        <img class="down-up" @click="downUp" src="../assets/image/down.png" alt="" v-else>
+        <div class="input-wrapper">
+          <img src="../assets/image/search.png" alt="" @click="search">
+          <input type="text" placeholder="查询继续支援医院、物资、区域" v-model="searchText" >
+        </div>
+        <div class="tab-list-wrapper" v-if="!downUpImg">
+          <p class="title">haha</p>
+          <div class="list list1">
+            <span v-for="(item,i) in wuziList" :key="i">{{item}}</span>
+          </div>
+          <p class="title">haha</p>
+          <div class="list list2">
+            <span v-for="(item,i) in cityList" :key="i">{{item}}</span>
+          </div>
+          
+          <p class="title">haha</p>
+          <div class="list list3">
+            <span><img src="../assets/image/time.png" alt="">最近24小时</span>
+            <span><img src="../assets/image/time.png" alt="">最近48小时</span>
+            <span><img src="../assets/image/time.png" alt="">最近72小时</span>
+          </div>
+        </div>
+        <div class="write">
+          <p>更多疫情跟踪：武汉肺炎防疫全记录</p>
+          <p>上海产业技术研究院出品</p>
+        </div>
+      </div>
+      <div class="search-wrapper1">
+        <div class="input-wrapper">
+          <img class="right-btn" @click="goback" src="../assets/image/down.png" alt="" >
+          
+          <input type="text" placeholder="查询继续支援医院、物资、区域" v-model="searchText" >
+          
+          <img class="error" @click="clearText" src="../assets/image/down.png" alt="" >
+
+        </div>
+        <div class="btn" @click="rightModel" >
+          <img class="icon-btn" src="../assets/image/down.png" alt="" >
+          <span>11</span>
+
+        </div>
+      </div>
+      <van-popup v-model="showModel" position="right" :style="{ height: '100%' }">
+        <div class="list-wrapper">
+          <p class="title">计算机世界上就能</p>
+          <p class="address"><img class="right-btn" @click="goback" src="../assets/image/address.png" alt="" >sjsjsjsj</p>
+          <p class="time">发布日期：1111111</p>
+          <div class="phone">
+            <p><img class="right-btn" @click="goback" src="../assets/image/phone.png" alt="" ><span>1122121212</span></p>
+          </div>
+        </div>
+        <div class="list-wrapper">
+          <p class="title">计算机世界上就能</p>
+          <p class="address"><img class="right-btn" @click="goback" src="../assets/image/address.png" alt="" >sjsjsjsj</p>
+          <p class="time">发布日期：1111111</p>
+          <div class="phone">
+            <p><img class="right-btn" @click="goback" src="../assets/image/phone.png" alt="" ><span>1122121212</span></p>
+          </div>
+        </div>
+        <div class="list-wrapper">
+          <p class="title">计算机世界上就能</p>
+          <p class="address"><img class="right-btn" @click="goback" src="../assets/image/address.png" alt="" >sjsjsjsj</p>
+          <p class="time">发布日期：1111111</p>
+          <div class="phone">
+            <p><img class="right-btn" @click="goback" src="../assets/image/phone.png" alt="" ><span>1122121212</span></p>
+          </div>
+        </div>
+        <div class="list-wrapper">
+          <p class="title">计算机世界上就能</p>
+          <p class="address"><img class="right-btn" @click="goback" src="../assets/image/address.png" alt="" >sjsjsjsj</p>
+          <p class="time">发布日期：1111111</p>
+          <div class="phone">
+            <p><img class="right-btn" @click="goback" src="../assets/image/phone.png" alt="" ><span>1122121212</span></p>
+          </div>
+        </div>
+        <div class="list-wrapper">
+          <p class="title">计算机世界上就能</p>
+          <p class="address"><img class="right-btn" @click="goback" src="../assets/image/address.png" alt="" >sjsjsjsj</p>
+          <p class="time">发布日期：1111111</p>
+          <div class="phone">
+            <p><img class="right-btn" @click="goback" src="../assets/image/phone.png" alt="" ><span>1122121212</span></p>
+          </div>
+        </div>
+        <div class="list-wrapper">
+          <p class="title">计算机世界上就能</p>
+          <p class="address"><img class="right-btn" @click="goback" src="../assets/image/address.png" alt="" >sjsjsjsj</p>
+          <p class="time">发布日期：1111111</p>
+          <div class="phone">
+            <p><img class="right-btn" @click="goback" src="../assets/image/phone.png" alt="" ><span>1122121212</span></p>
+          </div>
+        </div>
+        
+      </van-popup>
+
   </div>
 </template>
 
@@ -43,7 +140,13 @@ export default {
   data() {
     return {
       myMap:null,
-      isDetail:true
+      isDetail:false,
+      downUpImg:true,
+      wuziList:["hsh","hsh"],
+      cityList:["hsh","hsh"],
+      searchText:"",
+      show:true,
+      showModel:false,
     };
   },
   created() {},
@@ -51,6 +154,21 @@ export default {
    this.getMap()
   },
   methods:{
+    rightModel(){
+      this.showModel=true
+    },
+    downUp() {
+      this.downUpImg=!this.downUpImg
+    },
+    search(){
+      this.show=false
+    },
+    goback(){
+      this.show=true
+    },
+    clearText(){
+      this.searchText=""
+    },
     getMap () {
       this.myMap = new AMap.Map("myMap", {
         animateEnable: false,
@@ -141,6 +259,221 @@ export default {
        text-align: left;
        margin-bottom: 6px;
      }
+  }
+  .search-wrapper{
+    padding:0 17px;
+    background:#fff;
+    .tab-list-wrapper{
+      font-size:16px;
+      .title{
+        text-align:left;
+        font-family:PingFang SC;
+        font-weight:bold;
+        color:rgba(51,51,51,1);
+
+      }
+      .list{
+        display:flex;
+        span{
+
+          font-family:PingFang SC;
+          font-weight:500;
+          color:rgba(33,106,255,1);
+          text-align:center;
+          img{
+            width:17px;
+            height:17px;
+          }
+
+        }
+        &.list1{
+          span{
+            padding: 10px 15px;
+            color:#216AFF;
+
+            margin-right:15px;
+            border:1px solid rgba(33,106,255,1);
+            border-radius:10px;
+          }
+        }   
+        &.list2{
+          span {
+          padding: 10px 15px;
+            color:#FF7800;
+
+          margin-right:15px;
+            border:1px solid rgba(255,120,0,1);
+            border-radius:18px;
+          }
+        }
+        &.list3{
+          display:flex;
+          justify-content: space-between;
+          align-items:center;
+          span {
+            display:flex;
+            justify-content: flex-start;
+            align-items:center;
+            font-size:15px;
+            font-family:PingFang SC;
+            font-weight:bold;
+            color:rgba(51,51,51,1);
+            img{
+              padding-right:5px;
+            }
+          }
+        }
+      }
+    }
+    .down-up{
+      width:30px;
+      height: 12px;
+    }
+    .input-wrapper{
+      display:flex;
+      justify-content: flex-start;
+      align-items:center;
+      height: 44px;
+      img{
+        width: 18px;
+        height: 18px;
+        padding: 10px 15px;
+
+      }
+      input{
+        // width: 590px;
+        font-size:16px;
+        font-family:PingFang SC;
+        font-weight:500;
+        color:rgba(102,102,102,1);
+        border: 0;  // 去除未选中状态边框
+        outline: none; // 去除选中状态边框
+        background-color: rgba(0, 0, 0, 0);// 透明背景
+      }
+    }
+    .write{
+      
+      font-size:12px;
+      font-family:PingFang SC;
+      font-weight:500;
+      color:rgba(170,170,170,1);
+      line-height:12px;
+      p{
+
+      }
+    }
+  }
+  .search-wrapper1{
+    position:absolute;
+    top:100px;
+    left:17px;
+    width:340px;
+    .input-wrapper{
+      display:flex;
+      justify-content:space-around;
+      align-items:center;
+      background:#fff;
+      height:44px;
+      .right-btn{
+        width:8px;
+        height:14px;
+        padding:10px;
+      }
+      input{
+        width:250px;
+        font-size:16px;
+        font-family:PingFang SC;
+        font-weight:bold;
+        color:rgba(51,51,51,1);
+        border: 0;  // 去除未选中状态边框
+        outline: none; // 去除选中状态边框
+        background-color: rgba(0, 0, 0, 0);// 透明背景
+      }
+      .error{
+        width:11px;
+        height:11px;
+        padding:10px;
+      }
+    }
+    .btn {
+      position:relative;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      width:50px;
+      height:50px;
+      background:#fff;
+      margin-left:292.5px;
+      margin-top:15px;
+      border-radius:50%;
+
+      .icon-btn{
+        width:15px;
+        height:15px;
+      }
+      span{
+        position:absolute;
+        top:10px;
+        right:10px;
+        font-size:10px;
+        background:#FF1717;
+        color:#fff;
+      }
+
+    }
+  }
+  .van-popup--right{
+    width:80%;
+  }
+  .list-wrapper{
+    padding:0 15px;
+    .title{
+      text-align:left;
+      font-size:17px;
+      font-family:PingFang SC;
+      font-weight:bold;
+      color:rgba(51,51,51,1);
+    }
+    .address{
+      display:flex;
+      align-items:center;
+      font-size:15px;
+      font-family:PingFang SC;
+      font-weight:500;
+      color:rgba(102,102,102,1);
+      img{
+        width:16px;
+        height:16px;
+      }
+    }
+    .time{
+      text-align:left;
+      font-size:12px;
+      font-family:PingFang SC;
+      font-weight:500;
+      color:rgba(102,102,102,1);
+    }
+    .phone{
+      display:flex;
+      align-items:center;
+      background:#F2F5FF;
+      padding:10px;
+      p{
+        display:flex;
+        align-items:center;
+        margin:0;
+
+        img{
+          
+          width:16px;
+          height:16px;
+        }
+        span {
+          font-size:15px;
+          color:#333;
+        }
+      }
+    }
   }
 }
 </style>

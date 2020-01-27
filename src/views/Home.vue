@@ -5,7 +5,7 @@
       <div class="top-fix">定点物资缺乏地图</div>
     </div>
     <!-- 医院的详情弹框 -->
-    <van-action-sheet v-model="isDetail" :duration="0" title="">
+    <van-action-sheet  v-model="isDetail" :duration="0" title="">
       <div class="contentDetail">
         <div style="font-size:18px;text-align:left">华中科技大学同济医院附属同济医院{{message}}</div>
         <div class="address"> 
@@ -32,12 +32,19 @@
         <div class="remark">防护服 符合《医用一次性防护服技术要求》GB19082-2003</div>
         <van-divider />
         <div>
-          <van-button round color="#216AFF" style="margin-right:12px">我要联系</van-button>
-          <van-button round color="linear-gradient(to right, #FF6600, #FF7B10)" icon="good-job-o" type="info">为医院点赞加油 162,803,106次</van-button>
+          <van-button round color="#216AFF" style="margin-right:12px" @click="dialPhoneNumber()">我要联系</van-button>
+          <van-button round color="linear-gradient(to right, #FF6600, #FF7B10)" @click="shakeTime" icon="good-job-o" type="info">为医院点赞加油 162,803,106次</van-button>
         </div>
       </div>
     </van-action-sheet>
-
+    <van-popup
+        v-model="phoneshow"
+        position="bottom"
+        :style="{ height: '20%' }">
+      <div style="padding:12px 24px">
+        <div class="left-font"><van-icon name="phone-o" size="30" color="#1989fa" @click="dialPhoneNumber1()" /> <div style="font-size:16px;margin-left:4px">张医生  (027)83662688</div></div>
+      </div>
+    </van-popup>
       <div class="search-wrapper" v-if="show">
         <img class="down-up" @click="downUp" src="../assets/image/up.png" alt="" v-if="downUpImg">
         <img class="down-up" @click="downUp" src="../assets/image/down.png" alt="" v-else>
@@ -146,6 +153,7 @@ export default {
     return {
       myMap:null,
       isDetail:false,
+      phoneshow:false,
       downUpImg:true,
       wuziList:["hsh","hsh"],
       cityList:["hsh","hsh"],
@@ -166,11 +174,12 @@ export default {
         onLineStatus:"up",
         message:2
       }
-      ]
+      ],
+      mapobj:{}
     };
   },
   created() {
-   
+   this.initMap()
   },
  mounted () {
   this.getMap()
@@ -191,6 +200,21 @@ export default {
     clearText(){
       this.searchText=""
     },
+    shakeTime(){
+        console.log(12)
+
+    },
+    dialPhoneNumber(){
+      this.phoneshow=true
+    },
+    dialPhoneNumber1(phoneNumber) {
+      // if (!phoneNumber) {
+      //   this.$toast('无电话信息');
+      //   return;
+      // }
+      // window.location.href = "tel:" + phoneNumber;
+      // this.phoneshow=true
+    },
     getMap () {
       this.myMap = new AMap.Map("myMap", {
         animateEnable: false,
@@ -200,15 +224,21 @@ export default {
         // zoom:6,
         mapStyle:'amap://styles/9fb204085bdb47adb66e074fca3376be',
       });
-         this.initMap()
+      
 
     },
     initMap(){
-      const markerslist=[]
-      this.mapDate.forEach(item => {
-        markerslist.push(this.createPoint(item))
-      })
-      this.myMap.add(markerslist)
+      // const markerslist=[]
+      // this.mapDate.forEach(item => {
+      //   markerslist.push(this.createPoint(item))
+      // })
+      // this.myMap.add(markerslist)
+      this.$fetchGet("hospital/selectHospital", {
+        content:'',
+        hour:'', 
+      }).then(res => {
+        
+      });
     },
     createPoint(row) {
     let marker = new AMap.Marker({
@@ -225,11 +255,10 @@ export default {
       zIndex: 100,
       extData: { row }
     })
+    // touchstart
     marker.on("touchstart", (e) => {
       this.isDetail=true
-      console.log(e.target.B.extData)
       let str=e.target.B.extData.row
-      console.log(str)
       this.message=str.message
     })
     return marker
@@ -243,7 +272,11 @@ export default {
   height: 100%;
   background: #f1f1f1;
   display:flex;
-   flex-direction: column;
+  flex-direction: column;
+  .left-font{
+         display:flex;
+         align-items: center;
+       }
   .header {
     width: 100%;
     height: 44px;
@@ -277,10 +310,7 @@ export default {
      padding: 12px;
      padding-top:20px;
      box-sizing: border-box;
-      .left-font{
-         display:flex;
-         align-items: center;
-       }
+      
      .address{
        margin-top:14px;
        font-size:15px;

@@ -9,7 +9,7 @@
       <div class="contentDetail">
         <div style="font-size:18px;text-align:left">{{mapobj.hospitalName}}</div>
         <div class="address"> 
-          <div class="left-font" style="color:#666666"><van-icon name="location-o" size="20" /> <div style="margin-left:2px">武汉市硚口区解放大道1095号</div></div>
+          <div class="left-font" style="color:#666666"><van-icon name="location-o" size="20" /> <div style="margin-left:2px">{{mapobj.hospitalAddress}}</div></div>
           <div v-if="mapobj.type==1" class="right-btn">定点医院</div>
           <div v-if="mapobj.type==2" class="right-btn right-btn1">发热门诊</div>
         </div>
@@ -323,6 +323,12 @@ export default {
             if(item.needsDescr!==undefined){
               item.needsDescrarr=item.needsDescr.split(",")
             }
+            if(item.longitude){
+              AMap.convertFrom([item.longitude,item.latitude], 'gps',  (status, result)=> {
+                console.log(result)
+                 item.lacal=result.locations[0];
+              })
+            }
             markerslist.push(this.createPoint(item))
           })
           this.myMap.add(markerslist)
@@ -333,7 +339,7 @@ export default {
     createPoint(row) {
     let marker = new AMap.Marker({
       position: new AMap.LngLat(row.longitude, row.latitude),
-      offset: new AMap.Pixel(-12, -15),
+      offset: new AMap.Pixel(-12, -16),
       icon: new AMap.Icon({
         size: new AMap.Size(24, 31),
         image:

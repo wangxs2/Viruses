@@ -44,7 +44,8 @@
         position="bottom"
         :style="{ height: '20%' }">
       <div style="padding:12px 24px">
-        <div class="left-font"><van-icon name="phone-o" size="30" color="#1989fa" @click="dialPhoneNumber1()" /> <div style="font-size:16px;margin-left:4px">张医生  (027)83662688</div></div>
+        <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr"
+                 :key="index"><van-icon name="phone-o" color="#1989fa" size="30" @click="dialPhoneNumber1(iteam)" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
       </div>
     </van-popup>
       <div class="search-wrapper" v-if="show">
@@ -231,7 +232,10 @@ export default {
         id:val
       }).then(res => {
         if(res.code=="success"){
-         
+         this.$toast('已经成功点赞');
+         this.mapobj.encourageNum++
+        }else{
+          this.$toast('您已经点过赞了');
         }
         
       });
@@ -241,12 +245,11 @@ export default {
       this.phoneshow=true
     },
     dialPhoneNumber1(phoneNumber) {
-      // if (!phoneNumber) {
-      //   this.$toast('无电话信息');
-      //   return;
-      // }
-      // window.location.href = "tel:" + phoneNumber;
-      // this.phoneshow=true
+      if (!phoneNumber) {
+        this.$toast('无电话信息');
+        return;
+      }
+      window.location.href = "tel:" + phoneNumber;
     },
     getMap () {
       this.myMap = new AMap.Map("myMap", {
@@ -295,16 +298,16 @@ export default {
     createPoint(row) {
     let marker = new AMap.Marker({
       position: new AMap.LngLat(row.longitude, row.latitude),
-      offset: new AMap.Pixel(-8, -10),
+      offset: new AMap.Pixel(-12, -15),
       icon: new AMap.Icon({
-        size: new AMap.Size(16, 21),
+        size: new AMap.Size(24, 31),
         image:
           (row.type == 2&&row.isLack==1)
             ? require('../assets/image/icon4.png')
             : (row.type == 2&&row.isLack==0)?require('../assets/image/icon3.png')
             : (row.type == 1&&row.isLack==0)?require('../assets/image/icon1.png')
             :(row.type == 1&&row.isLack==1)?require('../assets/image/icon2.png'):'',
-        imageSize: new AMap.Size(16, 21)
+        imageSize: new AMap.Size(24, 31)
       }), // 添加 Icon 图标 URL
       zIndex: 100,
       extData: { row }

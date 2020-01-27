@@ -7,33 +7,35 @@
     <!-- 医院的详情弹框 -->
     <van-action-sheet  v-model="isDetail" :duration="0" title="">
       <div class="contentDetail">
-        <div style="font-size:18px;text-align:left">华中科技大学同济医院附属同济医院{{message}}</div>
+        <div style="font-size:18px;text-align:left">{{mapobj.hospitalName}}</div>
         <div class="address"> 
           <div class="left-font" style="color:#666666"><van-icon name="location-o" size="20" /> <div style="margin-left:2px">武汉市硚口区解放大道1095号</div></div>
-          <!-- <div class="right-btn">定点医院</div> -->
-          <div class="right-btn right-btn1">发热门诊</div>
+          <div v-if="mapobj.type==1" class="right-btn">定点医院</div>
+          <div v-if="mapobj.type==2" class="right-btn right-btn1">发热门诊</div>
         </div>
         <div class="address" style="font-size:12px"> 
-          <div style="color:#666666">信息来源：人民网  <span style="color:#216AFF;cursor:pointer"> 点击查看</span></div>
-          <div>发布日期：2020-01-26 22:27</div>
+          <div v-if="mapobj.source!==undefined&&mapobj.source!==''" style="color:#666666">信息来源：{{mapobj.source}}  <span style="color:#216AFF;cursor:pointer"> 点击查看</span></div>
+          <div v-if="mapobj.createTime!==undefined">发布日期：{{mapobj.createTime}}</div>
         </div>
-        <div class="tel-phone">
-          <div class="left-font"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">张医生  (027)83662688</div></div>
+        <div class="tel-phone" v-if="mapobj.linkTelarr!==undefined">
+          <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr"
+                 :key="index"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
         </div>
-        <div style="font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">所需疫情防控物资 <span class="person">接受个人捐赠</span></div>
-        <div class="material">
-          <div class="boll-item"><span class="boll"></span>N95防护口罩</div>
+        <!-- <span class="person">接受个人捐赠</span> -->
+        <div v-if="mapobj.needsNamearr!==undefined" style="font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">所需疫情防控物资 </div>
+        <div class="material" v-if="mapobj.needsNamearr!==undefined">
+          <div v-for="(item,index) in mapobj.needsNamearr"
+                 :key="index" class="boll-item"><span class="boll"></span>{{item}}</div>
           <div class="boll-item"><span class="boll"></span>医用一次性乳胶手套</div>
           <div class="boll-item"><span class="boll"></span>医用帽子</div>
           <div class="boll-item"><span class="boll"></span>一次性手术衣</div>
         </div>
-        <div class="remark">医用防护口罩GB 19083-2010</div>
-        <div class="remark">医用外科口罩YY0469-2010</div>
-        <div class="remark">防护服 符合《医用一次性防护服技术要求》GB19082-2003</div>
+        <div v-if="mapobj.needsDescrarr!==undefined" v-for="(itrm,index) in mapobj.needsDescrarr"
+                 :key="index" class="remark">{{itrm}}</div>
         <van-divider />
         <div>
-          <van-button round color="#216AFF" style="margin-right:12px" @click="dialPhoneNumber()">我要联系</van-button>
-          <van-button round color="linear-gradient(to right, #FF6600, #FF7B10)" @click="shakeTime" icon="good-job-o" type="info">为医院点赞加油 162,803,106次</van-button>
+          <van-button v-if="mapobj.linkTelarr!==undefined" round color="#216AFF" style="margin-right:12px" @click="dialPhoneNumber()">我要联系</van-button>
+          <van-button round color="linear-gradient(to right, #FF6600, #FF7B10)" @click="shakeTime(mapobj.id)" icon="good-job-o" type="info">为医院点赞加油 {{mapobj.encourageNum}}次</van-button>
         </div>
       </div>
     </van-action-sheet>
@@ -42,7 +44,8 @@
         position="bottom"
         :style="{ height: '20%' }">
       <div style="padding:12px 24px">
-        <div class="left-font"><van-icon name="phone-o" size="30" color="#1989fa" @click="dialPhoneNumber1()" /> <div style="font-size:16px;margin-left:4px">张医生  (027)83662688</div></div>
+        <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr"
+                 :key="index"><van-icon name="phone-o" color="#1989fa" size="30" @click="dialPhoneNumber1(iteam)" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
       </div>
     </van-popup>
     <!-- 搜索部分 -->
@@ -150,7 +153,6 @@ export default {
       searchText:"",
       show:true,
       showModel:false,
-      message:'',
       mapDate:[
         {
           centerLng:114.378779,
@@ -257,20 +259,29 @@ export default {
       this.getDataList() 
 
     },
-    shakeTime(){
-        console.log(12)
+    shakeTime(val){
+      this.$fetchGet("encourage/saveEncourage", {
+        id:val
+      }).then(res => {
+        if(res.code=="success"){
+         this.$toast('已经成功点赞');
+         this.mapobj.encourageNum++
+        }else{
+          this.$toast('您已经点过赞了');
+        }
+        
+      });
 
     },
     dialPhoneNumber(){
       this.phoneshow=true
     },
     dialPhoneNumber1(phoneNumber) {
-      // if (!phoneNumber) {
-      //   this.$toast('无电话信息');
-      //   return;
-      // }
-      // window.location.href = "tel:" + phoneNumber;
-      // this.phoneshow=true
+      if (!phoneNumber) {
+        this.$toast('无电话信息');
+        return;
+      }
+      window.location.href = "tel:" + phoneNumber;
     },
     getMap () {
       this.myMap = new AMap.Map("myMap", {
@@ -285,29 +296,50 @@ export default {
 
     },
     initMap(){
+      this.myMap.clearMap()
       const markerslist=[]
-      this.mapDate.forEach(item => {
-        markerslist.push(this.createPoint(item))
-      })
-      this.myMap.add(markerslist)
+      // this.mapDate.forEach(item => {
+      //   markerslist.push(this.createPoint(item))
+      // })
+      // this.myMap.add(markerslist)
       this.$fetchGet("hospital/selectHospital", {
         content:'',
         hour:'', 
       }).then(res => {
+        if(res){
+          res.forEach(item => {
+            if(item.linkTel!==undefined){
+              item.linkTelarr=item.linkTel.split("、")
+            }
+            if(item.linkPeople!==undefined){
+              item.linkPeoplearr=item.linkPeople.split("、")
+            }
+            if(item.needsName!==undefined){
+              item.needsNamearr=item.needsName.split(",")
+            }
+            if(item.needsDescr!==undefined){
+              item.needsDescrarr=item.needsDescr.split(",")
+            }
+            markerslist.push(this.createPoint(item))
+          })
+          this.myMap.add(markerslist)
+        }
         
       });
     },
     createPoint(row) {
     let marker = new AMap.Marker({
-      position: new AMap.LngLat(row.centerLng, row.centerLat),
-      offset: new AMap.Pixel(-19, -25),
+      position: new AMap.LngLat(row.longitude, row.latitude),
+      offset: new AMap.Pixel(-12, -15),
       icon: new AMap.Icon({
-        size: new AMap.Size(38, 50),
+        size: new AMap.Size(24, 31),
         image:
-          row.onLineStatus == 'on'
-            ? require('../assets/image/icon_2.png')
-            : require('../assets/image/icon_3.png'),
-        imageSize: new AMap.Size(38, 50)
+          (row.type == 2&&row.isLack==1)
+            ? require('../assets/image/icon4.png')
+            : (row.type == 2&&row.isLack==0)?require('../assets/image/icon3.png')
+            : (row.type == 1&&row.isLack==0)?require('../assets/image/icon1.png')
+            :(row.type == 1&&row.isLack==1)?require('../assets/image/icon2.png'):'',
+        imageSize: new AMap.Size(24, 31)
       }), // 添加 Icon 图标 URL
       zIndex: 100,
       extData: { row }
@@ -316,7 +348,7 @@ export default {
     marker.on("touchstart", (e) => {
       this.isDetail=true
       let str=e.target.B.extData.row
-      this.message=str.message
+      this.mapobj=str
     })
     return marker
   }

@@ -1,8 +1,11 @@
 <template>
   <div class="home">
     <div class="header">新型肺炎物资捐赠实时动态</div>
-    <div id="myMap" class="container"></div>
-    <van-action-sheet v-model="isDetail" title="">
+    <div id="myMap" class="container">
+      <div class="top-fix">定点物资缺乏地图</div>
+    </div>
+    <!-- 医院的详情弹框 -->
+    <van-action-sheet v-model="isDetail" title="123">
       <div class="contentDetail">
         <div style="font-size:18px;text-align:left">华中科技大学同济医院附属同济医院</div>
         <div class="address"> 
@@ -33,6 +36,7 @@
         </div>
       </div>
     </van-action-sheet>
+    <!-- 医院的详情弹框 -->
   </div>
 </template>
 
@@ -43,12 +47,27 @@ export default {
   data() {
     return {
       myMap:null,
-      isDetail:false
+      isDetail:true,
+      mapDate:[
+      {
+        centerLng:114.378779,
+        centerLat:30.582411,
+        onLineStatus:"on"
+      },
+      {
+        centerLng:114.341786,
+        centerLat:30.602507,
+        onLineStatus:"up"
+      }
+      ]
     };
   },
-  created() {},
+  created() {
+    
+  },
  mounted () {
    this.getMap()
+   this.initMap()
   },
   methods:{
     getMap () {
@@ -60,7 +79,39 @@ export default {
         zoom:6,
         mapStyle:'amap://styles/9fb204085bdb47adb66e074fca3376be',
       });
-    }
+       console.log(this.myMap)
+    },
+    initMap(){
+      let markerslist=[]
+      this.mapDate.forEach(item => {
+        markerslist.push(this.createPoint(item))
+      })
+     
+      this.myMap.add(markerslist)
+
+    },
+    createPoint(row) {
+    let marker = new AMap.Marker({
+      position: new AMap.LngLat(row.centerLng, row.centerLat),
+      offset: new AMap.Pixel(-19, -25),
+      icon: new AMap.Icon({
+        size: new AMap.Size(38, 50),
+        image:
+          row.onLineStatus == 'on'
+            ? require('../assets/image/icon_2.png')
+            : require('../assets/image/icon_3.png'),
+        imageSize: new AMap.Size(38, 50)
+      }), // 添加 Icon 图标 URL
+      zIndex: 100,
+      extData: { row }
+    })
+    marker.on("click", (e) => {
+      console.log(this.isDetail)
+      this.isDetail=true
+      console.log(this.isDetail)
+    })
+    return marker
+  }
   }
 };
 </script>
@@ -82,6 +133,23 @@ export default {
   .container{
     flex:1;
     margin-top:6px;
+    position:relative;
+    .top-fix{
+      position:absolute;
+      top:0;
+      left:0;
+      z-index:10;
+      font-size:14px;
+      text-align:left;
+      width:100%;
+      height:30px;
+      line-height:30px;
+       box-sizing: border-box;
+       padding-left:12px;
+      background:rgba(255,255,255,1);
+      box-shadow:0px 1px 0px 0px rgba(238,238,238,1);
+
+    }
   }
   .contentDetail{
      padding: 12px;

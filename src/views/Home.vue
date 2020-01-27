@@ -43,7 +43,7 @@ export default {
   data() {
     return {
       myMap:null,
-      isDetail:true
+      isDetail:false
     };
   },
   created() {},

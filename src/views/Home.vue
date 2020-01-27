@@ -172,8 +172,43 @@ export default {
   },
  mounted () {
   this.getMap()
+  this.getDataList()
   },
   methods:{
+    getDataList(data,type){
+      let params={}
+      if(type==1){
+        params={
+          content:data
+        }
+      } else if (type==2){
+        params={
+          hour:data
+        }
+      } else{
+        params={}
+      }
+
+      this.$fetchGet("hospital/selectHospital",params).then(res=> {
+        this.dataList=res
+      })
+    },
+    // 选择时间
+    selectTimeItem(item) {
+      this.show=false
+      this.showSearch=true
+      this.searchText=item
+      this.getDataList(item,2)
+
+    },
+    // 选择物资，城市
+    selectItem(item) {
+      this.show=false
+      this.showSearch=true
+      this.searchText=item
+      this.getDataList(item,1)
+    },
+    // 右边弹框显示
     rightModel(){
       this.showModel=true
     },
@@ -187,7 +222,9 @@ export default {
       this.show=true
     },
     clearText(){
-      this.searchText=""
+      this.searchText=""     
+      this.getDataList() 
+
     },
     shakeTime(val){
       this.$fetchGet("encourage/saveEncourage", {

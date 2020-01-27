@@ -45,101 +45,65 @@
         <div class="left-font"><van-icon name="phone-o" size="30" color="#1989fa" @click="dialPhoneNumber1()" /> <div style="font-size:16px;margin-left:4px">张医生  (027)83662688</div></div>
       </div>
     </van-popup>
-      <div class="search-wrapper" v-if="show">
-        <img class="down-up" @click="downUp" src="../assets/image/up.png" alt="" v-if="downUpImg">
-        <img class="down-up" @click="downUp" src="../assets/image/down.png" alt="" v-else>
-        <div class="input-wrapper">
-          <img src="../assets/image/search.png" alt="" @click="search">
-          <input type="text" placeholder="查询继续支援医院、物资、区域" v-model="searchText" >
-        </div>
-        <div class="tab-list-wrapper" v-if="!downUpImg">
-          <p class="title">haha</p>
-          <div class="list list1">
-            <span v-for="(item,i) in wuziList" :key="i">{{item}}</span>
-          </div>
-          <p class="title">haha</p>
-          <div class="list list2">
-            <span v-for="(item,i) in cityList" :key="i">{{item}}</span>
-          </div>
-          
-          <p class="title">haha</p>
-          <div class="list list3">
-            <span><img src="../assets/image/time.png" alt="">最近24小时</span>
-            <span><img src="../assets/image/time.png" alt="">最近48小时</span>
-            <span><img src="../assets/image/time.png" alt="">最近72小时</span>
-          </div>
-        </div>
-        <div class="write">
-          <p>更多疫情跟踪：武汉肺炎防疫全记录</p>
-          <p>上海产业技术研究院出品</p>
-        </div>
+    <!-- 搜索部分 -->
+    <div class="search-wrapper" v-if="show" >
+      <div class="down-up-wrapper" @click="downUp">
+        <img class="down-up" src="../assets/image/up.png" alt="" v-if="downUpImg">
+        <img class="down-up" src="../assets/image/down.png" alt="" v-else>
       </div>
-      <div class="search-wrapper1">
-        <div class="input-wrapper">
-          <img class="right-btn" @click="goback" src="../assets/image/down.png" alt="" >
-          
-          <input type="text" placeholder="查询继续支援医院、物资、区域" v-model="searchText" >
-          
-          <img class="error" @click="clearText" src="../assets/image/down.png" alt="" >
-
-        </div>
-        <div class="btn" @click="rightModel" >
-          <img class="icon-btn" src="../assets/image/down.png" alt="" >
-          <span>11</span>
-
-        </div>
+      <div class="input-wrapper">
+        <img src="../assets/image/search.png" alt="" @click="search">
+        <input type="text" placeholder="查询继续支援医院、物资、区域" v-model="searchText" @focus="inputFocus">
       </div>
-      <van-popup v-model="showModel" position="right" :style="{ height: '100%' }">
-        <div class="list-wrapper">
-          <p class="title">计算机世界上就能</p>
-          <p class="address"><img class="right-btn" @click="goback" src="../assets/image/address.png" alt="" >sjsjsjsj</p>
-          <p class="time">发布日期：1111111</p>
-          <div class="phone">
-            <p><img class="right-btn" @click="goback" src="../assets/image/phone.png" alt="" ><span>1122121212</span></p>
-          </div>
+      <div class="tab-list-wrapper" v-if="!downUpImg">
+
+           <p class="title">疫情防控物资</p>
+        <div class="list list1">
+          <span v-for="(item,i) in wuziList" :key="i" @click="selectItem(item)">{{item}}</span>
         </div>
-        <div class="list-wrapper">
-          <p class="title">计算机世界上就能</p>
-          <p class="address"><img class="right-btn" @click="goback" src="../assets/image/address.png" alt="" >sjsjsjsj</p>
-          <p class="time">发布日期：1111111</p>
-          <div class="phone">
-            <p><img class="right-btn" @click="goback" src="../assets/image/phone.png" alt="" ><span>1122121212</span></p>
-          </div>
-        </div>
-        <div class="list-wrapper">
-          <p class="title">计算机世界上就能</p>
-          <p class="address"><img class="right-btn" @click="goback" src="../assets/image/address.png" alt="" >sjsjsjsj</p>
-          <p class="time">发布日期：1111111</p>
-          <div class="phone">
-            <p><img class="right-btn" @click="goback" src="../assets/image/phone.png" alt="" ><span>1122121212</span></p>
-          </div>
-        </div>
-        <div class="list-wrapper">
-          <p class="title">计算机世界上就能</p>
-          <p class="address"><img class="right-btn" @click="goback" src="../assets/image/address.png" alt="" >sjsjsjsj</p>
-          <p class="time">发布日期：1111111</p>
-          <div class="phone">
-            <p><img class="right-btn" @click="goback" src="../assets/image/phone.png" alt="" ><span>1122121212</span></p>
-          </div>
-        </div>
-        <div class="list-wrapper">
-          <p class="title">计算机世界上就能</p>
-          <p class="address"><img class="right-btn" @click="goback" src="../assets/image/address.png" alt="" >sjsjsjsj</p>
-          <p class="time">发布日期：1111111</p>
-          <div class="phone">
-            <p><img class="right-btn" @click="goback" src="../assets/image/phone.png" alt="" ><span>1122121212</span></p>
-          </div>
-        </div>
-        <div class="list-wrapper">
-          <p class="title">计算机世界上就能</p>
-          <p class="address"><img class="right-btn" @click="goback" src="../assets/image/address.png" alt="" >sjsjsjsj</p>
-          <p class="time">发布日期：1111111</p>
-          <div class="phone">
-            <p><img class="right-btn" @click="goback" src="../assets/image/phone.png" alt="" ><span>1122121212</span></p>
-          </div>
+        <p class="title">疫情城市查询</p>
+        <div class="list list2">
+          <span v-for="(item,i) in cityList" :key="i" @click="selectItem(item)">{{item}}</span>
         </div>
         
-      </van-popup>
+        <p class="title">发布时间查询</p>
+        <div class="list list3">
+          <span v-for="(item,i) in timeList" :key="i" @click="selectTimeItem(item)"><img src="../assets/image/time.png" alt="">{{item}}</span>
+        </div>
+      </div>
+      <div class="write">
+        <p>更多疫情跟踪：武汉肺炎防疫全记录</p>
+        <p>上海产业技术研究院出品</p>
+      </div>
+    </div>
+      
+    <!-- 搜索2部分 -->
+    <div class="search-wrapper1" v-if="showSearch">
+      <div class="input-wrapper">
+        <van-icon name="arrow-left" @click="goback"/>
+        <input type="text" v-model="searchText" >
+        <van-icon name="cross" @click="clearText"  />
+      </div>
+      <div class="btn" @click="rightModel" >
+        <van-icon name="wap-nav" />
+        <span v-if="showDataLengthPoint">{{dataList.length}}</span>
+      </div>
+    </div>
+    <!-- 搜索2右边弹框 -->
+    <van-popup v-model="showModel" position="right" :style="{ height: '100%' }">
+      <div class="list-content">
+
+        <div class="list-wrapper" v-for="(item,i) in dataList" :key="i">
+          <p class="title">{{item.hospitalName}}</p>
+          <p class="address"><img class="right-btn" @click="goback" src="../assets/image/address.png" alt="" ><span>{{item.hospitalAddress}}</span></p>
+          <p class="time">发布日期：{{item.createTime.substring(0,16)}}</p>
+          <div class="phone">
+            <p  v-for="(items,i) in item.linkTel" :key="i"><img class="right-btn" src="../assets/image/phone.png" alt="" ><span>{{items}}</span></p>
+          </div>
+        </div>
+      </div>
+      
+    </van-popup>
 
     <!-- 医院的详情弹框 -->
   </div>
@@ -155,25 +119,51 @@ export default {
       isDetail:false,
       phoneshow:false,
       downUpImg:true,
-      wuziList:["hsh","hsh"],
-      cityList:["hsh","hsh"],
+      showSearch:false,
+      showDataLengthPoint:1, //显示当前搜索数据是否点击指针
+      wuziList:["N95口罩","外科口罩","手术衣","防护面罩","外科口罩","外科口罩",],
+      cityList:["武汉","鄂州","枝江","仙桃","潜江","黄冈","赤壁","荆门",],
+      timeList:["最近24小时","最近48小时","最近72小时"],
+      phonwList:[],
+      dataList:[ //搜索查询数据
+        {
+        city:"武汉市",//市
+        createTime:"2020-01-07 20:00:00",//发布时间
+        descr:"11",//发布描述
+        encourageNum:11,//点赞数
+        hospitalAddress:"11",//医院地址
+        hospitalName:"武汉人民医院",//医院名称
+        id:1,
+        isLack:1,//是否缺物资，1表示缺
+        latitude:11.000000,//纬度
+        linkAddress:"11",//捐赠物资联系地址
+        linkPeople:"11,22",//捐赠物资联系人，多个人以逗号分隔
+        linkTel:"11,22",//捐赠物资联系电话，按照人的顺序逗号分隔，如：第一个代表第一个人的电话号码
+        longitude:11.000000,//经度
+        province:"湖北省",//省
+        source:"11",//捐赠信息来源
+        sourceLink:"11",//来源链接
+        type:1,//医院类型1:定点医院/2:发热门诊/0:普通医疗机构）
+        needsName:"手套,医用口罩,防护服", //发布的物资，以逗号分隔
+        needsDescr:"手套:11,医用口罩:22,防护服:33", //物资：对应的描述、标准等
+      }],
       searchText:"",
       show:true,
       showModel:false,
       message:'',
       mapDate:[
-      {
-        centerLng:114.378779,
-        centerLat:30.582411,
-        onLineStatus:"on",
-        message:1
-      },
-      {
-        centerLng:114.341786,
-        centerLat:30.602507,
-        onLineStatus:"up",
-        message:2
-      }
+        {
+          centerLng:114.378779,
+          centerLat:30.582411,
+          onLineStatus:"on",
+          message:1
+        },
+        {
+          centerLng:114.341786,
+          centerLat:30.602507,
+          onLineStatus:"up",
+          message:2
+        }
       ],
       mapobj:{}
     };
@@ -201,6 +191,24 @@ export default {
       }
 
       this.$fetchGet("hospital/selectHospital",params).then(res=> {
+        
+        res.forEach(item=> {
+          if (item.linkTel){
+            if (item.linkTel.indexOf(",") != -1 ||item.linkTel.indexOf(",") != -1) {
+              item.linkTel=item.linkTel.split(",") || item.linkTel.split("，") 
+            } else if (item.linkTel.indexOf("、") != -1) {
+              item.linkTel=item.linkTel.split("、")
+            }else if (item.linkTel.indexOf("\n") != -1) {
+              item.linkTel=item.linkTel.split("\n")
+            }else if (item.linkTel.indexOf("；") != -1) {
+              item.linkTel=item.linkTel.split("；")
+            }else if (item.linkTel.indexOf("/") != -1) {
+              item.linkTel=item.linkTel.split("/")
+            }else {
+              item.linkTel=[item.linkTel]
+            }
+          }
+        })
         this.dataList=res
       })
     },
@@ -221,19 +229,31 @@ export default {
     },
     // 右边弹框显示
     rightModel(){
+      this.showDataLengthPoint=0
       this.showModel=true
     },
     downUp() {
       this.downUpImg=!this.downUpImg
     },
     search(){
-      this.show=false
+      if (this.searchText){
+        this.show=false
+      }else {
+        this.$toast('请输入或选择搜索关键字');
+      }
+    },
+    // 第一搜索获取焦点
+    inputFocus() {
+      this.downUpImg=false
     },
     goback(){
       this.show=true
+      this.showSearch=false
+      this.showDataLengthPoint=1
     },
     clearText(){
-      this.searchText=""     
+      this.searchText=""   
+      this.showDataLengthPoint=1
       this.getDataList() 
 
     },
@@ -354,6 +374,7 @@ export default {
        display:flex;
        justify-content:space-between;
        align-items: center;
+       
       
        .right-btn{
         width:64px;
@@ -416,36 +437,46 @@ export default {
      }
   }
   .search-wrapper{
+    position: absolute;
+    left:0;
+    bottom:0;
+    right:0;
     padding:0 17px;
     background:#fff;
+    z-index:20;
+    .down-up{
+      width:30px;
+      height: 12px;
+      padding:10px 20px;
+    }
     .tab-list-wrapper{
       font-size:16px;
+      margin-bottom: 100px;
       .title{
         text-align:left;
         font-family:PingFang SC;
         font-weight:bold;
         color:rgba(51,51,51,1);
-
       }
       .list{
         display:flex;
+        flex-wrap:wrap;
         span{
-
           font-family:PingFang SC;
           font-weight:500;
           color:rgba(33,106,255,1);
           text-align:center;
+          margin: 5px 0;
           img{
             width:17px;
             height:17px;
           }
-
         }
         &.list1{
+          width:100%;
           span{
-            padding: 10px 15px;
+            padding: 8px 15px;
             color:#216AFF;
-
             margin-right:15px;
             border:1px solid rgba(33,106,255,1);
             border-radius:10px;
@@ -453,10 +484,9 @@ export default {
         }   
         &.list2{
           span {
-          padding: 10px 15px;
+            padding: 8px 18px;
             color:#FF7800;
-
-          margin-right:15px;
+            margin-right:15px;
             border:1px solid rgba(255,120,0,1);
             border-radius:18px;
           }
@@ -480,20 +510,18 @@ export default {
         }
       }
     }
-    .down-up{
-      width:30px;
-      height: 12px;
-    }
     .input-wrapper{
       display:flex;
       justify-content: flex-start;
       align-items:center;
       height: 44px;
+      background:#E0E0E0;
+      border:1px solid rgba(224,224,224,1);
+      border-radius:12px;
       img{
         width: 18px;
         height: 18px;
         padding: 10px 15px;
-
       }
       input{
         // width: 590px;
@@ -514,7 +542,6 @@ export default {
       color:rgba(170,170,170,1);
       line-height:12px;
       p{
-
       }
     }
   }
@@ -529,11 +556,9 @@ export default {
       align-items:center;
       background:#fff;
       height:44px;
-      .right-btn{
-        width:8px;
-        height:14px;
-        padding:10px;
-      }
+      background:rgba(255,255,255,1);
+      box-shadow:0px 1.5px 3.5px 0px rgba(0, 0, 0, 0.13);
+      border-radius:6px;
       input{
         width:250px;
         font-size:16px;
@@ -543,11 +568,6 @@ export default {
         border: 0;  // 去除未选中状态边框
         outline: none; // 去除选中状态边框
         background-color: rgba(0, 0, 0, 0);// 透明背景
-      }
-      .error{
-        width:11px;
-        height:11px;
-        padding:10px;
       }
     }
     .btn {
@@ -561,71 +581,90 @@ export default {
       margin-left:292.5px;
       margin-top:15px;
       border-radius:50%;
-
       .icon-btn{
         width:15px;
         height:15px;
       }
       span{
         position:absolute;
-        top:10px;
-        right:10px;
+        top:8px;
+        right:5px;
         font-size:10px;
+        padding:1px;
+        height: 12px;
+        line-height: 12px;;
+        text-align: center;
         background:#FF1717;
         color:#fff;
+        border-radius:12px;
       }
-
     }
   }
   .van-popup--right{
     width:80%;
   }
-  .list-wrapper{
-    padding:0 15px;
-    .title{
-      text-align:left;
-      font-size:17px;
-      font-family:PingFang SC;
-      font-weight:bold;
-      color:rgba(51,51,51,1);
-    }
-    .address{
-      display:flex;
-      align-items:center;
-      font-size:15px;
-      font-family:PingFang SC;
-      font-weight:500;
-      color:rgba(102,102,102,1);
-      img{
-        width:16px;
-        height:16px;
+  .list-content{
+    padding:20px 15px;
+    .list-wrapper{
+      padding-bottom: 15px;
+      border-bottom:1px solid #999;
+      &:last-child{
+        border:0
       }
-    }
-    .time{
-      text-align:left;
-      font-size:12px;
-      font-family:PingFang SC;
-      font-weight:500;
-      color:rgba(102,102,102,1);
-    }
-    .phone{
-      display:flex;
-      align-items:center;
-      background:#F2F5FF;
-      padding:10px;
       p{
+        margin:13px 0;;
+      }
+      .title{
+        text-align:left;
+        font-size:17px;
+        font-family:PingFang SC;
+        font-weight:bold;
+        color:rgba(51,51,51,1);
+      }
+      .address{
         display:flex;
         align-items:center;
-        margin:0;
-
+        font-size:15px;
+        font-family:PingFang SC;
+        font-weight:500;
+        color:rgba(102,102,102,1);
         img{
-          
           width:16px;
           height:16px;
+          padding-right:8px;
         }
-        span {
-          font-size:15px;
-          color:#333;
+        span{
+          text-align:left;
+        }
+      }
+      .time{
+        text-align:left;
+        font-size:12px;
+        font-family:PingFang SC;
+        font-weight:500;
+        color:rgba(102,102,102,1);
+      }
+      .phone{
+        background:#F2F5FF;
+        padding:10px;
+        p{
+          display:flex;
+          align-items:center;
+          margin:0;
+          margin-top:10px;
+          &:first-child{
+            margin-top:0;
+          }
+          img{
+            
+            width:16px;
+            height:16px;
+            padding-right:10px;
+          }
+          span {
+            font-size:15px;
+            color:#333;
+          }
         }
       }
     }

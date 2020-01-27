@@ -10,6 +10,11 @@ import $ from 'n-zepto'
 Vue.use(Vant);
 Vue.use(common);
 Vue.config.productionTip = false
+
+
+router.beforeEach((to, from, next) => {
+  next()
+})
 new Vue({
   router,
   store,

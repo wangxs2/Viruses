@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="header">新型肺炎物资捐赠实时动态</div>
+    <!-- <div class="header">新型肺炎物资捐赠实时动态</div> -->
     <div id="myMap" class="container">
       <div class="top-fix">定点物资缺乏地图</div>
     </div>
@@ -315,7 +315,7 @@ export default {
               item.needsDescrarr=item.needsDescr.split(",")
             }
             if(item.longitude){
-              AMap.convertFrom([item.longitude,item.latitude], 'gps',  (status, result)=> {
+              AMap.convertFrom([item.longitude,item.latitude], 'baidu',  (status, result)=> {
                 console.log(result)
                  item.lacal=result.locations[0];
               })
@@ -336,6 +336,9 @@ export default {
         hour:'', 
       }).then(res => {
         if(res){
+          // AMap.convertFrom([res[0].longitude,res[0].latitude], 'baidu',  (status, result)=> {
+          //       console.log(result.locations[0])
+          //     })
           res.forEach(item => {
             if(item.linkTel!==undefined){
               item.linkTelarr=item.linkTel.split("、")
@@ -350,21 +353,27 @@ export default {
               item.needsDescrarr=item.needsDescr.split(",")
             }
             if(item.longitude){
-              AMap.convertFrom([item.longitude,item.latitude], 'gps',  (status, result)=> {
+              AMap.convertFrom([item.longitude,item.latitude], 'baidu',  (status, result)=> {
                 console.log(result)
                  item.lacal=result.locations[0];
+                 this.createPoint(item)
+                //  markerslist.push(this.createPoint(item))
+                //  console.log()
               })
+              
             }
-            markerslist.push(this.createPoint(item))
+            
           })
           this.myMap.add(markerslist)
         }
         
       });
     },
+    // lacal
+    // new AMap.LngLat(row.longitude, row.latitude),
     createPoint(row) {
     let marker = new AMap.Marker({
-      position: new AMap.LngLat(row.longitude, row.latitude),
+      position: row.lacal,
       offset: new AMap.Pixel(-12, -16),
       icon: new AMap.Icon({
         size: new AMap.Size(24, 31),
@@ -377,6 +386,7 @@ export default {
         imageSize: new AMap.Size(24, 31)
       }), // 添加 Icon 图标 URL
       zIndex: 100,
+      map:this.myMap,
       extData: { row }
     })
     // touchstart
@@ -385,7 +395,7 @@ export default {
       let str=e.target.B.extData.row
       this.mapobj=str
     })
-    return marker
+    // return marker
   }
   }
 };
@@ -411,7 +421,7 @@ export default {
   }
   .container{
     flex:1;
-    margin-top:6px;
+    // margin-top:6px;
     position:relative;
     .top-fix{
       position:absolute;

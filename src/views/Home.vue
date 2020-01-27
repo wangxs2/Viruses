@@ -5,9 +5,9 @@
       <div class="top-fix">定点物资缺乏地图</div>
     </div>
     <!-- 医院的详情弹框 -->
-    <van-action-sheet v-model="isDetail" title="">
+    <van-action-sheet v-model="isDetail" :duration="0" title="">
       <div class="contentDetail">
-        <div style="font-size:18px;text-align:left">华中科技大学同济医院附属同济医院</div>
+        <div style="font-size:18px;text-align:left">华中科技大学同济医院附属同济医院{{message}}</div>
         <div class="address"> 
           <div class="left-font" style="color:#666666"><van-icon name="location-o" size="20" /> <div style="margin-left:2px">武汉市硚口区解放大道1095号</div></div>
           <!-- <div class="right-btn">定点医院</div> -->
@@ -49,16 +49,19 @@ export default {
     return {
       myMap:null,
       isDetail:false,
+      message:'',
       mapDate:[
       {
         centerLng:114.378779,
         centerLat:30.582411,
-        onLineStatus:"on"
+        onLineStatus:"on",
+        message:1
       },
       {
         centerLng:114.341786,
         centerLat:30.602507,
-        onLineStatus:"up"
+        onLineStatus:"up",
+        message:2
       }
       ]
     };
@@ -74,9 +77,9 @@ export default {
       this.myMap = new AMap.Map("myMap", {
         animateEnable: false,
         resizeEnable: true,
-        preloadMode: true,
+        // preloadMode: true,
         center:[114.423213,30.63943],
-        zoom:6,
+        // zoom:6,
         mapStyle:'amap://styles/9fb204085bdb47adb66e074fca3376be',
       });
          this.initMap()
@@ -106,7 +109,10 @@ export default {
     })
     marker.on("touchstart", (e) => {
       this.isDetail=true
-      console.log(this.isDetail)
+      console.log(e.target.B.extData)
+      let str=e.target.B.extData.row
+      console.log(str)
+      this.message=str.message
     })
     return marker
   }

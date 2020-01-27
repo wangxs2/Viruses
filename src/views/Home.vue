@@ -124,8 +124,8 @@ export default {
       downUpImg:true,
       showSearch:false,
       showDataLengthPoint:1, //显示当前搜索数据是否点击指针
-      wuziList:["N95口罩","外科口罩","手术衣","防护面罩","外科口罩","外科口罩",],
-      cityList:["武汉","鄂州","枝江","仙桃","潜江","黄冈","赤壁","荆门",],
+      wuziList:["N95口罩","外科口罩","一次性医用口罩","防护服","防冲击眼罩","防冲击面罩"],
+      cityList:["武汉","荆州","随州","恩施市","宜昌市","荆门市"],
       timeList:["最近24小时","最近48小时","最近72小时"],
       phonwList:[],
       dataList:[ //搜索查询数据

@@ -83,12 +83,16 @@
     <!-- 搜索2部分 -->
     <div class="search-wrapper1" v-if="showSearch">
       <div class="input-wrapper">
-        <van-icon name="arrow-left" @click="goback"/>
+        <div class="go-back">
+          <van-icon name="arrow-left" @click="goback" size="16"/>
+        </div>
         <input type="text" v-model="searchText" >
-        <van-icon name="cross" @click="clearText"  />
+        <div class="go-back">
+          <van-icon name="cross" @click="clearText" size="16" />
+        </div>
       </div>
       <div class="btn" @click="rightModel" >
-        <van-icon name="wap-nav" />
+        <van-icon name="wap-nav" size="24"/>
         <span v-if="showDataLengthPoint">{{dataList.length}}</span>
       </div>
     </div>
@@ -626,6 +630,12 @@ export default {
       background:rgba(255,255,255,1);
       box-shadow:0px 1.5px 3.5px 0px rgba(0, 0, 0, 0.13);
       border-radius:6px;
+      .go-back{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        padding: 10px;
+      }
       input{
         width:250px;
         font-size:16px;

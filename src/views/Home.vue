@@ -494,7 +494,7 @@ export default {
 
       }
       input{
-        // width: 590px;
+        width: 280px;
         font-size:16px;
         font-family:PingFang SC;
         font-weight:500;

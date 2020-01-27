@@ -162,18 +162,6 @@ export default {
       showModel:false,
       message:'',
       mapDate:[
-      {
-        centerLng:114.378779,
-        centerLat:30.582411,
-        onLineStatus:"on",
-        message:1
-      },
-      {
-        centerLng:114.341786,
-        centerLat:30.602507,
-        onLineStatus:"up",
-        message:2
-      }
       ],
       mapobj:{}
     };
@@ -229,27 +217,34 @@ export default {
     },
     initMap(){
       const markerslist=[]
-      this.mapDate.forEach(item => {
-        markerslist.push(this.createPoint(item))
-      })
-      this.myMap.add(markerslist)
+      // this.mapDate.forEach(item => {
+      //   markerslist.push(this.createPoint(item))
+      // })
+      // this.myMap.add(markerslist)
       this.$fetchGet("hospital/selectHospital", {
         content:'',
         hour:'', 
       }).then(res => {
+        if(res){
+          res.forEach(item => {
+            markerslist.push(this.createPoint(item))
+          })
+        }
         
       });
     },
     createPoint(row) {
     let marker = new AMap.Marker({
-      position: new AMap.LngLat(row.centerLng, row.centerLat),
+      position: new AMap.LngLat(row.longitude, row.latitude),
       offset: new AMap.Pixel(-19, -25),
       icon: new AMap.Icon({
         size: new AMap.Size(38, 50),
         image:
-          row.onLineStatus == 'on'
-            ? require('../assets/image/icon_2.png')
-            : require('../assets/image/icon_3.png'),
+          (row.type == 2&&row.isLack==1)
+            ? require('../assets/image/icon4.png')
+            : (row.type == 2&&row.isLack==0)?require('../assets/image/icon3.png')
+            : (row.type == 1&&row.isLack==0)?require('../assets/image/icon1.png')
+            :(row.type == 1&&row.isLack==1)?require('../assets/image/icon2.png'):'',
         imageSize: new AMap.Size(38, 50)
       }), // 添加 Icon 图标 URL
       zIndex: 100,

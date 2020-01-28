@@ -93,7 +93,7 @@
         <div class="go-back">
           <van-icon name="arrow-left" @click="goback" size="16"/>
         </div>
-        <input type="text" v-model="searchText" >
+        <input type="text" v-model="searchText" @blur="blurSearch">
         <div class="go-back">
           <van-icon name="cross" @click="clearText" size="16" />
         </div>
@@ -136,8 +136,9 @@ export default {
       downUpImg:true,
       showSearch:false,
       showDataLengthPoint:1, //显示当前搜索数据是否点击指针
-      wuziList:["N95口罩","外科口罩","一次性医用口罩","防护服","防冲击眼罩","防冲击面罩"],
-      cityList:["武汉","荆州","随州","恩施市","宜昌市","荆门市"],
+      wuziList:[],
+      cityList:[],
+      provinceList:[],
       timeList:["最近24小时","最近48小时","最近72小时"],
       phonwList:[],
       dataList:[],
@@ -168,8 +169,44 @@ export default {
  mounted () {
   this.getMap()
   this.getDataList()
+  this.getWuziList()
+  this.getCityList()
+  // this.getProvinceList()
   },
   methods:{
+    // 物资
+    getWuziList(){
+      let params={
+        top:6
+      }
+      this.$fetchGet("hospital/findTopSupplies",params).then(res=> {
+        if (res) {
+          this.wuziList=res
+        }
+      })
+    },
+    // 城市
+    getCityList(){
+      let params={
+        top:8
+      }
+      this.$fetchGet("hospital/findTopCity",params).then(res=> {
+        if (res){
+          this.cityList=res
+        }
+      })
+    },
+    // 省份
+    getProvinceList(){
+      let params={
+        top:8
+      }
+      this.$fetchGet("hospital/findTopProvince",params).then(res=> {
+        if (res){
+          this.provinceList=res
+        }
+      })
+    },
     getDataList(data,type){
       let params={}
       if(type==1){
@@ -209,6 +246,10 @@ export default {
         this.mapinit(res)
 
       })
+    },
+    // 第二搜索失焦查询数据
+    blurSearch(){
+      this.getDataList(this.searchText,1)
     },
     // 选择时间
     selectTimeItem(item) {

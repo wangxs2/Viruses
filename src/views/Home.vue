@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <!-- <div class="header">新型肺炎物资捐赠实时动态</div> -->
+    <div class="header">新型肺炎物资捐赠实时动态</div>
     <div id="myMap" class="container">
       <div class="top-fix">定点物资缺乏地图</div>
     </div>
@@ -9,7 +9,7 @@
       <div class="contentDetail">
         <div style="font-size:18px;text-align:left">{{mapobj.hospitalName}}</div>
         <div class="address"> 
-          <div class="left-font" style="color:#666666"><van-icon name="location-o" size="20" /> <div style="margin-left:2px">{{mapobj.hospitalAddress}}</div></div>
+          <div class="left-font" style="color:#666666;width:75%;word-wrap:break-word;text-align:left"><van-icon name="location-o" size="20" /> <div class="van-van-multi-ellipsis--l2" style="margin-left:2px">{{mapobj.hospitalAddress}}</div></div>
           <div v-if="mapobj.type==1" class="right-btn">定点医院</div>
           <div v-if="mapobj.type==2" class="right-btn right-btn1">发热门诊</div>
         </div>
@@ -45,7 +45,7 @@
         :style="{ height: '20%' }">
       <div style="padding:12px 24px">
         <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr"
-                 :key="index"><van-icon name="phone-o" color="#1989fa" size="30" @click="dialPhoneNumber1(iteam)" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
+                 :key="index"><van-icon name="phone-o" color="#1989fa" size="34" @click="dialPhoneNumber1(iteam)" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
       </div>
     </van-popup>
     <!-- 搜索部分 -->
@@ -103,7 +103,7 @@
         <div class="list-wrapper" v-for="(item,i) in dataList" :key="i">
           <p class="title">{{item.hospitalName}}</p>
           <p class="address"><img class="right-btn" @click="goback" src="../assets/image/address.png" alt="" ><span>{{item.hospitalAddress}}</span></p>
-          <p class="time">发布日期：{{item.createTime.substring(0,16)}}</p>
+          <p class="time">发布日期：{{item.createTime!==undefined?item.createTime.substring(0,16):''}}</p>
           <div class="phone">
             <p  v-for="(items,i) in item.linkTel" :key="i"><img class="right-btn" src="../assets/image/phone.png" alt="" ><span>{{items}}</span></p>
           </div>
@@ -123,6 +123,7 @@ export default {
   data() {
     return {
       myMap:null,
+       pointGroup: new AMap.OverlayGroup(), // 点集合
       isDetail:false,
       phoneshow:false,
       downUpImg:true,
@@ -286,52 +287,55 @@ export default {
 
     },
     mapinit(res){
-      this.myMap.clearMap()
+      this.pointGroup.clearOverlays()
       const markerslist=[]
       res.forEach(item => {
-            if(item.linkTel!==undefined){
-              item.linkTelarr=item.linkTel.split("、")
+        if(item.linkTel!==undefined){
+          item.linkTelarr=item.linkTel.split(",")
+        }
+        if(item.linkPeople!==undefined){
+          item.linkPeoplearr=item.linkPeople.split(",")
+        }
+        if(item.needsName!==undefined){
+          item.needsNamearr=item.needsName.split(",")
+        }
+        if(item.needsDescr!==undefined){
+          item.needsDescrarr=item.needsDescr.split(",")
+        }
+        if(item.longitude){
+          AMap.convertFrom([item.longitude,item.latitude], 'baidu',  (status, result)=> {
+              if(result.info=="ok"){
+              item.lacal=result.locations[0];
+              markerslist.push(this.createPoint(item))
+              // this.createPoint(item)
+              this.myMap.add(markerslist)
             }
-            if(item.linkPeople!==undefined){
-              item.linkPeoplearr=item.linkPeople.split("、")
-            }
-            if(item.needsName!==undefined){
-              item.needsNamearr=item.needsName.split(",")
-            }
-            if(item.needsDescr!==undefined){
-              item.needsDescrarr=item.needsDescr.split(",")
-            }
-            if(item.longitude){
-              AMap.convertFrom([item.longitude,item.latitude], 'baidu',  (status, result)=> {
-                console.log(result)
-                 item.lacal=result.locations[0];
-              })
-            }
-            markerslist.push(this.createPoint(item))
           })
-          this.myMap.add(markerslist)
+        }
+        // markerslist.push(this.createPoint(item))
+      })
+          // this.myMap.setFitView()
+          // this.myMap.add(markerslist)
     },
+    // 添加点集合
+  addPointGroup(overlays) {
+    this.pointGroup.addOverlays(overlays)
+    this.myMap.add(this.pointGroup)
+  },
     initMap(){
-      this.myMap.clearMap()
+      // this.myMap.clearMap()
       const markerslist=[]
-      // this.mapDate.forEach(item => {
-      //   markerslist.push(this.createPoint(item))
-      // })
-      // this.myMap.add(markerslist)
       this.$fetchGet("hospital/selectHospital", {
         content:'',
         hour:'', 
       }).then(res => {
         if(res){
-          // AMap.convertFrom([res[0].longitude,res[0].latitude], 'baidu',  (status, result)=> {
-          //       console.log(result.locations[0])
-          //     })
           res.forEach(item => {
             if(item.linkTel!==undefined){
-              item.linkTelarr=item.linkTel.split("、")
+              item.linkTelarr=item.linkTel.split(",")
             }
             if(item.linkPeople!==undefined){
-              item.linkPeoplearr=item.linkPeople.split("、")
+              item.linkPeoplearr=item.linkPeople.split(",")
             }
             if(item.needsName!==undefined){
               item.needsNamearr=item.needsName.split(",")
@@ -341,9 +345,15 @@ export default {
             }
             if(item.longitude){
               AMap.convertFrom([item.longitude,item.latitude], 'baidu',  (status, result)=> {
-                console.log(result)
-                 item.lacal=result.locations[0];
-                 this.createPoint(item)
+                if(result.info=="ok"){
+                  item.lacal=result.locations[0];
+                  // this.createPoint(item)
+                  markerslist.push(this.createPoint(item))
+                  this.addPointGroup(markerslist);
+                  // console.log(markerslist)
+                  // this.myMap.add(markerslist)
+                }
+                //  this.createPoint(item)
                 //  markerslist.push(this.createPoint(item))
                 //  console.log()
               })
@@ -351,7 +361,8 @@ export default {
             }
             
           })
-          this.myMap.add(markerslist)
+          // console.log(markerslist)
+          
         }
         
       });
@@ -369,11 +380,11 @@ export default {
             ? require('../assets/image/icon4.png')
             : (row.type == 2&&row.isLack==0)?require('../assets/image/icon3.png')
             : (row.type == 1&&row.isLack==0)?require('../assets/image/icon1.png')
-            :(row.type == 1&&row.isLack==1)?require('../assets/image/icon2.png'):'',
+            :(row.type == 1&&row.isLack==1)?require('../assets/image/icon2.png'):require('../assets/image/icon5.png'),
         imageSize: new AMap.Size(24, 31)
       }), // 添加 Icon 图标 URL
       zIndex: 100,
-      map:this.myMap,
+      // map:this.myMap,
       extData: { row }
     })
     // touchstart
@@ -382,7 +393,7 @@ export default {
       let str=e.target.B.extData.row
       this.mapobj=str
     })
-    // return marker
+    return marker
   }
   }
 };
@@ -395,9 +406,10 @@ export default {
   display:flex;
   flex-direction: column;
   .left-font{
-         display:flex;
-         align-items: center;
-       }
+    display:flex;
+    align-items: center;
+    margin-bottom:6px
+  }
   .header {
     width: 100%;
     height: 44px;
@@ -408,7 +420,7 @@ export default {
   }
   .container{
     flex:1;
-    // margin-top:6px;
+    margin-top:6px;
     position:relative;
     .top-fix{
       position:absolute;

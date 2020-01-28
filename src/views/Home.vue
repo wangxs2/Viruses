@@ -1,5 +1,9 @@
 <template>
   <div class="home">
+    <div class="write">
+      <p>更多疫情跟踪： 新型肺炎需求捐赠记录</p>
+      <p>上海产业技术研究院提供</p>
+    </div>
     <!-- <div class="header">新型肺炎物资捐赠实时动态</div> -->
     <div id="myMap" class="container">
       <!-- <div class="top-fix">定点物资缺乏地图</div> -->
@@ -48,17 +52,8 @@
                  :key="index"><van-icon name="phone-o" color="#1989fa" size="34" @click="dialPhoneNumber1(iteam)" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
       </div>
     </van-popup>
-    <van-popup
-    round
-      v-model="messageshow"
-      position="bottom"
-      :style="{ height: '80%' }">
-      <p style="color:#999999">开发中</p>
-      <img style="width:100%" src="../assets/image/none@2x.png" alt="" >
-    </van-popup>
     <!-- 搜索部分 -->
     <van-popup v-model="show" position="bottom" :style="{height: heightCur }" :overlay="false" round>
-        
       <div class="search-wrapper">
         <div class="down-up-wrapper" @click="downUp">
           <img class="down-up" src="../assets/image/up.png" alt="" v-if="downUpImg">
@@ -84,10 +79,7 @@
             <span v-for="(item,i) in timeList" :key="i" @click="selectTimeItem(item)"><img src="../assets/image/time.png" alt="">{{item}}</span>
           </div>
         </div>
-        <div class="write">
-          <p>更多疫情跟踪： 新型肺炎需求捐赠记录</p>
-          <p>上海产业技术研究院提供</p>
-        </div>
+        
       </div>
       
     </van-popup>
@@ -137,7 +129,7 @@
 
     <!-- 录入缺省页 -->
     
-    <van-popup v-model="reduceShow" position="bottom" :style="{ height: '100%' }">
+    <van-popup v-model="reduceShow" closeable position="bottom" :style="{ height: '100%' }">
       <div class="reduce-content">
         <img class="down-up" src="../assets/image/reduce.png" alt="">
         <p>正在加紧开发...</p>
@@ -156,9 +148,8 @@ export default {
   name: "home",
   data() {
     return {
-      heightCur:'23%',
+      heightCur:'0',
       myMap:null,
-      messageshow:true,
        pointGroup: new AMap.OverlayGroup(), // 点集合
       isDetail:false,
       phoneshow:false,
@@ -222,8 +213,10 @@ export default {
   methods:{
     // 搜索按钮
     searchBtn(){
-      this.show=!this.show
+      this.show=true
       this.reduceShow=false
+      this.downUpImg=false
+      this.heightCur="80%"
 
     },
     // 录入按钮
@@ -335,7 +328,7 @@ export default {
       if (!this.downUpImg){
         this.heightCur="80%"
       }else {
-        this.heightCur="23%"
+        this.heightCur="0"
       }
     },
     search(){
@@ -532,6 +525,21 @@ export default {
   background: #f1f1f1;
   display:flex;
   flex-direction: column;
+  .write{
+    position:fixed;
+    bottom:4px;
+    left:0px;
+    z-index:10;
+    font-size:12px;
+    font-family:PingFang SC;
+    font-weight:500;
+    width:100%;
+    color:#666666;
+    line-height:12px;
+      p{
+        text-align:center;
+      }
+    }
   .left-font{
     display:flex;
     align-items: center;
@@ -737,16 +745,7 @@ export default {
         background-color: rgba(0, 0, 0, 0);// 透明背景
       }
     }
-    .write{
-      
-      font-size:12px;
-      font-family:PingFang SC;
-      font-weight:500;
-      color:rgba(170,170,170,1);
-      line-height:12px;
-      p{
-      }
-    }
+    
   }
   .search-wrapper1{
     position:absolute;
@@ -882,7 +881,7 @@ export default {
     position: fixed;
     bottom: 80px;
     right: 20px;
-    z-index: 9999;
+    z-index:10;
     .img-icon{
       display: flex;
       flex-direction: column;

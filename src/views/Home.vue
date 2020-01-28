@@ -9,7 +9,7 @@
       <!-- <div class="top-fix">定点物资缺乏地图</div> -->
     </div>
     <!-- 医院的详情弹框 -->
-    <van-popup  v-model="isDetail" :style="{width: '100%' }" round :duration="0">
+    <van-popup  v-model="isDetail" closeable :style="{width: '100%' }" round :duration="0">
       <div class="contentDetail">
         <div style="font-size:18px;text-align:left">{{mapobj.hospitalName}}</div>
         <div class="address"> 
@@ -269,7 +269,7 @@ export default {
         }
       } else if (type==2){
         params={
-          hour:data.substring(2,4)
+          hour:data
         }
       } else{
         params={}
@@ -432,23 +432,31 @@ export default {
           item.needsDescrarr=item.needsDescr.split(",")
         }
         if(item.longitude){
-           markerslist.push(new AMap.LngLat(item.longitude,item.latitude))
-
-
+          // markerslist.push(new AMap.LngLat(item.longitude,item.latitude))
+          AMap.convertFrom(new AMap.LngLat(item.longitude,item.latitude), 'baidu',  (status, result)=> {
+            if(result.info=="ok"){
+              item.lacal=result.locations[0];
+              markerslist.push(this.createPoint(item))
+            }
+            //  console.log(markerslist)
+             this.myMap.add(markerslist)
+            
+          })
+         
         }
       })
-      AMap.convertFrom(markerslist, 'baidu',  (status, result)=> {
-        
-          if(result.info=="ok"){
-            pointsa=result.locations;
-            res.forEach((itam,index)=>{
-              itam.lacal=pointsa[index];
-              pointwe.push(this.createPoint(itam))
-            })
-            console.log(pointwe)
-            this.myMap.add(pointwe)
-          }
-      })
+      // AMap.convertFrom(markerslist, 'baidu',  (status, result)=> {
+      //     if(result.info=="ok"){
+      //       pointsa=result.locations;
+      //       res.forEach((itam,index)=>{
+      //         itam.lacal=pointsa[index];
+      //         pointwe.push(this.createPoint(itam))
+      //       })
+      //       console.log(pointwe)
+      //       this.myMap.add(pointwe)
+      //     }
+      // })
+      
     },
     // 添加点集合
   addPointGroup(overlays) {

@@ -48,9 +48,15 @@
                  :key="index"><van-icon name="phone-o" color="#1989fa" size="34" @click="dialPhoneNumber1(iteam)" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
       </div>
     </van-popup>
+    <van-popup
+    round
+      v-model="messageshow"
+      position="bottom"
+      :style="{ height: '80%' }">
+      <p style="color:#999999">开发中</p>
+      <img style="width:100%" src="../assets/image/none@2x.png" alt="" >
+    </van-popup>
     <!-- 搜索部分 -->
-
-    
     <van-popup v-model="show" position="bottom" :style="{height: heightCur }" :overlay="false" round>
         
       <div class="search-wrapper">
@@ -85,8 +91,6 @@
       </div>
       
     </van-popup>
-    
-      
     <!-- 搜索2部分 -->
     <div class="search-wrapper1" v-if="showSearch">
       <div class="input-wrapper">
@@ -131,6 +135,7 @@ export default {
     return {
       heightCur:'23%',
       myMap:null,
+      messageshow:true,
        pointGroup: new AMap.OverlayGroup(), // 点集合
       isDetail:false,
       phoneshow:false,
@@ -168,6 +173,22 @@ export default {
    
   },
  mounted () {
+   // H5 plus事件处理
+			function plusReady() {
+				// 设置系统状态栏背景为红色
+				var type = plus.os.name;
+				if(type == "iOS") {
+					plus.navigator.setStatusBarBackground("#1989fa");
+				} else {
+					plus.navigator.setStatusBarBackground("#1989fa");
+				}
+			}
+			if(window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener("plusready", plusReady, false);
+			} 
+
   this.getMap()
   this.getDataList()
   this.getWuziList()
@@ -343,7 +364,7 @@ export default {
       });
        AMap.plugin([
         'AMap.ToolBar',
-    ], function(){
+    ], ()=>{
         // 在图面添加工具条控件，工具条控件集成了缩放、平移、定位等功能按钮在内的组合控件
         this.myMap.addControl(new AMap.ToolBar({
             // 简易缩放模式，默认为 false
@@ -378,6 +399,7 @@ export default {
               markerslist.push(this.createPoint(item))
               console.log(markerslist)
              this.myMap.add(markerslist)
+            //  this.myMap.setFitView()s
               // this.createPoint(item)
               //  this.addPointGroup(markerslist);
               

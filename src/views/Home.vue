@@ -269,7 +269,7 @@ export default {
         }
       } else if (type==2){
         params={
-          hour:data
+          hour:data.substring(2,4)
         }
       } else{
         params={}

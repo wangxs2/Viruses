@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <div class="header">新型肺炎物资捐赠实时动态</div>
+    <!-- <div class="header">新型肺炎物资捐赠实时动态</div> -->
     <div id="myMap" class="container">
-      <div class="top-fix">定点物资缺乏地图</div>
+      <!-- <div class="top-fix">定点物资缺乏地图</div> -->
     </div>
     <!-- 医院的详情弹框 -->
     <van-action-sheet  v-model="isDetail" :duration="0" title="">
@@ -208,6 +208,7 @@ export default {
         if (this.dataList) {
           this.total=this.dataList.length
         }
+        console.log(res)
         this.mapinit(res)
 
       })
@@ -299,6 +300,16 @@ export default {
         zoom:4,
         mapStyle:'amap://styles/9fb204085bdb47adb66e074fca3376be',
       });
+       AMap.plugin([
+        'AMap.ToolBar',
+    ], function(){
+        // 在图面添加工具条控件，工具条控件集成了缩放、平移、定位等功能按钮在内的组合控件
+        this.myMap.addControl(new AMap.ToolBar({
+            // 简易缩放模式，默认为 false
+            liteStyle: true,
+            position:'LT'
+        }));
+    });
       // this.initMap()
 
     },
@@ -324,6 +335,7 @@ export default {
               if(result.info=="ok"){
               item.lacal=result.locations[0];
               markerslist.push(this.createPoint(item))
+              console.log(markerslist)
              this.myMap.add(markerslist)
               // this.createPoint(item)
               //  this.addPointGroup(markerslist);
@@ -437,7 +449,7 @@ export default {
   }
   .container{
     flex:1;
-    margin-top:6px;
+    // margin-top:6px;
     position:relative;
     .top-fix{
       position:absolute;

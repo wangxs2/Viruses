@@ -123,6 +123,29 @@
       
     </van-popup>
 
+    <!-- 搜索录入图标 -->
+    <div class="search-write">
+      <div class="img-icon" @click="searchBtn">
+        <van-icon name="search" size="20" color="#216AFF"/>
+        <span>搜索</span>
+      </div>
+      <div class="img-icon" @click="writeBtn">
+        <van-icon name="records" size="20" color="#216AFF"/>
+        <span>录入</span>
+      </div>
+    </div>
+
+    <!-- 录入缺省页 -->
+    
+    <van-popup v-model="reduceShow" position="bottom" :style="{ height: '100%' }">
+      <div class="reduce-content">
+        <img class="down-up" src="../assets/image/reduce.png" alt="">
+        <p>正在加紧开发...</p>
+        
+      </div>
+      
+    </van-popup>
+
     <!-- 医院的详情弹框 -->
   </div>
 </template>
@@ -141,6 +164,7 @@ export default {
       phoneshow:false,
       downUpImg:true,
       showSearch:false,
+      reduceShow:false,
       showDataLengthPoint:1, //显示当前搜索数据是否点击指针
       wuziList:[],
       cityList:[],
@@ -150,7 +174,7 @@ export default {
       dataList:[],
       total:0,
       searchText:"",
-      show:true,
+      show:false,
       showModel:false,
       mapDate:[
         {
@@ -196,6 +220,17 @@ export default {
   // this.getProvinceList()
   },
   methods:{
+    // 搜索按钮
+    searchBtn(){
+      this.show=!this.show
+      this.reduceShow=false
+
+    },
+    // 录入按钮
+    writeBtn(){
+      this.show=false
+      this.reduceShow=!this.reduceShow
+    },
     // 物资
     getWuziList(){
       let params={
@@ -841,6 +876,51 @@ export default {
           }
         }
       }
+    }
+  }
+  .search-write{
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    z-index: 9999;
+    .img-icon{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow:0px 0px 8px 0px rgba(0, 0, 0, 0.32);
+      &:last-child{
+        margin-top:10px;
+      }
+      span{
+        font-size: 13px;
+        color: #216AFF;
+        padding-top: 1px;
+      }
+    }
+  }
+  .reduce-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 200px;
+
+    img{
+      width: 194px;
+      height:147px;
+    }
+    p{
+      font-size:15px;
+      font-family:PingFang SC;
+      font-weight:400;
+      color:rgba(153,153,153,1);
+      margin-top:23px;
+
     }
   }
 }

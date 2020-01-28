@@ -433,9 +433,11 @@ export default {
         }
         if(item.longitude){
            markerslist.push(new AMap.LngLat(item.longitude,item.latitude))
+
+
         }
       })
-       AMap.convertFrom(markerslist, 'baidu',  (status, result)=> {
+      AMap.convertFrom(markerslist, 'baidu',  (status, result)=> {
         
           if(result.info=="ok"){
             pointsa=result.locations;
@@ -446,7 +448,7 @@ export default {
             console.log(pointwe)
             this.myMap.add(pointwe)
           }
-        })
+      })
     },
     // 添加点集合
   addPointGroup(overlays) {

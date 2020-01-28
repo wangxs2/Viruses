@@ -172,6 +172,7 @@ export default {
   },
   methods:{
     getDataList(data,type){
+       this.myMap.clearMap()
       let params={}
       if(type==1){
         params={
@@ -294,15 +295,16 @@ export default {
         animateEnable: false,
         resizeEnable: true,
         // preloadMode: true,
-        center:[114.423213,30.63943],
-        // zoom:6,
+        center:[111.160477,32.1624],
+        zoom:4,
         mapStyle:'amap://styles/9fb204085bdb47adb66e074fca3376be',
       });
-      this.initMap()
+      // this.initMap()
 
     },
     mapinit(res){
-      this.pointGroup.clearOverlays()
+    //  alert(2)
+     this.myMap.clearMap()
       const markerslist=[]
       res.forEach(item => {
         if(item.linkTel!==undefined){
@@ -322,69 +324,69 @@ export default {
               if(result.info=="ok"){
               item.lacal=result.locations[0];
               markerslist.push(this.createPoint(item))
+             this.myMap.add(markerslist)
               // this.createPoint(item)
-              this.myMap.add(markerslist)
+              //  this.addPointGroup(markerslist);
+              
             }
           })
+          
         }
-        // markerslist.push(this.createPoint(item))
+        
+        
       })
-          // this.myMap.setFitView()
-          // this.myMap.add(markerslist)
     },
     // 添加点集合
   addPointGroup(overlays) {
     this.pointGroup.addOverlays(overlays)
     this.myMap.add(this.pointGroup)
   },
-    initMap(){
-      // this.myMap.clearMap()
-      const markerslist=[]
-      this.$fetchGet("hospital/selectHospital", {
-        content:'',
-        hour:'', 
-      }).then(res => {
-        if(res){
-          res.forEach(item => {
-            if(item.linkTel!==undefined){
-              item.linkTelarr=item.linkTel.split(",")
-            }
-            if(item.linkPeople!==undefined){
-              item.linkPeoplearr=item.linkPeople.split(",")
-            }
-            if(item.needsName!==undefined){
-              item.needsNamearr=item.needsName.split(",")
-            }
-            if(item.needsDescr!==undefined){
-              item.needsDescrarr=item.needsDescr.split(",")
-            }
-            if(item.longitude){
-              AMap.convertFrom([item.longitude,item.latitude], 'baidu',  (status, result)=> {
-                if(result.info=="ok"){
-                  item.lacal=result.locations[0];
-                  // this.createPoint(item)
-                  markerslist.push(this.createPoint(item))
-                  this.addPointGroup(markerslist);
-                  // console.log(markerslist)
-                  // this.myMap.add(markerslist)
-                }
-                //  this.createPoint(item)
-                //  markerslist.push(this.createPoint(item))
-                //  console.log()
-              })
-              
-            }
+  initMap(){
+    this.myMap.clearMap()
+    const markerslist=[]
+    this.$fetchGet("hospital/selectHospital", {
+      content:'',
+      hour:'', 
+    }).then(res => {
+      if(res){
+        res.forEach(item => {
+          if(item.linkTel!==undefined){
+            item.linkTelarr=item.linkTel.split(",")
+          }
+          if(item.linkPeople!==undefined){
+            item.linkPeoplearr=item.linkPeople.split(",")
+          }
+          if(item.needsName!==undefined){
+            item.needsNamearr=item.needsName.split(",")
+          }
+          if(item.needsDescr!==undefined){
+            item.needsDescrarr=item.needsDescr.split(",")
+          }
+          if(item.longitude){
+            AMap.convertFrom([item.longitude,item.latitude], 'baidu',  (status, result)=> {
+              if(result.info=="ok"){
+                item.lacal=result.locations[0];
+                // this.createPoint(item)
+                markerslist.push(this.createPoint(item))
+                // this.addPointGroup(markerslist);
+                
+              }
+              //  this.createPoint(item)
+              //  markerslist.push(this.createPoint(item))
+            })
             
-          })
-          // console.log(markerslist)
+          }
+          this.myMap.add(markerslist)
           
-        }
+        })
         
-      });
-    },
+      }
+      
+    });
+  },
     // lacal
     // new AMap.LngLat(row.longitude, row.latitude),
-    createPoint(row) {
+  createPoint(row) {
     let marker = new AMap.Marker({
       position: row.lacal,
       offset: new AMap.Pixel(-12, -16),
@@ -408,7 +410,7 @@ export default {
       let str=e.target.B.extData.row
       this.mapobj=str
     })
-    return marker
+     return marker
   }
   }
 };

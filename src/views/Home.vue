@@ -49,36 +49,43 @@
       </div>
     </van-popup>
     <!-- 搜索部分 -->
-    <div class="search-wrapper" v-if="show" >
-      <div class="down-up-wrapper" @click="downUp">
-        <img class="down-up" src="../assets/image/up.png" alt="" v-if="downUpImg">
-        <img class="down-up" src="../assets/image/down.png" alt="" v-else>
-      </div>
-      <div class="input-wrapper">
-        <img src="../assets/image/search.png" alt="" @click="search">
-        <input type="text" placeholder="查询继续支援医院、物资、区域" v-model="searchText" @focus="inputFocus" >
-      </div>
-      <div class="tab-list-wrapper" v-if="!downUpImg">
 
-           <p class="title">疫情防控物资</p>
-        <div class="list list1">
-          <span v-for="(item,i) in wuziList" :key="i" @click="selectItem(item)">{{item}}</span>
-        </div>
-        <p class="title">疫情城市查询</p>
-        <div class="list list2">
-          <span v-for="(item,i) in cityList" :key="i" @click="selectItem(item)">{{item}}</span>
-        </div>
+    
+    <van-popup v-model="show" position="bottom" :style="{height: heightCur }" :overlay="false" round>
         
-        <p class="title">发布时间查询</p>
-        <div class="list list3">
-          <span v-for="(item,i) in timeList" :key="i" @click="selectTimeItem(item)"><img src="../assets/image/time.png" alt="">{{item}}</span>
+      <div class="search-wrapper">
+        <div class="down-up-wrapper" @click="downUp">
+          <img class="down-up" src="../assets/image/up.png" alt="" v-if="downUpImg">
+          <img class="down-up" src="../assets/image/down.png" alt="" v-else>
+        </div>
+        <div class="input-wrapper">
+          <img src="../assets/image/search.png" alt="" @click="search">
+          <input type="text" placeholder="查询继续支援医院、物资、区域" v-model="searchText" @focus="inputFocus" >
+        </div>
+        <div class="tab-list-wrapper" v-if="!downUpImg">
+
+            <p class="title">疫情防控物资</p>
+          <div class="list list1">
+            <span v-for="(item,i) in wuziList" :key="i" @click="selectItem(item)">{{item}}</span>
+          </div>
+          <p class="title">疫情城市查询</p>
+          <div class="list list2">
+            <span v-for="(item,i) in cityList" :key="i" @click="selectItem(item)">{{item}}</span>
+          </div>
+          
+          <p class="title">发布时间查询</p>
+          <div class="list list3">
+            <span v-for="(item,i) in timeList" :key="i" @click="selectTimeItem(item)"><img src="../assets/image/time.png" alt="">{{item}}</span>
+          </div>
+        </div>
+        <div class="write">
+          <p>更多疫情跟踪：武汉肺炎防疫全记录</p>
+          <p>上海产业技术研究院出品</p>
         </div>
       </div>
-      <div class="write">
-        <p>更多疫情跟踪：武汉肺炎防疫全记录</p>
-        <p>上海产业技术研究院出品</p>
-      </div>
-    </div>
+      
+    </van-popup>
+    
       
     <!-- 搜索2部分 -->
     <div class="search-wrapper1" v-if="showSearch">
@@ -103,9 +110,9 @@
         <div class="list-wrapper" v-for="(item,i) in dataList" :key="i">
           <p class="title">{{item.hospitalName}}</p>
           <p class="address"><img class="right-btn" @click="goback" src="../assets/image/address.png" alt="" ><span>{{item.hospitalAddress}}</span></p>
-          <p class="time">发布日期：{{item.createTime.substring(0,16)}}</p>
+          <p class="time">发布日期：<span v-if="item.createTime">{{item.createTime.substring(0,16)}}</span></p>
           <div class="phone">
-            <p  v-for="(items,i) in item.linkTel" :key="i"><img class="right-btn" src="../assets/image/phone.png" alt="" ><span>{{items}}</span></p>
+            <p  v-for="(items,i) in item.linkTelList" :key="i"><img class="right-btn" src="../assets/image/phone.png" alt="" ><span>{{items}}</span></p>
           </div>
         </div>
       </div>
@@ -122,6 +129,7 @@ export default {
   name: "home",
   data() {
     return {
+      heightCur:'23%',
       myMap:null,
       isDetail:false,
       phoneshow:false,
@@ -177,21 +185,20 @@ export default {
       }
 
       this.$fetchGet("hospital/selectHospital",params).then(res=> {
-        this.mapinit(res)
         res.forEach(item=> {
           if (item.linkTel){
             if (item.linkTel.indexOf(",") != -1 ||item.linkTel.indexOf("，") != -1) {
-              item.linkTel=item.linkTel.split(",") || item.linkTel.split("，") 
+              item.linkTelList=item.linkTel.split(",") || item.linkTel.split("，") 
             } else if (item.linkTel.indexOf("、") != -1) {
-              item.linkTel=item.linkTel.split("、")
+              item.linkTelList=item.linkTel.split("、")
             }else if (item.linkTel.indexOf("\n") != -1) {
-              item.linkTel=item.linkTel.split("\n")
+              item.linkTelList=item.linkTel.split("\n")
             }else if (item.linkTel.indexOf("；") != -1) {
-              item.linkTel=item.linkTel.split("；")
+              item.linkTelList=item.linkTel.split("；")
             }else if (item.linkTel.indexOf("/") != -1) {
-              item.linkTel=item.linkTel.split("/")
+              item.linkTelList=item.linkTel.split("/")
             }else {
-              item.linkTel=[item.linkTel]
+              item.linkTelList=[item.linkTel]
             }
           }
         })
@@ -199,6 +206,8 @@ export default {
         if (this.dataList) {
           this.total=this.dataList.length
         }
+        this.mapinit(res)
+
       })
     },
     // 选择时间
@@ -223,6 +232,11 @@ export default {
     },
     downUp() {
       this.downUpImg=!this.downUpImg
+      if (!this.downUpImg){
+        this.heightCur="80%"
+      }else {
+        this.heightCur="23%"
+      }
     },
     search(){
       if (this.searchText){
@@ -237,6 +251,7 @@ export default {
     // 第一搜索获取焦点
     inputFocus() {
       this.downUpImg=false
+      this.heightCur="80%"
     },
     goback(){
       this.show=true
@@ -303,7 +318,7 @@ export default {
             }
             if(item.longitude){
               AMap.convertFrom([item.longitude,item.latitude], 'baidu',  (status, result)=> {
-                console.log(result)
+                // console.log(result)
                  item.lacal=result.locations[0];
               })
             }
@@ -341,7 +356,7 @@ export default {
             }
             if(item.longitude){
               AMap.convertFrom([item.longitude,item.latitude], 'baidu',  (status, result)=> {
-                console.log(result)
+                // console.log(result)
                  item.lacal=result.locations[0];
                  this.createPoint(item)
                 //  markerslist.push(this.createPoint(item))
@@ -501,13 +516,13 @@ export default {
      }
   }
   .search-wrapper{
-    position: absolute;
-    left:0;
-    bottom:0;
-    right:0;
+    // position: absolute;
+    // left:0;
+    // bottom:0;
+    // right:0;
     padding:0 17px;
-    background:#fff;
-    z-index:20;
+    // background:#fff;
+    // z-index:20;
     .down-up{
       width:30px;
       height: 12px;
@@ -515,7 +530,7 @@ export default {
     }
     .tab-list-wrapper{
       font-size:16px;
-      margin-bottom: 100px;
+      margin-bottom: 80px;
       .title{
         text-align:left;
         font-family:PingFang SC;

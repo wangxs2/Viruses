@@ -9,11 +9,11 @@
       <!-- <div class="top-fix">定点物资缺乏地图</div> -->
     </div>
     <!-- 医院的详情弹框 -->
-    <van-action-sheet  v-model="isDetail" :duration="0" title="">
+    <van-popup  v-model="isDetail" :style="{width: '100%' }" round :duration="0">
       <div class="contentDetail">
         <div style="font-size:18px;text-align:left">{{mapobj.hospitalName}}</div>
         <div class="address"> 
-          <div class="left-font" style="color:#666666;width:75%;word-wrap:break-word;text-align:left"><van-icon name="location-o" size="20" /> <div class="van-van-multi-ellipsis--l2" style="margin-left:2px">{{mapobj.hospitalAddress}}</div></div>
+          <div class="left-font" v-if="mapobj.hospitalAddress!==undefined&&mapobj.hospitalAddress!==''" style="color:#666666;width:75%;word-wrap:break-word;text-align:left"><van-icon name="location-o" size="20" /> <div class="van-van-multi-ellipsis--l2" style="margin-left:2px">{{mapobj.hospitalAddress}}</div></div>
           <div v-if="mapobj.type==1" class="right-btn">定点医院</div>
           <div v-if="mapobj.type==2" class="right-btn right-btn1">发热门诊</div>
         </div>
@@ -42,7 +42,7 @@
           <van-button round color="linear-gradient(to right, #FF6600, #FF7B10)" @click="shakeTime(mapobj.id)" icon="good-job-o" type="info">为医院点赞加油 {{mapobj.encourageNum}}次</van-button>
         </div>
       </div>
-    </van-action-sheet>
+    </van-popup>
     <van-popup
         v-model="phoneshow"
         position="bottom"
@@ -89,7 +89,8 @@
         <div class="go-back">
           <van-icon name="arrow-left" @click="goback" size="16"/>
         </div>
-        <input type="text" v-model="searchText" @blur="blurSearch">
+        <!-- <input type="text" v-model="searchText" @blur="blurSearch"> -->
+        <span style="font-size:16px">{{searchText}}</span>
         <div class="go-back">
           <van-icon name="cross" @click="clearText" size="16" />
         </div>
@@ -103,12 +104,12 @@
     <van-popup v-model="showModel" position="right" :style="{ height: '100%' }">
       <div class="list-content">
 
-        <div class="list-wrapper" v-for="(item,i) in dataList" :key="i">
+        <div class="list-wrapper" v-for="(item,i) in dataList" :key="i" @click="detailright(item)">
           <p class="title">{{item.hospitalName}}</p>
-          <p class="address"><img class="right-btn" @click="goback" src="../assets/image/address.png" alt="" ><span>{{item.hospitalAddress}}</span></p>
-          <p class="time">发布日期：{{item.createTime!==undefined?item.createTime.substring(0,16):''}}</p>
-          <div class="phone">
-            <p  v-for="(items,i) in item.linkTelList" :key="i"><img class="right-btn" src="../assets/image/phone.png" alt="" ><span>{{items}}</span></p>
+          <p class="address" v-if="item.hospitalAddress!==undefined&&item.hospitalAddress!==''"><van-icon name="location-o" size="20" /><span>{{item.hospitalAddress}}</span></p>
+          <p class="time" v-if="item.createTime!==undefined&&item.createTime!==''">发布日期：{{item.createTime!==undefined?item.createTime.substring(0,16):''}}</p>
+          <div class="phone" v-if="item.linkTelList!==undefined">
+            <p  v-for="(items,i) in item.linkTelList" :key="i"><van-icon name="phone-o" size="20" /><span>{{items}}</span></p>
           </div>
         </div>
       </div>
@@ -133,6 +134,8 @@
       <div class="reduce-content">
         <img class="down-up" src="../assets/image/reduce.png" alt="">
         <p>正在加紧开发...</p>
+        <p>联系电话：18368091476</p>
+        <img style="width:160px;height:160px" src="../assets/image/gzh.jpg" alt="">
         
       </div>
       
@@ -294,7 +297,6 @@ export default {
         if (this.dataList) {
           this.total=this.dataList.length
         }
-        console.log(res)
         this.mapinit(res)
 
       })
@@ -356,6 +358,8 @@ export default {
       this.showDataLengthPoint=1
       this.getDataList() 
 
+      this.showSearch=false
+
     },
     shakeTime(val){
       this.$fetchGet("encourage/saveEncourage", {
@@ -403,10 +407,17 @@ export default {
       // this.initMap()
 
     },
+    detailright(row){
+      this.isDetail=true
+      this.mapobj=row
+
+    },
     mapinit(res){
     //  alert(2)
      this.myMap.clearMap()
       const markerslist=[]
+      let pointsa=[]
+      const pointwe=[]
       res.forEach(item => {
         if(item.linkTel!==undefined){
           item.linkTelarr=item.linkTel.split(",")
@@ -421,23 +432,21 @@ export default {
           item.needsDescrarr=item.needsDescr.split(",")
         }
         if(item.longitude){
-          AMap.convertFrom([item.longitude,item.latitude], 'baidu',  (status, result)=> {
-              if(result.info=="ok"){
-              item.lacal=result.locations[0];
-              markerslist.push(this.createPoint(item))
-              console.log(markerslist)
-             this.myMap.add(markerslist)
-            //  this.myMap.setFitView()s
-              // this.createPoint(item)
-              //  this.addPointGroup(markerslist);
-              
-            }
-          })
-          
+           markerslist.push(new AMap.LngLat(item.longitude,item.latitude))
         }
-        
-        
       })
+       AMap.convertFrom(markerslist, 'baidu',  (status, result)=> {
+        
+          if(result.info=="ok"){
+            pointsa=result.locations;
+            res.forEach((itam,index)=>{
+              itam.lacal=pointsa[index];
+              pointwe.push(this.createPoint(itam))
+            })
+            console.log(pointwe)
+            this.myMap.add(pointwe)
+          }
+        })
     },
     // 添加点集合
   addPointGroup(overlays) {
@@ -466,20 +475,27 @@ export default {
             item.needsDescrarr=item.needsDescr.split(",")
           }
           if(item.longitude){
+            markerslist.push(new AMap.LngLat(item.longitude,item.latitude))
+            
             AMap.convertFrom([item.longitude,item.latitude], 'baidu',  (status, result)=> {
               if(result.info=="ok"){
                 item.lacal=result.locations[0];
                 // this.createPoint(item)
-                markerslist.push(this.createPoint(item))
-                // this.addPointGroup(markerslist);
+                // markerslist.push(this.createPoint(item))
                 
+                //  var path = [
+                //     new AMap.LngLat(116.368904,39.913423),
+                //     new AMap.LngLat(116.398258,39.904600)
+                // ];
+                // this.addPointGroup(markerslist);
               }
               //  this.createPoint(item)
               //  markerslist.push(this.createPoint(item))
             })
             
           }
-          this.myMap.add(markerslist)
+          // console.log(markerslist)
+          // this.myMap.add(markerslist)
           
         })
         
@@ -508,7 +524,8 @@ export default {
       extData: { row }
     })
     // touchstart
-    marker.on("touchstart", (e) => {
+    marker.on("click", (e) => {
+      // alert(2)
       this.isDetail=true
       let str=e.target.B.extData.row
       this.mapobj=str
@@ -726,7 +743,7 @@ export default {
       justify-content: flex-start;
       align-items:center;
       height: 44px;
-      background:#E0E0E0;
+      background:rgba(242,245,255,1);;
       border:1px solid rgba(224,224,224,1);
       border-radius:12px;
       img{
@@ -749,12 +766,12 @@ export default {
   }
   .search-wrapper1{
     position:absolute;
-    top:100px;
+    top:10px;
     left:17px;
     width:340px;
     .input-wrapper{
       display:flex;
-      justify-content:space-around;
+      justify-content:space-between;
       align-items:center;
       background:#fff;
       height:44px;
@@ -812,10 +829,10 @@ export default {
     width:80%;
   }
   .list-content{
-    padding:20px 15px;
+    padding:20px 10px;
     .list-wrapper{
       padding-bottom: 15px;
-      border-bottom:1px solid #999;
+      border-bottom:1px solid #dddddd;
       &:last-child{
         border:0
       }
@@ -907,7 +924,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 200px;
+    margin-top: 100px;
 
     img{
       width: 194px;

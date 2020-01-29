@@ -1,5 +1,13 @@
 <template>
   <div class="home">
+    <div class="onebif" v-if="isone">
+      <div style="font-size:17px">共抗新冠肺炎</div>
+      <div style="font-size:16px">{{zanz.view}}人次浏览 <van-icon name="cross" @click="isone=false" /></div>
+    </div>
+    <div class="twobif">{{zanz.encourage}}次</div>
+    <div class="threebif">
+      <van-icon  name="good-job" size="30" color="#ffffff" />
+    </div>
     <div class="write">
       <p>更多疫情跟踪： 新型肺炎需求捐赠记录</p>
       <p>上海产业技术研究院提供 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p>
@@ -539,6 +547,8 @@ export default {
   data() {
     return {
       heightCur:'0',
+      zanz:{},
+      isone:true,
       myMap:null,
       pointGroup: new AMap.OverlayGroup(), // 点集合
       isDetail:false,
@@ -967,7 +977,7 @@ export default {
             position:'LT'
         }));
     });
-      // this.initMap()
+      this.initMap()
 
     },
     detailright(row){
@@ -1027,53 +1037,9 @@ export default {
     this.myMap.add(this.pointGroup)
   },
   initMap(){
-    this.myMap.clearMap()
-    const markerslist=[]
-    this.$fetchGet("hospital/selectHospital", {
-      content:'',
-      hour:'', 
-    }).then(res => {
-      if(res){
-        res.forEach(item => {
-          if(item.linkTel!==undefined){
-            item.linkTelarr=item.linkTel.split(",")
-          }
-          if(item.linkPeople!==undefined){
-            item.linkPeoplearr=item.linkPeople.split(",")
-          }
-          if(item.needsName!==undefined){
-            item.needsNamearr=item.needsName.split(",")
-          }
-          if(item.needsDescr!==undefined){
-            item.needsDescrarr=item.needsDescr.split(",")
-          }
-          if(item.longitude){
-            markerslist.push(new AMap.LngLat(item.longitude,item.latitude))
-            
-            AMap.convertFrom([item.longitude,item.latitude], 'baidu',  (status, result)=> {
-              if(result.info=="ok"){
-                item.lacal=result.locations[0];
-                // this.createPoint(item)
-                // markerslist.push(this.createPoint(item))
-                
-                //  var path = [
-                //     new AMap.LngLat(116.368904,39.913423),
-                //     new AMap.LngLat(116.398258,39.904600)
-                // ];
-                // this.addPointGroup(markerslist);
-              }
-              //  this.createPoint(item)
-              //  markerslist.push(this.createPoint(item))
-            })
-            
-          }
-          // console.log(markerslist)
-          // this.myMap.add(markerslist)
-          
-        })
-        
-      }
-      
+    
+    this.$fetchGet("view/viewCount").then(res => {
+      this.zanz=res.content
     });
   },
     // lacal
@@ -1115,6 +1081,53 @@ export default {
   background: #f1f1f1;
   display:flex;
   flex-direction: column;
+  .onebif{
+    position:fixed;
+    top:12px;
+    left:12px;
+    z-index:10;
+    width:350px;
+    height:40px;
+    background:linear-gradient(-90deg,rgba(252,110,40,1) 0%,rgba(255,141,29,1) 100%);
+    opacity:0.8;
+    border-radius:8px;
+    color:#ffffff;
+    display:flex;
+    justify-content:space-between;
+    box-sizing:border-box;
+    padding:0 10px;
+    align-items:center;
+  }
+  .twobif{
+    position:fixed;
+    top:100px;
+    right:20px;
+    z-index:10;
+    width:140px;
+    height:24px;
+    line-height:24px;
+    font-size:12px;
+    background:rgba(254,59,57,1);
+    opacity:0.7;
+    color:#ffffff;
+    border-radius:12px;
+    text-align:left;
+    padding-left:6px;
+  }
+  .threebif{
+    position:fixed;
+    top:87px;
+    right:20px;
+    z-index:10;
+    width:44px;
+    height:44px;
+    background:rgba(254,59,57,1);
+    border:3px solid rgba(255,255,255,1);
+    box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32), 0px 0px 16px 0px rgba(221,2,0,1);
+    border-radius:50%;
+    box-sizing:border-box;
+    padding-top:3px;
+  }
   table{
     td{
       font-size:12px;

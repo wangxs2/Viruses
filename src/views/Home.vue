@@ -8,7 +8,7 @@
     <div class="threebif">
       <van-icon  name="good-job" size="30" color="#ffffff" />
     </div>
-    <div class="forew">
+    <div class="forew" v-if="seven">
       近七天数据
     </div>
     <div class="write">
@@ -251,7 +251,7 @@
         <div class="bigfont">医用防护用品规格参考表</div>
         <div class="smallfont">注：捐赠者也可根据医院具体物资匮乏情况，与医院核实之后调整相应物资标准。</div>
         <div class="smallfont">⚠️针对海外产品，所有产品最好都提供所在国作为医疗用品的上市证明。</div>
-        <div  style="width: 100%; overflow-x: auto;">
+        <div>
           <table border="1" cellspacing="0" cellpadding="0">
             <tr>
               <td><div style="width:40px">物品</div></td>
@@ -555,6 +555,7 @@ export default {
   data() {
     return {
       heightCur:'0',
+      seven:true,
       zanz:{},
       isone:true,
       myMap:null,
@@ -902,6 +903,7 @@ export default {
       this.show=false
       this.showSearch=true
       this.searchText=item
+      this.seven=false
       this.getDataList(item,2)
 
     },
@@ -951,6 +953,9 @@ export default {
       this.getDataList() 
 
       this.showSearch=false
+      if(!this.seven){
+          this.seven=true
+      }
 
     },
     shakeTime(val){
@@ -1022,19 +1027,13 @@ export default {
           item.needsDescrarr=item.needsDescr.split(",")
         }
         if(item.longitude){
-          // markerslist.push(new AMap.LngLat(item.longitude,item.latitude))
-          AMap.convertFrom(new AMap.LngLat(item.longitude,item.latitude), 'baidu',  (status, result)=> {
-            if(result.info=="ok"){
-              item.lacal=result.locations[0];
-              markerslist.push(this.createPoint(item))
-            }
-            //  console.log(markerslist)
-             this.myMap.add(markerslist)
-            
-          })
-         
+          markerslist.push(this.createPoint(item))
+          // 
         }
+        
       })
+      console.log(markerslist)
+        this.myMap.add(markerslist)
       // AMap.convertFrom(markerslist, 'baidu',  (status, result)=> {
       //     if(result.info=="ok"){
       //       pointsa=result.locations;
@@ -1063,7 +1062,7 @@ export default {
     // new AMap.LngLat(row.longitude, row.latitude),
   createPoint(row) {
     let marker = new AMap.Marker({
-      position: row.lacal,
+      position: new AMap.LngLat(row.gaodeLon, row.gaodeLat),
       offset: new AMap.Pixel(-12, -16),
       icon: new AMap.Icon({
         size: new AMap.Size(24, 31),
@@ -1100,7 +1099,7 @@ export default {
   flex-direction: column;
   .onebif{
     position:fixed;
-    top:12px;
+    top:6px;
     left:12px;
     z-index:10;
     width:350px;
@@ -1423,7 +1422,7 @@ export default {
   }
   .search-wrapper1{
     position:absolute;
-    top:10px;
+    top:50px;
     left:17px;
     width:340px;
     .input-wrapper{

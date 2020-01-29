@@ -146,8 +146,8 @@
             </div>
             <div class="message">
               <span class="name">柴田鑫</span>
-              <span class="tel">18368091476</span>
-              <span class="btn">立即拨打</span>
+              <span class="tel">{{commitMobile}}</span>
+              <span class="btn" @click="commitTel">立即拨打</span>
             </div>
             <div class="code">
               <img style="" src="../assets/image/gzh.jpg" alt="">
@@ -251,7 +251,8 @@ export default {
         people:'',
         tel:'',
         need:''
-      }
+      },
+      commitMobile: "18368091476"
     };
   },
   created() {
@@ -281,6 +282,9 @@ export default {
   // this.getProvinceList()
   },
   methods:{
+    commitTel(){
+      window.location.href = "tel:" + this.commitmobile
+    },
     // 录入表单提交
     confirm(){
       if (this.form.company && this.form.address && this.form.people && this.form.tel && this.form.need) {
@@ -381,22 +385,6 @@ export default {
         this.errorMessage.need=""
 
       }
-    },
-    // 校验电话
-    formatterTel(value){
-      // 过滤输入的数字
-      if (value==""){
-        this.errorMessage.tel="请输入电话"
-      } else {
-
-        var str=/^\d$/
-        if (str.test(value)){
-          return
-        } else {
-        this.errorMessage.tel="电话格式不正确"
-        }
-      }
-
     },
     // 搜索按钮
     searchBtn(){

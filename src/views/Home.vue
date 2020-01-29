@@ -658,18 +658,33 @@ export default {
     },
     // 录入需求提供切换
     needTi(type){
-      this.clickTabPoint=1
-      this.clearErrorMessage()
+      if (!this.clickTabPoint){
+        
+      
+      this.form.company=this.form.company
+      this.form.address=this.form.address
+      this.form.people=this.form.people
+      this.form.tel=this.form.tel
+      this.form.need=this.form.need
 
-      if (type==1){
-        this.xuShow=false
-        this.tiShow=false
-      } else if (type==2) {
-        this.tiShow=true
-        this.xuShow=true
+
+
+      } else {
+        this.clearErrorMessage()
+
       }
 
-      this.curTabIndex=type
+        this.clickTabPoint=1
+  
+        if (type==1){
+          this.xuShow=false
+          this.tiShow=false
+        } else if (type==2) {
+          this.tiShow=true
+          this.xuShow=true
+        }
+  
+        this.curTabIndex=type
     },
     // 清空表单输入及错误提示
     clearErrorMessage(){

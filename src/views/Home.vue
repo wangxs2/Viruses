@@ -40,7 +40,7 @@
         <van-divider />
         <div>
           <van-button v-if="mapobj.linkTelarr!==undefined" round color="#216AFF" style="margin-right:12px" @click="dialPhoneNumber()">我要联系</van-button>
-          <van-button round color="linear-gradient(to right, #FF6600, #FF7B10)" @click="shakeTime(mapobj.id)" icon="good-job-o" type="info">为医院点赞加油 {{mapobj.encourageNum}}次</van-button>
+          <van-button round color="linear-gradient(to right, #FF6600, #FF7B10)" @click="shakeTime(mapobj.hospitalName)" icon="good-job-o" type="info">为医院点赞加油 {{mapobj.encourageNum}}次</van-button>
         </div>
       </div>
     </van-popup>
@@ -588,7 +588,7 @@ export default {
     },
     shakeTime(val){
       this.$fetchGet("encourage/saveEncourage", {
-        id:val
+        hospitalName:val
       }).then(res => {
         if(res.code=="success"){
          this.$toast('已经成功点赞');

@@ -225,6 +225,20 @@
       
     </van-popup>
     <!-- 免责协议 -->
+    <!-- 医护用品规则说明 -->
+    <van-popup v-model="specifications" closeable position="bottom" :style="{ height: '100%' }">
+      <div class="agreement-content">
+        <div class="bigfont">医用防护用品规格参考表</div>
+        <div class="smallfont">注：捐赠者也可根据医院具体物资匮乏情况，与医院核实之后调整相应物资标准。</div>
+        <div class="smallfont">⚠️针对海外产品，所有产品最好都提供所在国作为医疗用品的上市证明。</div>
+        
+        
+        
+      </div>
+      
+    </van-popup>
+
+    <!-- 医护用品规则说明 -->
 
   </div>
 </template>
@@ -240,6 +254,7 @@ export default {
       pointGroup: new AMap.OverlayGroup(), // 点集合
       isDetail:false,
       agreement:false,
+      specifications:false,//医用规则说明
       phoneshow:false,
       downUpImg:true,
       showSearch:false,
@@ -479,7 +494,7 @@ export default {
         }
       } else if (type==2){
         params={
-          hour:data
+          hour:data.substring(2,4)
         }
       } else{
         params={}
@@ -768,6 +783,11 @@ export default {
     .bigfont{
       font-size:18px;
       font-weight:bold;
+    }
+    .smallfont{
+      font-size:12px;
+      text-align:left;
+      margin:4px 0;
     }
     .leftfont{
       font-size:16px;

@@ -16,11 +16,33 @@
       <strong>We're sorry but viruses doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
+    <!-- <img src="/src/assets/image/gy.png" alt="" srcset=""> -->
+    <img src="/src/assets/image/gy.png" width="0" height="0" />
     <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=7c0113f349acadc12a21540f719494df"></script> 
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <!-- <script src="/src/libs/aly.js"></script> -->
     <!-- built files will be auto injected -->
   </body>
   <script>
+    console.log($)
+    wx.ready(()=>{
+      wx.onMenuShareAppMessage({
+        title:"小狗", // 分享标题
+        desc:"23", // 分享描述
+        link: "http://192.168.2.116:8086", // 分享链接
+        imgUrl: "/src/assets/image/gy.png", // 分享图标
+        type: 'link', // 分享类型,music、video或link，不填默认为link
+        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+        success: function () {
+            callback();
+        },
+        cancel: function () {
+            // 用户取消分享后执行的回调函数
+        }
+    });
 
+    })
+    
     
   </script>
 </html>

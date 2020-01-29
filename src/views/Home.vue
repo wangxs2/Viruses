@@ -27,7 +27,7 @@
                  :key="index"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
         </div>
         <!-- <span class="person">接受个人捐赠</span> -->
-        <div v-if="mapobj.needsNamearr!==undefined" style="font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">所需疫情防控物资 </div>
+        <div v-if="mapobj.needsNamearr!==undefined" style="font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">所需疫情防控物资 <van-icon style="margin-left:10px" name="warning-o" color="#FF2727"  size="12" /> <span @click="specifications=true" style="color:#FF2727;font-size:12px">物资标准</span></div>
         <div class="material" v-if="mapobj.needsNamearr!==undefined">
           <div v-for="(item,index) in mapobj.needsNamearr"
                  :key="index" class="boll-item"><span class="boll"></span>{{item}}</div>
@@ -543,7 +543,7 @@ export default {
       pointGroup: new AMap.OverlayGroup(), // 点集合
       isDetail:false,
       agreement:false,
-      specifications:true,//医用规则说明
+      specifications:false,//医用规则说明
       phoneshow:false,
       downUpImg:true,
       showSearch:false,

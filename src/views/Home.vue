@@ -133,10 +133,63 @@
     
     <van-popup v-model="reduceShow" closeable position="bottom" :style="{ height: '100%' }">
       <div class="reduce-content">
-        <img class="down-up" src="../assets/image/reduce.png" alt="">
+        <!-- <img class="down-up" src="../assets/image/reduce.png" alt="">
         <p>正在加紧开发...</p>
         <p>联系电话：18368091476</p>
-        <img style="width:160px;height:160px" src="../assets/image/gzh.jpg" alt="">
+        <img style="width:160px;height:160px" src="../assets/image/gzh.jpg" alt=""> -->
+        <img style="" class="banner" src="../assets/image/banner.png" alt="">
+        <div class="us-need-wrapper">
+          <div class="us-need us">
+            <div class="title">
+              <span class="dot" v-for="(item,i) in 3" :key="i+'s'"></span>
+              <span class="title-name">联系我们</span>
+              <span class="dot" v-for="(item,i) in 3" :key="i+'d'"></span>
+            </div>
+            <div class="message">
+              <span class="name">柴田鑫</span>
+              <span class="tel">{{commitMobile}}</span>
+              <span class="btn" @click="commitTel(commitMobile)">立即拨打</span>
+            </div>
+            <div class="code">
+              <img style="" src="../assets/image/gzh.jpg" alt="">
+              <span class="btn">上海产业技术研究院智能工程交通中心</span>
+            </div>
+          </div>
+          <div class="us-need need">
+
+            <div class="title">
+              <span class="dot" v-for="(item,i) in 3" :key="i+'f'"></span>
+              <span class="title-name">需求填写</span>
+              <span class="dot" v-for="(item,i) in 3" :key="i+'g'"></span>
+            </div>
+            <div class="form-wrapper">
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">单位名称</span>
+                <!-- <input type="text" v-model="searchText"> -->
+                <van-field v-model="form.company" placeholder="请填写" :error-message="errorMessage.company"  @blur="formBlur(1)"/>
+              </div>
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">地址</span>
+                <van-field v-model="form.address" placeholder="请填写" :error-message="errorMessage.address"   @blur="formBlur(2)"/>
+              </div>
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">联系人</span>
+                <van-field v-model="form.people" placeholder="请填写" :error-message="errorMessage.people"   @blur="formBlur(3)"/>
+              </div>
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">电话</span>
+                <van-field v-model="form.tel" placeholder="请填写" :error-message="errorMessage.tel"  @blur="formBlur(4)"/>
+              </div>
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">物资需求</span>
+                <van-field v-model="form.need" type="textarea" placeholder="请填写" :error-message="errorMessage.need" @blur="formBlur(5)"/>
+              </div>
+              <div class="confirm-btn" @click="confirm">提交</div>
+            </div>
+
+          </div>
+        </div>
+        
         
       </div>
       
@@ -184,7 +237,7 @@ export default {
     return {
       heightCur:'0',
       myMap:null,
-       pointGroup: new AMap.OverlayGroup(), // 点集合
+      pointGroup: new AMap.OverlayGroup(), // 点集合
       isDetail:false,
       agreement:false,
       phoneshow:false,
@@ -216,7 +269,22 @@ export default {
           message:2
         }
       ],
-      mapobj:{}
+      mapobj:{},
+      form:{
+        company:'',
+        address:'',
+        people:'',
+        tel:'',
+        need:''
+      },
+      errorMessage:{
+        company:'',
+        address:'',
+        people:'',
+        tel:'',
+        need:''
+      },
+      commitMobile: "18368091476"
     };
   },
   created() {
@@ -246,6 +314,110 @@ export default {
   // this.getProvinceList()
   },
   methods:{
+    commitTel(tel){
+      window.location.href = "tel:" + tel
+    },
+    // 录入表单提交
+    confirm(){
+      if (this.form.company && this.form.address && this.form.people && this.form.tel && this.form.need) {
+
+        let params= {
+          cmpyName:this.form.company,
+          address:this.form.address,
+          linkPeople:this.form.people,
+          linkTel:this.form.tel,
+          descr:this.form.need,
+
+        }
+        
+        this.$fetchPost("infoApply/save",params).then(res=> {
+          if (res.code=="success") {
+            this.$toast(res.message);
+          } else  if (res.code=="error") {
+            this.$toast(res.message);
+          } else  if (res.code==504) {
+            this.$toast(res.message);
+          }
+        })
+
+      } else {
+        this.$toast('请完善信息');
+      }
+
+    },
+    // 提交非空验证
+    formVil(){
+      
+
+      if (!this.form.company){
+        this.errorMessage.company="请输入单位名称"
+      } else {
+        this.errorMessage.company=""
+
+      }
+      if (!this.form.address){
+        this.errorMessage.address="请输入地址"
+      } else {
+        this.errorMessage.address=""
+
+      }
+      if (!this.form.people){
+        this.errorMessage.people="请输入联系人"
+      } else {
+        this.errorMessage.people=""
+
+      }
+      if (!this.form.tel){
+        this.errorMessage.tel="请输入电话"
+      } else {
+          this.errorMessage.tel=""
+      }
+      if ( !this.form.need){
+        this.errorMessage.need="请输入物资需求"
+      } else {
+        this.errorMessage.need=""
+
+      }
+    },
+    // input失焦非空验证
+    formBlur(type){
+        var strTel=/^[\d\-,]+$/g
+      if (type==1 && !this.form.company){
+        this.errorMessage.company="请输入单位名称"
+      } else {
+        this.errorMessage.company=""
+
+      }
+      if (type==2 && !this.form.address){
+        this.errorMessage.address="请输入地址"
+      } else {
+        this.errorMessage.address=""
+
+      }
+      if (type==3 && !this.form.people){
+        this.errorMessage.people="请输入联系人"
+      } else {
+        this.errorMessage.people=""
+
+      }
+      if (type==4 && !this.form.tel){
+        this.errorMessage.tel="请输入电话"
+      } else if (type==4 && this.form.tel) {
+        // if (strTel.test(this.form.tel)) {
+
+          this.errorMessage.tel=""
+        // } else {
+        //   this.errorMessage.tel="电话格式错误，多个电话中间用 , 隔开"
+        // }
+
+      }
+      if (type==5 && !this.form.need){
+        this.errorMessage.need="请输入物资需求"
+      } else {
+        this.errorMessage.need=""
+
+      }
+    },
     // 搜索按钮
     searchBtn(){
       this.show=true
@@ -992,24 +1164,159 @@ export default {
     }
   }
   .reduce-content{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 100px;
-
-    img{
-      width: 194px;
-      height:147px;
+    background:#2D65E3;
+    padding-bottom:40px;
+    .banner{
+      width:100%;
+      height: 125px;
     }
-    p{
-      font-size:15px;
-      font-family:PingFang SC;
-      font-weight:400;
-      color:rgba(153,153,153,1);
-      margin-top:23px;
+    .us-need-wrapper{
+      margin: 0 12px;
+      .us-need{
+        background:#174FCE;
+        border-radius:8px;
+        margin-bottom: 15px;
+        &.us{}
+        &.need{}
+        .title{
+          display:flex;
+          justify-content: center;
+          align-items:center;
+          height: 46px;
+          font-size:17px;
+          font-family:PingFang SC;
+          font-weight:bold;
+          color:rgba(255,255,255,1);
+          color: #fff;
+          .dot{
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #fff;
+            margin-left: 3px;
+          }
+          .title-name{
+            padding: 0 10px;
+          }
+        }
+        .message{
+          display:flex;
+          justify-content: space-between;
+          align-items:center;
+          height:54px;
+          margin: 0 29px;
+          padding: 0 15px;
+          font-size:15px;
+          font-family:PingFang SC;
+          font-weight:500;
+          color:rgba(232,245,255,1);
+          background: #3A6FE5;
+          border-radius: 3px;
+          .name{}
+          .tel{}
+          .btn{
+            display:flex;
+            justify-content: center;
+            align-items:center;
+            width: 86px;
+            height: 32.5px;
+            background:url("../assets/image/block.png") no-repeat;
+            background-size: 86px 32.5px;
+            font-weight:bold;
+            font-style:italic;
+            
+          }
+        }
+        .code{
+            display:flex;
+            flex-direction:column;
+            justify-content: center;
+            align-items:center;
+            padding-bottom: 18.5px;
+          img{
+            width: 63px;
+            height: 63px;
+            margin:10px 0;
+          }
+          .btn{
+            font-size:12px;
+            font-family:PingFang SC;
+            font-weight:500;
+            color:rgba(255,255,255,1);
+          }
+        }
+        .form-wrapper{
+          padding: 0 18.5px 30px;
+          .van-cell{
+            border-radius: 5px;
+          }
+          .form-input{
+            display:flex;
+            flex-direction:column;
+            text-align: left;
+            font-size:14px;
+            font-family:PingFang SC;
+            font-weight:500;
+            color:rgba(255,255,255,1);
+            span{
+              height: 39px;
+              line-height: 39px;
+              img{
+                width: 10px;
+                height: 10px;
+                padding-right: 8px;
+              }
+            }
+            input{
 
+            }
+          }
+          .confirm-btn{
+            width:150px;
+            height:44px;
+            text-align: center;
+            line-height: 44px;
+            color:#fff;
+            font-size:18px;
+            font-family:PingFang SC;
+            font-weight:bold;
+            background:linear-gradient(270deg,rgba(255,145,0,1) 0%,rgba(255,126,0,1) 53%,rgba(255,145,0,1) 100%);
+            box-shadow:0px 0px 5px 0px rgba(0, 0, 0, 0.05);
+            border-radius:22px;
+            margin: 30px auto 0;
+          }
+        }
+
+      }
     }
+
+
+
+
+
+
+
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    // align-items: center;
+    // margin-top: 100px;
+
+    // img{
+    //   width: 194px;
+    //   height:147px;
+    // }
+    // p{
+    //   font-size:15px;
+    //   font-family:PingFang SC;
+    //   font-weight:400;
+    //   color:rgba(153,153,153,1);
+    //   margin-top:23px;
+
+    // }
+
+
+
   }
 }
 </style>

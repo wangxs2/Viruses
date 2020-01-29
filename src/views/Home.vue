@@ -1,5 +1,16 @@
 <template>
   <div class="home">
+    <div class="onebif" v-if="isone">
+      <div style="font-size:17px">共抗新冠肺炎</div>
+      <div style="font-size:16px">{{zanz.view}}人次浏览 <van-icon name="cross" @click="isone=false" /></div>
+    </div>
+    <div class="twobif">{{zanz.encourage}}次</div>
+    <div class="threebif">
+      <van-icon  name="good-job" size="30" color="#ffffff" />
+    </div>
+    <div class="forew" v-if="seven">
+      近七天数据
+    </div>
     <div class="write">
       <p>更多疫情跟踪： 新型肺炎需求捐赠记录</p>
       <p>上海产业技术研究院提供 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p>
@@ -240,7 +251,7 @@
         <div class="bigfont">医用防护用品规格参考表</div>
         <div class="smallfont">注：捐赠者也可根据医院具体物资匮乏情况，与医院核实之后调整相应物资标准。</div>
         <div class="smallfont">⚠️针对海外产品，所有产品最好都提供所在国作为医疗用品的上市证明。</div>
-        <div  style="width: 100%; overflow-x: auto;">
+        <div>
           <table border="1" cellspacing="0" cellpadding="0">
             <tr>
               <td><div style="width:40px">物品</div></td>
@@ -544,6 +555,9 @@ export default {
   data() {
     return {
       heightCur:'0',
+      seven:true,
+      zanz:{},
+      isone:true,
       myMap:null,
       pointGroup: new AMap.OverlayGroup(), // 点集合
       isDetail:false,
@@ -904,6 +918,7 @@ export default {
       this.show=false
       this.showSearch=true
       this.searchText=item
+      this.seven=false
       this.getDataList(item,2)
 
     },
@@ -953,6 +968,9 @@ export default {
       this.getDataList() 
 
       this.showSearch=false
+      if(!this.seven){
+          this.seven=true
+      }
 
     },
     shakeTime(val){
@@ -988,17 +1006,15 @@ export default {
         zoom:4,
         mapStyle:'amap://styles/9fb204085bdb47adb66e074fca3376be',
       });
-       AMap.plugin([
-        'AMap.ToolBar',
-    ], ()=>{
-        // 在图面添加工具条控件，工具条控件集成了缩放、平移、定位等功能按钮在内的组合控件
-        this.myMap.addControl(new AMap.ToolBar({
-            // 简易缩放模式，默认为 false
-            liteStyle: true,
-            position:'LT'
-        }));
-    });
-      // this.initMap()
+    //    AMap.plugin([
+    //     'AMap.ToolBar',
+    // ], ()=>{
+    //     this.myMap.addControl(new AMap.ToolBar({
+    //         liteStyle: true,
+    //         position:'LT'
+    //     }));
+    // });
+      this.initMap()
 
     },
     detailright(row){
@@ -1026,19 +1042,13 @@ export default {
           item.needsDescrarr=item.needsDescr.split(",")
         }
         if(item.longitude){
-          // markerslist.push(new AMap.LngLat(item.longitude,item.latitude))
-          AMap.convertFrom(new AMap.LngLat(item.longitude,item.latitude), 'baidu',  (status, result)=> {
-            if(result.info=="ok"){
-              item.lacal=result.locations[0];
-              markerslist.push(this.createPoint(item))
-            }
-            //  console.log(markerslist)
-             this.myMap.add(markerslist)
-            
-          })
-         
+          markerslist.push(this.createPoint(item))
+          // 
         }
+        
       })
+      console.log(markerslist)
+        this.myMap.add(markerslist)
       // AMap.convertFrom(markerslist, 'baidu',  (status, result)=> {
       //     if(result.info=="ok"){
       //       pointsa=result.locations;
@@ -1058,60 +1068,16 @@ export default {
     this.myMap.add(this.pointGroup)
   },
   initMap(){
-    this.myMap.clearMap()
-    const markerslist=[]
-    this.$fetchGet("hospital/selectHospital", {
-      content:'',
-      hour:'', 
-    }).then(res => {
-      if(res){
-        res.forEach(item => {
-          if(item.linkTel!==undefined){
-            item.linkTelarr=item.linkTel.split(",")
-          }
-          if(item.linkPeople!==undefined){
-            item.linkPeoplearr=item.linkPeople.split(",")
-          }
-          if(item.needsName!==undefined){
-            item.needsNamearr=item.needsName.split(",")
-          }
-          if(item.needsDescr!==undefined){
-            item.needsDescrarr=item.needsDescr.split(",")
-          }
-          if(item.longitude){
-            markerslist.push(new AMap.LngLat(item.longitude,item.latitude))
-            
-            AMap.convertFrom([item.longitude,item.latitude], 'baidu',  (status, result)=> {
-              if(result.info=="ok"){
-                item.lacal=result.locations[0];
-                // this.createPoint(item)
-                // markerslist.push(this.createPoint(item))
-                
-                //  var path = [
-                //     new AMap.LngLat(116.368904,39.913423),
-                //     new AMap.LngLat(116.398258,39.904600)
-                // ];
-                // this.addPointGroup(markerslist);
-              }
-              //  this.createPoint(item)
-              //  markerslist.push(this.createPoint(item))
-            })
-            
-          }
-          // console.log(markerslist)
-          // this.myMap.add(markerslist)
-          
-        })
-        
-      }
-      
+    
+    this.$fetchGet("view/viewCount").then(res => {
+      this.zanz=res.content
     });
   },
     // lacal
     // new AMap.LngLat(row.longitude, row.latitude),
   createPoint(row) {
     let marker = new AMap.Marker({
-      position: row.lacal,
+      position: new AMap.LngLat(row.gaodeLon, row.gaodeLat),
       offset: new AMap.Pixel(-12, -16),
       icon: new AMap.Icon({
         size: new AMap.Size(24, 31),
@@ -1146,6 +1112,67 @@ export default {
   background: #f1f1f1;
   display:flex;
   flex-direction: column;
+  .onebif{
+    position:fixed;
+    top:6px;
+    left:12px;
+    z-index:10;
+    width:350px;
+    height:40px;
+    background:linear-gradient(-90deg,rgba(252,110,40,1) 0%,rgba(255,141,29,1) 100%);
+    opacity:0.8;
+    border-radius:8px;
+    color:#ffffff;
+    display:flex;
+    justify-content:space-between;
+    box-sizing:border-box;
+    padding:0 10px;
+    align-items:center;
+  }
+  .twobif{
+    position:fixed;
+    top:100px;
+    right:20px;
+    z-index:10;
+    width:140px;
+    height:24px;
+    line-height:24px;
+    font-size:12px;
+    background:rgba(254,59,57,1);
+    opacity:0.7;
+    color:#ffffff;
+    border-radius:12px;
+    text-align:left;
+    padding-left:6px;
+  }
+  .forew{
+     position:fixed;
+    top:100px;
+    left:20px;
+    z-index:10;
+    color:#333333;
+    width:100px;
+    height:30px;
+    font-size:14px;
+    line-height:30px;
+    background:rgba(255,255,255,1);
+    box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32);
+    border-radius:6px;
+  }
+  .threebif{
+    position:fixed;
+    top:87px;
+    right:20px;
+    z-index:10;
+    width:44px;
+    height:44px;
+    background:rgba(254,59,57,1);
+    border:3px solid rgba(255,255,255,1);
+    box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32), 0px 0px 16px 0px rgba(221,2,0,1);
+    border-radius:50%;
+    box-sizing:border-box;
+    padding-top:3px;
+  }
   table{
     td{
       font-size:12px;
@@ -1410,7 +1437,7 @@ export default {
   }
   .search-wrapper1{
     position:absolute;
-    top:10px;
+    top:50px;
     left:17px;
     width:340px;
     .input-wrapper{

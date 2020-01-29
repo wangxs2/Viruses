@@ -147,7 +147,7 @@
             <div class="message">
               <span class="name">柴田鑫</span>
               <span class="tel">{{commitMobile}}</span>
-              <span class="btn" @click="commitTel">立即拨打</span>
+              <span class="btn" @click="commitTel(commitMobile)">立即拨打</span>
             </div>
             <div class="code">
               <img style="" src="../assets/image/gzh.jpg" alt="">
@@ -282,8 +282,8 @@ export default {
   // this.getProvinceList()
   },
   methods:{
-    commitTel(){
-      window.location.href = "tel:" + this.commitmobile
+    commitTel(tel){
+      window.location.href = "tel:" + tel
     },
     // 录入表单提交
     confirm(){

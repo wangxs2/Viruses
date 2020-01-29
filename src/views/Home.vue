@@ -235,150 +235,294 @@
         <div class="bigfont">医用防护用品规格参考表</div>
         <div class="smallfont">注：捐赠者也可根据医院具体物资匮乏情况，与医院核实之后调整相应物资标准。</div>
         <div class="smallfont">⚠️针对海外产品，所有产品最好都提供所在国作为医疗用品的上市证明。</div>
-        <table border="1" cellspacing="0" cellpadding="0">
+        <div  style="width: 100%; overflow-x: auto;">
+          <table border="1" cellspacing="0" cellpadding="0">
+            <tr>
+              <td><div style="width:40px">物品</div></td>
+              <td><div style="width:180px;padding:6px">医用规格（必须符合或高于）</div></td>
+              <td>厂家 & 型号（不限于）</td>
+            </tr>
+            <tr>
+              <td rowspan="4">口罩</td>
+              <td>医用防护口罩 （需要防高压液体喷溅）国内标准GB 19083-2010 美国 NIOSH 认证，N95/N99 + Fluid resistant（CDC 美国疾控认证）欧标
+              FFP2/FFP3+ Type II R (fluid resistant)
+              日标（满足 1 或 2）
+              1. 明确写明「サージカルＮ９５レスピレーターとして液体防護性があり、血液を含む液体等に有用」
+              2. 符合以下数据
+              a) 人工血液不浸透性　80mmHg以上
+              b) ΔＰ（呼吸抵抗）＜35mmH2O
+              [1/27 11:00，武汉大学人民医院设备科验证]</td>
+              <td>3M9132/1860（官方推荐）
+                1870+（符合国内标准）</td>
+            </tr>
+            <tr>
+              <td>其他防护口罩 n95/n99（普通人和不接触高压液体喷溅的医务人员使用）
+                用于非以下情形：1）近距离接触感染病人 2）进行有可能产生气溶胶的操作，如吸痰、插管等 3）产生体液喷溅可能的操作
+                必须面部贴合不漏气，不带呼吸器
+              ⚠️请注意不要买到假货
+                国内GB 2626 强制性标准，非油性颗粒过滤效率>=95%
+                欧标 FFP2/FFP3
+                美国 NIOSH 认证，非油性颗粒过滤效率>=95%
+              韩国KF94 (不推荐，仅在物资匮乏时考虑)</td>
+              <td>Honeywell Sperian SAF-T-FIT Plus 3M 8810 TRUSCO TR-3200B PFR P1 P2vilene 株式会社，型号 V-1003N</td>
+            </tr>
+            <tr>
+              <td rowspan="2">医用外科口罩 （要独立包装防止交叉感染）
+              国内
+              YY  0469-2011 (印在每只独立外包装上）
+              美标 
+              ASTM F2100-II 标准  level 2 & level 3 
+              [1/27 由武汉大学人民医院设备科验证]
+              欧标 
+            EN 14683  + Type IIR 
+              全球通用核心指标 (下文有详细图片）
+              颗粒过滤>95%, fluid resistant>120mmhg</td>
+              <td>国内：Winner 稳健医疗 [符合YY0469]</td>
+            </tr>
+            <tr>
+              <td>海外: halyard health 48208/49207（level 3 且防液体）</td>
+            </tr>
+            <tr>
+              <td rowspan="6">防护服</td>
+              <td rowspan="6">防护服 符合国标 GB19082-2003 或 19082-2009《医用一次性防护服技术要求》
+            其中两项重要指标为
+            1. 抗渗水性：静水压 > 1.67kPa (17cm H2O)
+            2. 抗合成血液穿透性 > 1.75kPa(不小于 2 级，即 2-6 级皆可）
+            [1/27 16:17 更新]
+            戴帽 + 尺寸别买太小
+            美国 
+            ASTM F1671-97a
+            [美国标准尚不清晰，当前标准为 01/25 协和医院文档]
+              欧标 
+            EN14126* + Type 4(B)/EN 14605 以上**
+          [1/27 11:30, 重庆医科大胸外科文档参照 + 1/27 20:55 加入 EN14605]
+            日本规格 通过JIS T 8060 8061 8062测试 标注「人工血液バリア性・ウイルスバリア性 クラス２・クラス３」
+            [1/27 14:38, 武汉大学人民医院设备科验证]*EN14126: Protection against infective agents** Type 是 Chemical Protective Clothing 的分级，数字越低，标准越高，最好带 B, 也可能是标 EN14605 （具体见后文细则）
+            [1/27 20:55 更新]</td>
+            <td>Du Pont 杜邦Tyvek 特卫强 1422A 连体服 CHA 5 医用款一次性防护服 ⚠️不建议未经过国内 GB19082 认证的 1422A
+            [01/27 14:13 更新]
+            TYVEK 800J （对应的料号：TJI98TWHXX0025PI）
+            [01/27 14:25 更新]
+            Tyvek 600 或 Tyvek classic plus，同款 
+            [1/27 19:21 更新]
+              Tychem 2000 [1/26 0:41 更新]</td>
+            </tr>
+            <tr>
+              <td>UVEX 4B [1/27 19:21 更新]</td>
+            </tr>
+            <tr>
+              <td>雷克兰 医用一次性防护服 AMN 428ETS</td>
+            </tr>
+            <tr>
+              <td>3M 4565</td>
+            </tr>
+            <tr>
+              <td>Winner 稳健医疗  一次性医用防护服（他家只有一款）</td>
+            </tr>
+            <tr>
+              <td>Ansell
+                Microgard 2000/2500/2500plus （欧美）
+                重松製作所　型号：マイクロガード2000b/2000plus/2300plus/2500plus/3000/4000
+              日進医療器 型号：リーダー感染症対策防護服高ウイルスバリアアズワン 型号：感染症対策防護服
+                [1/29 01:00 更新]</td>
+            </tr>
+            <tr>
+              <td>护目镜</td>
+              <td>国标 GB/T 14866
+                  或二级以上医用护目镜 - Medical Safety Googles / Protective Eyewear，弹性佩戴（可以和近视镜兼容）、视野宽阔、必须有防溅功能，四圈密封最好防雾
+                其他符合红字条件的护目镜也可（1/27 15:38 护目镜若不符合上述要求最好别买，不能用，可考虑防护面罩代替）</td>
+              <td>3M 1623AF /1621AF 防护眼镜（国内）GA500 护目镜（海外）Honeywell 型号 LG20 （间接通风口 防液体飞溅）1.1005509  防雾+医用 （最优）
+              2.1005507 不防雾+医用 
+            3.1005509 防雾但未标明可医用
+              [01/29 02:15]</td>
+            </tr>
           <tr>
-            <td>物品</td>
-            <td>医用规格（必须符合或高于）</td>
-            <td>厂家 & 型号（不限于）</td>
+            <td>手套</td>
+            <td>一次性使用医用橡胶检查手套
+              GB 10213-2006
+            一次性使用灭菌橡胶外科手套
+              GB 7543-2006</td>
+              <td>国内多家厂商可以</td>
           </tr>
           <tr>
-            <td rowspan="4">口罩</td>
-            <td>医用防护口罩 （需要防高压液体喷溅）国内标准GB 19083-2010 美国 NIOSH 认证，N95/N99 + Fluid resistant（CDC 美国疾控认证）欧标
-            FFP2/FFP3+ Type II R (fluid resistant)
-            日标（满足 1 或 2）
-            1. 明确写明「サージカルＮ９５レスピレーターとして液体防護性があり、血液を含む液体等に有用」
-            2. 符合以下数据
-            a) 人工血液不浸透性　80mmHg以上
-            b) ΔＰ（呼吸抵抗）＜35mmH2O
-            [1/27 11:00，武汉大学人民医院设备科验证]</td>
-            <td>3M9132/1860（官方推荐）1870+（符合国内标准）</td>
+            <td>手术衣</td>
+            <td>GB 15979-2002</td>
+              <td>待补充</td>
           </tr>
           <tr>
-            <td>其他防护口罩 n95/n99（普通人和不接触高压液体喷溅的医务人员使用）
-              用于非以下情形：1）近距离接触感染病人 2）进行有可能产生气溶胶的操作，如吸痰、插管等 3）产生体液喷溅可能的操作
-              必须面部贴合不漏气，不带呼吸器
-            ⚠️请注意不要买到假货
-              国内GB 2626 强制性标准，非油性颗粒过滤效率>=95%
-              欧标 FFP2/FFP3
-              美国 NIOSH 认证，非油性颗粒过滤效率>=95%
-            韩国KF94 (不推荐，仅在物资匮乏时考虑)</td>
-            <td>Honeywell Sperian SAF-T-FIT Plus 3M 8810 TRUSCO TR-3200B PFR P1 P2vilene 株式会社，型号 V-1003N</td>
+            <td>医用帽</td>
+            <td>GB 15979-2002</td>
+              <td>待补充</td>
           </tr>
           <tr>
-            <td rowspan="2">医用外科口罩 （要独立包装防止交叉感染）
-             国内
-             YY  0469-2011 (印在每只独立外包装上）
-             美标 
-             ASTM F2100-II 标准  level 2 & level 3 
-             [1/27 由武汉大学人民医院设备科验证]
-            欧标 
-           EN 14683  + Type IIR 
-            全球通用核心指标 (下文有详细图片）
-            颗粒过滤>95%, fluid resistant>120mmhg</td>
-            <td>国内：Winner 稳健医疗 [符合YY0469]</td>
+            <td>隔离衣</td>
+            <td>一次性使用隔离衣 有注册证或备案证
+              [1/27 20:37 根据广州日报微信号]</td>
+              <td></td>
           </tr>
           <tr>
-            <td>海外: halyard health 48208/49207（level 3 且防液体）</td>
+            <td>防护面罩</td>
+            <td>遮盖整个或部分面部眼护具
+            不需注册证，防喷溅、最好能防雾
+              [1/29 02:07 根据GB个人用眼护具技术要求]</td>
+              <td>多家厂商可以</td>
           </tr>
           <tr>
-            <td rowspan="6">防护服</td>
-            <td rowspan="6">防护服 符合国标 GB19082-2003 或 19082-2009《医用一次性防护服技术要求》
-           其中两项重要指标为
-           1. 抗渗水性：静水压 > 1.67kPa (17cm H2O)
-           2. 抗合成血液穿透性 > 1.75kPa(不小于 2 级，即 2-6 级皆可）
-           [1/27 16:17 更新]
-           戴帽 + 尺寸别买太小
-           美国 
-           ASTM F1671-97a
-           [美国标准尚不清晰，当前标准为 01/25 协和医院文档]
-            欧标 
-           EN14126* + Type 4(B)/EN 14605 以上**
-         [1/27 11:30, 重庆医科大胸外科文档参照 + 1/27 20:55 加入 EN14605]
-           日本规格 通过JIS T 8060 8061 8062测试 标注「人工血液バリア性・ウイルスバリア性 クラス２・クラス３」
-           [1/27 14:38, 武汉大学人民医院设备科验证]*EN14126: Protection against infective agents** Type 是 Chemical Protective Clothing 的分级，数字越低，标准越高，最好带 B, 也可能是标 EN14605 （具体见后文细则）
-           [1/27 20:55 更新]</td>
-           <td>Du Pont 杜邦Tyvek 特卫强 1422A 连体服 CHA 5 医用款一次性防护服 ⚠️不建议未经过国内 GB19082 认证的 1422A
-           [01/27 14:13 更新]
-           TYVEK 800J （对应的料号：TJI98TWHXX0025PI）
-           [01/27 14:25 更新]
-           Tyvek 600 或 Tyvek classic plus，同款 
-          [1/27 19:21 更新]
-            Tychem 2000 [1/26 0:41 更新]</td>
+            <td>防护鞋套</td>
+            <td>无需注册证，最好厚一些
+              [1/27 20:37 根据广州日报微信号]</td>
+              <td>多家厂商可以</td>
           </tr>
           <tr>
-            <td>UVEX 4B [1/27 19:21 更新]</td>
+            <td>消毒液</td>
+            <td>8% 的过氧化氢消毒液, 化工标准，浓度一定要保障，品牌不限，需要合格证物流运输需要化工专用车</td>
+              <td>多家厂商可以</td>
           </tr>
-          <tr>
-            <td>雷克兰 医用一次性防护服 AMN 428ETS</td>
-          </tr>
-          <tr>
-            <td>3M 4565</td>
-          </tr>
-          <tr>
-            <td>Winner 稳健医疗  一次性医用防护服（他家只有一款）</td>
-          </tr>
-          <tr>
-            <td>Ansell
-              Microgard 2000/2500/2500plus （欧美）
-              重松製作所　型号：マイクロガード2000b/2000plus/2300plus/2500plus/3000/4000
-             日進医療器 型号：リーダー感染症対策防護服高ウイルスバリアアズワン 型号：感染症対策防護服
-              [1/29 01:00 更新]</td>
-          </tr>
-          <tr>
-            <td>护目镜</td>
-            <td>国标 GB/T 14866
-                或二级以上医用护目镜 - Medical Safety Googles / Protective Eyewear，弹性佩戴（可以和近视镜兼容）、视野宽阔、必须有防溅功能，四圈密封最好防雾
-               其他符合红字条件的护目镜也可（1/27 15:38 护目镜若不符合上述要求最好别买，不能用，可考虑防护面罩代替）</td>
-            <td>3M 1623AF /1621AF 防护眼镜（国内）GA500 护目镜（海外）Honeywell 型号 LG20 （间接通风口 防液体飞溅）1.1005509  防雾+医用 （最优）
-            2.1005507 不防雾+医用 
-          3.1005509 防雾但未标明可医用
-            [01/29 02:15]</td>
-          </tr>
-         <tr>
-           <td>手套</td>
-           <td>一次性使用医用橡胶检查手套
-            GB 10213-2006
-          一次性使用灭菌橡胶外科手套
-            GB 7543-2006</td>
-            <td>国内多家厂商可以</td>
-         </tr>
-         <tr>
-           <td>手术衣</td>
-           <td>GB 15979-2002</td>
-            <td>待补充</td>
-         </tr>
-         <tr>
-           <td>医用帽</td>
-           <td>GB 15979-2002</td>
-            <td>待补充</td>
-         </tr>
-         <tr>
-           <td>隔离衣</td>
-           <td>一次性使用隔离衣 有注册证或备案证
-             [1/27 20:37 根据广州日报微信号]</td>
-            <td></td>
-         </tr>
-         <tr>
-           <td>防护面罩</td>
-           <td>遮盖整个或部分面部眼护具
-           不需注册证，防喷溅、最好能防雾
-            [1/29 02:07 根据GB个人用眼护具技术要求]</td>
-            <td>多家厂商可以</td>
-         </tr>
-         <tr>
-           <td>防护鞋套</td>
-           <td>无需注册证，最好厚一些
-            [1/27 20:37 根据广州日报微信号]</td>
-            <td>多家厂商可以</td>
-         </tr>
-         <tr>
-           <td>消毒液</td>
-           <td>8% 的过氧化氢消毒液, 化工标准，浓度一定要保障，品牌不限，需要合格证物流运输需要化工专用车</td>
-            <td>多家厂商可以</td>
-         </tr>
-        </table>
-        
-        
+          </table>
+        </div>
+        <div class="smallfont">以上信息来自于一线医生、医院信息、协和文档以及复星采购文档</div>
+        <div class="smallfont">⚠️以上规格由志愿者小组整理，无法穷尽所有标准，建议在最终购买前和专业医疗人士做进一步咨询确认。实际情况也根据医院标准的不同需求，由医院选择适当放宽标准。</div>
+        <div class="smallfont">⚠️ 目前湖北整体都很缺物资...不仅是武汉。希望有相关资源的朋友能够大力伸出援手。对捐赠物资的具体要求，请参考下文具体内容。</div>
+        <div class="leftfont">医用物资规格要求参考</div>
+        <div class="smallfont" style="color:red;">⚠️请务必确认捐赠的物资符合医疗标准！！否则反而会让医生更危险！不符合医用标准的仅可给非一线的人员使用！</div>
+        <div class="leftfont">1.口罩</div>
+        <div class="leftfont">口罩医用规格总结（国内& 国外外标准）</div>
+        <div class="leftfont">【国内标准】</div>
+        <div class="smallfont">医用防护口罩（需要防高压液体喷溅）</div>
+        <div class="smallfont">规格：GB  19083-2010 3M 1860/1870/9132 可以,3M1860为一线员工最标配！其它 3M 款基本不行</div>
+        <div class="smallfont">其他防护口罩 n95/n99</div>
+        <div class="smallfont">规格：GB 2626 强制性标准，非油性颗粒过滤效率>=95%
+        用于非以下情形：1）近距离接触感染病人 2）进行有可能产生气溶胶的操作，如吸痰、插管等 3）产生体液喷溅可能的操作
+        必须面部贴合不漏气，不带呼吸器</div>
+        <div class="smallfont">医用外科口罩 YY  0469-2010 或者 0469-2011，需要独立包装（除了防护口罩外，医用外科口罩也非常需要）</div>
+        <div class="smallfont">⚠️ 需合成血液穿透测试（防飞沫血液体液）</div>
+        <div class="smallfont">⚠️ 需符合微生物指标，过滤效率大于等于95%，使用非油性颗粒物测试</div>
+        <div class="smallfont">⚠️ 需提供工商营业执照，医疗器械注册证，医疗器械生产许可证，第三方检测报告</div>
+        <div class="smallfont">⚠️ 国外捐赠产品参考前面标准，提供产品说明书，营业执照，进口产品生产国（地区）允许生产销售的证明文件及报关单，正规的收据或电子凭证</div>
+        <div class="leftfont">【国外标准】</div>
+        <div class="smallfont">医用防护口罩（需要防高压液体喷溅</div>
+        <div class="smallfont">下图标红的两款，才属于医护级别，需要 Fluid Resistant Claim！
+        美国 NIOSH 认证，N95/N99+Fluid resistant（CDC美国疾控认证） 欧标是 FFP2 或 FFP3，不带呼吸阀，同时具备 fluid resistant</div>
+        <div>
+          <img src="../assets/image/img1.png" >
+        </div>
+        <div class="smallfont">普通防护口罩 （普通人和不接触高压液体喷溅的医务人员使用）</div>
+        <div class="smallfont" style="color:red">欧标 FFP2/FFP3 </div>
+        <div class="smallfont" style="color:red">美国 NIOSH 认证，非油性颗粒过滤效率>=95%</div>
+         <div class="smallfont">普医用外科口罩</div>
+        <div class="smallfont" style="color:red">美标：ASTM F2100-II 标准，level 2 & level 3 可以</div>
+        <div class="smallfont" style="color:red">欧标：EN14683  + Type IIR </div>
+         <div>
+          <img src="../assets/image/img2.png" >
+        </div>
+        <div>
+          <img src="../assets/image/img3.png" >
+        </div>
+        <div class="smallfont" style="color:red">如何在口罩上寻找到标准 & 不合规口罩示例</div>
+        <div>
+          <img src="../assets/image/img4.png" >
+        </div>
+        <div>
+          <img src="../assets/image/img5.png" >
+        </div>
+        <div class="smallfont">⚠️有呼吸阀是不可以的
+          具体澄清一下：符合 GB 2626 + 无呼吸阀的款也是医院需要的，属于下面这档防护口罩：
+        其他防护口罩 n95/n99 用于非以下情形：1）近距离接触感染病人 2）进行有可能产生气溶胶的操作，如吸痰、插管等 3）产生体液喷溅可能的操作
+        必须面部贴合不漏气，不带呼吸器）</div>
+        <div class="leftfont">可用防护口罩图例（分医护 & 普通）</div>
+        <div class="leftfont">a) 3M 型号 9132/1860 （官方推荐）</div>
+        <div>
+          <img src="../assets/image/img6.png" >
+        </div>
+        <div>
+          <img src="../assets/image/img7.png" >
+        </div>
+        <div class="leftfont">符合 GB 19083</div>
+        <div>
+          <img src="../assets/image/img8.png" >
+        </div>
+        <div class="smallfont">b) 3M 1870+ </div>
+        <div class="smallfont">c）其他防护口罩 （普通人和不接触高压液体喷溅的医务人员使用）</div>
+        <div class="smallfont">用于非以下情形：1）近距离接触感染病人 2）进行有可能产生气溶胶的操作，如吸痰、插管等 3）产生体液喷溅可能的操作
+         必须面部贴合不漏气，不带呼吸器</div>
+         <div class="smallfont">中国 GB 2626 强制性标准，非油性颗粒过滤效率>=95%
+            欧标 FFP2/FFP 3
+           美国 NIOSH 认证，非油性颗粒过滤效率>=95%</div>
+          <div class="smallfont">c) 3M 8810
+          d) PFR P1 P2
+          e) TRUSCO TR-3200B
+        f) Honeywell Sperian SAF-T-FIT Plus 
+        g) Spectra SHIELD-9500
+          f）其他欧标 FFP2 FFP 3</div>
+        <div>
+          <img src="../assets/image/img9.png" >
+        </div>
+        <div class="smallfont">合规医用外科口罩（图片所示为医生确认可用）“稳健医疗” 符合YY0469</div>
+        <div>
+          <img src="../assets/image/img10.png" >
+        </div>
+        <div class="leftfont">2.防护衣</div>
+        <div class="smallfont">防护服 符合国标 GB19082-2003 或 19082-2009《医用一次性防护服技术要求》</div>
+        <div class="smallfont">海外同等参考
+          美国 ASTM F1671-97A
+          欧标 EN14126 Type 4(B)&5(B)&6(B)，Type1-6，数字越小防护越高；4为医用推荐要求，带（B）的类型是生物防护，优先选择带B类型</div>
+        <div class="smallfont">具体确定可用的型号有（后附图片）
+          杜邦 TYVEK 800（400 不可以！） （也是现在工厂加班加点赶制的款）
+          杜邦（ DU PONT) 1422A 医用防护服防传染隔离病毒细菌连体带帽 [出自：协和医院捐赠要要求.pdf 01/25]
+          雷克兰 AMN428ETS 灭菌型医用防护服
+          3M 白色戴帽防化服4565（证书需要说明可以阻隔特定生物污染）
+          稳健医疗，医用防护福，符合GB19082-2009
+          二级以上医用防护服：一般衣服上有红蓝条纹</div>
+          <div class="leftfont">Dupont Tyvek 1422A[复星官方文件 2020/01/25]</div>
+          <div>
+            <img src="../assets/image/img11.png" >
+          </div>
+          <div class="smallfont">也称杜邦 TYVEK 医用一次性防护服[也是当前工厂加工款]</div>
+          <div>
+            <img src="../assets/image/img12.png" >
+          </div>
+          <div class="smallfont">3) 杜邦 TYVEK 800J(黄色边条） 或 600（蓝色边条，也称 TYVEK classic plus）
+            [01/25 一线医生确认 + 1/26 更新 600 + 1/27 更新图片]</div>
+          <div>
+            <img src="../assets/image/img13.png" >
+          </div>
+          <div>
+            <img src="../assets/image/img14.png" >
+          </div>
+          <div class="smallfont">4）3M 4565</div>
+          <div>
+            <img src="../assets/image/img15.png" >
+          </div>
+          <div class="smallfont">5）Winner 稳健医疗，医用防护服</div>
+          <div>
+            <img src="../assets/image/img16.png" >
+          </div>
+          <div class="smallfont">7）日本防护服 JIS T 8060, JIS T 8061, JIS T 8062 [1/27 11:00 更新，来自武汉大学人民医院设备科]</div>
+          <div class="smallfont">欧洲防护服
+            EN14126 + Type 4(B)/EN 14605 以上
+            [出自团队自查、反复核对；并结合重庆医科大附属第一医院胸外科医生审核的东南大学校友会整理的欧洲采购指南，1/27]
+            首要满足 EN14126 标准，医学防护（protective clothing against infective agents)；也可对照下图图标
+            防水性/密闭性：分为Type 1-6，数字越小等级越高；医用推荐 Type4(B) 及以上; 也可对照编码 type 3&4 对应 EN14605 ；下图中也有图标
+          </div>
+          <div>
+            <img src="../assets/image/img17.png" >
+          </div>
+          <div>
+            <img src="../assets/image/img18.png" >
+          </div>
+          <div>
+            <img src="../assets/image/img19.png" >
+          </div>
+          <div>
+            <img src="../assets/image/img20.png" >
+          </div>
+          <div>
+            <img src="../assets/image/img21.png" >
+          </div>
+          <div>
+            <img src="../assets/image/img22.png" >
+          </div>
+
       </div>
       
     </van-popup>

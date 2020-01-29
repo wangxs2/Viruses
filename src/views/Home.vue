@@ -979,6 +979,7 @@ export default {
       }).then(res => {
         if(res.code=="success"){
          this.$toast('已经成功点赞');
+         this.initMap()
          this.mapobj.encourageNum++
         }else{
           this.$toast('您已经点过赞了');

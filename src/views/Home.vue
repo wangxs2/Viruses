@@ -8,6 +8,9 @@
     <div class="threebif">
       <van-icon  name="good-job" size="30" color="#ffffff" />
     </div>
+    <div class="forew">
+      近七天数据
+    </div>
     <div class="write">
       <p>更多疫情跟踪： 新型肺炎需求捐赠记录</p>
       <p>上海产业技术研究院提供 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p>
@@ -967,16 +970,14 @@ export default {
         zoom:4,
         mapStyle:'amap://styles/9fb204085bdb47adb66e074fca3376be',
       });
-       AMap.plugin([
-        'AMap.ToolBar',
-    ], ()=>{
-        // 在图面添加工具条控件，工具条控件集成了缩放、平移、定位等功能按钮在内的组合控件
-        this.myMap.addControl(new AMap.ToolBar({
-            // 简易缩放模式，默认为 false
-            liteStyle: true,
-            position:'LT'
-        }));
-    });
+    //    AMap.plugin([
+    //     'AMap.ToolBar',
+    // ], ()=>{
+    //     this.myMap.addControl(new AMap.ToolBar({
+    //         liteStyle: true,
+    //         position:'LT'
+    //     }));
+    // });
       this.initMap()
 
     },
@@ -1113,6 +1114,20 @@ export default {
     border-radius:12px;
     text-align:left;
     padding-left:6px;
+  }
+  .forew{
+     position:fixed;
+    top:100px;
+    left:20px;
+    z-index:10;
+    color:#333333;
+    width:100px;
+    height:30px;
+    font-size:14px;
+    line-height:30px;
+    background:rgba(255,255,255,1);
+    box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32);
+    border-radius:6px;
   }
   .threebif{
     position:fixed;

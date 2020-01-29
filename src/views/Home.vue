@@ -231,7 +231,148 @@
         <div class="bigfont">医用防护用品规格参考表</div>
         <div class="smallfont">注：捐赠者也可根据医院具体物资匮乏情况，与医院核实之后调整相应物资标准。</div>
         <div class="smallfont">⚠️针对海外产品，所有产品最好都提供所在国作为医疗用品的上市证明。</div>
-        
+        <table border="1" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>物品</td>
+            <td>医用规格（必须符合或高于）</td>
+            <td>厂家 & 型号（不限于）</td>
+          </tr>
+          <tr>
+            <td rowspan="4">口罩</td>
+            <td>医用防护口罩 （需要防高压液体喷溅）国内标准GB 19083-2010 美国 NIOSH 认证，N95/N99 + Fluid resistant（CDC 美国疾控认证）欧标
+            FFP2/FFP3+ Type II R (fluid resistant)
+            日标（满足 1 或 2）
+            1. 明确写明「サージカルＮ９５レスピレーターとして液体防護性があり、血液を含む液体等に有用」
+            2. 符合以下数据
+            a) 人工血液不浸透性　80mmHg以上
+            b) ΔＰ（呼吸抵抗）＜35mmH2O
+            [1/27 11:00，武汉大学人民医院设备科验证]</td>
+            <td>3M9132/1860（官方推荐）1870+（符合国内标准）</td>
+          </tr>
+          <tr>
+            <td>其他防护口罩 n95/n99（普通人和不接触高压液体喷溅的医务人员使用）
+              用于非以下情形：1）近距离接触感染病人 2）进行有可能产生气溶胶的操作，如吸痰、插管等 3）产生体液喷溅可能的操作
+              必须面部贴合不漏气，不带呼吸器
+            ⚠️请注意不要买到假货
+              国内GB 2626 强制性标准，非油性颗粒过滤效率>=95%
+              欧标 FFP2/FFP3
+              美国 NIOSH 认证，非油性颗粒过滤效率>=95%
+            韩国KF94 (不推荐，仅在物资匮乏时考虑)</td>
+            <td>Honeywell Sperian SAF-T-FIT Plus 3M 8810 TRUSCO TR-3200B PFR P1 P2vilene 株式会社，型号 V-1003N</td>
+          </tr>
+          <tr>
+            <td rowspan="2">医用外科口罩 （要独立包装防止交叉感染）
+             国内
+             YY  0469-2011 (印在每只独立外包装上）
+             美标 
+             ASTM F2100-II 标准  level 2 & level 3 
+             [1/27 由武汉大学人民医院设备科验证]
+            欧标 
+           EN 14683  + Type IIR 
+            全球通用核心指标 (下文有详细图片）
+            颗粒过滤>95%, fluid resistant>120mmhg</td>
+            <td>国内：Winner 稳健医疗 [符合YY0469]</td>
+          </tr>
+          <tr>
+            <td>海外: halyard health 48208/49207（level 3 且防液体）</td>
+          </tr>
+          <tr>
+            <td rowspan="6">防护服</td>
+            <td rowspan="6">防护服 符合国标 GB19082-2003 或 19082-2009《医用一次性防护服技术要求》
+           其中两项重要指标为
+           1. 抗渗水性：静水压 > 1.67kPa (17cm H2O)
+           2. 抗合成血液穿透性 > 1.75kPa(不小于 2 级，即 2-6 级皆可）
+           [1/27 16:17 更新]
+           戴帽 + 尺寸别买太小
+           美国 
+           ASTM F1671-97a
+           [美国标准尚不清晰，当前标准为 01/25 协和医院文档]
+            欧标 
+           EN14126* + Type 4(B)/EN 14605 以上**
+         [1/27 11:30, 重庆医科大胸外科文档参照 + 1/27 20:55 加入 EN14605]
+           日本规格 通过JIS T 8060 8061 8062测试 标注「人工血液バリア性・ウイルスバリア性 クラス２・クラス３」
+           [1/27 14:38, 武汉大学人民医院设备科验证]*EN14126: Protection against infective agents** Type 是 Chemical Protective Clothing 的分级，数字越低，标准越高，最好带 B, 也可能是标 EN14605 （具体见后文细则）
+           [1/27 20:55 更新]</td>
+           <td>Du Pont 杜邦Tyvek 特卫强 1422A 连体服 CHA 5 医用款一次性防护服 ⚠️不建议未经过国内 GB19082 认证的 1422A
+           [01/27 14:13 更新]
+           TYVEK 800J （对应的料号：TJI98TWHXX0025PI）
+           [01/27 14:25 更新]
+           Tyvek 600 或 Tyvek classic plus，同款 
+          [1/27 19:21 更新]
+            Tychem 2000 [1/26 0:41 更新]</td>
+          </tr>
+          <tr>
+            <td>UVEX 4B [1/27 19:21 更新]</td>
+          </tr>
+          <tr>
+            <td>雷克兰 医用一次性防护服 AMN 428ETS</td>
+          </tr>
+          <tr>
+            <td>3M 4565</td>
+          </tr>
+          <tr>
+            <td>Winner 稳健医疗  一次性医用防护服（他家只有一款）</td>
+          </tr>
+          <tr>
+            <td>Ansell
+              Microgard 2000/2500/2500plus （欧美）
+              重松製作所　型号：マイクロガード2000b/2000plus/2300plus/2500plus/3000/4000
+             日進医療器 型号：リーダー感染症対策防護服高ウイルスバリアアズワン 型号：感染症対策防護服
+              [1/29 01:00 更新]</td>
+          </tr>
+          <tr>
+            <td>护目镜</td>
+            <td>国标 GB/T 14866
+                或二级以上医用护目镜 - Medical Safety Googles / Protective Eyewear，弹性佩戴（可以和近视镜兼容）、视野宽阔、必须有防溅功能，四圈密封最好防雾
+               其他符合红字条件的护目镜也可（1/27 15:38 护目镜若不符合上述要求最好别买，不能用，可考虑防护面罩代替）</td>
+            <td>3M 1623AF /1621AF 防护眼镜（国内）GA500 护目镜（海外）Honeywell 型号 LG20 （间接通风口 防液体飞溅）1.1005509  防雾+医用 （最优）
+            2.1005507 不防雾+医用 
+          3.1005509 防雾但未标明可医用
+            [01/29 02:15]</td>
+          </tr>
+         <tr>
+           <td>手套</td>
+           <td>一次性使用医用橡胶检查手套
+            GB 10213-2006
+          一次性使用灭菌橡胶外科手套
+            GB 7543-2006</td>
+            <td>国内多家厂商可以</td>
+         </tr>
+         <tr>
+           <td>手术衣</td>
+           <td>GB 15979-2002</td>
+            <td>待补充</td>
+         </tr>
+         <tr>
+           <td>医用帽</td>
+           <td>GB 15979-2002</td>
+            <td>待补充</td>
+         </tr>
+         <tr>
+           <td>隔离衣</td>
+           <td>一次性使用隔离衣 有注册证或备案证
+             [1/27 20:37 根据广州日报微信号]</td>
+            <td></td>
+         </tr>
+         <tr>
+           <td>防护面罩</td>
+           <td>遮盖整个或部分面部眼护具
+           不需注册证，防喷溅、最好能防雾
+            [1/29 02:07 根据GB个人用眼护具技术要求]</td>
+            <td>多家厂商可以</td>
+         </tr>
+         <tr>
+           <td>防护鞋套</td>
+           <td>无需注册证，最好厚一些
+            [1/27 20:37 根据广州日报微信号]</td>
+            <td>多家厂商可以</td>
+         </tr>
+         <tr>
+           <td>消毒液</td>
+           <td>8% 的过氧化氢消毒液, 化工标准，浓度一定要保障，品牌不限，需要合格证物流运输需要化工专用车</td>
+            <td>多家厂商可以</td>
+         </tr>
+        </table>
         
         
       </div>
@@ -254,7 +395,7 @@ export default {
       pointGroup: new AMap.OverlayGroup(), // 点集合
       isDetail:false,
       agreement:false,
-      specifications:false,//医用规则说明
+      specifications:true,//医用规则说明
       phoneshow:false,
       downUpImg:true,
       showSearch:false,
@@ -777,6 +918,11 @@ export default {
   background: #f1f1f1;
   display:flex;
   flex-direction: column;
+  table{
+    td{
+      font-size:12px;
+    }
+  }
   .agreement-content{
     box-sizing: border-box;
     padding:20px 15px;

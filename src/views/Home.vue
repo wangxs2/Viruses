@@ -1117,9 +1117,9 @@ export default {
   .twobif{
     position:fixed;
     top:100px;
-    right:20px;
+    right:60px;
     z-index:10;
-    width:140px;
+    width:100px;
     height:24px;
     line-height:24px;
     font-size:12px;
@@ -1127,7 +1127,7 @@ export default {
     opacity:0.7;
     color:#ffffff;
     border-radius:12px;
-    text-align:left;
+    text-align:center;
     padding-left:6px;
   }
   .forew{
@@ -1147,7 +1147,7 @@ export default {
   .threebif{
     position:fixed;
     top:87px;
-    right:20px;
+    right:24px;
     z-index:10;
     width:44px;
     height:44px;

@@ -2,8 +2,9 @@
   <div class="home">
     <div class="write">
       <p>更多疫情跟踪： 新型肺炎需求捐赠记录</p>
-      <p>上海产业技术研究院提供</p>
+      <p>上海产业技术研究院提供 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p>
     </div>
+    <!-- <div class="writefont" >免责声明</div> -->
     <!-- <div class="header">新型肺炎物资捐赠实时动态</div> -->
     <div id="myMap" class="container">
       <!-- <div class="top-fix">定点物资缺乏地图</div> -->
@@ -142,6 +143,36 @@
     </van-popup>
 
     <!-- 医院的详情弹框 -->
+    <!-- 免责协议 -->
+    <van-popup v-model="agreement" closeable position="bottom" :style="{ height: '100%' }">
+      <div class="agreement-content">
+        <div class="bigfont">免责声明</div>
+        <div class="leftfont">第一条 协议订立</div>
+        <div class="contentfont">1.1 用户在同意本网站：新冠肺炎物资公益平台(http://rescue.sisiits.com:9966/visur)的《服务协议》和本协议后，方可便用本网络服务平台（以下简称“平台”)提供的物资需求信息相关服务（以下简称“服务”）。</div>
+        <div class="contentfont">1.2 用户在便用本平台提供的服务前务必认真阅读本协议，一旦用户使用本平台提供的服务即表示用户同意与本平台签订本协议且同意受本协议之约束。</div>
+        <div class="leftfont">第二条 服务说明</div>
+        <div class="contentfont">2.1 需求内容以疫区医院在各大官方发布信息为准（认证微博、官方微信公众号、医院盖章文件等），本平台只做内容收集展示。</div>
+        <div class="leftfont">第三条 用户的权利和义务</div>
+        <div class="contentfont">3.1 捐赠方在进行捐赠前，应仔细阅读并接受疫区院方所公示的内容。本协议中涉及疫区院方与捐赠方之间权利义务的内容，如有与我国相关法律冲突的，以我国相关法律为准。</div>
+        <div class="contentfont">3.2 如捐赠方需取得相应凭证，应与疫区院方联系取得。捐赠方因捐赠各项事宜产生争议由用户与疫区医院协商解决。</div>
+         <div class="leftfont">第四条 免责说明</div>
+        <div class="contentfont">4.1 因疫情变化，本平台显示的信息仅供参考，最终以疫区医院及厂商实际需求为准。</div>
+        <div class="contentfont">4.2 本平台为公益性信息平台，供需双方产生任何纠纷与本平台无关。</div>
+        <div class="contentfont">4.3 本平台会尽力维护平台信息的安全，但法律规定的不可抗力，以及因为黑客入侵、计算机病毒等原因造成用户资料泄露、丢失、被盗用、被篡改的，本平台不承担任何责任。</div>
+        <div class="contentfont">4.4 本平台仅提供技术服务，不是赠与台同的权利义务主体，不介入用户与疫区医院及厂商之间的纠扮，但本平台将提供一切协助，保护用户的合法权益。</div>
+        <div class="contentfont">4.5 本平台如被恶意篡改用于不正当募捐使用，一律追责。</div>
+        <div class="contentfont">4.6 本平台唯一官方网址：http://rescue.sisiits.com:9966/visur（新冠肺炎物资公益平台）如被人恶意假借名义进行不正当行为，与本平台无关。并且保留对对方追究法律责任的权力。</div>
+        <div class="leftfont">第五条 争议解决及法律适用 </div>
+        <div class="contentfont">5.1在用户有意向捐赠或物资对接后，如果在本协议约定内容履行过程中，对相关事宜的履行发生争议，用户同意按照中华人民共扣国颁布的相关法律法规来解决争议。</div>
+        
+        
+        
+        
+      </div>
+      
+    </van-popup>
+    <!-- 免责协议 -->
+
   </div>
 </template>
 
@@ -155,6 +186,7 @@ export default {
       myMap:null,
        pointGroup: new AMap.OverlayGroup(), // 点集合
       isDetail:false,
+      agreement:false,
       phoneshow:false,
       downUpImg:true,
       showSearch:false,
@@ -552,6 +584,36 @@ export default {
   background: #f1f1f1;
   display:flex;
   flex-direction: column;
+  .agreement-content{
+    box-sizing: border-box;
+    padding:20px 15px;
+    .bigfont{
+      font-size:18px;
+      font-weight:bold;
+    }
+    .leftfont{
+      font-size:16px;
+      font-weight:bold;
+      text-align:left;
+      margin-top:8px;
+    }
+    .contentfont{
+      font-size:15px;
+      text-align:left;
+      text-indent:20px;
+      margin-top:8px;
+      line-height:26px;
+      color:#333333;
+    }
+  }
+  .writefont{
+    position:fixed;
+    bottom:4px;
+    right:10px;
+    z-index:10;
+    color:#666666;
+    font-size:12px;
+  }
   .write{
     position:fixed;
     bottom:4px;

@@ -156,10 +156,15 @@
               <span class="title-name">联系我们</span>
               <span class="dot" v-for="(item,i) in 3" :key="i+'d'"></span>
             </div>
-            <div class="message">
-              <span class="name">柴田鑫</span>
-              <span class="tel">{{commitMobile}}</span>
-              <span class="btn" @click="commitTel(commitMobile)">立即拨打</span>
+            <div class="message" v-for="(item,i) in conUs" :key="i">
+              <div class="message-content">
+                <div class="name-tel">
+                  <span class="name">{{item.name}}</span>
+                  <span class="tel">{{item.tel}}</span>
+                </div>
+                <span class="job">({{item.job}})</span>
+              </div>
+              <span class="btn" @click="commitTel(item.tel)">立即拨打</span>
             </div>
             <div class="code">
               <img style="" src="../assets/image/gzh.jpg" alt="">
@@ -601,11 +606,21 @@ export default {
         tel:'',
         need:''
       },
-      commitMobile: "18368091476",
       xuShow:true, 
       tiShow:false,
       curTabIndex:null, // 录入当前切换
       clickTabPoint:0, // 录入提交是否选择tab按钮指针
+      conUs:[ // 录入联系人
+        {
+          job:"志愿者联系人",
+          name: "墨竹",
+          tel: "18817582880",
+        },{
+          job:"平台联系人",
+          name: "柴先生",
+          tel: "18368091476",
+        },
+      ]
 
     };
   },
@@ -696,6 +711,7 @@ export default {
               this.form.people=''
               this.form.tel=''
               this.form.need=''
+              this.reduceShow=false
             } else  if (res.code=="error") {
               this.$toast(res.message);
             } else  if (res.code==504) {
@@ -1657,8 +1673,31 @@ export default {
           color:rgba(232,245,255,1);
           background: #3A6FE5;
           border-radius: 3px;
-          .name{}
-          .tel{}
+          // border-top-left-radius: 3px;
+          // border-top-right-radius: 3px;
+          // &:first-child {
+            margin-bottom:1px;
+            // border-bottom-right-radius: 3px;
+            // border-bottom-left-radius: 3px;
+          // }
+          .message-content{
+            display:flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            .name-tel{
+            display:flex;
+            justify-content: flex-start;
+
+              .name{}
+              .tel{
+                padding-left: 10px;
+              }
+            }
+            .job{
+              font-size: 13px;
+              text-align:left;
+            }
+          }
           .btn{
             display:flex;
             justify-content: center;

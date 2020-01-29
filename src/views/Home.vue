@@ -161,6 +161,10 @@
               <span class="title-name">需求填写</span>
               <span class="dot" v-for="(item,i) in 3" :key="i+'g'"></span>
             </div>
+            <div class="tab-btn">
+              <div :class="[xuShow?'tab-img xu1':'tab-img xu']" @click="needTi(1)"><span>我是需求方</span></div>
+              <div  :class="[tiShow?'tab-img ti':'tab-img ti1']" @click="needTi(2)"><span>我是提供方</span></div>
+            </div>
             <div class="form-wrapper">
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">单位名称</span>
@@ -238,7 +242,7 @@ export default {
         }
       ],
       mapobj:{},
-      form:{
+      form:{ // 录入表单
         company:'',
         address:'',
         people:'',
@@ -252,7 +256,11 @@ export default {
         tel:'',
         need:''
       },
-      commitMobile: "18368091476"
+      commitMobile: "18368091476",
+      xuShow:true, 
+      tiShow:false,
+      curTabIndex:1, // 录入当前切换
+
     };
   },
   created() {
@@ -282,8 +290,34 @@ export default {
   // this.getProvinceList()
   },
   methods:{
+    // 录入立即拨打
     commitTel(tel){
       window.location.href = "tel:" + tel
+    },
+    // 录入需求提供切换
+    needTi(type){
+      this.clearErrorMessage()
+
+      this.xuShow=!this.xuShow
+      this.tiShow=!this.tiShow
+
+      this.curTabIndex=type
+    },
+    // 清空表单输入及错误提示
+    clearErrorMessage(){
+      
+      this.form.company=''
+      this.form.address=''
+      this.form.people=''
+      this.form.tel=''
+      this.form.need=''
+      
+      this.errorMessage.company=''
+      this.errorMessage.address=''
+      this.errorMessage.people=''
+      this.errorMessage.tel=''
+      this.errorMessage.need=''
+
     },
     // 录入表单提交
     confirm(){
@@ -296,6 +330,7 @@ export default {
           linkPeople:this.form.people,
           linkTel:this.form.tel,
           descr:this.form.need,
+          mark:this.curTabIndex
 
         }
         
@@ -404,6 +439,10 @@ export default {
     writeBtn(){
       this.show=false
       this.reduceShow=!this.reduceShow
+      this.xuShow=true
+      this.tiShow=false
+      
+      this.clearErrorMessage()
     },
     // 物资
     getWuziList(){
@@ -1132,6 +1171,54 @@ export default {
           .title-name{
             padding: 0 10px;
           }
+        }
+        .tab-btn {
+          display: flex;
+          justify-content: center;
+          align-items:center;
+          .tab-img{
+            display: flex;
+            justify-content: center;
+            align-items:center;
+            font-size:15px;
+            font-family:PingFang SC;
+            font-weight:bold;
+            &:last-child{
+              margin-left: 19px;
+            }
+            &.xu{
+              background:url("../assets/image/xu2.png") no-repeat;
+              width: 125px;
+              height: 44px;
+              background-size: 100% 100%;
+              color:rgba(181,121,247,1);
+            }
+            &.xu1{
+              background:url("../assets/image/xu1.png") no-repeat;
+              width: 125px;
+              height: 44px;
+              background-size: 100% 100%;
+              color:#fff;
+            }
+            &.ti{
+              background:url("../assets/image/ti1.png") no-repeat;
+              width: 125px;
+              height: 44px;
+              background-size: 100% 100%;
+              color:#fff;
+            }
+            &.ti1{
+              background:url("../assets/image/ti2.png") no-repeat;
+              width: 125px;
+              height: 44px;
+              background-size: 100% 100%;
+              color:rgba(181,121,247,1);
+            }
+            span{
+              padding-left: 20px;            
+            }
+          }
+
         }
         .message{
           display:flex;

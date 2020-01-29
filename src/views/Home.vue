@@ -1217,6 +1217,9 @@ export default {
             text-align: center;
             line-height: 44px;
             color:#fff;
+            font-size:18px;
+            font-family:PingFang SC;
+            font-weight:bold;
             background:linear-gradient(270deg,rgba(255,145,0,1) 0%,rgba(255,126,0,1) 53%,rgba(255,145,0,1) 100%);
             box-shadow:0px 0px 5px 0px rgba(0, 0, 0, 0.05);
             border-radius:22px;

@@ -287,6 +287,7 @@ export default {
     },
     // 录入表单提交
     confirm(){
+      this.formVil()
       if (this.form.company && this.form.address && this.form.people && this.form.tel && this.form.need) {
 
         let params= {
@@ -301,6 +302,11 @@ export default {
         this.$fetchPost("infoApply/save",params).then(res=> {
           if (res.code=="success") {
             this.$toast(res.message);
+            this.form.company=''
+            this.form.address=''
+            this.form.people=''
+            this.form.tel=''
+            this.form.need=''
           } else  if (res.code=="error") {
             this.$toast(res.message);
           } else  if (res.code==504) {

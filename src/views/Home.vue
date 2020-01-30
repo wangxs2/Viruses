@@ -12,8 +12,8 @@
       近七天数据
     </div>
     <div class="write">
-      <p>更多疫情跟踪： 新型肺炎需求捐赠记录</p>
-      <p>上海产业技术研究院提供 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p>
+      <p>更多疫情跟踪： 新型肺炎需求捐赠记录 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p>
+      <p style="line-height:16px">中华全国工商业联合会 <br>上海市慈善基金会<br> 上海产业技术研究院联合发布 </p>
     </div>
     <!-- <div class="writefont" >免责声明</div> -->
     <!-- <div class="header">新型肺炎物资捐赠实时动态</div> -->
@@ -1216,7 +1216,7 @@ export default {
   }
   .write{
     position:fixed;
-    bottom:4px;
+    bottom:0px;
     left:0px;
     z-index:10;
     font-size:12px;

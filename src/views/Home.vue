@@ -2,7 +2,7 @@
   <div class="home">
     <div class="onebif" v-if="isone">
       <div style="font-size:17px">共抗新冠肺炎</div>
-      <div style="font-size:16px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span><van-icon name="cross" @click="isone=false" size="22"/></div>
+      <div style="font-size:16px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span></div>
     </div>
     <div class="countbottom">中华全国工商业联合会 上海市慈善基金会 上海产业技术研究院联合发布</div>
     <div class="twobif">{{zanz.encourage}}次</div>
@@ -1082,7 +1082,11 @@ export default {
           this.total=this.dataList.length
         }
         // console.log(encrypt.Decrypt("9YCbVfmEYbvfEmdkyV3kyA=="))
-        this.mapinit(res)
+        if(res.length==0){
+          this.$toast('暂无数据！');
+        }else{
+          this.mapinit(res)
+        }
 
 
       })
@@ -1320,7 +1324,7 @@ export default {
   }
   .twobif{
     position:fixed;
-    top:140px;
+    top:80px;
     right:60px;
     z-index:10;
     width:100px;
@@ -1336,7 +1340,7 @@ export default {
   }
   .forew{
      position:fixed;
-    top:140px;
+    top:80px;
     left:20px;
     z-index:10;
     color:#333333;
@@ -1350,7 +1354,7 @@ export default {
   }
   .threebif{
     position:fixed;
-    top:126px;
+    top:66px;
     right:28px;
     z-index:10;
     width:44px;
@@ -1715,12 +1719,14 @@ export default {
     }
     .btn {
       position:relative;
+      right:40px;
+      top:-62px;
       display:flex;
       justify-content:center;
       align-items:center;
       width:50px;
       height:50px;
-      background:#fff;
+      // background:#fff;
       margin-left:292.5px;
       margin-top:15px;
       border-radius:50%;
@@ -2227,8 +2233,8 @@ export default {
   }
   .cur-time-btn{
     position: fixed;
-    top: 190px;
-    right: 17px;
+    top: 126px;
+    right: 28px;
     display: flex;
     flex-direction: column;
     justify-content: center;

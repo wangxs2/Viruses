@@ -758,6 +758,9 @@ export default {
       curTimeNoDataShow: false, // 实时捐赠无数据显示
       loadMore:true, //加载更多按钮
 
+      xuTab:true,
+      tiTab:true,
+
     };
   },
   created() {
@@ -787,6 +790,15 @@ export default {
     // this.getProvinceList()
   },
   methods:{
+    xuClick(){
+      this.xuTab=!this.xuTab
+      this.tiTab=!this.tiTab
+    },
+    tiClick(){
+      
+      this.xuTab=!this.xuTab
+      this.tiTab=!this.tiTab
+    },
     // 获取实时资讯数据
     getCurTimeDataList(){
       this.$fetchGet("donate/getInfo",this.curTimeParams).then(res=> {
@@ -1082,6 +1094,7 @@ export default {
     selectTimeItem(item) {
       this.show=false
       this.showSearch=true
+      this.isone=false
       this.searchText=item
       this.seven=false
       this.getDataList(item,2)
@@ -1091,6 +1104,7 @@ export default {
     selectItem(item) {
       this.show=false
       this.showSearch=true
+      this.isone=false
       this.searchText=item
       this.getDataList(item,1)
     },
@@ -1111,6 +1125,7 @@ export default {
       if (this.searchText){
         this.show=false
         this.showSearch=true
+        this.isone=false
         this.getDataList(this.searchText,1)
 
       }else {
@@ -1125,6 +1140,7 @@ export default {
     goback(){
       this.show=true
       this.showSearch=false
+      this.isone=true
       this.showDataLengthPoint=1
     },
     clearText(){
@@ -1133,6 +1149,7 @@ export default {
       this.getDataList() 
 
       this.showSearch=false
+      this.isone=true
       if(!this.seven){
           this.seven=true
       }
@@ -1303,7 +1320,7 @@ export default {
   }
   .twobif{
     position:fixed;
-    top:100px;
+    top:140px;
     right:60px;
     z-index:10;
     width:100px;
@@ -1319,7 +1336,7 @@ export default {
   }
   .forew{
      position:fixed;
-    top:100px;
+    top:140px;
     left:20px;
     z-index:10;
     color:#333333;
@@ -1333,7 +1350,7 @@ export default {
   }
   .threebif{
     position:fixed;
-    top:87px;
+    top:127px;
     right:24px;
     z-index:10;
     width:44px;
@@ -1345,6 +1362,51 @@ export default {
     border-radius:50%;
     box-sizing:border-box;
     // padding-top:3px;
+  }
+  .two-dir{
+    position:fixed;
+    top:160px;
+    left:20px;
+    z-index:10;
+    width:40px;
+    padding: 0 3px;
+    box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32);
+    border-radius:3px;
+    font-size: 10px;
+    background: #fff;
+    .tab-type{
+      display:flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 3px;
+      &:first-child{
+        border-bottom: 1px solid #f1f1f1;
+      }
+      &.xu{
+    color: #666;
+
+      }
+      &.ti{
+    color: #666;
+
+      }
+      &.xu1{
+    color: #0ff;
+
+      }
+      &.ti1{
+    color: #0ff;
+
+      }
+      img{
+        width: 18px;
+        height: 18px;
+      }
+      span{
+        margin-top:2px;
+      }
+    }
   }
   table{
     td{
@@ -1610,7 +1672,7 @@ export default {
   }
   .search-wrapper1{
     position:absolute;
-    top:50px;
+    top:10px;
     left:17px;
     width:340px;
     .input-wrapper{
@@ -2153,7 +2215,7 @@ export default {
   }
   .cur-time-btn{
     position: fixed;
-    top: 150px;
+    top: 190px;
     right: 17px;
     display: flex;
     flex-direction: column;

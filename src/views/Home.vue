@@ -13,7 +13,7 @@
       近七天数据
     </div>
     <div class="write">
-      <p>更多疫情跟踪： 新型肺炎需求捐赠记录 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p></div>
+      <p>更多物资跟踪：新冠肺炎物资捐赠对接记录 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p></div>
     <div id="myMap" class="container"></div>
     
     <!-- 医院的详情弹框 -->
@@ -592,6 +592,7 @@
 </template>
 
 <script>
+ import encrypt from '@/libs/encrypt'
 // @ is an alias to /src
 export default {
   name: "home",
@@ -1053,7 +1054,9 @@ export default {
           hour:data.substring(2,4)
         }
       } else{
-        params={}
+        params={
+          orgType:1
+        }
       }
 
       this.$fetchGet("hospital/selectHospital",params).then(res=> {
@@ -1078,7 +1081,9 @@ export default {
         if (this.dataList) {
           this.total=this.dataList.length
         }
+        // console.log(encrypt.Decrypt("9YCbVfmEYbvfEmdkyV3kyA=="))
         this.mapinit(res)
+
 
       })
     },
@@ -1257,16 +1262,16 @@ export default {
   createPoint(row) {
     let marker = new AMap.Marker({
       position: new AMap.LngLat(row.gaodeLon, row.gaodeLat),
-      offset: new AMap.Pixel(-9, -9),
+      offset: new AMap.Pixel(-7, -7),
       icon: new AMap.Icon({
-        size: new AMap.Size(18, 18),
+        size: new AMap.Size(14, 14),
         image:
           (row.type == 2&&row.isLack==1)
             ? require('../assets/image/icon4.png')
             : (row.type == 2&&row.isLack==0)?require('../assets/image/icon3.png')
             : (row.type == 1&&row.isLack==0)?require('../assets/image/icon1.png')
             :(row.type == 1&&row.isLack==1)?require('../assets/image/icon2.png'):require('../assets/image/icon5.png'),
-        imageSize: new AMap.Size(18,18)
+        imageSize: new AMap.Size(14,14)
       }), // 添加 Icon 图标 URL
       zIndex: 100,
       // map:this.myMap,
@@ -1345,7 +1350,7 @@ export default {
   }
   .threebif{
     position:fixed;
-    top:87px;
+    top:126px;
     right:28px;
     z-index:10;
     width:44px;

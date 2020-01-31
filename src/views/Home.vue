@@ -2,7 +2,7 @@
   <div class="home">
     <div class="onebif" v-if="isone">
       <div style="font-size:17px">共抗新冠肺炎</div>
-      <div style="font-size:16px">{{zanz.view}}人次浏览 <van-icon name="cross" @click="isone=false" /></div>
+      <div style="font-size:16px">{{zanz.view}}次浏览 <van-icon name="cross" @click="isone=false" /></div>
     </div>
     <div class="twobif">{{zanz.encourage}}次</div>
     <div class="threebif">

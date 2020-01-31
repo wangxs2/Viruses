@@ -13,7 +13,7 @@
     </div>
     <div class="write">
       <p>更多疫情跟踪： 新型肺炎需求捐赠记录 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p>
-      <p style="line-height:16px">中华全国工商业联合会 <br>上海市慈善基金会<br> 上海产业技术研究院联合发布 </p>
+      <!-- <p style="line-height:16px">中华全国工商业联合会 <br>上海市慈善基金会<br> 上海产业技术研究院联合发布 </p> -->
     </div>
     <!-- <div class="writefont" >免责声明</div> -->
     <!-- <div class="header">新型肺炎物资捐赠实时动态</div> -->
@@ -1244,16 +1244,16 @@ export default {
   createPoint(row) {
     let marker = new AMap.Marker({
       position: new AMap.LngLat(row.gaodeLon, row.gaodeLat),
-      offset: new AMap.Pixel(-12, -16),
+      offset: new AMap.Pixel(-9, -9),
       icon: new AMap.Icon({
-        size: new AMap.Size(24, 31),
+        size: new AMap.Size(18, 18),
         image:
           (row.type == 2&&row.isLack==1)
             ? require('../assets/image/icon4.png')
             : (row.type == 2&&row.isLack==0)?require('../assets/image/icon3.png')
             : (row.type == 1&&row.isLack==0)?require('../assets/image/icon1.png')
             :(row.type == 1&&row.isLack==1)?require('../assets/image/icon2.png'):require('../assets/image/icon5.png'),
-        imageSize: new AMap.Size(24, 31)
+        imageSize: new AMap.Size(18,18)
       }), // 添加 Icon 图标 URL
       zIndex: 100,
       // map:this.myMap,
@@ -1334,7 +1334,7 @@ export default {
   .threebif{
     position:fixed;
     top:87px;
-    right:24px;
+    right:28px;
     z-index:10;
     width:44px;
     height:44px;
@@ -1396,9 +1396,11 @@ export default {
     font-weight:500;
     width:100%;
     color:#666666;
-    line-height:12px;
+    margin-bottom:4px;
+    // line-height:12px;
     p{
       text-align:center;
+      margin:0
     }
   }
   .left-font{

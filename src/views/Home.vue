@@ -4,6 +4,7 @@
       <div style="font-size:17px">共抗新冠肺炎</div>
       <div style="font-size:16px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span><van-icon name="cross" @click="isone=false" size="22"/></div>
     </div>
+    <div class="countbottom">中华全国工商业联合会 上海市慈善基金会 上海产业技术研究院联合发布</div>
     <div class="twobif">{{zanz.encourage}}次</div>
     <div class="threebif">
       <van-icon  name="good-job" size="30" color="#ffffff" />
@@ -12,14 +13,9 @@
       近七天数据
     </div>
     <div class="write">
-      <p>更多疫情跟踪： 新型肺炎需求捐赠记录 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p>
-      <!-- <p style="line-height:16px">中华全国工商业联合会 <br>上海市慈善基金会<br> 上海产业技术研究院联合发布 </p> -->
-    </div>
-    <!-- <div class="writefont" >免责声明</div> -->
-    <!-- <div class="header">新型肺炎物资捐赠实时动态</div> -->
-    <div id="myMap" class="container">
-      <!-- <div class="top-fix">定点物资缺乏地图</div> -->
-    </div>
+<p>更多疫情跟踪： 新型肺炎需求捐赠记录 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p></div>
+    <div id="myMap" class="container"></div>
+    
     <!-- 医院的详情弹框 -->
     <van-popup  v-model="isDetail" closeable :style="{width: '100%' }" round :duration="0">
       <div class="contentDetail">
@@ -1283,7 +1279,6 @@ export default {
   height: 100%;
   background: #f1f1f1;
   display:flex;
-  flex-direction: column;
   .onebif{
     position:fixed;
     top:6px;
@@ -1388,15 +1383,13 @@ export default {
   }
   .write{
     position:fixed;
-    bottom:0px;
+    bottom:20px;
     left:0px;
     z-index:10;
     font-size:12px;
-    font-family:PingFang SC;
-    font-weight:500;
     width:100%;
     color:#666666;
-    margin-bottom:4px;
+    background:rgba(242,245,255,1);
     // line-height:12px;
     p{
       text-align:center;
@@ -1417,7 +1410,7 @@ export default {
     font-size: 18px;
   }
   .container{
-    flex:1;
+   flex:1;
     // margin-top:6px;
     position:relative;
     .top-fix{
@@ -1436,6 +1429,18 @@ export default {
       box-shadow:0px 1px 0px 0px rgba(238,238,238,1);
 
     }
+  }
+  .countbottom{
+     position:fixed;
+    bottom:0px;
+    left:0px;
+    z-index:10;
+    width:100%;
+    height:20px;
+    line-height:20px;
+    font-size:8px;
+    background:rgba(242,245,255,1);
+    color:#999999;
   }
   .contentDetail{
      padding: 12px;
@@ -1589,7 +1594,7 @@ export default {
       justify-content: flex-start;
       align-items:center;
       height: 44px;
-      background:rgba(242,245,255,1);;
+      background:rgba(242,245,255,1);
       border:1px solid rgba(224,224,224,1);
       border-radius:12px;
       img{

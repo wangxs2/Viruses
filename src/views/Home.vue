@@ -540,7 +540,7 @@
     </van-popup>
 
     <!-- 实时捐赠 -->
-    <div class="cur-time-btn" @click="curTimeBtn"><span>实时</span><span>资讯</span></div>
+    <div class="cur-time-btn" @click="curTimeBtn"><span>实时</span><span>播报</span></div>
     <van-popup v-model="curTimeDonate" closeable position="bottom" :style="{ height: '100%' }" class="cur-time-donate">
       <div class="time-donate">
         <div class="top"><span>实时播报</span></div>

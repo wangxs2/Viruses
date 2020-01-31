@@ -2,13 +2,13 @@
   <div class="home">
     <div class="onebif" v-if="isone">
       <div style="font-size:17px">共抗新冠肺炎</div>
-      <div style="font-size:16px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span><van-icon name="cross" @click="isone=false" size="22"/></div>
+      <div style="font-size:16px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span><van-icon name="cross" @click="isoneClick" size="22"/></div>
     </div>
-    <div class="twobif">{{zanz.encourage}}次</div>
-    <div class="threebif">
+    <div :class="[styleUp?'twobif twobif1':'twobif twobif2']">{{zanz.encourage}}次</div>
+    <div :class="[styleUp?'threebif threebif1':'threebif threebif2']">
       <van-icon  name="good-job" size="30" color="#ffffff" />
     </div>
-    <div class="forew" v-if="seven">
+    <div :class="[styleUp?'forew forew1':'forew forew2']" v-if="seven">
       近七天数据
     </div>
     <div class="write">
@@ -103,14 +103,15 @@
         </div>
         <!-- <input type="text" v-model="searchText" @blur="blurSearch"> -->
         <span style="font-size:16px">{{searchText}}</span>
-        <div class="go-back">
-          <van-icon name="cross" @click="clearText" size="16" />
+        <div class="go-back" @click="rightModel" >
+          <van-icon name="wap-nav" size="24" />
+          <span v-if="showDataLengthPoint" >{{total || 0}}</span>
         </div>
       </div>
-      <div class="btn" @click="rightModel" >
+      <!-- <div class="btn" @click="rightModel" >
         <van-icon name="wap-nav" size="24"/>
         <span v-if="showDataLengthPoint" >{{total || 0}}</span>
-      </div>
+      </div> -->
     </div>
     <!-- 搜索2右边弹框 -->
     <van-popup v-model="showModel" position="right" :style="{ height: '100%' }">
@@ -544,7 +545,7 @@
     </van-popup>
 
     <!-- 实时捐赠 -->
-    <div class="cur-time-btn" @click="curTimeBtn"><span>实时</span><span>资讯</span></div>
+    <div  :class="[styleUp?'cur-time-btn cur-time-btn1':'cur-time-btn cur-time-btn2']" class="cur-time-btn" @click="curTimeBtn"><span>实时</span><span>资讯</span></div>
     <van-popup v-model="curTimeDonate" closeable position="bottom" :style="{ height: '100%' }" class="cur-time-donate">
       <div class="time-donate">
         <div class="top"><span>实时播报</span></div>
@@ -760,6 +761,8 @@ export default {
 
       xuTab:true,
       tiTab:true,
+      styleUp:true,
+      isoneClosePoint:1,
 
     };
   },
@@ -790,6 +793,12 @@ export default {
     // this.getProvinceList()
   },
   methods:{
+    isoneClick(){
+      this.isone=false
+      this.styleUp=false
+      this.isoneClosePoint=0
+
+    },
     xuClick(){
       this.xuTab=!this.xuTab
       this.tiTab=!this.tiTab
@@ -1094,6 +1103,7 @@ export default {
     selectTimeItem(item) {
       this.show=false
       this.showSearch=true
+      this.styleUp=true
       this.isone=false
       this.searchText=item
       this.seven=false
@@ -1104,6 +1114,7 @@ export default {
     selectItem(item) {
       this.show=false
       this.showSearch=true
+      this.styleUp=true
       this.isone=false
       this.searchText=item
       this.getDataList(item,1)
@@ -1125,7 +1136,7 @@ export default {
       if (this.searchText){
         this.show=false
         this.showSearch=true
-        this.isone=false
+        this.styleUp=true
         this.getDataList(this.searchText,1)
 
       }else {
@@ -1140,7 +1151,14 @@ export default {
     goback(){
       this.show=true
       this.showSearch=false
-      this.isone=true
+      if (!this.isoneClosePoint){
+
+        this.isone=false
+      this.styleUp=false
+      }else {
+        this.isone=true
+      this.styleUp=true
+      }
       this.showDataLengthPoint=1
     },
     clearText(){
@@ -1149,7 +1167,13 @@ export default {
       this.getDataList() 
 
       this.showSearch=false
-      this.isone=true
+      this.styleUp=false
+      if (!this.isoneClosePoint){
+
+        this.isone=false
+      }else {
+        this.isone=true
+      }
       if(!this.seven){
           this.seven=true
       }
@@ -1319,9 +1343,6 @@ export default {
     align-items:center;
   }
   .twobif{
-    position:fixed;
-    top:140px;
-    right:60px;
     z-index:10;
     width:100px;
     height:24px;
@@ -1333,11 +1354,20 @@ export default {
     border-radius:12px;
     text-align:center;
     padding-left:6px;
+    &.twobif1{
+      position:fixed;
+      top:90px;
+      right:60px;
+
+    }
+    &.twobif2{
+      position:fixed;
+      top:40px;
+      right:60px;
+
+    }
   }
   .forew{
-     position:fixed;
-    top:140px;
-    left:20px;
     z-index:10;
     color:#333333;
     width:100px;
@@ -1347,11 +1377,20 @@ export default {
     background:rgba(255,255,255,1);
     box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32);
     border-radius:6px;
+    &.forew1{
+      position:fixed;
+      top:90px;
+      left:20px;
+
+    }
+    &.forew2{
+      position:fixed;
+      top:40px;
+      left:20px;
+
+    }
   }
   .threebif{
-    position:fixed;
-    top:127px;
-    right:24px;
     z-index:10;
     width:44px;
     height:44px;
@@ -1362,6 +1401,18 @@ export default {
     border-radius:50%;
     box-sizing:border-box;
     // padding-top:3px;
+    &.threebif1{
+      position:fixed;
+      top:78px;
+      right:24px;
+
+    }
+    &.threebif2{
+      position:fixed;
+      top:27px;
+      right:24px;
+
+    }
   }
   .two-dir{
     position:fixed;
@@ -1689,6 +1740,20 @@ export default {
         justify-content:center;
         align-items:center;
         padding: 10px;
+        span{
+          position:absolute;
+          top:8px;
+          right:5px;
+          font-size:10px;
+          padding:1px;
+          height: 12px;
+          line-height: 12px;;
+          text-align: center;
+          background:#FF1717;
+          color:#fff;
+          border-radius:12px;
+
+        }
       }
       input{
         width:250px;
@@ -2214,9 +2279,6 @@ export default {
 
   }
   .cur-time-btn{
-    position: fixed;
-    top: 190px;
-    right: 17px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -2227,6 +2289,18 @@ export default {
     box-shadow:0px 0px 8px 0px rgba(0, 0, 0, 0.32);
     border-radius:50%;
     z-index:999;
+    &.cur-time-btn1{
+      position: fixed;
+      top: 150px;
+      right: 17px;
+
+    }
+    &.cur-time-btn2{
+      position: fixed;
+      top: 100px;
+      right: 17px;
+
+    }
     span{
       font-size: 14px;
       line-height: 15px;

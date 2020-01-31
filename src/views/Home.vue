@@ -1386,9 +1386,9 @@ export default {
     bottom:20px;
     left:0px;
     z-index:10;
-    font-size:12px;
+    font-size:11px;
     width:100%;
-    color:#666666;
+    color:#999999;
     background:rgba(242,245,255,1);
     // line-height:12px;
     p{
@@ -1438,7 +1438,7 @@ export default {
     width:100%;
     height:20px;
     line-height:20px;
-    font-size:8px;
+    font-size:11px;
     background:rgba(242,245,255,1);
     color:#999999;
   }

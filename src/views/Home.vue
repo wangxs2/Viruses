@@ -12,8 +12,8 @@
       近七天数据
     </div>
     <div class="write">
-      <p>更多疫情跟踪： 新型肺炎需求捐赠记录</p>
-      <p>上海产业技术研究院提供 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p>
+      <p>更多疫情跟踪： 新型肺炎需求捐赠记录 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p>
+      <p style="line-height:16px">中华全国工商业联合会 <br>上海市慈善基金会<br> 上海产业技术研究院联合发布 </p>
     </div>
     <!-- <div class="writefont" >免责声明</div> -->
     <!-- <div class="header">新型肺炎物资捐赠实时动态</div> -->
@@ -1147,6 +1147,7 @@ export default {
       }).then(res => {
         if(res.code=="success"){
          this.$toast('已经成功点赞');
+         this.initMap()
          this.mapobj.encourageNum++
         }else{
           this.$toast('您已经点过赞了');
@@ -1306,9 +1307,9 @@ export default {
   .twobif{
     position:fixed;
     top:100px;
-    right:20px;
+    right:60px;
     z-index:10;
-    width:140px;
+    width:100px;
     height:24px;
     line-height:24px;
     font-size:12px;
@@ -1316,7 +1317,7 @@ export default {
     opacity:0.7;
     color:#ffffff;
     border-radius:12px;
-    text-align:left;
+    text-align:center;
     padding-left:6px;
   }
   .forew{
@@ -1336,16 +1337,17 @@ export default {
   .threebif{
     position:fixed;
     top:87px;
-    right:20px;
+    right:24px;
     z-index:10;
     width:44px;
     height:44px;
+    line-height:44px;
     background:rgba(254,59,57,1);
     border:3px solid rgba(255,255,255,1);
     box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32), 0px 0px 16px 0px rgba(221,2,0,1);
     border-radius:50%;
     box-sizing:border-box;
-    padding-top:3px;
+    // padding-top:3px;
   }
   table{
     td{
@@ -1389,7 +1391,7 @@ export default {
   }
   .write{
     position:fixed;
-    bottom:4px;
+    bottom:0px;
     left:0px;
     z-index:10;
     font-size:12px;

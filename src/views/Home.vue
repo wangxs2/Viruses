@@ -548,7 +548,7 @@
     <van-popup v-model="curTimeDonate" closeable position="bottom" :style="{ height: '100%' }" class="cur-time-donate">
       <div class="time-donate">
         <div class="top"><span>实时播报</span></div>
-        <div class="donate-content" >
+        <div class="donate-content" v-if="curTimeNoDataShow">
           <div class="donate-list" v-for="(item, i) in curTimeDataList" :key="i">
             <div class="time-wrapper">
               <span class="time-length">{{item.duration}}</span>
@@ -566,9 +566,6 @@
                 <div class="title-wrapper">
                   <span class="tab-type por" v-if="item.isTop&&item.isTop==1">置顶</span>
                   <span class="tab-type new" v-if="item.isNew&&item.isNew==1">最新</span>
-                  <!-- <span class="title" v-if="item.headline&&item.headline.length<14">{{item.headline}}</span>
-                  <span class="title" v-else-if="item.headline&&item.headline.length>14">{{item.headline.substring(0,11)}}...</span> -->
-                  
                   <span class="title" v-if="(item.isTop||item.isNew)&&item.headline&&item.headline.length<10">{{item.headline}}</span>
                   <span class="title" v-else-if="(item.isTop||item.isNew)&&item.headline&&item.headline.length>10">{{item.headline.substring(0,11)}}...</span>
                   <span class="title" v-else-if="!item.isTop&&!item.isNew&&item.headline&&item.headline.length<14">{{item.headline}}</span>
@@ -583,11 +580,11 @@
           <div class="loading-more" v-else>没有更多了</div>
 
         </div>
-        <!-- <div class="donate-content donate-content-no" v-else>
+        <div class="donate-content donate-content-no" v-else>
          <img class="down-up" src="../assets/image/reduce.png" alt="">
          <p>没有数据哦!</p>
 
-        </div> -->
+        </div>
       </div>
       
     </van-popup>

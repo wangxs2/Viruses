@@ -13,7 +13,7 @@
       近七天数据
     </div>
     <div class="write">
-<p>更多疫情跟踪： 新型肺炎需求捐赠记录 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p></div>
+      <p>更多疫情跟踪： 新型肺炎需求捐赠记录 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p></div>
     <div id="myMap" class="container"></div>
     
     <!-- 医院的详情弹框 -->

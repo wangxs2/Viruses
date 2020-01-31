@@ -2,7 +2,7 @@
   <div class="home">
     <div class="onebif" v-if="isone">
       <div style="font-size:17px">共抗新冠肺炎</div>
-      <div style="font-size:16px">{{zanz.view}}人次浏览 <van-icon name="cross" @click="isone=false" /></div>
+      <div style="font-size:16px">{{zanz.view}}次浏览 <van-icon name="cross" @click="isone=false" size="22"/></div>
     </div>
     <div class="twobif">{{zanz.encourage}}次</div>
     <div class="threebif">
@@ -128,6 +128,7 @@
       
     </van-popup>
 
+
     <!-- 搜索录入图标 -->
     <div class="search-write">
       <div class="img-icon" @click="searchBtn">
@@ -141,7 +142,6 @@
     </div>
 
     <!-- 录入缺省页 -->
-    
     <van-popup v-model="reduceShow" closeable position="bottom" :style="{ height: '100%' }">
       <div class="reduce-content">
         <!-- <img class="down-up" src="../assets/image/reduce.png" alt="">
@@ -543,6 +543,40 @@
       
     </van-popup>
 
+    <!-- 实时捐赠 -->
+    <!-- <div class="cur-time-btn" @click="curTimeBtn"><span>实时</span><span>资讯</span></div> -->
+    <van-popup v-model="curTimeDonate" closeable position="bottom" :style="{ height: '100%' }" class="cur-time-donate">
+      <div class="time-donate">
+        <div class="top"><span>实时播报</span></div>
+        <div class="donate-content">
+          <div class="donate-list" v-for="(item, i) in curTimeDataList" :key="i">
+            <div class="time-wrapper">
+              <span class="time-length">{{item.timeLength}}</span>
+              <span class="time-cur">{{item.timeCur}}</span>
+            </div>
+
+            <div class="line-split">
+              <span class="dot"></span>
+              <span class="line"></span>
+            </div>
+
+            <div class="main-content">
+              <div class="title-wrapper">
+                <span class="tab-type por" v-if="item.tabType==1">置顶</span>
+                <span class="tab-type new" v-if="item.tabType==2">最新</span>
+                <span class="title">{{item.title}}</span>
+              </div>
+              <div class="articl">{{item.articl}}</div>
+              <div class="origin">信息来源：<span>{{item.orgin}}</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      
+    </van-popup>
+
+
     <!-- 医护用品规则说明 -->
 
   </div>
@@ -613,15 +647,30 @@ export default {
       clickTabPoint:0, // 录入提交是否选择tab按钮指针
       conUs:[ // 录入联系人
         {
-          job:"志愿者联系人",
-          name: "墨竹",
-          tel: "18817582880",
-        },{
           job:"平台联系人",
           name: "柴先生",
           tel: "18368091476",
+        },{
+          job:"工商联系统及慈善机构联系人",
+          name: "赵博",
+          tel: "13788926819",
+        },{
+          job:"志愿者联系人",
+          name: "墨竹",
+          tel: "18817582880",
         },
-      ]
+      ],
+      curTimeDonate:false, // 实时捐赠弹框
+      curTimeDataList:[
+        {
+          tabType: 1,
+          timeLength: "30分钟前",
+          timeCur:"2-16 20:30",
+          title: "事实上事实上",
+          articl:"ss生生世世事实上事实上事实上",
+          orgin:"sssss",
+        }
+      ], // 实时捐赠信息列表
 
     };
   },
@@ -645,13 +694,17 @@ export default {
 				document.addEventListener("plusready", plusReady, false);
 			} 
 
-  this.getMap()
-  this.getDataList()
-  this.getWuziList()
-  this.getCityList()
-  // this.getProvinceList()
+    this.getMap()
+    this.getDataList()
+    this.getWuziList()
+    this.getCityList()
+    // this.getProvinceList()
   },
   methods:{
+    // 实时资讯按钮
+    curTimeBtn(){
+      this.curTimeDonate=true
+    },
     // 录入立即拨打
     commitTel(tel){
       window.location.href = "tel:" + tel
@@ -822,7 +875,7 @@ export default {
       this.show=true
       this.reduceShow=false
       this.downUpImg=false
-      this.heightCur="80%"
+      this.heightCur="100%"
 
     },
     // 录入按钮
@@ -937,7 +990,7 @@ export default {
     downUp() {
       this.downUpImg=!this.downUpImg
       if (!this.downUpImg){
-        this.heightCur="80%"
+        this.heightCur="100%"
       }else {
         this.heightCur="0"
       }
@@ -955,7 +1008,7 @@ export default {
     // 第一搜索获取焦点
     inputFocus() {
       this.downUpImg=false
-      this.heightCur="80%"
+      this.heightCur="100%"
     },
     goback(){
       this.show=true
@@ -1105,6 +1158,12 @@ export default {
   }
 };
 </script>
+<style>
+
+.van-popup__close-icon--top-right{
+  top: 9px;
+}
+</style>
 <style lang="scss" scoped>
 .home {
   width: 100%;
@@ -1224,10 +1283,10 @@ export default {
     width:100%;
     color:#666666;
     line-height:12px;
-      p{
-        text-align:center;
-      }
+    p{
+      text-align:center;
     }
+  }
   .left-font{
     display:flex;
     align-items: center;
@@ -1678,9 +1737,8 @@ export default {
           display:flex;
           justify-content: space-between;
           align-items:center;
-          height:54px;
           margin: 0 29px;
-          padding: 0 15px;
+          padding: 10px;
           font-size:15px;
           font-family:PingFang SC;
           font-weight:500;
@@ -1812,9 +1870,166 @@ export default {
     //   margin-top:23px;
 
     // }
+  }
+  .cur-time-donate{
+    background: #eee;
+
+  }
+  .time-donate{
+    .top{
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      height: 36px;
+      font-size:16px;
+      font-family:PingFang SC;
+      font-weight:bold;
+      color:rgba(51,51,51,1);
+      padding: 0 12px;
+      background: #fff;
+      span{
+        padding-left:10px;
+        border-left: 3px solid #216AFF;
+      }
+
+    }
+    .donate-content{
+      padding: 15px;
+      .donate-list{
+        display: flex;
+        justify-content: space-between;
+        .time-wrapper{
+          display: flex;
+          flex-direction: column;
+          .time-length{
+            text-align: right;
+            font-size:15px;
+            font-family:PingFang SC;
+            font-weight:bold;
+            color:rgba(51,51,51,1);
+          }
+          .time-cur{
+            text-align: right;
+            font-size:12px;
+            font-family:PingFang SC;
+            font-weight:500;
+            color:rgba(102,102,102,1);
+            margin-top: 8.5px;
+
+          }
+        }
+        .line-split{
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          .dot{
+            width:9px;
+            height:9px;
+            background:rgba(33,106,255,1);
+            border-radius:50%;
+          }
+          .line{
+            width: 2px;
+            height: 100%;
+            background:#E2E2E2;
+          }
+        }
+        .main-content{
+          width:232px;
+          background:rgba(255,255,255,1);
+          border-radius:4px;
+          padding: 12px;
+          margin-bottom: 15px;
+          .title-wrapper{
+            width:232px;
+            text-align: left;
+            white-space:nowrap;
+            overflow:hidden; 
+            text-overflow:ellipsis;
+            .tab-type{
+              font-size:12px;
+              font-family:PingFang SC;
+              font-weight:bold;
+              color:rgba(255,255,255,1);
+              padding: 3px 4px;
+
+              &.por{
+                background: #9141FF;
+              }
+              &.new{
+                background: #ED563B;
+              }
+            }
+            .title{
+              width:175px;
+              font-size:16px;
+              font-family:PingFang SC;
+              font-weight:bold;
+              color:rgba(51,51,51,1);
+              padding-left: 8px;
+
+            }
+          }
+          .articl{
+            font-size:18px;
+            font-family:PingFang SC;
+            font-weight:500;
+            color:rgba(102,102,102,1);
+            line-height:24px;
+            margin: 12px 0;
+            text-align: left;
+
+          }
+          .origin{
+            font-size:12px;
+            font-family:PingFang SC;
+            font-weight:500;
+            color:rgba(153,153,153,1);
+            text-align: right;
+            span {
+
+            }
+          }
+        }
+
+      }
+
+    }
 
 
 
+  }
+  .cur-time-btn{
+    position: fixed;
+    top: 150px;
+    right: 17px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+    width: 44px;
+    height: 44px;
+    background:rgba(255,252,232,1);
+    box-shadow:0px 0px 8px 0px rgba(0, 0, 0, 0.32);
+    border-radius:50%;
+    z-index:999;
+    span{
+      font-size: 14px;
+      line-height: 15px;
+      font-family:PingFang SC;
+      font-weight:bold;
+      font-style: italic;
+      color: #FF4600;
+      margin-right: 2px;
+      &:last-child{
+        color: #FF9100;
+      }
+      // background: linear-gradient(to bottom, #FF4600, #FF9100);
+      // -webkit-background-clip: text;
+      // color: transparent;
+
+    }
   }
 }
 </style>

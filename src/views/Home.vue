@@ -2,7 +2,7 @@
   <div class="home">
     <div class="onebif" v-if="isone">
       <div style="font-size:17px">共抗新冠肺炎</div>
-      <div style="font-size:16px">{{zanz.view}}次浏览 <van-icon name="cross" @click="isone=false"/></div>
+      <div style="font-size:16px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span><van-icon name="cross" @click="isone=false" size="22"/></div>
     </div>
     <div class="twobif">{{zanz.encourage}}次</div>
     <div class="threebif">
@@ -73,7 +73,7 @@
         </div>
         <div class="input-wrapper">
           <img src="../assets/image/search.png" alt="" @click="search">
-          <input type="text" placeholder="查询继续支援医院、物资、区域" v-model="searchText" @focus="inputFocus" >
+          <input type="text" placeholder="查询继续支援医院、物资、区域" v-model="searchText" @focus="inputFocus" @keyup.13="search">
         </div>
         <div class="tab-list-wrapper" v-if="!downUpImg">
 
@@ -544,15 +544,15 @@
     </van-popup>
 
     <!-- 实时捐赠 -->
-    <!-- <div class="cur-time-btn" @click="curTimeBtn"><span>实时</span><span>资讯</span></div> -->
+    <div class="cur-time-btn" @click="curTimeBtn"><span>实时</span><span>资讯</span></div>
     <van-popup v-model="curTimeDonate" closeable position="bottom" :style="{ height: '100%' }" class="cur-time-donate">
       <div class="time-donate">
         <div class="top"><span>实时播报</span></div>
-        <div class="donate-content">
+        <div class="donate-content" v-if="curTimeNoDataShow">
           <div class="donate-list" v-for="(item, i) in curTimeDataList" :key="i">
             <div class="time-wrapper">
-              <span class="time-length">{{item.timeLength}}</span>
-              <span class="time-cur">{{item.timeCur}}</span>
+              <span class="time-length">{{item.duration}}</span>
+              <span class="time-cur" v-if="item.pubDate">{{item.pubDate.substring(5,16)}}</span>
             </div>
 
             <div class="line-split">
@@ -561,15 +561,28 @@
             </div>
 
             <div class="main-content">
-              <div class="title-wrapper">
-                <span class="tab-type por" v-if="item.tabType==1">置顶</span>
-                <span class="tab-type new" v-if="item.tabType==2">最新</span>
-                <span class="title">{{item.title}}</span>
-              </div>
-              <div class="articl">{{item.articl}}</div>
-              <div class="origin">信息来源：<span>{{item.orgin}}</span></div>
+              <a :href="item.url">
+
+                <div class="title-wrapper">
+                  <span class="tab-type por" v-if="item.isTop&&item.isTop==1">置顶</span>
+                  <span class="tab-type new" v-if="item.isNew&&item.isNew==1">最新</span>
+                  <span class="title" v-if="(item.isTop||item.isNew)&&item.headline&&item.headline.length<10">{{item.headline}}</span>
+                  <span class="title" v-else-if="(item.isTop||item.isNew)&&item.headline&&item.headline.length>10">{{item.headline.substring(0,11)}}...</span>
+                  <span class="title" v-else-if="!item.isTop&&!item.isNew&&item.headline&&item.headline.length<14">{{item.headline}}</span>
+                  <span class="title" v-else-if="!item.isTop&&!item.isNew&&item.headline&&item.headline.length>14">{{item.headline.substring(0,13)}}...</span>
+                </div>
+                <div class="articl">{{item.mainBody}}</div>
+                <div class="origin">信息来源：<span>{{item.publishSource}}</span></div>
+              </a>
             </div>
           </div>
+          <div class="loading-more" v-if="loadMore" @click="loadMoreData">加载更多</div>
+          <div class="loading-more" v-else>没有更多了</div>
+
+        </div>
+        <div class="donate-content donate-content-no" v-else>
+         <img class="down-up" src="../assets/image/reduce.png" alt="">
+         <p>没有数据哦!</p>
 
         </div>
       </div>
@@ -661,21 +674,94 @@ export default {
         },
       ],
       curTimeDonate:false, // 实时捐赠弹框
-      curTimeDataList:[
-        {
-          tabType: 1,
-          timeLength: "30分钟前",
-          timeCur:"2-16 20:30",
-          title: "事实上事实上",
-          articl:"ss生生世世事实上事实上事实上",
-          orgin:"sssss",
-        }
-      ], // 实时捐赠信息列表
+      curTimeDataList:[],
+      // curTimeDataList:[
+      //   {
+      //     isTop: 1,
+      //     duration: "30分钟前",
+      //     pubDate:"2012-02-16 20:30:30",
+      //     url:"https://www.baidu.com",
+      //     headline: "事实上上等等大家都钉钉额水水水水水",
+      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
+      //     publishSource:"sssss",
+      //   },
+      //   {
+      //     isNew: 1,
+      //     duration: "30分钟前",
+      //     pubDate:"2012-02-16 20:30:30",
+      //     url:"https://www.baidu.com",
+      //     headline: "事实上上等等大家都钉钉顶顶顶额",
+      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
+      //     publishSource:"sssss",
+      //   },
+      //   {
+      //     duration: "30分钟前",
+      //     pubDate:"2012-02-16 20:30:30",
+      //     url:"https://www.baidu.com",
+      //     headline: "事实上上等等大家都钉钉顶顶顶顶额",
+      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
+      //     publishSource:"sssss",
+      //   },
+      //   {
+      //     duration: "30分钟前",
+      //     pubDate:"2012-02-16 20:30:30",
+      //     url:"https://www.baidu.com",
+      //     headline: "事实上上等等大家都钉钉额",
+      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
+      //     publishSource:"sssss",
+      //   },
+      //   {
+      //     duration: "30分钟前",
+      //     pubDate:"2012-02-16 20:30:30",
+      //     url:"https://www.baidu.com",
+      //     headline: "事实上上等等大家都钉钉额",
+      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
+      //     publishSource:"sssss",
+      //   },
+      //   {
+      //     duration: "30分钟前",
+      //     pubDate:"2012-02-16 20:30:30",
+      //     url:"https://www.baidu.com",
+      //     headline: "事实上上等等大家都钉钉额",
+      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
+      //     publishSource:"sssss",
+      //   },
+      //   {
+      //     duration: "30分钟前",
+      //     pubDate:"2012-02-16 20:30:30",
+      //     url:"https://www.baidu.com",
+      //     headline: "事实上上等等大家都钉钉额",
+      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
+      //     publishSource:"sssss",
+      //   },
+      //   {
+      //     duration: "30分钟前",
+      //     pubDate:"2012-02-16 20:30:30",
+      //     url:"https://www.baidu.com",
+      //     headline: "事实上上等等大家都钉钉额",
+      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
+      //     publishSource:"sssss",
+      //   },
+      //   {
+      //     duration: "30分钟前",
+      //     pubDate:"2012-02-16 20:30:30",
+      //     url:"https://www.baidu.com",
+      //     headline: "事实上上等等大家都钉钉额",
+      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
+      //     publishSource:"sssss",
+      //   },
+      // ], // 实时捐赠信息列表
+      curTimeParams:{
+        page: 1, // 页数
+        pageSize:10, // 偏移量
+      },
+      curTimeNoDataShow: false, // 实时捐赠无数据显示
+      loadMore:true, //加载更多按钮
 
     };
   },
   created() {
-   
+    this.getCurTimeDataList()
   },
  mounted () {
    // H5 plus事件处理
@@ -701,6 +787,32 @@ export default {
     // this.getProvinceList()
   },
   methods:{
+    // 获取实时资讯数据
+    getCurTimeDataList(){
+      this.$fetchGet("donate/getInfo",this.curTimeParams).then(res=> {
+        if (res.total){
+          this.curTimeNoDataShow= true
+           this.curTimeDataList=this.curTimeDataList.concat(res.list)
+          if (this.curTimeDataList.length<res.total) {
+            this.loadMore=true
+
+          } else {
+            this.loadMore=false
+          }
+        } else {
+          this.curTimeNoDataShow= false
+        }
+
+      })
+  
+
+    },
+    // 加载更多
+    loadMoreData(){
+      this.curTimeParams.page++
+      this.getCurTimeDataList()
+
+    },
     // 实时资讯按钮
     curTimeBtn(){
       this.curTimeDonate=true
@@ -1162,7 +1274,7 @@ export default {
 <style>
 
 .van-popup__close-icon--top-right{
-  top: 9px;
+  top: 9px!important;
 }
 </style>
 <style lang="scss" scoped>
@@ -1896,10 +2008,32 @@ export default {
 
     }
     .donate-content{
-      padding: 15px;
+      padding-top: 15px;
+      &.donate-content-no{
+        
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 100px;
+
+        img{
+          width: 194px;
+          height:147px;
+        }
+        p{
+          font-size:15px;
+          font-family:PingFang SC;
+          font-weight:400;
+          color:rgba(153,153,153,1);
+          margin-top:23px;
+
+        }
+      }
       .donate-list{
         display: flex;
         justify-content: space-between;
+        padding: 0 15px;
         .time-wrapper{
           display: flex;
           flex-direction: column;
@@ -1943,58 +2077,73 @@ export default {
           border-radius:4px;
           padding: 12px;
           margin-bottom: 15px;
-          .title-wrapper{
-            width:232px;
-            text-align: left;
-            white-space:nowrap;
-            overflow:hidden; 
-            text-overflow:ellipsis;
-            .tab-type{
+          a{
+            display:block;
+            color:rgba(51,51,51,1);
+            .title-wrapper{
+              width:232px;
+              height: 20px;
+              text-align: left;
+              // white-space:nowrap;
+              // text-overflow:ellipsis;
+              // overflow:hidden; 
+              .tab-type{
+                font-size:12px;
+                font-family:PingFang SC;
+                font-weight:bold;
+                color:rgba(255,255,255,1);
+                padding: 3px 4px;
+                vertical-align:top;
+                margin-right: 8px;
+                &.por{
+                  background: #9141FF;
+                }
+                &.new{
+                  background: #ED563B;
+                }
+              }
+              .title{
+                width:175px;
+                font-size:16px;
+                font-family:PingFang SC;
+                font-weight:bold;
+                color:rgba(51,51,51,1);
+                vertical-align:top;
+
+              }
+            }
+            .articl{
+              font-size:13px;
+              font-family:PingFang SC;
+              font-weight:500;
+              color:rgba(102,102,102,1);
+              line-height:15px;
+              margin: 12px 0;
+              text-align: left;
+
+            }
+            .origin{
               font-size:12px;
               font-family:PingFang SC;
-              font-weight:bold;
-              color:rgba(255,255,255,1);
-              padding: 3px 4px;
+              font-weight:500;
+              color:rgba(153,153,153,1);
+              text-align: right;
+              span {
 
-              &.por{
-                background: #9141FF;
               }
-              &.new{
-                background: #ED563B;
-              }
-            }
-            .title{
-              width:175px;
-              font-size:16px;
-              font-family:PingFang SC;
-              font-weight:bold;
-              color:rgba(51,51,51,1);
-              padding-left: 8px;
-
-            }
-          }
-          .articl{
-            font-size:18px;
-            font-family:PingFang SC;
-            font-weight:500;
-            color:rgba(102,102,102,1);
-            line-height:24px;
-            margin: 12px 0;
-            text-align: left;
-
-          }
-          .origin{
-            font-size:12px;
-            font-family:PingFang SC;
-            font-weight:500;
-            color:rgba(153,153,153,1);
-            text-align: right;
-            span {
-
             }
           }
         }
 
+      }
+      .loading-more{
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        color: #999;
+        font-size: 14px;
+        background: #f1f1f1;
+        margin-top: 20px;
       }
 
     }

@@ -116,11 +116,13 @@
         <div class="go-back">
           <van-icon name="arrow-left" @click="goback" size="16"/>
         </div>
-        <!-- <input type="text" v-model="searchText" @blur="blurSearch"> -->
         <span style="font-size:16px">{{searchText}}</span>
         <div class="go-back" @click="rightModel" >
           <van-icon name="wap-nav" size="24" />
           <span v-if="showDataLengthPoint" >{{total || 0}}</span>
+        </div>
+        <div class="go-back">
+          <van-icon name="cross" @click="clearText" size="16" />
         </div>
       </div>
       <!-- <div class="btn" @click="rightModel" >
@@ -560,7 +562,7 @@
     </van-popup>
 
     <!-- 实时捐赠 -->
-    <div  :class="[styleUp?'cur-time-btn cur-time-btn1':'cur-time-btn cur-time-btn2']" class="cur-time-btn" @click="curTimeBtn"><span>实时</span><span>播报</span></div>
+    <div class="cur-time-btn" @click="curTimeBtn"><span>实时</span><span>播报</span></div>
     <van-popup v-model="curTimeDonate" closeable position="bottom" :style="{ height: '100%' }" class="cur-time-donate">
       <div class="time-donate">
         <!-- <div class="top"><span>实时播报</span></div> -->
@@ -989,15 +991,12 @@ export default {
       this.$fetchGet("encourage/saveEncourage", {
         hospitalName:''
       }).then(res => {
-        // this.zanz.encourage++
-        this.initMap()
-        // if(res.code=="success"){
-        //  this.$toast('已经成功点赞');
-        //  this.initMap()
-        //  this.mapobj.encourageNum++
-        // }else{
-        //   this.$toast('您已点赞，请稍后为医院点赞');
-        // }
+        if(res.code=="success"){
+         this.initMap()
+        }else{
+          this.isdzan=false
+          this.$toast('您已点赞，请稍后点赞');
+        }
         
       });
     },
@@ -1250,12 +1249,12 @@ export default {
     clearText(){
       this.searchText=""   
       this.showDataLengthPoint=1
+      this.query.content=""
+      this.query.hour=""
       this.getDataList() 
-
       this.showSearch=false
       this.styleUp=false
       if (!this.isoneClosePoint){
-
         this.isone=false
       }else {
         this.isone=true
@@ -1274,7 +1273,7 @@ export default {
          this.initMap()
          this.mapobj.encourageNum++
         }else{
-          this.$toast('您已点赞，请稍后为医院点赞');
+          this.$toast('您已点赞，请稍后点赞');
         }
         
       });
@@ -1899,6 +1898,7 @@ export default {
         justify-content:center;
         align-items:center;
         padding: 10px;
+        position:relative;
         span{
           position:absolute;
           top:8px;

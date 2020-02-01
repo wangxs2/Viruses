@@ -80,7 +80,13 @@
         </div>
         <div class="input-wrapper">
           <img src="../assets/image/search.png" alt="" @click="search">
-          <input type="text" placeholder="查询继续支援医院、物资、区域" v-model="searchText" @focus="inputFocus" @keyup.13="search">
+
+          <form action="javascript:return true"> 
+            <input type="search" placeholder="查询继续支援医院、物资、区域" v-model="searchText" @focus="inputFocus" @keyup.13="search">
+          </form>
+
+
+          
         </div>
         <div class="tab-list-wrapper" v-if="!downUpImg">
 
@@ -110,14 +116,15 @@
         </div>
         <!-- <input type="text" v-model="searchText" @blur="blurSearch"> -->
         <span style="font-size:16px">{{searchText}}</span>
-        <div class="go-back">
-          <van-icon name="cross" @click="clearText" size="16" />
+        <div class="go-back" @click="rightModel" >
+          <van-icon name="wap-nav" size="24" />
+          <span v-if="showDataLengthPoint" >{{total || 0}}</span>
         </div>
       </div>
-      <div class="btn" @click="rightModel" >
+      <!-- <div class="btn" @click="rightModel" >
         <van-icon name="wap-nav" size="24"/>
         <span v-if="showDataLengthPoint" >{{total || 0}}</span>
-      </div>
+      </div> -->
     </div>
     <!-- 搜索2右边弹框 -->
     <van-popup v-model="showModel" position="right" :style="{ height: '100%' }">
@@ -551,10 +558,11 @@
     </van-popup>
 
     <!-- 实时捐赠 -->
-    <div class="cur-time-btn" @click="curTimeBtn"><span>实时</span><span>播报</span></div>
+    <div  :class="[styleUp?'cur-time-btn cur-time-btn1':'cur-time-btn cur-time-btn2']" class="cur-time-btn" @click="curTimeBtn"><span>实时</span><span>播报</span></div>
     <van-popup v-model="curTimeDonate" closeable position="bottom" :style="{ height: '100%' }" class="cur-time-donate">
       <div class="time-donate">
-        <div class="top"><span>实时播报</span></div>
+        <!-- <div class="top"><span>实时播报</span></div> -->
+        <div class="top"><span>{{curTimeTopContent}}</span></div>
         <div class="donate-content" v-if="curTimeNoDataShow">
           <div class="donate-list" v-for="(item, i) in curTimeDataList" :key="i">
             <div class="time-wrapper">
@@ -717,11 +725,12 @@ export default {
       },
       curTimeNoDataShow: false, // 实时捐赠无数据显示
       loadMore:true, //加载更多按钮
-
       xuTab:true,
       tiTab:true,
-      isdzan:false
-
+      isdzan:false,
+      styleUp:true,
+      isoneClosePoint:1,
+      curTimeTopContent:"", // 实时资讯统计
     };
   },
   created() {
@@ -748,9 +757,24 @@ export default {
     this.getDataList()
     this.getWuziList()
     this.getCityList()
+    this.getCurTimeContent()
     // this.getProvinceList()
   },
   methods:{
+    getCurTimeContent(){
+      this.$fetchGet("donateCount/findDonateCount").then(res=> {
+        if (res&&res.length){
+
+          this.curTimeTopContent=res[0].content
+        }
+      })
+    },
+    isoneClick(){
+      this.isone=false
+      this.styleUp=false
+      this.isoneClosePoint=0
+
+    },
     xuClick(){
       this.xuTab=!this.xuTab
       this.tiTab=!this.tiTab
@@ -1162,6 +1186,7 @@ export default {
     selectTimeItem(item) {
       this.show=false
       this.showSearch=true
+      this.styleUp=true
       this.isone=false
       this.searchText=item
       this.seven=false
@@ -1172,6 +1197,7 @@ export default {
     selectItem(item) {
       this.show=false
       this.showSearch=true
+      this.styleUp=true
       this.isone=false
       this.searchText=item
       this.getDataList(item,1)
@@ -1193,6 +1219,7 @@ export default {
       if (this.searchText){
         this.show=false
         this.showSearch=true
+        this.styleUp=true
         this.isone=false
         this.getDataList(this.searchText,1)
 
@@ -1208,7 +1235,14 @@ export default {
     goback(){
       this.show=true
       this.showSearch=false
-      this.isone=true
+      if (!this.isoneClosePoint){
+
+        this.isone=false
+      this.styleUp=false
+      }else {
+        this.isone=true
+      this.styleUp=true
+      }
       this.showDataLengthPoint=1
     },
     clearText(){
@@ -1217,7 +1251,13 @@ export default {
       this.getDataList() 
 
       this.showSearch=false
-      this.isone=true
+      this.styleUp=false
+      if (!this.isoneClosePoint){
+
+        this.isone=false
+      }else {
+        this.isone=true
+      }
       if(!this.seven){
           this.seven=true
       }
@@ -1347,6 +1387,7 @@ export default {
 
 .van-popup__close-icon--top-right{
   top: 9px!important;
+  right: 3px!important;
 }
 </style>
 <style lang="scss" scoped>
@@ -1421,6 +1462,18 @@ export default {
     border-radius:12px;
     text-align:center;
     padding-left:6px;
+    &.twobif1{
+      position:fixed;
+      top:90px;
+      right:60px;
+
+    }
+    &.twobif2{
+      position:fixed;
+      top:40px;
+      right:60px;
+
+    }
   }
   .forew{
     position:fixed;
@@ -1435,6 +1488,18 @@ export default {
     background:rgba(255,255,255,1);
     box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32);
     border-radius:6px;
+    &.forew1{
+      position:fixed;
+      top:90px;
+      left:20px;
+
+    }
+    &.forew2{
+      position:fixed;
+      top:40px;
+      left:20px;
+
+    }
   }
   .dzan{
     position:fixed;
@@ -1463,6 +1528,18 @@ export default {
     border-radius:50%;
     box-sizing:border-box;
     // padding-top:3px;
+    &.threebif1{
+      position:fixed;
+      top:78px;
+      right:28px;
+
+    }
+    &.threebif2{
+      position:fixed;
+      top:27px;
+      right:24px;
+
+    }
   }
   .two-dir{
     position:fixed;
@@ -1770,15 +1847,20 @@ export default {
         height: 18px;
         padding: 10px 15px;
       }
-      input{
-        width: 280px;
-        font-size:16px;
-        font-family:PingFang SC;
-        font-weight:500;
-        color:rgba(102,102,102,1);
-        border: 0;  // 去除未选中状态边框
-        outline: none; // 去除选中状态边框
-        background-color: rgba(0, 0, 0, 0);// 透明背景
+      form{
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        input{
+          width: 280px;
+          font-size:16px;
+          font-family:PingFang SC;
+          font-weight:500;
+          color:rgba(102,102,102,1);
+          border: 0;  // 去除未选中状态边框
+          outline: none; // 去除选中状态边框
+          background-color: rgba(0, 0, 0, 0);// 透明背景
+        }
       }
     }
     
@@ -1802,6 +1884,20 @@ export default {
         justify-content:center;
         align-items:center;
         padding: 10px;
+        span{
+          position:absolute;
+          top:8px;
+          right:5px;
+          font-size:10px;
+          padding:1px;
+          height: 12px;
+          line-height: 12px;;
+          text-align: center;
+          background:#FF1717;
+          color:#fff;
+          border-radius:12px;
+
+        }
       }
       input{
         width:250px;
@@ -2167,20 +2263,41 @@ export default {
 
   }
   .time-donate{
+    // .top{
+    //   display: flex;
+    //   justify-content: flex-start;
+    //   align-items: center;
+    //   height: 36px;
+    //   font-size:16px;
+    //   font-family:PingFang SC;
+    //   font-weight:bold;
+    //   color:rgba(51,51,51,1);
+    //   padding: 0 12px;
+    //   background: #fff;
+    //   span{
+    //     padding-left:10px;
+    //     border-left: 3px solid #216AFF;
+    //   }
+
+    // }
     .top{
-      display: flex;
-      justify-content: flex-start;
+      display:flex;
+      justify-content: flex-end;
       align-items: center;
-      height: 36px;
-      font-size:16px;
-      font-family:PingFang SC;
-      font-weight:bold;
-      color:rgba(51,51,51,1);
-      padding: 0 12px;
-      background: #fff;
+      width: 100%;
+      height: 60px;
+      background:url("../assets/image/curtime.png") no-repeat;
+      background-size: 100% 60px;
       span{
-        padding-left:10px;
-        border-left: 3px solid #216AFF;
+        display: block;
+        padding-right: 15px;
+        width: 285px;
+        font-size:13px;
+        text-align: left;
+        font-family:PingFang SC;
+        font-weight:bold;
+        color:rgba(255,255,255,1);
+        line-height:18px;
       }
 
     }
@@ -2342,6 +2459,18 @@ export default {
     box-shadow:0px 0px 8px 0px rgba(0, 0, 0, 0.32);
     border-radius:50%;
     z-index:999;
+    &.cur-time-btn1{
+      position: fixed;
+      top: 150px;
+      right: 17px;
+
+    }
+    &.cur-time-btn2{
+      position: fixed;
+      top: 100px;
+      right: 17px;
+
+    }
     span{
       font-size: 14px;
       line-height: 15px;

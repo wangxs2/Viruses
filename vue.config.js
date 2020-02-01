@@ -15,8 +15,13 @@ module.exports = {
     open: true, //配置自动启动浏览器
     proxy: {
       '/kindnessplatform': {
+<<<<<<< HEAD
         // target: 'http://47.100.200.255:9966/kindnessplatform', // 线上
         target: 'http://47.100.200.255:19955/kindnessplatform',  // 测试
+=======
+        target: 'http://47.100.200.255:19955/kindnessplatform', // 线上
+        // target: 'http://47.100.200.255:9955/kindnessplatform',  // 测试
+>>>>>>> d85d089b16551b8f135bfbcc070b2790448cf5fc
         changeOrigin: true,
         pathRewrite: {
           '^/kindnessplatform': '/'

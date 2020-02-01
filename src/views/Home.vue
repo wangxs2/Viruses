@@ -2,17 +2,29 @@
   <div class="home">
     <div class="onebif" v-if="isone">
       <div style="font-size:17px">共抗新冠肺炎</div>
-      <div style="font-size:16px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span><van-icon name="cross" @click="isoneClick" size="22"/></div>
+      <div style="font-size:16px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span></div>
     </div>
-    <div :class="[styleUp?'twobif twobif1':'twobif twobif2']">{{zanz.encourage}}次</div>
-    <div :class="[styleUp?'threebif threebif1':'threebif threebif2']">
+    <div class="countbottom">中华全国工商业联合会 上海市慈善基金会 上海产业技术研究院联合发布</div>
+    <div class="twobif">{{zanz.encourage}}次</div>
+    <div class="threebif" @click="dzanclick">
       <van-icon  name="good-job" size="30" color="#ffffff" />
     </div>
-    <div :class="[styleUp?'forew forew1':'forew forew2']" v-if="seven">
+    <div class="dzan" v-if="isdzan">+1</div>
+    <div class="forew" v-if="seven">
       近七天数据
     </div>
     <div class="write">
-      <p>更多疫情跟踪： 新型肺炎需求捐赠记录 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p></div>
+      <p>更多物资跟踪：新冠肺炎物资捐赠对接记录 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p></div>
+    <!-- 民间组织 三类 -->
+    <!-- <div class="peopleTeam">
+      <div class="txtimg" v-for="(iteam,index) in menuList"
+        :key="index"
+        @click="toRouterIndex(iteam,index)">
+        <img :src="iteam.imgUrl[selectIndex==index?0:1]" />
+        <span  v-bind:style="{color:selectIndex==index?'#216AFF':'#666666','font-size':'12px','font-weight':'bold'}">{{iteam.name}}</span>
+      </div>
+    </div> -->
+    <!-- 民间组织 三类 -->
     <div id="myMap" class="container"></div>
     
     <!-- 医院的详情弹框 -->
@@ -56,7 +68,7 @@
         :style="{ height: '20%' }">
       <div style="padding:12px 24px">
         <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr"
-                 :key="index"><van-icon name="phone-o" color="#1989fa" size="34" @click="dialPhoneNumber1(iteam)" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
+                 :key="index" ><van-icon name="phone-o" color="#1989fa" size="34"  /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
       </div>
     </van-popup>
     <!-- 搜索部分 -->
@@ -546,7 +558,7 @@
     </van-popup>
 
     <!-- 实时捐赠 -->
-    <div  :class="[styleUp?'cur-time-btn cur-time-btn1':'cur-time-btn cur-time-btn2']" class="cur-time-btn" @click="curTimeBtn"><span>实时</span><span>资讯</span></div>
+    <div  :class="[styleUp?'cur-time-btn cur-time-btn1':'cur-time-btn cur-time-btn2']" class="cur-time-btn" @click="curTimeBtn"><span>实时</span><span>播报</span></div>
     <van-popup v-model="curTimeDonate" closeable position="bottom" :style="{ height: '100%' }" class="cur-time-donate">
       <div class="time-donate">
         <!-- <div class="top"><span>实时播报</span></div> -->
@@ -599,16 +611,45 @@
 </template>
 
 <script>
+ import encrypt from '@/libs/encrypt'
 // @ is an alias to /src
 export default {
   name: "home",
   data() {
     return {
+      menuList: [
+        {
+          id:1,
+          name: "需方",
+          imgUrl: [
+            require("../assets/image/icon7.png"),
+            require("../assets/image/list1.png")
+          ],
+        },
+        {
+          id:2,
+          name: "供方",
+          imgUrl: [
+            require("../assets/image/list4.png"),
+            require("../assets/image/list3.png")
+          ],
+        },
+        {
+          id:3,
+          name: "民间组织",
+          imgUrl: [
+            require("../assets/image/list6.png"),
+            require("../assets/image/list5.png")
+          ],
+        },
+      ],
+      selectIndex:"",
       heightCur:'0',
       seven:true,
       zanz:{},
       isone:true,
       myMap:null,
+      mass:null,
       pointGroup: new AMap.OverlayGroup(), // 点集合
       isDetail:false,
       agreement:false,
@@ -678,95 +719,18 @@ export default {
       ],
       curTimeDonate:false, // 实时捐赠弹框
       curTimeDataList:[],
-      // curTimeDataList:[
-      //   {
-      //     isTop: 1,
-      //     duration: "30分钟前",
-      //     pubDate:"2012-02-16 20:30:30",
-      //     url:"https://www.baidu.com",
-      //     headline: "事实上上等等大家都钉钉额水水水水水",
-      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
-      //     publishSource:"sssss",
-      //   },
-      //   {
-      //     isNew: 1,
-      //     duration: "30分钟前",
-      //     pubDate:"2012-02-16 20:30:30",
-      //     url:"https://www.baidu.com",
-      //     headline: "事实上上等等大家都钉钉顶顶顶额",
-      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
-      //     publishSource:"sssss",
-      //   },
-      //   {
-      //     duration: "30分钟前",
-      //     pubDate:"2012-02-16 20:30:30",
-      //     url:"https://www.baidu.com",
-      //     headline: "事实上上等等大家都钉钉顶顶顶顶额",
-      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
-      //     publishSource:"sssss",
-      //   },
-      //   {
-      //     duration: "30分钟前",
-      //     pubDate:"2012-02-16 20:30:30",
-      //     url:"https://www.baidu.com",
-      //     headline: "事实上上等等大家都钉钉额",
-      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
-      //     publishSource:"sssss",
-      //   },
-      //   {
-      //     duration: "30分钟前",
-      //     pubDate:"2012-02-16 20:30:30",
-      //     url:"https://www.baidu.com",
-      //     headline: "事实上上等等大家都钉钉额",
-      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
-      //     publishSource:"sssss",
-      //   },
-      //   {
-      //     duration: "30分钟前",
-      //     pubDate:"2012-02-16 20:30:30",
-      //     url:"https://www.baidu.com",
-      //     headline: "事实上上等等大家都钉钉额",
-      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
-      //     publishSource:"sssss",
-      //   },
-      //   {
-      //     duration: "30分钟前",
-      //     pubDate:"2012-02-16 20:30:30",
-      //     url:"https://www.baidu.com",
-      //     headline: "事实上上等等大家都钉钉额",
-      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
-      //     publishSource:"sssss",
-      //   },
-      //   {
-      //     duration: "30分钟前",
-      //     pubDate:"2012-02-16 20:30:30",
-      //     url:"https://www.baidu.com",
-      //     headline: "事实上上等等大家都钉钉额",
-      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
-      //     publishSource:"sssss",
-      //   },
-      //   {
-      //     duration: "30分钟前",
-      //     pubDate:"2012-02-16 20:30:30",
-      //     url:"https://www.baidu.com",
-      //     headline: "事实上上等等大家都钉钉额",
-      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
-      //     publishSource:"sssss",
-      //   },
-      // ], // 实时捐赠信息列表
       curTimeParams:{
         page: 1, // 页数
         pageSize:10, // 偏移量
       },
       curTimeNoDataShow: false, // 实时捐赠无数据显示
       loadMore:true, //加载更多按钮
-
       xuTab:true,
       tiTab:true,
+      isdzan:false,
       styleUp:true,
       isoneClosePoint:1,
       curTimeTopContent:"", // 实时资讯统计
-
     };
   },
   created() {
@@ -838,6 +802,10 @@ export default {
 
       })
   
+
+    },
+    //三类民间组织
+    toRouterIndex(){
 
     },
     // 加载更多
@@ -1016,12 +984,105 @@ export default {
 
       }
     },
+    //大拇指点赞
+    dzanclick(){
+      this.isdzan=true
+      setTimeout( ()=> {
+        this.isdzan=false
+    }, 1000);
+    },
     // 搜索按钮
     searchBtn(){
       this.show=true
       this.reduceShow=false
       this.downUpImg=false
       this.heightCur="100%"
+
+    },
+    //加载海量点
+    getmarkers(citys){
+      if(this.mass){
+       this.mass.clear()
+      }
+      const markerslist=[]
+      citys.forEach(item => {
+        if(item.linkTel!==undefined){
+          item.linkTelarr=item.linkTel.split(",")
+        }
+        if(item.linkPeople!==undefined){
+          item.linkPeoplearr=item.linkPeople.split(",")
+        }
+        if(item.needsName!==undefined){
+          item.needsNamearr=item.needsName.split(",")
+        }
+        if(item.needsDescr!==undefined){
+          item.needsDescrarr=item.needsDescr.split(",")
+        }
+        if(item.longitude){
+          item.lnglat=[item.gaodeLon, item.gaodeLat]
+          item.style=(item.type == 2&&item.isLack==1)
+              ? 0
+              : (item.type == 2&&item.isLack==0)?1
+              : (item.type == 1&&item.isLack==0)?2
+              :(item.type == 1&&item.isLack==1)?3:4,
+
+          markerslist.push(item)
+          // 
+        }
+        
+      })
+      
+      this.createMarks(markerslist)
+   
+      
+    },
+    createMarks(citys){
+      // let style = [
+      //   {
+      //     url: require('../assets/image/icon6.png'),
+      //     anchor: new AMap.Pixel(9, 9),
+      //     size: new AMap.Size(18, 18)
+      //   },
+      //   {
+      //     url: require('../assets/image/icon4.png'),
+      //     anchor: new AMap.Pixel(9, 9),
+      //     size: new AMap.Size(18, 18)
+      //   },
+      // ];
+      let style = [{
+            url: require('../assets/image/icon4.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }, {
+            url: require('../assets/image/icon3.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }, {
+            url: require('../assets/image/icon1.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }, {
+            url: require('../assets/image/icon2.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }, {
+            url: require('../assets/image/icon5.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }
+        ];
+    this.mass = new AMap.MassMarks(citys, {
+      zIndex: 111,
+      cursor: 'pointer',
+      style: style
+      });
+      this.mass.on("click", (e) => {
+      // alert(2)
+      this.isDetail=true
+      let str=e.data
+      this.mapobj=str
+    })
+      this.mass.setMap(this.myMap);
 
     },
     // 录入按钮
@@ -1068,7 +1129,7 @@ export default {
       })
     },
     getDataList(data,type){
-       this.myMap.clearMap()
+      //  this.mass.clear()
       let params={}
       if(type==1){
         params={
@@ -1079,7 +1140,9 @@ export default {
           hour:data.substring(2,4)
         }
       } else{
-        params={}
+        params={
+          orgType:1
+        }
       }
 
       this.$fetchGet("hospital/selectHospital",params).then(res=> {
@@ -1104,7 +1167,15 @@ export default {
         if (this.dataList) {
           this.total=this.dataList.length
         }
-        this.mapinit(res)
+        // console.log(encrypt.Decrypt("9YCbVfmEYbvfEmdkyV3kyA=="))
+        if(res.length==0){
+          this.$toast('暂无数据！');
+        }else{
+          // this.mapinit(res)
+          this.getmarkers(res)
+          
+        }
+
 
       })
     },
@@ -1247,8 +1318,6 @@ export default {
     //  alert(2)
      this.myMap.clearMap()
       const markerslist=[]
-      let pointsa=[]
-      const pointwe=[]
       res.forEach(item => {
         if(item.linkTel!==undefined){
           item.linkTelarr=item.linkTel.split(",")
@@ -1263,24 +1332,13 @@ export default {
           item.needsDescrarr=item.needsDescr.split(",")
         }
         if(item.longitude){
+          item.lnglat=[item.gaodeLon, item.gaodeLat]
           markerslist.push(this.createPoint(item))
           // 
         }
         
       })
-      console.log(markerslist)
-        this.myMap.add(markerslist)
-      // AMap.convertFrom(markerslist, 'baidu',  (status, result)=> {
-      //     if(result.info=="ok"){
-      //       pointsa=result.locations;
-      //       res.forEach((itam,index)=>{
-      //         itam.lacal=pointsa[index];
-      //         pointwe.push(this.createPoint(itam))
-      //       })
-      //       console.log(pointwe)
-      //       this.myMap.add(pointwe)
-      //     }
-      // })
+      this.myMap.add(markerslist)
       
     },
     // 添加点集合
@@ -1299,16 +1357,16 @@ export default {
   createPoint(row) {
     let marker = new AMap.Marker({
       position: new AMap.LngLat(row.gaodeLon, row.gaodeLat),
-      offset: new AMap.Pixel(-9, -9),
+      offset: new AMap.Pixel(-7, -7),
       icon: new AMap.Icon({
-        size: new AMap.Size(18, 18),
+        size: new AMap.Size(14, 14),
         image:
           (row.type == 2&&row.isLack==1)
             ? require('../assets/image/icon4.png')
             : (row.type == 2&&row.isLack==0)?require('../assets/image/icon3.png')
             : (row.type == 1&&row.isLack==0)?require('../assets/image/icon1.png')
             :(row.type == 1&&row.isLack==1)?require('../assets/image/icon2.png'):require('../assets/image/icon5.png'),
-        imageSize: new AMap.Size(18,18)
+        imageSize: new AMap.Size(14,14)
       }), // 添加 Icon 图标 URL
       zIndex: 100,
       // map:this.myMap,
@@ -1339,6 +1397,40 @@ export default {
   height: 100%;
   background: #f1f1f1;
   display:flex;
+  .peopleTeam{
+    position:fixed;
+    top:126px;
+    left:12px;
+    z-index:10;
+    // width:80px;
+    // height:120px;
+    background:rgba(255,255,255,1);
+    box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32);
+    border-radius:6px;
+    box-sizing:border-box;
+    padding:5px;
+    display:flex;
+    flex-direction:column;
+    .txtimg{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      border-bottom:1px solid #EAEAEA;
+      padding-bottom:4px;
+      margin-bottom:4px;
+      .imgbox{
+        width:16px;
+        height:16px;
+        
+      }
+    }
+    .txtimg:last-child{
+      border-bottom:none;
+       padding-bottom:0px;
+      margin-bottom:0px;
+      }
+  }
   .onebif{
     position:fixed;
     top:6px;
@@ -1357,6 +1449,9 @@ export default {
     align-items:center;
   }
   .twobif{
+    position:fixed;
+    top:80px;
+    right:60px;
     z-index:10;
     width:100px;
     height:24px;
@@ -1382,6 +1477,9 @@ export default {
     }
   }
   .forew{
+    position:fixed;
+    top:80px;
+    left:12px;
     z-index:10;
     color:#333333;
     width:100px;
@@ -1404,7 +1502,23 @@ export default {
 
     }
   }
+  .dzan{
+    position:fixed;
+    top:62px;
+    right:28px;
+    z-index:11;
+    width:16px;
+    height:16px;
+    background:rgba(51,51,51,0.6);
+    color:#ffffff;
+    font-size:10px;
+    line-height:16px;
+    border-radius:50%;
+  }
   .threebif{
+    position:fixed;
+    top:66px;
+    right:28px;
     z-index:10;
     width:44px;
     height:44px;
@@ -1515,13 +1629,13 @@ export default {
   }
   .write{
     position:fixed;
-    bottom:20px;
+    bottom:19px;
     left:0px;
     z-index:10;
     font-size:11px;
     width:100%;
     color:#999999;
-    background:rgba(242,245,255,1);
+    background:rgba(242,245,255,0.4);
     // line-height:12px;
     p{
       text-align:center;
@@ -1564,14 +1678,14 @@ export default {
   }
   .countbottom{
      position:fixed;
-    bottom:0px;
+    bottom:0.2px;
     left:0px;
     z-index:10;
     width:100%;
-    height:20px;
+    // height:20px;
     line-height:20px;
     font-size:11px;
-    background:rgba(242,245,255,1);
+    background:rgba(242,245,255,0.7);
     color:#999999;
   }
   .contentDetail{
@@ -1799,12 +1913,14 @@ export default {
     }
     .btn {
       position:relative;
+      right:40px;
+      top:-62px;
       display:flex;
       justify-content:center;
       align-items:center;
       width:50px;
       height:50px;
-      background:#fff;
+      // background:#fff;
       margin-left:292.5px;
       margin-top:15px;
       border-radius:50%;
@@ -2331,6 +2447,9 @@ export default {
 
   }
   .cur-time-btn{
+    position: fixed;
+    top: 126px;
+    right: 28px;
     display: flex;
     flex-direction: column;
     justify-content: center;

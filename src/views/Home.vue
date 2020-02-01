@@ -986,23 +986,13 @@ export default {
     //大拇指点赞
     dzanclick(){
       console.log(this.isdzan)
-      if(!this.isdzan){
-        this.isdzan=true
-        // console.log(this.isdzan)
-      }
-      // setTimeout( ()=> {
-      //   this.isdzan=false
-      // }, 10000);
+     this.isdzan=true
       this.$fetchGet("encourage/saveEncourage", {
         hospitalName:''
       }).then(res => {
-        if(res.code=="success"){
-         this.initMap()
-        }else{
-          this.$toast('您已点赞，请稍后点赞');
-        }
-         this.isdzan=false
-        
+        this.zanz.encourage++
+        this.isdzan=false
+       
       });
     },
     // 搜索按钮

@@ -813,6 +813,7 @@ export default {
     // 实时资讯按钮
     curTimeBtn(){
       this.curTimeDonate=true
+      // this.$router.push({path:'/curTime'})
     },
     // 录入立即拨打
     commitTel(tel){

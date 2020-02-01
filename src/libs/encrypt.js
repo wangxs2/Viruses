@@ -1,23 +1,42 @@
 const CryptoJS = require('crypto-js');  //引用AES源码js
-    
-const key = CryptoJS.enc.Utf8.parse("1234123412ABCDEF");  //十六位十六进制数作为密钥
-const iv = CryptoJS.enc.Utf8.parse('ABCDEF1234123412');   //十六位十六进制数作为密钥偏移量
-
+const keystr = CryptoJS.enc.Utf8.parse("sitiits@sari@cai");  //十六位十六进制数作为密钥
+const ivstr = CryptoJS.enc.Utf8.parse('kindness@its@tao');   //十六位十六进制数作为密钥偏移量
+const key_base64 = CryptoJS.enc.Base64.stringify(keystr);
+const iv_base64 = CryptoJS.enc.Base64.stringify(ivstr);
+function encrypt(msg, key, iv) {
+        return CryptoJS.AES.encrypt(msg, key, {
+            iv: iv,
+            padding: CryptoJS.pad.Pkcs7,
+            mode: CryptoJS.mode.CBC
+        });
+}
 //解密方法
 function Decrypt(word) {
-    let encryptedHexStr = CryptoJS.enc.Hex.parse(word);
-    let srcs = CryptoJS.enc.Base64.stringify(encryptedHexStr);
-    let decrypt = CryptoJS.AES.decrypt(srcs, key, { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.ZeroPadding });
-    let decryptedStr = decrypt.toString(CryptoJS.enc.Utf8);
-    let decryptedlast = decryptedStr.replaceAll(System.lineSeparator(), "")
-    return decryptedlast.toString();
+    var key = CryptoJS.enc.Base64.parse(key_base64);
+    var iv = CryptoJS.enc.Base64.parse(iv_base64);
+    var decrypted = CryptoJS.AES.decrypt(word, key, {
+        iv: iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+    });
+    return decrypted.toString(CryptoJS.enc.Utf8);
+
 }
 
 //加密方法
 function Encrypt(word) {
-    let srcs = CryptoJS.enc.Utf8.parse(word);
-    let encrypted = CryptoJS.AES.encrypt(srcs, key, { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.ZeroPadding });
-    return encrypted.ciphertext.toString().toUpperCase();
+    let key = CryptoJS.enc.Base64.parse(key_base64);
+    let iv = CryptoJS.enc.Base64.parse(iv_base64);
+    let encrypted= encrypt(word, key, iv);
+    let cipherText = encrypted.ciphertext.toString();
+    //java 使用 34439a96e68b129093105b67de81c0fc
+    // 拿到字符串类型的密文需要先将其用Hex方法parse一下
+   let cipherTextHexStr = CryptoJS.enc.Hex.parse(cipherText);
+    // 将密文转为Base64的字符串
+   // 只有Base64类型的字符串密文才能对其进行解密
+   let cipherTextBase64Str = CryptoJS.enc.Base64.stringify(cipherTextHexStr);
+    return cipherTextBase64Str;
+
 }
 
 export default {

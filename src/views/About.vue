@@ -1184,6 +1184,7 @@ export default {
       this.mapobj=row
 
     },
+   
     mapinit(res){
     //  alert(2)
      this.myMap.clearMap()

@@ -6,14 +6,25 @@
     </div>
     <div class="countbottom">中华全国工商业联合会 上海市慈善基金会 上海产业技术研究院联合发布</div>
     <div class="twobif">{{zanz.encourage}}次</div>
-    <div class="threebif">
+    <div class="threebif" @click="dzanclick">
       <van-icon  name="good-job" size="30" color="#ffffff" />
     </div>
+    <div class="dzan" v-if="isdzan">+1</div>
     <div class="forew" v-if="seven">
       近七天数据
     </div>
     <div class="write">
       <p>更多物资跟踪：新冠肺炎物资捐赠对接记录 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p></div>
+    <!-- 民间组织 三类 -->
+    <!-- <div class="peopleTeam">
+      <div class="txtimg" v-for="(iteam,index) in menuList"
+        :key="index"
+        @click="toRouterIndex(iteam,index)">
+        <img :src="iteam.imgUrl[selectIndex==index?0:1]" />
+        <span  v-bind:style="{color:selectIndex==index?'#216AFF':'#666666','font-size':'12px','font-weight':'bold'}">{{iteam.name}}</span>
+      </div>
+    </div> -->
+    <!-- 民间组织 三类 -->
     <div id="myMap" class="container"></div>
     
     <!-- 医院的详情弹框 -->
@@ -598,6 +609,33 @@ export default {
   name: "home",
   data() {
     return {
+      menuList: [
+        {
+          id:1,
+          name: "需方",
+          imgUrl: [
+            require("../assets/image/icon7.png"),
+            require("../assets/image/list1.png")
+          ],
+        },
+        {
+          id:2,
+          name: "供方",
+          imgUrl: [
+            require("../assets/image/list4.png"),
+            require("../assets/image/list3.png")
+          ],
+        },
+        {
+          id:3,
+          name: "民间组织",
+          imgUrl: [
+            require("../assets/image/list6.png"),
+            require("../assets/image/list5.png")
+          ],
+        },
+      ],
+      selectIndex:"",
       heightCur:'0',
       seven:true,
       zanz:{},
@@ -672,82 +710,6 @@ export default {
       ],
       curTimeDonate:false, // 实时捐赠弹框
       curTimeDataList:[],
-      // curTimeDataList:[
-      //   {
-      //     isTop: 1,
-      //     duration: "30分钟前",
-      //     pubDate:"2012-02-16 20:30:30",
-      //     url:"https://www.baidu.com",
-      //     headline: "事实上上等等大家都钉钉额水水水水水",
-      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
-      //     publishSource:"sssss",
-      //   },
-      //   {
-      //     isNew: 1,
-      //     duration: "30分钟前",
-      //     pubDate:"2012-02-16 20:30:30",
-      //     url:"https://www.baidu.com",
-      //     headline: "事实上上等等大家都钉钉顶顶顶额",
-      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
-      //     publishSource:"sssss",
-      //   },
-      //   {
-      //     duration: "30分钟前",
-      //     pubDate:"2012-02-16 20:30:30",
-      //     url:"https://www.baidu.com",
-      //     headline: "事实上上等等大家都钉钉顶顶顶顶额",
-      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
-      //     publishSource:"sssss",
-      //   },
-      //   {
-      //     duration: "30分钟前",
-      //     pubDate:"2012-02-16 20:30:30",
-      //     url:"https://www.baidu.com",
-      //     headline: "事实上上等等大家都钉钉额",
-      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
-      //     publishSource:"sssss",
-      //   },
-      //   {
-      //     duration: "30分钟前",
-      //     pubDate:"2012-02-16 20:30:30",
-      //     url:"https://www.baidu.com",
-      //     headline: "事实上上等等大家都钉钉额",
-      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
-      //     publishSource:"sssss",
-      //   },
-      //   {
-      //     duration: "30分钟前",
-      //     pubDate:"2012-02-16 20:30:30",
-      //     url:"https://www.baidu.com",
-      //     headline: "事实上上等等大家都钉钉额",
-      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
-      //     publishSource:"sssss",
-      //   },
-      //   {
-      //     duration: "30分钟前",
-      //     pubDate:"2012-02-16 20:30:30",
-      //     url:"https://www.baidu.com",
-      //     headline: "事实上上等等大家都钉钉额",
-      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
-      //     publishSource:"sssss",
-      //   },
-      //   {
-      //     duration: "30分钟前",
-      //     pubDate:"2012-02-16 20:30:30",
-      //     url:"https://www.baidu.com",
-      //     headline: "事实上上等等大家都钉钉额",
-      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
-      //     publishSource:"sssss",
-      //   },
-      //   {
-      //     duration: "30分钟前",
-      //     pubDate:"2012-02-16 20:30:30",
-      //     url:"https://www.baidu.com",
-      //     headline: "事实上上等等大家都钉钉额",
-      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
-      //     publishSource:"sssss",
-      //   },
-      // ], // 实时捐赠信息列表
       curTimeParams:{
         page: 1, // 页数
         pageSize:10, // 偏移量
@@ -757,6 +719,7 @@ export default {
 
       xuTab:true,
       tiTab:true,
+      isdzan:false
 
     };
   },
@@ -814,6 +777,10 @@ export default {
 
       })
   
+
+    },
+    //三类民间组织
+    toRouterIndex(){
 
     },
     // 加载更多
@@ -991,12 +958,76 @@ export default {
 
       }
     },
+    //大拇指点赞
+    dzanclick(){
+      this.isdzan=true
+      setTimeout( ()=> {
+        this.isdzan=false
+    }, 1000);
+    },
     // 搜索按钮
     searchBtn(){
       this.show=true
       this.reduceShow=false
       this.downUpImg=false
       this.heightCur="100%"
+
+    },
+    //加载海量点
+    getmarkers(citys){
+      this.myMap.clearMap()
+      const markerslist=[]
+      citys.forEach(item => {
+        if(item.linkTel!==undefined){
+          item.linkTelarr=item.linkTel.split(",")
+        }
+        if(item.linkPeople!==undefined){
+          item.linkPeoplearr=item.linkPeople.split(",")
+        }
+        if(item.needsName!==undefined){
+          item.needsNamearr=item.needsName.split(",")
+        }
+        if(item.needsDescr!==undefined){
+          item.needsDescrarr=item.needsDescr.split(",")
+        }
+        if(item.longitude){
+          item.lnglat=[item.gaodeLon, item.gaodeLat]
+          markerslist.push(item)
+          // 
+        }
+        
+      })
+      
+      this.createMarks(markerslist)
+   
+      
+    },
+    createMarks(citys){
+      let style = [
+        {
+          url: require('../assets/image/icon6.png'),
+          anchor: new AMap.Pixel(9, 9),
+          size: new AMap.Size(18, 18)
+        },
+        {
+          url: require('../assets/image/icon4.png'),
+          anchor: new AMap.Pixel(9, 9),
+          size: new AMap.Size(18, 18)
+        },
+      ];
+    let mass = new AMap.MassMarks(citys, {
+      opacity: 0.8,
+      zIndex: 111,
+      cursor: 'pointer',
+      style: style
+      });
+      mass.on("click", (e) => {
+      // alert(2)
+      this.isDetail=true
+      let str=e.data
+      this.mapobj=str
+    })
+      mass.setMap(this.myMap);
 
     },
     // 录入按钮
@@ -1085,7 +1116,9 @@ export default {
         if(res.length==0){
           this.$toast('暂无数据！');
         }else{
-          this.mapinit(res)
+          // this.mapinit(res)
+          this.getmarkers(res)
+          
         }
 
 
@@ -1214,8 +1247,6 @@ export default {
     //  alert(2)
      this.myMap.clearMap()
       const markerslist=[]
-      let pointsa=[]
-      const pointwe=[]
       res.forEach(item => {
         if(item.linkTel!==undefined){
           item.linkTelarr=item.linkTel.split(",")
@@ -1230,24 +1261,13 @@ export default {
           item.needsDescrarr=item.needsDescr.split(",")
         }
         if(item.longitude){
+          item.lnglat=[item.gaodeLon, item.gaodeLat]
           markerslist.push(this.createPoint(item))
           // 
         }
         
       })
-      console.log(markerslist)
-        this.myMap.add(markerslist)
-      // AMap.convertFrom(markerslist, 'baidu',  (status, result)=> {
-      //     if(result.info=="ok"){
-      //       pointsa=result.locations;
-      //       res.forEach((itam,index)=>{
-      //         itam.lacal=pointsa[index];
-      //         pointwe.push(this.createPoint(itam))
-      //       })
-      //       console.log(pointwe)
-      //       this.myMap.add(pointwe)
-      //     }
-      // })
+      this.myMap.add(markerslist)
       
     },
     // 添加点集合
@@ -1305,6 +1325,40 @@ export default {
   height: 100%;
   background: #f1f1f1;
   display:flex;
+  .peopleTeam{
+    position:fixed;
+    top:126px;
+    left:12px;
+    z-index:10;
+    // width:80px;
+    // height:120px;
+    background:rgba(255,255,255,1);
+    box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32);
+    border-radius:6px;
+    box-sizing:border-box;
+    padding:5px;
+    display:flex;
+    flex-direction:column;
+    .txtimg{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      border-bottom:1px solid #EAEAEA;
+      padding-bottom:4px;
+      margin-bottom:4px;
+      .imgbox{
+        width:16px;
+        height:16px;
+        
+      }
+    }
+    .txtimg:last-child{
+      border-bottom:none;
+       padding-bottom:0px;
+      margin-bottom:0px;
+      }
+  }
   .onebif{
     position:fixed;
     top:6px;
@@ -1339,9 +1393,9 @@ export default {
     padding-left:6px;
   }
   .forew{
-     position:fixed;
+    position:fixed;
     top:80px;
-    left:20px;
+    left:12px;
     z-index:10;
     color:#333333;
     width:100px;
@@ -1351,6 +1405,19 @@ export default {
     background:rgba(255,255,255,1);
     box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32);
     border-radius:6px;
+  }
+  .dzan{
+    position:fixed;
+    top:62px;
+    right:28px;
+    z-index:11;
+    width:16px;
+    height:16px;
+    background:rgba(51,51,51,0.6);
+    color:#ffffff;
+    font-size:10px;
+    line-height:16px;
+    border-radius:50%;
   }
   .threebif{
     position:fixed;
@@ -1454,13 +1521,13 @@ export default {
   }
   .write{
     position:fixed;
-    bottom:20px;
+    bottom:19px;
     left:0px;
     z-index:10;
     font-size:11px;
     width:100%;
     color:#999999;
-    background:rgba(242,245,255,1);
+    background:rgba(242,245,255,0.4);
     // line-height:12px;
     p{
       text-align:center;
@@ -1503,14 +1570,14 @@ export default {
   }
   .countbottom{
      position:fixed;
-    bottom:0px;
+    bottom:0.2px;
     left:0px;
     z-index:10;
     width:100%;
-    height:20px;
+    // height:20px;
     line-height:20px;
     font-size:11px;
-    background:rgba(242,245,255,1);
+    background:rgba(242,245,255,0.7);
     color:#999999;
   }
   .contentDetail{

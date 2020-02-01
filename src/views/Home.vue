@@ -4,7 +4,7 @@
       <div style="font-size:17px">共抗新冠肺炎</div>
       <div style="font-size:16px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span></div>
     </div>
-    <div class="countbottom">中华全国工商业联合会 上海市慈善基金会 上海产业技术研究院联合发布</div>
+    <div class="countbottom"><span style="color:#216AFF"><a href="http://www.acfic.org.cn">中华全国工商业联合会</a></span> <span style="color:#216AFF"><a href="http://www.scf.org.cn">上海市慈善基金会</a></span> <span style="color:#216AFF"><a href="https://www.siti.sh.cn">上海产业技术研究院</a></span>联合发布</div>
     <div class="twobif">{{zanz.encourage}}次</div>
     <div class="threebif" @click="dzanclick">
       <van-icon  name="good-job" size="30" color="#ffffff" />
@@ -47,7 +47,7 @@
                  :key="index"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
         </div>
         <!-- <span class="person">接受个人捐赠</span> -->
-        <div v-if="mapobj.needsNamearr!==undefined" style="font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">所需疫情防控物资 <van-icon style="margin-left:10px" name="warning-o" color="#FF2727"  size="12" /> <span @click="specifications=true" style="color:#FF2727;font-size:12px">物资标准</span></div>
+        <div v-if="mapobj.needsNamearr!==undefined" style="font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'所需疫情防控物资':'可提供的物资或者服务'}} <van-icon v-if="query.orgType==1" style="margin-left:10px" name="warning-o" color="#FF2727"  size="12" /> <span v-if="query.orgType==1" @click="specifications=true" style="color:#FF2727;font-size:12px">物资标准</span></div>
         <div class="material" v-if="mapobj.needsNamearr!==undefined">
           <div v-for="(item,index) in mapobj.needsNamearr"
                  :key="index" class="boll-item"><span class="boll"></span>{{item}}</div>
@@ -57,10 +57,11 @@
         </div>
         <div v-if="mapobj.needsDescrarr!==undefined" v-for="(itrm,index) in mapobj.needsDescrarr"
                  :key="index" class="remark">{{itrm}}</div>
+        <div v-if="mapobj.orgDescr!==undefined" style="font-size:12px;color:#999999;text-align:left">备注：{{mapobj.orgDescr}}</div>
         <van-divider />
         <div>
           <van-button v-if="mapobj.linkTelarr!==undefined" round color="#216AFF" style="margin-right:12px" @click="dialPhoneNumber()">我要联系</van-button>
-          <van-button round color="linear-gradient(to right, #FF6600, #FF7B10)" @click="shakeTime(mapobj.hospitalName)" icon="good-job-o" type="info">为医院点赞加油 {{mapobj.encourageNum}}次</van-button>
+          <van-button round color="linear-gradient(to right, #FF6600, #FF7B10)" @click="shakeTime(mapobj.hospitalName)" icon="good-job-o" type="info">点赞加油 {{mapobj.encourageNum}}次</van-button>
         </div>
       </div>
     </van-popup>
@@ -984,19 +985,23 @@ export default {
     },
     //大拇指点赞
     dzanclick(){
-      this.isdzan=true
-        setTimeout( ()=> {
-          this.isdzan=false
-      }, 1000);
+      console.log(this.isdzan)
+      if(!this.isdzan){
+        this.isdzan=true
+        // console.log(this.isdzan)
+      }
+      // setTimeout( ()=> {
+      //   this.isdzan=false
+      // }, 10000);
       this.$fetchGet("encourage/saveEncourage", {
         hospitalName:''
       }).then(res => {
         if(res.code=="success"){
          this.initMap()
         }else{
-          this.isdzan=false
           this.$toast('您已点赞，请稍后点赞');
         }
+         this.isdzan=false
         
       });
     },

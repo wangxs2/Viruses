@@ -68,7 +68,7 @@
         :style="{ height: '20%' }">
       <div style="padding:12px 24px">
         <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr"
-                 :key="index"><van-icon name="phone-o" color="#1989fa" size="34" @click="dialPhoneNumber1(iteam)" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
+                 :key="index" ><van-icon name="phone-o" color="#1989fa" size="34"  /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
       </div>
     </van-popup>
     <!-- 搜索部分 -->
@@ -641,6 +641,7 @@ export default {
       zanz:{},
       isone:true,
       myMap:null,
+      mass:null,
       pointGroup: new AMap.OverlayGroup(), // 点集合
       isDetail:false,
       agreement:false,
@@ -975,7 +976,9 @@ export default {
     },
     //加载海量点
     getmarkers(citys){
-      this.myMap.clearMap()
+      if(this.mass){
+       this.mass.clear()
+      }
       const markerslist=[]
       citys.forEach(item => {
         if(item.linkTel!==undefined){
@@ -992,6 +995,12 @@ export default {
         }
         if(item.longitude){
           item.lnglat=[item.gaodeLon, item.gaodeLat]
+          item.style=(item.type == 2&&item.isLack==1)
+              ? 0
+              : (item.type == 2&&item.isLack==0)?1
+              : (item.type == 1&&item.isLack==0)?2
+              :(item.type == 1&&item.isLack==1)?3:4,
+
           markerslist.push(item)
           // 
         }
@@ -1003,31 +1012,52 @@ export default {
       
     },
     createMarks(citys){
-      let style = [
-        {
-          url: require('../assets/image/icon6.png'),
-          anchor: new AMap.Pixel(9, 9),
-          size: new AMap.Size(18, 18)
-        },
-        {
-          url: require('../assets/image/icon4.png'),
-          anchor: new AMap.Pixel(9, 9),
-          size: new AMap.Size(18, 18)
-        },
-      ];
-    let mass = new AMap.MassMarks(citys, {
-      opacity: 0.8,
+      // let style = [
+      //   {
+      //     url: require('../assets/image/icon6.png'),
+      //     anchor: new AMap.Pixel(9, 9),
+      //     size: new AMap.Size(18, 18)
+      //   },
+      //   {
+      //     url: require('../assets/image/icon4.png'),
+      //     anchor: new AMap.Pixel(9, 9),
+      //     size: new AMap.Size(18, 18)
+      //   },
+      // ];
+      let style = [{
+            url: require('../assets/image/icon4.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }, {
+            url: require('../assets/image/icon3.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }, {
+            url: require('../assets/image/icon1.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }, {
+            url: require('../assets/image/icon2.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }, {
+            url: require('../assets/image/icon5.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }
+        ];
+    this.mass = new AMap.MassMarks(citys, {
       zIndex: 111,
       cursor: 'pointer',
       style: style
       });
-      mass.on("click", (e) => {
+      this.mass.on("click", (e) => {
       // alert(2)
       this.isDetail=true
       let str=e.data
       this.mapobj=str
     })
-      mass.setMap(this.myMap);
+      this.mass.setMap(this.myMap);
 
     },
     // 录入按钮
@@ -1074,7 +1104,7 @@ export default {
       })
     },
     getDataList(data,type){
-       this.myMap.clearMap()
+      //  this.mass.clear()
       let params={}
       if(type==1){
         params={

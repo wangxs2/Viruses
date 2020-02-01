@@ -12,14 +12,9 @@
       近七天数据
     </div>
     <div class="write">
-      <p>更多疫情跟踪： 新型肺炎需求捐赠记录 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p>
-      <p style="line-height:16px">中华全国工商业联合会 <br>上海市慈善基金会<br> 上海产业技术研究院联合发布 </p>
-    </div>
-    <!-- <div class="writefont" >免责声明</div> -->
-    <!-- <div class="header">新型肺炎物资捐赠实时动态</div> -->
-    <div id="myMap" class="container">
-      <!-- <div class="top-fix">定点物资缺乏地图</div> -->
-    </div>
+      <p>更多疫情跟踪： 新型肺炎需求捐赠记录 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p></div>
+    <div id="myMap" class="container"></div>
+    
     <!-- 医院的详情弹框 -->
     <van-popup  v-model="isDetail" closeable :style="{width: '100%' }" round :duration="0">
       <div class="contentDetail">
@@ -73,7 +68,13 @@
         </div>
         <div class="input-wrapper">
           <img src="../assets/image/search.png" alt="" @click="search">
-          <input type="text" placeholder="查询继续支援医院、物资、区域" v-model="searchText" @focus="inputFocus" @keyup.13="search">
+
+          <form action="javascript:return true"> 
+            <input type="search" placeholder="查询继续支援医院、物资、区域" v-model="searchText" @focus="inputFocus" @keyup.13="search">
+          </form>
+
+
+          
         </div>
         <div class="tab-list-wrapper" v-if="!downUpImg">
 
@@ -548,7 +549,8 @@
     <div  :class="[styleUp?'cur-time-btn cur-time-btn1':'cur-time-btn cur-time-btn2']" class="cur-time-btn" @click="curTimeBtn"><span>实时</span><span>资讯</span></div>
     <van-popup v-model="curTimeDonate" closeable position="bottom" :style="{ height: '100%' }" class="cur-time-donate">
       <div class="time-donate">
-        <div class="top"><span>实时播报</span></div>
+        <!-- <div class="top"><span>实时播报</span></div> -->
+        <div class="top"><span>{{curTimeTopContent}}</span></div>
         <div class="donate-content" v-if="curTimeNoDataShow">
           <div class="donate-list" v-for="(item, i) in curTimeDataList" :key="i">
             <div class="time-wrapper">
@@ -763,6 +765,7 @@ export default {
       tiTab:true,
       styleUp:true,
       isoneClosePoint:1,
+      curTimeTopContent:"", // 实时资讯统计
 
     };
   },
@@ -790,9 +793,18 @@ export default {
     this.getDataList()
     this.getWuziList()
     this.getCityList()
+    this.getCurTimeContent()
     // this.getProvinceList()
   },
   methods:{
+    getCurTimeContent(){
+      this.$fetchGet("donateCount/findDonateCount").then(res=> {
+        if (res&&res.length){
+
+          this.curTimeTopContent=res[0].content
+        }
+      })
+    },
     isoneClick(){
       this.isone=false
       this.styleUp=false
@@ -1137,6 +1149,7 @@ export default {
         this.show=false
         this.showSearch=true
         this.styleUp=true
+        this.isone=false
         this.getDataList(this.searchText,1)
 
       }else {
@@ -1285,16 +1298,16 @@ export default {
   createPoint(row) {
     let marker = new AMap.Marker({
       position: new AMap.LngLat(row.gaodeLon, row.gaodeLat),
-      offset: new AMap.Pixel(-12, -16),
+      offset: new AMap.Pixel(-9, -9),
       icon: new AMap.Icon({
-        size: new AMap.Size(24, 31),
+        size: new AMap.Size(18, 18),
         image:
           (row.type == 2&&row.isLack==1)
             ? require('../assets/image/icon4.png')
             : (row.type == 2&&row.isLack==0)?require('../assets/image/icon3.png')
             : (row.type == 1&&row.isLack==0)?require('../assets/image/icon1.png')
             :(row.type == 1&&row.isLack==1)?require('../assets/image/icon2.png'):require('../assets/image/icon5.png'),
-        imageSize: new AMap.Size(24, 31)
+        imageSize: new AMap.Size(18,18)
       }), // 添加 Icon 图标 URL
       zIndex: 100,
       // map:this.myMap,
@@ -1316,6 +1329,7 @@ export default {
 
 .van-popup__close-icon--top-right{
   top: 9px!important;
+  right: 3px!important;
 }
 </style>
 <style lang="scss" scoped>
@@ -1324,7 +1338,6 @@ export default {
   height: 100%;
   background: #f1f1f1;
   display:flex;
-  flex-direction: column;
   .onebif{
     position:fixed;
     top:6px;
@@ -1404,7 +1417,7 @@ export default {
     &.threebif1{
       position:fixed;
       top:78px;
-      right:24px;
+      right:28px;
 
     }
     &.threebif2{
@@ -1501,17 +1514,17 @@ export default {
   }
   .write{
     position:fixed;
-    bottom:0px;
+    bottom:20px;
     left:0px;
     z-index:10;
-    font-size:12px;
-    font-family:PingFang SC;
-    font-weight:500;
+    font-size:11px;
     width:100%;
-    color:#666666;
-    line-height:12px;
+    color:#999999;
+    background:rgba(242,245,255,1);
+    // line-height:12px;
     p{
       text-align:center;
+      margin:0
     }
   }
   .left-font{
@@ -1528,7 +1541,7 @@ export default {
     font-size: 18px;
   }
   .container{
-    flex:1;
+   flex:1;
     // margin-top:6px;
     position:relative;
     .top-fix{
@@ -1547,6 +1560,18 @@ export default {
       box-shadow:0px 1px 0px 0px rgba(238,238,238,1);
 
     }
+  }
+  .countbottom{
+     position:fixed;
+    bottom:0px;
+    left:0px;
+    z-index:10;
+    width:100%;
+    height:20px;
+    line-height:20px;
+    font-size:11px;
+    background:rgba(242,245,255,1);
+    color:#999999;
   }
   .contentDetail{
      padding: 12px;
@@ -1700,7 +1725,7 @@ export default {
       justify-content: flex-start;
       align-items:center;
       height: 44px;
-      background:rgba(242,245,255,1);;
+      background:rgba(242,245,255,1);
       border:1px solid rgba(224,224,224,1);
       border-radius:12px;
       img{
@@ -1708,15 +1733,20 @@ export default {
         height: 18px;
         padding: 10px 15px;
       }
-      input{
-        width: 280px;
-        font-size:16px;
-        font-family:PingFang SC;
-        font-weight:500;
-        color:rgba(102,102,102,1);
-        border: 0;  // 去除未选中状态边框
-        outline: none; // 去除选中状态边框
-        background-color: rgba(0, 0, 0, 0);// 透明背景
+      form{
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        input{
+          width: 280px;
+          font-size:16px;
+          font-family:PingFang SC;
+          font-weight:500;
+          color:rgba(102,102,102,1);
+          border: 0;  // 去除未选中状态边框
+          outline: none; // 去除选中状态边框
+          background-color: rgba(0, 0, 0, 0);// 透明背景
+        }
       }
     }
     
@@ -2117,20 +2147,41 @@ export default {
 
   }
   .time-donate{
+    // .top{
+    //   display: flex;
+    //   justify-content: flex-start;
+    //   align-items: center;
+    //   height: 36px;
+    //   font-size:16px;
+    //   font-family:PingFang SC;
+    //   font-weight:bold;
+    //   color:rgba(51,51,51,1);
+    //   padding: 0 12px;
+    //   background: #fff;
+    //   span{
+    //     padding-left:10px;
+    //     border-left: 3px solid #216AFF;
+    //   }
+
+    // }
     .top{
-      display: flex;
-      justify-content: flex-start;
+      display:flex;
+      justify-content: flex-end;
       align-items: center;
-      height: 36px;
-      font-size:16px;
-      font-family:PingFang SC;
-      font-weight:bold;
-      color:rgba(51,51,51,1);
-      padding: 0 12px;
-      background: #fff;
+      width: 100%;
+      height: 60px;
+      background:url("../assets/image/curtime.png") no-repeat;
+      background-size: 100% 60px;
       span{
-        padding-left:10px;
-        border-left: 3px solid #216AFF;
+        display: block;
+        padding-right: 15px;
+        width: 285px;
+        font-size:13px;
+        text-align: left;
+        font-family:PingFang SC;
+        font-weight:bold;
+        color:rgba(255,255,255,1);
+        line-height:18px;
       }
 
     }

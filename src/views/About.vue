@@ -1,5 +1,2193 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div class="home">
+    <div class="onebif" v-if="isone">
+      <div style="font-size:17px">共抗新冠肺炎</div>
+      <div style="font-size:16px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span><van-icon name="cross" @click="isone=false" size="22"/></div>
+    </div>
+    <div class="countbottom">中华全国工商业联合会 上海市慈善基金会 上海产业技术研究院联合发布</div>
+    <div class="twobif">{{zanz.encourage}}次</div>
+    <div class="threebif">
+      <van-icon  name="good-job" size="30" color="#ffffff" />
+    </div>
+    <div class="forew" v-if="seven">
+      近七天数据
+    </div>
+    <div class="write">
+      <p>更多疫情跟踪： 新型肺炎需求捐赠记录 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p></div>
+    <div id="myMap" class="container"></div>
+    
+    <!-- 医院的详情弹框 -->
+    <van-popup  v-model="isDetail" closeable :style="{width: '100%' }" round :duration="0">
+      <div class="contentDetail">
+        <div style="font-size:18px;text-align:left">{{mapobj.hospitalName}}</div>
+        <div class="address"> 
+          <div class="left-font" v-if="mapobj.hospitalAddress!==undefined&&mapobj.hospitalAddress!==''" style="color:#666666;width:75%;word-wrap:break-word;text-align:left"><van-icon name="location-o" size="20" /> <div class="van-van-multi-ellipsis--l2" style="margin-left:2px">{{mapobj.hospitalAddress}}</div></div>
+          <div v-if="mapobj.type==1" class="right-btn">定点医院</div>
+          <div v-if="mapobj.type==2" class="right-btn right-btn1">发热门诊</div>
+        </div>
+        <div class="address" style="font-size:12px"> 
+          <div v-if="mapobj.source!==undefined&&mapobj.source!==''" style="color:#666666">信息来源：{{mapobj.source}}  <span style="color:#216AFF;cursor:pointer"> 点击查看</span></div>
+          <div v-if="mapobj.createTime!==undefined">发布日期：{{mapobj.createTime}}</div>
+        </div>
+        <div class="tel-phone" v-if="mapobj.linkTelarr!==undefined">
+          <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr"
+                 :key="index"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
+        </div>
+        <!-- <span class="person">接受个人捐赠</span> -->
+        <div v-if="mapobj.needsNamearr!==undefined" style="font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">所需疫情防控物资 <van-icon style="margin-left:10px" name="warning-o" color="#FF2727"  size="12" /> <span @click="specifications=true" style="color:#FF2727;font-size:12px">物资标准</span></div>
+        <div class="material" v-if="mapobj.needsNamearr!==undefined">
+          <div v-for="(item,index) in mapobj.needsNamearr"
+                 :key="index" class="boll-item"><span class="boll"></span>{{item}}</div>
+          <div class="boll-item"><span class="boll"></span>医用一次性乳胶手套</div>
+          <div class="boll-item"><span class="boll"></span>医用帽子</div>
+          <div class="boll-item"><span class="boll"></span>一次性手术衣</div>
+        </div>
+        <div v-if="mapobj.needsDescrarr!==undefined" v-for="(itrm,index) in mapobj.needsDescrarr"
+                 :key="index" class="remark">{{itrm}}</div>
+        <van-divider />
+        <div>
+          <van-button v-if="mapobj.linkTelarr!==undefined" round color="#216AFF" style="margin-right:12px" @click="dialPhoneNumber()">我要联系</van-button>
+          <van-button round color="linear-gradient(to right, #FF6600, #FF7B10)" @click="shakeTime(mapobj.hospitalName)" icon="good-job-o" type="info">为医院点赞加油 {{mapobj.encourageNum}}次</van-button>
+        </div>
+      </div>
+    </van-popup>
+    <van-popup
+        v-model="phoneshow"
+        position="bottom"
+        :style="{ height: '20%' }">
+      <div style="padding:12px 24px">
+        <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr"
+                 :key="index"><van-icon name="phone-o" color="#1989fa" size="34" @click="dialPhoneNumber1(iteam)" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
+      </div>
+    </van-popup>
+    <!-- 搜索部分 -->
+    <van-popup v-model="show" position="bottom" :style="{height: heightCur }" :overlay="false" round>
+      <div class="search-wrapper">
+        <div class="down-up-wrapper" @click="downUp">
+          <img class="down-up" src="../assets/image/up.png" alt="" v-if="downUpImg">
+          <img class="down-up" src="../assets/image/down.png" alt="" v-else>
+        </div>
+        <div class="input-wrapper">
+          <img src="../assets/image/search.png" alt="" @click="search">
+          <input type="text" placeholder="查询继续支援医院、物资、区域" v-model="searchText" @focus="inputFocus" @keyup.13="search">
+        </div>
+        <div class="tab-list-wrapper" v-if="!downUpImg">
+
+            <p class="title">疫情防控物资</p>
+          <div class="list list1">
+            <span v-for="(item,i) in wuziList" :key="i" @click="selectItem(item)">{{item}}</span>
+          </div>
+          <p class="title">疫情城市查询</p>
+          <div class="list list2">
+            <span v-for="(item,i) in cityList" :key="i" @click="selectItem(item)">{{item}}</span>
+          </div>
+          
+          <p class="title">发布时间查询</p>
+          <div class="list list3">
+            <span v-for="(item,i) in timeList" :key="i" @click="selectTimeItem(item)"><img src="../assets/image/time.png" alt="">{{item}}</span>
+          </div>
+        </div>
+        
+      </div>
+      
+    </van-popup>
+    <!-- 搜索2部分 -->
+    <div class="search-wrapper1" v-if="showSearch">
+      <div class="input-wrapper">
+        <div class="go-back">
+          <van-icon name="arrow-left" @click="goback" size="16"/>
+        </div>
+        <!-- <input type="text" v-model="searchText" @blur="blurSearch"> -->
+        <span style="font-size:16px">{{searchText}}</span>
+        <div class="go-back">
+          <van-icon name="cross" @click="clearText" size="16" />
+        </div>
+      </div>
+      <div class="btn" @click="rightModel" >
+        <van-icon name="wap-nav" size="24"/>
+        <span v-if="showDataLengthPoint" >{{total || 0}}</span>
+      </div>
+    </div>
+    <!-- 搜索2右边弹框 -->
+    <van-popup v-model="showModel" position="right" :style="{ height: '100%' }">
+      <div class="list-content">
+
+        <div class="list-wrapper" v-for="(item,i) in dataList" :key="i" @click="detailright(item)">
+          <p class="title">{{item.hospitalName}}</p>
+          <p class="address" v-if="item.hospitalAddress!==undefined&&item.hospitalAddress!==''"><van-icon name="location-o" size="20" /><span>{{item.hospitalAddress}}</span></p>
+          <p class="time" v-if="item.createTime!==undefined&&item.createTime!==''">发布日期：{{item.createTime!==undefined?item.createTime.substring(0,16):''}}</p>
+          <div class="phone" v-if="item.linkTelList!==undefined">
+            <p  v-for="(items,i) in item.linkTelList" :key="i"><van-icon name="phone-o" size="20" /><span>{{items}}</span></p>
+          </div>
+        </div>
+      </div>
+      
+    </van-popup>
+
+
+    <!-- 搜索录入图标 -->
+    <div class="search-write">
+      <div class="img-icon" @click="searchBtn">
+        <van-icon name="search" size="20" color="#216AFF"/>
+        <span>搜索</span>
+      </div>
+      <div class="img-icon" @click="writeBtn">
+        <van-icon name="records" size="20" color="#216AFF"/>
+        <span>录入</span>
+      </div>
+    </div>
+
+    <!-- 录入缺省页 -->
+    <van-popup v-model="reduceShow" closeable position="bottom" :style="{ height: '100%' }">
+      <div class="reduce-content">
+        <!-- <img class="down-up" src="../assets/image/reduce.png" alt="">
+        <p>正在加紧开发...</p>
+        <p>联系电话：18368091476</p>
+        <img style="width:160px;height:160px" src="../assets/image/gzh.jpg" alt=""> -->
+        <img style="" class="banner" src="../assets/image/banner.png" alt="">
+        <div class="us-need-wrapper">
+          <div class="us-need us">
+            <div class="title">
+              <span class="dot" v-for="(item,i) in 3" :key="i+'s'"></span>
+              <span class="title-name">联系我们</span>
+              <span class="dot" v-for="(item,i) in 3" :key="i+'d'"></span>
+            </div>
+            <div class="message" v-for="(item,i) in conUs" :key="i">
+              <div class="message-content">
+                <div class="name-tel">
+                  <span class="name">{{item.name}}</span>
+                  <span class="tel">{{item.tel}}</span>
+                </div>
+                <span class="job">({{item.job}})</span>
+              </div>
+              <span class="btn" @click="commitTel(item.tel)">立即拨打</span>
+            </div>
+            <div class="code">
+              <img style="" src="../assets/image/gzh.jpg" alt="">
+              <span class="btn">上海产业技术研究院智能工程交通中心</span>
+            </div>
+          </div>
+          <div class="us-need need">
+
+            <div class="title">
+              <span class="dot" v-for="(item,i) in 3" :key="i+'f'"></span>
+              <span class="title-name">需求填写</span>
+              <span class="dot" v-for="(item,i) in 3" :key="i+'g'"></span>
+            </div>
+            <div class="tab-btn">
+              <div :class="[xuShow?'tab-img xu':'tab-img xu1']" @click="needTi(1)"><span>我是需求方</span></div>
+              <div :class="[tiShow?'tab-img ti':'tab-img ti1']" @click="needTi(2)"><span>我是提供方</span></div>
+            </div>
+            <div class="form-wrapper">
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">单位名称</span>
+                <!-- <input type="text" v-model="searchText"> -->
+                <van-field v-model="form.company" placeholder="请填写" :error-message="errorMessage.company"  @blur="formBlur(1)"/>
+              </div>
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">地址</span>
+                <van-field v-model="form.address" placeholder="请填写" :error-message="errorMessage.address"   @blur="formBlur(2)"/>
+              </div>
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">联系人</span>
+                <van-field v-model="form.people" placeholder="请填写" :error-message="errorMessage.people"   @blur="formBlur(3)"/>
+              </div>
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">电话</span>
+                <van-field v-model="form.tel" placeholder="请填写" :error-message="errorMessage.tel"  @blur="formBlur(4)"/>
+              </div>
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">物资需求</span>
+                <van-field v-model="form.need" type="textarea" placeholder="请填写" :error-message="errorMessage.need" @blur="formBlur(5)"/>
+              </div>
+              <div class="confirm-btn" @click="confirm">提交</div>
+            </div>
+
+          </div>
+        </div>
+        
+        
+      </div>
+      
+    </van-popup>
+
+    <!-- 医院的详情弹框 -->
+    <!-- 免责协议 -->
+    <van-popup v-model="agreement" closeable position="bottom" :style="{ height: '100%' }">
+      <div class="agreement-content">
+        <div class="bigfont">免责声明</div>
+        <div class="leftfont">第一条 协议订立</div>
+        <div class="contentfont">1.1 用户在同意本网站：新冠肺炎物资公益平台(http://rescue.sisiits.com:9966/visur)的《服务协议》和本协议后，方可便用本网络服务平台（以下简称“平台”)提供的物资需求信息相关服务（以下简称“服务”）。</div>
+        <div class="contentfont">1.2 用户在便用本平台提供的服务前务必认真阅读本协议，一旦用户使用本平台提供的服务即表示用户同意与本平台签订本协议且同意受本协议之约束。</div>
+        <div class="leftfont">第二条 服务说明</div>
+        <div class="contentfont">2.1 需求内容以疫区医院在各大官方发布信息为准（认证微博、官方微信公众号、医院盖章文件等），本平台只做内容收集展示。</div>
+        <div class="leftfont">第三条 用户的权利和义务</div>
+        <div class="contentfont">3.1 捐赠方在进行捐赠前，应仔细阅读并接受疫区院方所公示的内容。本协议中涉及疫区院方与捐赠方之间权利义务的内容，如有与我国相关法律冲突的，以我国相关法律为准。</div>
+        <div class="contentfont">3.2 如捐赠方需取得相应凭证，应与疫区院方联系取得。捐赠方因捐赠各项事宜产生争议由用户与疫区医院协商解决。</div>
+         <div class="leftfont">第四条 免责说明</div>
+        <div class="contentfont">4.1 因疫情变化，本平台显示的信息仅供参考，最终以疫区医院及厂商实际需求为准。</div>
+        <div class="contentfont">4.2 本平台为公益性信息平台，供需双方产生任何纠纷与本平台无关。</div>
+        <div class="contentfont">4.3 本平台会尽力维护平台信息的安全，但法律规定的不可抗力，以及因为黑客入侵、计算机病毒等原因造成用户资料泄露、丢失、被盗用、被篡改的，本平台不承担任何责任。</div>
+        <div class="contentfont">4.4 本平台仅提供技术服务，不是赠与台同的权利义务主体，不介入用户与疫区医院及厂商之间的纠扮，但本平台将提供一切协助，保护用户的合法权益。</div>
+        <div class="contentfont">4.5 本平台如被恶意篡改用于不正当募捐使用，一律追责。</div>
+        <div class="contentfont">4.6 本平台唯一官方网址：http://rescue.sisiits.com:9966/visur（新冠肺炎物资公益平台）如被人恶意假借名义进行不正当行为，与本平台无关。并且保留对对方追究法律责任的权力。</div>
+        <div class="leftfont">第五条 争议解决及法律适用 </div>
+        <div class="contentfont">5.1在用户有意向捐赠或物资对接后，如果在本协议约定内容履行过程中，对相关事宜的履行发生争议，用户同意按照中华人民共扣国颁布的相关法律法规来解决争议。</div>
+        
+        
+        
+        
+      </div>
+      
+    </van-popup>
+    <!-- 免责协议 -->
+    <!-- 医护用品规则说明 -->
+    <van-popup v-model="specifications" closeable position="bottom" :style="{ height: '100%' }">
+      <div class="agreement-content">
+        <div class="bigfont">医用防护用品规格参考表</div>
+        <div class="smallfont">注：捐赠者也可根据医院具体物资匮乏情况，与医院核实之后调整相应物资标准。</div>
+        <div class="smallfont">⚠️针对海外产品，所有产品最好都提供所在国作为医疗用品的上市证明。</div>
+        <div>
+          <table border="1" cellspacing="0" cellpadding="0">
+            <tr>
+              <td><div style="width:40px">物品</div></td>
+              <td><div style="width:180px;padding:6px">医用规格（必须符合或高于）</div></td>
+              <td>厂家 & 型号（不限于）</td>
+            </tr>
+            <tr>
+              <td rowspan="4">口罩</td>
+              <td>医用防护口罩 （需要防高压液体喷溅）国内标准GB 19083-2010 美国 NIOSH 认证，N95/N99 + Fluid resistant（CDC 美国疾控认证）欧标
+              FFP2/FFP3+ Type II R (fluid resistant)
+              日标（满足 1 或 2）
+              1. 明确写明「サージカルＮ９５レスピレーターとして液体防護性があり、血液を含む液体等に有用」
+              2. 符合以下数据
+              a) 人工血液不浸透性　80mmHg以上
+              b) ΔＰ（呼吸抵抗）＜35mmH2O
+              [1/27 11:00，武汉大学人民医院设备科验证]</td>
+              <td>3M9132/1860（官方推荐）
+                1870+（符合国内标准）</td>
+            </tr>
+            <tr>
+              <td>其他防护口罩 n95/n99（普通人和不接触高压液体喷溅的医务人员使用）
+                用于非以下情形：1）近距离接触感染病人 2）进行有可能产生气溶胶的操作，如吸痰、插管等 3）产生体液喷溅可能的操作
+                必须面部贴合不漏气，不带呼吸器
+              ⚠️请注意不要买到假货
+                国内GB 2626 强制性标准，非油性颗粒过滤效率>=95%
+                欧标 FFP2/FFP3
+                美国 NIOSH 认证，非油性颗粒过滤效率>=95%
+              韩国KF94 (不推荐，仅在物资匮乏时考虑)</td>
+              <td>Honeywell Sperian SAF-T-FIT Plus 3M 8810 TRUSCO TR-3200B PFR P1 P2vilene 株式会社，型号 V-1003N</td>
+            </tr>
+            <tr>
+              <td rowspan="2">医用外科口罩 （要独立包装防止交叉感染）
+              国内
+              YY  0469-2011 (印在每只独立外包装上）
+              美标 
+              ASTM F2100-II 标准  level 2 & level 3 
+              [1/27 由武汉大学人民医院设备科验证]
+              欧标 
+            EN 14683  + Type IIR 
+              全球通用核心指标 (下文有详细图片）
+              颗粒过滤>95%, fluid resistant>120mmhg</td>
+              <td>国内：Winner 稳健医疗 [符合YY0469]</td>
+            </tr>
+            <tr>
+              <td>海外: halyard health 48208/49207（level 3 且防液体）</td>
+            </tr>
+            <tr>
+              <td rowspan="6">防护服</td>
+              <td rowspan="6">防护服 符合国标 GB19082-2003 或 19082-2009《医用一次性防护服技术要求》
+            其中两项重要指标为
+            1. 抗渗水性：静水压 > 1.67kPa (17cm H2O)
+            2. 抗合成血液穿透性 > 1.75kPa(不小于 2 级，即 2-6 级皆可）
+            [1/27 16:17 更新]
+            戴帽 + 尺寸别买太小
+            美国 
+            ASTM F1671-97a
+            [美国标准尚不清晰，当前标准为 01/25 协和医院文档]
+              欧标 
+            EN14126* + Type 4(B)/EN 14605 以上**
+          [1/27 11:30, 重庆医科大胸外科文档参照 + 1/27 20:55 加入 EN14605]
+            日本规格 通过JIS T 8060 8061 8062测试 标注「人工血液バリア性・ウイルスバリア性 クラス２・クラス３」
+            [1/27 14:38, 武汉大学人民医院设备科验证]*EN14126: Protection against infective agents** Type 是 Chemical Protective Clothing 的分级，数字越低，标准越高，最好带 B, 也可能是标 EN14605 （具体见后文细则）
+            [1/27 20:55 更新]</td>
+            <td>Du Pont 杜邦Tyvek 特卫强 1422A 连体服 CHA 5 医用款一次性防护服 ⚠️不建议未经过国内 GB19082 认证的 1422A
+            [01/27 14:13 更新]
+            TYVEK 800J （对应的料号：TJI98TWHXX0025PI）
+            [01/27 14:25 更新]
+            Tyvek 600 或 Tyvek classic plus，同款 
+            [1/27 19:21 更新]
+              Tychem 2000 [1/26 0:41 更新]</td>
+            </tr>
+            <tr>
+              <td>UVEX 4B [1/27 19:21 更新]</td>
+            </tr>
+            <tr>
+              <td>雷克兰 医用一次性防护服 AMN 428ETS</td>
+            </tr>
+            <tr>
+              <td>3M 4565</td>
+            </tr>
+            <tr>
+              <td>Winner 稳健医疗  一次性医用防护服（他家只有一款）</td>
+            </tr>
+            <tr>
+              <td>Ansell
+                Microgard 2000/2500/2500plus （欧美）
+                重松製作所　型号：マイクロガード2000b/2000plus/2300plus/2500plus/3000/4000
+              日進医療器 型号：リーダー感染症対策防護服高ウイルスバリアアズワン 型号：感染症対策防護服
+                [1/29 01:00 更新]</td>
+            </tr>
+            <tr>
+              <td>护目镜</td>
+              <td>国标 GB/T 14866
+                  或二级以上医用护目镜 - Medical Safety Googles / Protective Eyewear，弹性佩戴（可以和近视镜兼容）、视野宽阔、必须有防溅功能，四圈密封最好防雾
+                其他符合红字条件的护目镜也可（1/27 15:38 护目镜若不符合上述要求最好别买，不能用，可考虑防护面罩代替）</td>
+              <td>3M 1623AF /1621AF 防护眼镜（国内）GA500 护目镜（海外）Honeywell 型号 LG20 （间接通风口 防液体飞溅）1.1005509  防雾+医用 （最优）
+              2.1005507 不防雾+医用 
+            3.1005509 防雾但未标明可医用
+              [01/29 02:15]</td>
+            </tr>
+          <tr>
+            <td>手套</td>
+            <td>一次性使用医用橡胶检查手套
+              GB 10213-2006
+            一次性使用灭菌橡胶外科手套
+              GB 7543-2006</td>
+              <td>国内多家厂商可以</td>
+          </tr>
+          <tr>
+            <td>手术衣</td>
+            <td>GB 15979-2002</td>
+              <td>待补充</td>
+          </tr>
+          <tr>
+            <td>医用帽</td>
+            <td>GB 15979-2002</td>
+              <td>待补充</td>
+          </tr>
+          <tr>
+            <td>隔离衣</td>
+            <td>一次性使用隔离衣 有注册证或备案证
+              [1/27 20:37 根据广州日报微信号]</td>
+              <td></td>
+          </tr>
+          <tr>
+            <td>防护面罩</td>
+            <td>遮盖整个或部分面部眼护具
+            不需注册证，防喷溅、最好能防雾
+              [1/29 02:07 根据GB个人用眼护具技术要求]</td>
+              <td>多家厂商可以</td>
+          </tr>
+          <tr>
+            <td>防护鞋套</td>
+            <td>无需注册证，最好厚一些
+              [1/27 20:37 根据广州日报微信号]</td>
+              <td>多家厂商可以</td>
+          </tr>
+          <tr>
+            <td>消毒液</td>
+            <td>8% 的过氧化氢消毒液, 化工标准，浓度一定要保障，品牌不限，需要合格证物流运输需要化工专用车</td>
+              <td>多家厂商可以</td>
+          </tr>
+          </table>
+        </div>
+        <div class="smallfont">以上信息来自于一线医生、医院信息、协和文档以及复星采购文档</div>
+        <div class="smallfont">⚠️以上规格由志愿者小组整理，无法穷尽所有标准，建议在最终购买前和专业医疗人士做进一步咨询确认。实际情况也根据医院标准的不同需求，由医院选择适当放宽标准。</div>
+        <div class="smallfont">⚠️ 目前湖北整体都很缺物资...不仅是武汉。希望有相关资源的朋友能够大力伸出援手。对捐赠物资的具体要求，请参考下文具体内容。</div>
+        <div class="leftfont">医用物资规格要求参考</div>
+        <div class="smallfont" style="color:red;">⚠️请务必确认捐赠的物资符合医疗标准！！否则反而会让医生更危险！不符合医用标准的仅可给非一线的人员使用！</div>
+        <div class="leftfont">1.口罩</div>
+        <div class="leftfont">口罩医用规格总结（国内& 国外外标准）</div>
+        <div class="leftfont">【国内标准】</div>
+        <div class="smallfont">医用防护口罩（需要防高压液体喷溅）</div>
+        <div class="smallfont">规格：GB  19083-2010 3M 1860/1870/9132 可以,3M1860为一线员工最标配！其它 3M 款基本不行</div>
+        <div class="smallfont">其他防护口罩 n95/n99</div>
+        <div class="smallfont">规格：GB 2626 强制性标准，非油性颗粒过滤效率>=95%
+        用于非以下情形：1）近距离接触感染病人 2）进行有可能产生气溶胶的操作，如吸痰、插管等 3）产生体液喷溅可能的操作
+        必须面部贴合不漏气，不带呼吸器</div>
+        <div class="smallfont">医用外科口罩 YY  0469-2010 或者 0469-2011，需要独立包装（除了防护口罩外，医用外科口罩也非常需要）</div>
+        <div class="smallfont">⚠️ 需合成血液穿透测试（防飞沫血液体液）</div>
+        <div class="smallfont">⚠️ 需符合微生物指标，过滤效率大于等于95%，使用非油性颗粒物测试</div>
+        <div class="smallfont">⚠️ 需提供工商营业执照，医疗器械注册证，医疗器械生产许可证，第三方检测报告</div>
+        <div class="smallfont">⚠️ 国外捐赠产品参考前面标准，提供产品说明书，营业执照，进口产品生产国（地区）允许生产销售的证明文件及报关单，正规的收据或电子凭证</div>
+        <div class="leftfont">【国外标准】</div>
+        <div class="smallfont">医用防护口罩（需要防高压液体喷溅</div>
+        <div class="smallfont">下图标红的两款，才属于医护级别，需要 Fluid Resistant Claim！
+        美国 NIOSH 认证，N95/N99+Fluid resistant（CDC美国疾控认证） 欧标是 FFP2 或 FFP3，不带呼吸阀，同时具备 fluid resistant</div>
+        <div>
+          <img src="../assets/image/img1.png" >
+        </div>
+        <div class="smallfont">普通防护口罩 （普通人和不接触高压液体喷溅的医务人员使用）</div>
+        <div class="smallfont" style="color:red">欧标 FFP2/FFP3 </div>
+        <div class="smallfont" style="color:red">美国 NIOSH 认证，非油性颗粒过滤效率>=95%</div>
+         <div class="smallfont">普医用外科口罩</div>
+        <div class="smallfont" style="color:red">美标：ASTM F2100-II 标准，level 2 & level 3 可以</div>
+        <div class="smallfont" style="color:red">欧标：EN14683  + Type IIR </div>
+         <div>
+          <img src="../assets/image/img2.png" >
+        </div>
+        <div>
+          <img src="../assets/image/img3.png" >
+        </div>
+        <div class="smallfont" style="color:red">如何在口罩上寻找到标准 & 不合规口罩示例</div>
+        <div>
+          <img src="../assets/image/img4.png" >
+        </div>
+        <div>
+          <img src="../assets/image/img5.png" >
+        </div>
+        <div class="smallfont">⚠️有呼吸阀是不可以的
+          具体澄清一下：符合 GB 2626 + 无呼吸阀的款也是医院需要的，属于下面这档防护口罩：
+        其他防护口罩 n95/n99 用于非以下情形：1）近距离接触感染病人 2）进行有可能产生气溶胶的操作，如吸痰、插管等 3）产生体液喷溅可能的操作
+        必须面部贴合不漏气，不带呼吸器）</div>
+        <div class="leftfont">可用防护口罩图例（分医护 & 普通）</div>
+        <div class="leftfont">a) 3M 型号 9132/1860 （官方推荐）</div>
+        <div>
+          <img src="../assets/image/img6.png" >
+        </div>
+        <div>
+          <img src="../assets/image/img7.png" >
+        </div>
+        <div class="leftfont">符合 GB 19083</div>
+        <div>
+          <img src="../assets/image/img8.png" >
+        </div>
+        <div class="smallfont">b) 3M 1870+ </div>
+        <div class="smallfont">c）其他防护口罩 （普通人和不接触高压液体喷溅的医务人员使用）</div>
+        <div class="smallfont">用于非以下情形：1）近距离接触感染病人 2）进行有可能产生气溶胶的操作，如吸痰、插管等 3）产生体液喷溅可能的操作
+         必须面部贴合不漏气，不带呼吸器</div>
+         <div class="smallfont">中国 GB 2626 强制性标准，非油性颗粒过滤效率>=95%
+            欧标 FFP2/FFP 3
+           美国 NIOSH 认证，非油性颗粒过滤效率>=95%</div>
+          <div class="smallfont">c) 3M 8810
+          d) PFR P1 P2
+          e) TRUSCO TR-3200B
+        f) Honeywell Sperian SAF-T-FIT Plus 
+        g) Spectra SHIELD-9500
+          f）其他欧标 FFP2 FFP 3</div>
+        <div>
+          <img src="../assets/image/img9.png" >
+        </div>
+        <div class="smallfont">合规医用外科口罩（图片所示为医生确认可用）“稳健医疗” 符合YY0469</div>
+        <div>
+          <img src="../assets/image/img10.png" >
+        </div>
+        <div class="leftfont">2.防护衣</div>
+        <div class="smallfont">防护服 符合国标 GB19082-2003 或 19082-2009《医用一次性防护服技术要求》</div>
+        <div class="smallfont">海外同等参考
+          美国 ASTM F1671-97A
+          欧标 EN14126 Type 4(B)&5(B)&6(B)，Type1-6，数字越小防护越高；4为医用推荐要求，带（B）的类型是生物防护，优先选择带B类型</div>
+        <div class="smallfont">具体确定可用的型号有（后附图片）
+          杜邦 TYVEK 800（400 不可以！） （也是现在工厂加班加点赶制的款）
+          杜邦（ DU PONT) 1422A 医用防护服防传染隔离病毒细菌连体带帽 [出自：协和医院捐赠要要求.pdf 01/25]
+          雷克兰 AMN428ETS 灭菌型医用防护服
+          3M 白色戴帽防化服4565（证书需要说明可以阻隔特定生物污染）
+          稳健医疗，医用防护福，符合GB19082-2009
+          二级以上医用防护服：一般衣服上有红蓝条纹</div>
+          <div class="leftfont">Dupont Tyvek 1422A[复星官方文件 2020/01/25]</div>
+          <div>
+            <img src="../assets/image/img11.png" >
+          </div>
+          <div class="smallfont">也称杜邦 TYVEK 医用一次性防护服[也是当前工厂加工款]</div>
+          <div>
+            <img src="../assets/image/img12.png" >
+          </div>
+          <div class="smallfont">3) 杜邦 TYVEK 800J(黄色边条） 或 600（蓝色边条，也称 TYVEK classic plus）
+            [01/25 一线医生确认 + 1/26 更新 600 + 1/27 更新图片]</div>
+          <div>
+            <img src="../assets/image/img13.png" >
+          </div>
+          <div>
+            <img src="../assets/image/img14.png" >
+          </div>
+          <div class="smallfont">4）3M 4565</div>
+          <div>
+            <img src="../assets/image/img15.png" >
+          </div>
+          <div class="smallfont">5）Winner 稳健医疗，医用防护服</div>
+          <div>
+            <img src="../assets/image/img16.png" >
+          </div>
+          <div class="smallfont">7）日本防护服 JIS T 8060, JIS T 8061, JIS T 8062 [1/27 11:00 更新，来自武汉大学人民医院设备科]</div>
+          <div class="smallfont">欧洲防护服
+            EN14126 + Type 4(B)/EN 14605 以上
+            [出自团队自查、反复核对；并结合重庆医科大附属第一医院胸外科医生审核的东南大学校友会整理的欧洲采购指南，1/27]
+            首要满足 EN14126 标准，医学防护（protective clothing against infective agents)；也可对照下图图标
+            防水性/密闭性：分为Type 1-6，数字越小等级越高；医用推荐 Type4(B) 及以上; 也可对照编码 type 3&4 对应 EN14605 ；下图中也有图标
+          </div>
+          <div>
+            <img src="../assets/image/img17.png" >
+          </div>
+          <div>
+            <img src="../assets/image/img18.png" >
+          </div>
+          <div>
+            <img src="../assets/image/img19.png" >
+          </div>
+          <div>
+            <img src="../assets/image/img20.png" >
+          </div>
+          <div>
+            <img src="../assets/image/img21.png" >
+          </div>
+          <div>
+            <img src="../assets/image/img22.png" >
+          </div>
+
+      </div>
+      
+    </van-popup>
+
+    <!-- 实时捐赠 -->
+    <div class="cur-time-btn" @click="curTimeBtn"><span>实时</span><span>资讯</span></div>
+    <van-popup v-model="curTimeDonate" closeable position="bottom" :style="{ height: '100%' }" class="cur-time-donate">
+      <div class="time-donate">
+        <div class="top"><span>实时播报</span></div>
+        <div class="donate-content" v-if="curTimeNoDataShow">
+          <div class="donate-list" v-for="(item, i) in curTimeDataList" :key="i">
+            <div class="time-wrapper">
+              <span class="time-length">{{item.duration}}</span>
+              <span class="time-cur" v-if="item.pubDate">{{item.pubDate.substring(5,16)}}</span>
+            </div>
+
+            <div class="line-split">
+              <span class="dot"></span>
+              <span class="line"></span>
+            </div>
+
+            <div class="main-content">
+              <a :href="item.url">
+
+                <div class="title-wrapper">
+                  <span class="tab-type por" v-if="item.isTop&&item.isTop==1">置顶</span>
+                  <span class="tab-type new" v-if="item.isNew&&item.isNew==1">最新</span>
+                  <span class="title" v-if="(item.isTop||item.isNew)&&item.headline&&item.headline.length<10">{{item.headline}}</span>
+                  <span class="title" v-else-if="(item.isTop||item.isNew)&&item.headline&&item.headline.length>10">{{item.headline.substring(0,11)}}...</span>
+                  <span class="title" v-else-if="!item.isTop&&!item.isNew&&item.headline&&item.headline.length<14">{{item.headline}}</span>
+                  <span class="title" v-else-if="!item.isTop&&!item.isNew&&item.headline&&item.headline.length>14">{{item.headline.substring(0,13)}}...</span>
+                </div>
+                <div class="articl">{{item.mainBody}}</div>
+                <div class="origin">信息来源：<span>{{item.publishSource}}</span></div>
+              </a>
+            </div>
+          </div>
+          <div class="loading-more" v-if="loadMore" @click="loadMoreData">加载更多</div>
+          <div class="loading-more" v-else>没有更多了</div>
+
+        </div>
+        <div class="donate-content donate-content-no" v-else>
+         <img class="down-up" src="../assets/image/reduce.png" alt="">
+         <p>没有数据哦!</p>
+
+        </div>
+      </div>
+      
+    </van-popup>
+
+
+    <!-- 医护用品规则说明 -->
+
   </div>
 </template>
+
+<script>
+// @ is an alias to /src
+export default {
+  name: "home",
+  data() {
+    return {
+      heightCur:'0',
+      seven:true,
+      zanz:{},
+      isone:true,
+      myMap:null,
+      pointGroup: new AMap.OverlayGroup(), // 点集合
+      isDetail:false,
+      agreement:false,
+      specifications:false,//医用规则说明
+      phoneshow:false,
+      downUpImg:true,
+      showSearch:false,
+      reduceShow:false,
+      showDataLengthPoint:1, //显示当前搜索数据是否点击指针
+      wuziList:[],
+      cityList:[],
+      provinceList:[],
+      timeList:["最近24小时","最近48小时","最近72小时"],
+      phonwList:[],
+      dataList:[],
+      total:0,
+      searchText:"",
+      show:false,
+      showModel:false,
+      mapDate:[
+        {
+          centerLng:114.378779,
+          centerLat:30.582411,
+          onLineStatus:"on",
+          message:1
+        },
+        {
+          centerLng:114.341786,
+          centerLat:30.602507,
+          onLineStatus:"up",
+          message:2
+        }
+      ],
+      mapobj:{},
+      form:{ // 录入表单
+        company:'',
+        address:'',
+        people:'',
+        tel:'',
+        need:''
+      },
+      errorMessage:{
+        company:'',
+        address:'',
+        people:'',
+        tel:'',
+        need:''
+      },
+      xuShow:true, 
+      tiShow:false,
+      curTabIndex:null, // 录入当前切换
+      clickTabPoint:0, // 录入提交是否选择tab按钮指针
+      conUs:[ // 录入联系人
+        {
+          job:"平台联系人",
+          name: "柴先生",
+          tel: "18368091476",
+        },{
+          job:"工商联系统及慈善机构联系人",
+          name: "赵博",
+          tel: "13788926819",
+        },{
+          job:"志愿者联系人",
+          name: "墨竹",
+          tel: "18817582880",
+        },
+      ],
+      curTimeDonate:false, // 实时捐赠弹框
+      curTimeDataList:[],
+      // curTimeDataList:[
+      //   {
+      //     isTop: 1,
+      //     duration: "30分钟前",
+      //     pubDate:"2012-02-16 20:30:30",
+      //     url:"https://www.baidu.com",
+      //     headline: "事实上上等等大家都钉钉额水水水水水",
+      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
+      //     publishSource:"sssss",
+      //   },
+      //   {
+      //     isNew: 1,
+      //     duration: "30分钟前",
+      //     pubDate:"2012-02-16 20:30:30",
+      //     url:"https://www.baidu.com",
+      //     headline: "事实上上等等大家都钉钉顶顶顶额",
+      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
+      //     publishSource:"sssss",
+      //   },
+      //   {
+      //     duration: "30分钟前",
+      //     pubDate:"2012-02-16 20:30:30",
+      //     url:"https://www.baidu.com",
+      //     headline: "事实上上等等大家都钉钉顶顶顶顶额",
+      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
+      //     publishSource:"sssss",
+      //   },
+      //   {
+      //     duration: "30分钟前",
+      //     pubDate:"2012-02-16 20:30:30",
+      //     url:"https://www.baidu.com",
+      //     headline: "事实上上等等大家都钉钉额",
+      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
+      //     publishSource:"sssss",
+      //   },
+      //   {
+      //     duration: "30分钟前",
+      //     pubDate:"2012-02-16 20:30:30",
+      //     url:"https://www.baidu.com",
+      //     headline: "事实上上等等大家都钉钉额",
+      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
+      //     publishSource:"sssss",
+      //   },
+      //   {
+      //     duration: "30分钟前",
+      //     pubDate:"2012-02-16 20:30:30",
+      //     url:"https://www.baidu.com",
+      //     headline: "事实上上等等大家都钉钉额",
+      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
+      //     publishSource:"sssss",
+      //   },
+      //   {
+      //     duration: "30分钟前",
+      //     pubDate:"2012-02-16 20:30:30",
+      //     url:"https://www.baidu.com",
+      //     headline: "事实上上等等大家都钉钉额",
+      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
+      //     publishSource:"sssss",
+      //   },
+      //   {
+      //     duration: "30分钟前",
+      //     pubDate:"2012-02-16 20:30:30",
+      //     url:"https://www.baidu.com",
+      //     headline: "事实上上等等大家都钉钉额",
+      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
+      //     publishSource:"sssss",
+      //   },
+      //   {
+      //     duration: "30分钟前",
+      //     pubDate:"2012-02-16 20:30:30",
+      //     url:"https://www.baidu.com",
+      //     headline: "事实上上等等大家都钉钉额",
+      //     mainBody:"ss生生世世事实等等等等等等等等等等等等得到的上事实上事实上",
+      //     publishSource:"sssss",
+      //   },
+      // ], // 实时捐赠信息列表
+      curTimeParams:{
+        page: 1, // 页数
+        pageSize:10, // 偏移量
+      },
+      curTimeNoDataShow: false, // 实时捐赠无数据显示
+      loadMore:true, //加载更多按钮
+
+    };
+  },
+  created() {
+    this.getCurTimeDataList()
+  },
+ mounted () {
+   // H5 plus事件处理
+			function plusReady() {
+				// 设置系统状态栏背景为红色
+				var type = plus.os.name;
+				if(type == "iOS") {
+					plus.navigator.setStatusBarBackground("#1989fa");
+				} else {
+					plus.navigator.setStatusBarBackground("#1989fa");
+				}
+			}
+			if(window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener("plusready", plusReady, false);
+			} 
+
+    this.getMap()
+    this.getDataList()
+    this.getWuziList()
+    this.getCityList()
+    // this.getProvinceList()
+  },
+  methods:{
+    // 获取实时资讯数据
+    getCurTimeDataList(){
+      this.$fetchGet("donate/getInfo",this.curTimeParams).then(res=> {
+        if (res.total){
+          this.curTimeNoDataShow= true
+           this.curTimeDataList=this.curTimeDataList.concat(res.list)
+          if (this.curTimeDataList.length<res.total) {
+            this.loadMore=true
+
+          } else {
+            this.loadMore=false
+          }
+        } else {
+          this.curTimeNoDataShow= false
+        }
+
+      })
+  
+
+    },
+    // 加载更多
+    loadMoreData(){
+      this.curTimeParams.page++
+      this.getCurTimeDataList()
+
+    },
+    // 实时资讯按钮
+    curTimeBtn(){
+      this.curTimeDonate=true
+    },
+    // 录入立即拨打
+    commitTel(tel){
+      window.location.href = "tel:" + tel
+    },
+    // 录入需求提供切换
+    needTi(type){
+      if (!this.clickTabPoint){
+        
+      
+      this.form.company=this.form.company
+      this.form.address=this.form.address
+      this.form.people=this.form.people
+      this.form.tel=this.form.tel
+      this.form.need=this.form.need
+
+
+
+      } else {
+        this.clearErrorMessage()
+
+      }
+
+        this.clickTabPoint=1
+  
+        if (type==1){
+          this.xuShow=false
+          this.tiShow=false
+        } else if (type==2) {
+          this.tiShow=true
+          this.xuShow=true
+        }
+  
+        this.curTabIndex=type
+    },
+    // 清空表单输入及错误提示
+    clearErrorMessage(){
+      
+      this.form.company=''
+      this.form.address=''
+      this.form.people=''
+      this.form.tel=''
+      this.form.need=''
+      
+      this.errorMessage.company=''
+      this.errorMessage.address=''
+      this.errorMessage.people=''
+      this.errorMessage.tel=''
+      this.errorMessage.need=''
+
+    },
+    // 录入表单提交
+    confirm(){
+      if (this.clickTabPoint) {
+
+        this.formVil()
+        if (this.form.company && this.form.address && this.form.people && this.form.tel && this.form.need) {
+  
+          let params= {
+            cmpyName:this.form.company,
+            address:this.form.address,
+            linkPeople:this.form.people,
+            linkTel:this.form.tel,
+            descr:this.form.need,
+            mark:this.curTabIndex
+  
+          }
+          
+          this.$fetchPost("infoApply/save",params).then(res=> {
+            if (res.code=="success") {
+              this.$toast(res.message);
+              this.form.company=''
+              this.form.address=''
+              this.form.people=''
+              this.form.tel=''
+              this.form.need=''
+              this.reduceShow=false
+            } else  if (res.code=="error") {
+              this.$toast(res.message);
+            } else  if (res.code==504) {
+              this.$toast(res.message);
+            }
+          })
+  
+        } else {
+          this.$toast('请完善信息');
+        }
+      } else {
+          this.$toast('请选择提交申请方');
+
+      }
+
+    },
+    // 提交非空验证
+    formVil(){
+      
+
+      if (!this.form.company){
+        this.errorMessage.company="请输入单位名称"
+      } else {
+        this.errorMessage.company=""
+
+      }
+      if (!this.form.address){
+        this.errorMessage.address="请输入地址"
+      } else {
+        this.errorMessage.address=""
+
+      }
+      if (!this.form.people){
+        this.errorMessage.people="请输入联系人"
+      } else {
+        this.errorMessage.people=""
+
+      }
+      if (!this.form.tel){
+        this.errorMessage.tel="请输入电话"
+      } else {
+          this.errorMessage.tel=""
+      }
+      if ( !this.form.need){
+        this.errorMessage.need="请输入物资需求"
+      } else {
+        this.errorMessage.need=""
+
+      }
+    },
+    // input失焦非空验证
+    formBlur(type){
+        var strTel=/^[\d\-,]+$/g
+      if (type==1 && !this.form.company){
+        this.errorMessage.company="请输入单位名称"
+      } else {
+        this.errorMessage.company=""
+
+      }
+      if (type==2 && !this.form.address){
+        this.errorMessage.address="请输入地址"
+      } else {
+        this.errorMessage.address=""
+
+      }
+      if (type==3 && !this.form.people){
+        this.errorMessage.people="请输入联系人"
+      } else {
+        this.errorMessage.people=""
+
+      }
+      if (type==4 && !this.form.tel){
+        this.errorMessage.tel="请输入电话"
+      } else if (type==4 && this.form.tel) {
+        // if (strTel.test(this.form.tel)) {
+
+          this.errorMessage.tel=""
+        // } else {
+        //   this.errorMessage.tel="电话格式错误，多个电话中间用 , 隔开"
+        // }
+
+      }
+      if (type==5 && !this.form.need){
+        this.errorMessage.need="请输入物资需求"
+      } else {
+        this.errorMessage.need=""
+
+      }
+    },
+    // 搜索按钮
+    searchBtn(){
+      this.show=true
+      this.reduceShow=false
+      this.downUpImg=false
+      this.heightCur="100%"
+
+    },
+    // 录入按钮
+    writeBtn(){
+      this.show=false
+      this.reduceShow=!this.reduceShow
+      this.xuShow=true
+      this.tiShow=false
+      this.clickTabPoint=0
+      
+      this.clearErrorMessage()
+    },
+    // 物资
+    getWuziList(){
+      let params={
+        top:6
+      }
+      this.$fetchGet("hospital/findTopSupplies",params).then(res=> {
+        if (res) {
+          this.wuziList=res
+        }
+      })
+    },
+    // 城市
+    getCityList(){
+      let params={
+        top:8
+      }
+      this.$fetchGet("hospital/findTopCity",params).then(res=> {
+        if (res){
+          this.cityList=res
+        }
+      })
+    },
+    // 省份
+    getProvinceList(){
+      let params={
+        top:8
+      }
+      this.$fetchGet("hospital/findTopProvince",params).then(res=> {
+        if (res){
+          this.provinceList=res
+        }
+      })
+    },
+    getDataList(data,type){
+       this.myMap.clearMap()
+      let params={}
+      if(type==1){
+        params={
+          content:data
+        }
+      } else if (type==2){
+        params={
+          hour:data.substring(2,4)
+        }
+      } else{
+        params={}
+      }
+
+      this.$fetchGet("hospital/selectHospital",params).then(res=> {
+        res.forEach(item=> {
+          if (item.linkTel){
+            if (item.linkTel.indexOf(",") != -1 ||item.linkTel.indexOf("，") != -1) {
+              item.linkTelList=item.linkTel.split(",") || item.linkTel.split("，") 
+            } else if (item.linkTel.indexOf("、") != -1) {
+              item.linkTelList=item.linkTel.split("、")
+            }else if (item.linkTel.indexOf("\n") != -1) {
+              item.linkTelList=item.linkTel.split("\n")
+            }else if (item.linkTel.indexOf("；") != -1) {
+              item.linkTelList=item.linkTel.split("；")
+            }else if (item.linkTel.indexOf("/") != -1) {
+              item.linkTelList=item.linkTel.split("/")
+            }else {
+              item.linkTelList=[item.linkTel]
+            }
+          }
+        })
+        this.dataList=res
+        if (this.dataList) {
+          this.total=this.dataList.length
+        }
+        this.mapinit(res)
+
+      })
+    },
+    // 第二搜索失焦查询数据
+    blurSearch(){
+      this.getDataList(this.searchText,1)
+    },
+    // 选择时间
+    selectTimeItem(item) {
+      this.show=false
+      this.showSearch=true
+      this.searchText=item
+      this.seven=false
+      this.getDataList(item,2)
+
+    },
+    // 选择物资，城市
+    selectItem(item) {
+      this.show=false
+      this.showSearch=true
+      this.searchText=item
+      this.getDataList(item,1)
+    },
+    // 右边弹框显示
+    rightModel(){
+      this.showDataLengthPoint=0
+      this.showModel=true
+    },
+    downUp() {
+      this.downUpImg=!this.downUpImg
+      if (!this.downUpImg){
+        this.heightCur="100%"
+      }else {
+        this.heightCur="0"
+      }
+    },
+    search(){
+      if (this.searchText){
+        this.show=false
+        this.showSearch=true
+        this.getDataList(this.searchText,1)
+
+      }else {
+        this.$toast('请输入或选择搜索关键字');
+      }
+    },
+    // 第一搜索获取焦点
+    inputFocus() {
+      this.downUpImg=false
+      this.heightCur="100%"
+    },
+    goback(){
+      this.show=true
+      this.showSearch=false
+      this.showDataLengthPoint=1
+    },
+    clearText(){
+      this.searchText=""   
+      this.showDataLengthPoint=1
+      this.getDataList() 
+
+      this.showSearch=false
+      if(!this.seven){
+          this.seven=true
+      }
+
+    },
+    shakeTime(val){
+      this.$fetchGet("encourage/saveEncourage", {
+        hospitalName:val
+      }).then(res => {
+        if(res.code=="success"){
+         this.$toast('已经成功点赞');
+         this.initMap()
+         this.mapobj.encourageNum++
+        }else{
+          this.$toast('您已经点过赞了');
+        }
+        
+      });
+
+    },
+    dialPhoneNumber(){
+      this.phoneshow=true
+    },
+    dialPhoneNumber1(phoneNumber) {
+      if (!phoneNumber) {
+        this.$toast('无电话信息');
+        return;
+      }
+      window.location.href = "tel:" + phoneNumber;
+    },
+    getMap () {
+      this.myMap = new AMap.Map("myMap", {
+        animateEnable: false,
+        resizeEnable: true,
+        // preloadMode: true,
+        center:[111.160477,32.1624],
+        zoom:4,
+        mapStyle:'amap://styles/9fb204085bdb47adb66e074fca3376be',
+      });
+    //    AMap.plugin([
+    //     'AMap.ToolBar',
+    // ], ()=>{
+    //     this.myMap.addControl(new AMap.ToolBar({
+    //         liteStyle: true,
+    //         position:'LT'
+    //     }));
+    // });
+      this.initMap()
+
+    },
+    detailright(row){
+      this.isDetail=true
+      this.mapobj=row
+
+    },
+    mapinit(res){
+    //  alert(2)
+     this.myMap.clearMap()
+      const markerslist=[]
+      let pointsa=[]
+      const pointwe=[]
+      res.forEach(item => {
+        if(item.linkTel!==undefined){
+          item.linkTelarr=item.linkTel.split(",")
+        }
+        if(item.linkPeople!==undefined){
+          item.linkPeoplearr=item.linkPeople.split(",")
+        }
+        if(item.needsName!==undefined){
+          item.needsNamearr=item.needsName.split(",")
+        }
+        if(item.needsDescr!==undefined){
+          item.needsDescrarr=item.needsDescr.split(",")
+        }
+        if(item.longitude){
+          markerslist.push(this.createPoint(item))
+          // 
+        }
+        
+      })
+      console.log(markerslist)
+        this.myMap.add(markerslist)
+      // AMap.convertFrom(markerslist, 'baidu',  (status, result)=> {
+      //     if(result.info=="ok"){
+      //       pointsa=result.locations;
+      //       res.forEach((itam,index)=>{
+      //         itam.lacal=pointsa[index];
+      //         pointwe.push(this.createPoint(itam))
+      //       })
+      //       console.log(pointwe)
+      //       this.myMap.add(pointwe)
+      //     }
+      // })
+      
+    },
+    // 添加点集合
+  addPointGroup(overlays) {
+    this.pointGroup.addOverlays(overlays)
+    this.myMap.add(this.pointGroup)
+  },
+  initMap(){
+    
+    this.$fetchGet("view/viewCount").then(res => {
+      this.zanz=res.content
+    });
+  },
+    // lacal
+    // new AMap.LngLat(row.longitude, row.latitude),
+  createPoint(row) {
+    let marker = new AMap.Marker({
+      position: new AMap.LngLat(row.gaodeLon, row.gaodeLat),
+      offset: new AMap.Pixel(-9, -9),
+      icon: new AMap.Icon({
+        size: new AMap.Size(18, 18),
+        image:
+          (row.type == 2&&row.isLack==1)
+            ? require('../assets/image/icon4.png')
+            : (row.type == 2&&row.isLack==0)?require('../assets/image/icon3.png')
+            : (row.type == 1&&row.isLack==0)?require('../assets/image/icon1.png')
+            :(row.type == 1&&row.isLack==1)?require('../assets/image/icon2.png'):require('../assets/image/icon5.png'),
+        imageSize: new AMap.Size(18,18)
+      }), // 添加 Icon 图标 URL
+      zIndex: 100,
+      // map:this.myMap,
+      extData: { row }
+    })
+    // touchstart
+    marker.on("click", (e) => {
+      // alert(2)
+      this.isDetail=true
+      let str=e.target.B.extData.row
+      this.mapobj=str
+    })
+     return marker
+  }
+  }
+};
+</script>
+<style>
+
+.van-popup__close-icon--top-right{
+  top: 9px!important;
+}
+</style>
+<style lang="scss" scoped>
+.home {
+  width: 100%;
+  height: 100%;
+  background: #f1f1f1;
+  display:flex;
+  .onebif{
+    position:fixed;
+    top:6px;
+    left:12px;
+    z-index:10;
+    width:350px;
+    height:40px;
+    background:linear-gradient(-90deg,rgba(252,110,40,1) 0%,rgba(255,141,29,1) 100%);
+    opacity:0.8;
+    border-radius:8px;
+    color:#ffffff;
+    display:flex;
+    justify-content:space-between;
+    box-sizing:border-box;
+    padding:0 10px;
+    align-items:center;
+  }
+  .twobif{
+    position:fixed;
+    top:100px;
+    right:60px;
+    z-index:10;
+    width:100px;
+    height:24px;
+    line-height:24px;
+    font-size:12px;
+    background:rgba(254,59,57,1);
+    opacity:0.7;
+    color:#ffffff;
+    border-radius:12px;
+    text-align:center;
+    padding-left:6px;
+  }
+  .forew{
+     position:fixed;
+    top:100px;
+    left:20px;
+    z-index:10;
+    color:#333333;
+    width:100px;
+    height:30px;
+    font-size:14px;
+    line-height:30px;
+    background:rgba(255,255,255,1);
+    box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32);
+    border-radius:6px;
+  }
+  .threebif{
+    position:fixed;
+    top:87px;
+    right:28px;
+    z-index:10;
+    width:44px;
+    height:44px;
+    line-height:44px;
+    background:rgba(254,59,57,1);
+    border:3px solid rgba(255,255,255,1);
+    box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32), 0px 0px 16px 0px rgba(221,2,0,1);
+    border-radius:50%;
+    box-sizing:border-box;
+    // padding-top:3px;
+  }
+  table{
+    td{
+      font-size:12px;
+    }
+  }
+  .agreement-content{
+    box-sizing: border-box;
+    padding:20px 15px;
+    .bigfont{
+      font-size:18px;
+      font-weight:bold;
+    }
+    .smallfont{
+      font-size:12px;
+      text-align:left;
+      margin:4px 0;
+    }
+    .leftfont{
+      font-size:16px;
+      font-weight:bold;
+      text-align:left;
+      margin-top:8px;
+    }
+    .contentfont{
+      font-size:15px;
+      text-align:left;
+      text-indent:20px;
+      margin-top:8px;
+      line-height:26px;
+      color:#333333;
+    }
+  }
+  .writefont{
+    position:fixed;
+    bottom:4px;
+    right:10px;
+    z-index:10;
+    color:#666666;
+    font-size:12px;
+  }
+  .write{
+    position:fixed;
+    bottom:20px;
+    left:0px;
+    z-index:10;
+    font-size:12px;
+    width:100%;
+    color:#666666;
+    background:rgba(242,245,255,1);
+    // line-height:12px;
+    p{
+      text-align:center;
+      margin:0
+    }
+  }
+  .left-font{
+    display:flex;
+    align-items: center;
+    margin-bottom:6px
+  }
+  .header {
+    width: 100%;
+    height: 44px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 0px 0px rgba(238, 238, 238, 1);
+    line-height: 44px;
+    font-size: 18px;
+  }
+  .container{
+   flex:1;
+    // margin-top:6px;
+    position:relative;
+    .top-fix{
+      position:absolute;
+      top:0;
+      left:0;
+      z-index:10;
+      font-size:14px;
+      text-align:left;
+      width:100%;
+      height:30px;
+      line-height:30px;
+       box-sizing: border-box;
+       padding-left:12px;
+      background:rgba(255,255,255,1);
+      box-shadow:0px 1px 0px 0px rgba(238,238,238,1);
+
+    }
+  }
+  .countbottom{
+     position:fixed;
+    bottom:0px;
+    left:0px;
+    z-index:10;
+    width:100%;
+    height:20px;
+    line-height:20px;
+    font-size:8px;
+    background:rgba(242,245,255,1);
+    color:#999999;
+  }
+  .contentDetail{
+     padding: 12px;
+     padding-top:20px;
+     box-sizing: border-box;
+      
+     .address{
+       margin-top:14px;
+       font-size:15px;
+       display:flex;
+       justify-content:space-between;
+       align-items: center;
+       
+      
+       .right-btn{
+        width:64px;
+        height:20px;
+        background:linear-gradient(90deg,rgba(255,122,15,1),rgba(255,188,60,1));
+        border-radius:10px;
+        font-size:12px;
+        color:#fff;
+        line-height:21px;
+       }
+       .right-btn1{
+         background:linear-gradient(90deg,rgba(232,52,248,1),rgba(209,97,255,1));
+       }
+     }
+     .tel-phone{
+       background: #F2F5FF;
+       padding: 12px;
+       font-size:15px;
+        margin:14px 0;
+     }
+     .person{
+       display: inline-block;
+       width:90px;
+        height:22px;
+        background:linear-gradient(90deg,rgba(130,124,255,1),rgba(164,119,255,1));
+        border-radius:0px 11px 11px 11px;
+        color:#fff;
+        font-size:12px;
+        font-weight:none;
+        text-align:center;
+        line-height:22px;
+        margin-left:6px;
+     }
+     .material{
+       display: flex;
+       flex-wrap: wrap;
+       color: #216AFF;
+        font-size: 15px;
+        margin-bottom: 6px;
+      .boll{
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #216AFF;
+        margin-right: 6px;
+      }
+      .boll-item{
+        display: flex;
+        align-items: center;
+        width: 50%;
+        margin-bottom: 8px;
+      }
+     }
+     .remark{
+       color: #999999;
+       font-size: 12px;
+       text-align: left;
+       margin-bottom: 6px;
+     }
+  }
+  .search-wrapper{
+    // position: absolute;
+    // left:0;
+    // bottom:0;
+    // right:0;
+    padding:0 17px;
+    // background:#fff;
+    // z-index:20;
+    .down-up{
+      width:30px;
+      height: 12px;
+      padding:10px 20px;
+    }
+    .tab-list-wrapper{
+      font-size:16px;
+      margin-bottom: 80px;
+      .title{
+        text-align:left;
+        font-family:PingFang SC;
+        font-weight:bold;
+        color:rgba(51,51,51,1);
+      }
+      .list{
+        display:flex;
+        flex-wrap:wrap;
+        span{
+          font-family:PingFang SC;
+          font-weight:500;
+          color:rgba(33,106,255,1);
+          text-align:center;
+          margin: 5px 0;
+          img{
+            width:17px;
+            height:17px;
+          }
+        }
+        &.list1{
+          width:100%;
+          span{
+            padding: 8px 15px;
+            color:#216AFF;
+            margin-right:15px;
+            border:1px solid rgba(33,106,255,1);
+            border-radius:10px;
+          }
+        }   
+        &.list2{
+          span {
+            padding: 8px 18px;
+            color:#FF7800;
+            margin-right:15px;
+            border:1px solid rgba(255,120,0,1);
+            border-radius:18px;
+          }
+        }
+        &.list3{
+          display:flex;
+          justify-content: space-between;
+          align-items:center;
+          span {
+            display:flex;
+            justify-content: flex-start;
+            align-items:center;
+            font-size:15px;
+            font-family:PingFang SC;
+            font-weight:bold;
+            color:rgba(51,51,51,1);
+            img{
+              padding-right:5px;
+            }
+          }
+        }
+      }
+    }
+    .input-wrapper{
+      display:flex;
+      justify-content: flex-start;
+      align-items:center;
+      height: 44px;
+      background:rgba(242,245,255,1);
+      border:1px solid rgba(224,224,224,1);
+      border-radius:12px;
+      img{
+        width: 18px;
+        height: 18px;
+        padding: 10px 15px;
+      }
+      input{
+        width: 280px;
+        font-size:16px;
+        font-family:PingFang SC;
+        font-weight:500;
+        color:rgba(102,102,102,1);
+        border: 0;  // 去除未选中状态边框
+        outline: none; // 去除选中状态边框
+        background-color: rgba(0, 0, 0, 0);// 透明背景
+      }
+    }
+    
+  }
+  .search-wrapper1{
+    position:absolute;
+    top:50px;
+    left:17px;
+    width:340px;
+    .input-wrapper{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      background:#fff;
+      height:44px;
+      background:rgba(255,255,255,1);
+      box-shadow:0px 1.5px 3.5px 0px rgba(0, 0, 0, 0.13);
+      border-radius:6px;
+      .go-back{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        padding: 10px;
+      }
+      input{
+        width:250px;
+        font-size:16px;
+        font-family:PingFang SC;
+        font-weight:bold;
+        color:rgba(51,51,51,1);
+        border: 0;  // 去除未选中状态边框
+        outline: none; // 去除选中状态边框
+        background-color: rgba(0, 0, 0, 0);// 透明背景
+      }
+    }
+    .btn {
+      position:relative;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      width:50px;
+      height:50px;
+      background:#fff;
+      margin-left:292.5px;
+      margin-top:15px;
+      border-radius:50%;
+      .icon-btn{
+        width:15px;
+        height:15px;
+      }
+      span{
+        position:absolute;
+        top:8px;
+        right:5px;
+        font-size:10px;
+        padding:1px;
+        height: 12px;
+        line-height: 12px;;
+        text-align: center;
+        background:#FF1717;
+        color:#fff;
+        border-radius:12px;
+      }
+    }
+  }
+  .van-popup--right{
+    width:80%;
+  }
+  .list-content{
+    padding:20px 10px;
+    .list-wrapper{
+      padding-bottom: 15px;
+      border-bottom:1px solid #dddddd;
+      &:last-child{
+        border:0
+      }
+      p{
+        margin:13px 0;;
+      }
+      .title{
+        text-align:left;
+        font-size:17px;
+        font-family:PingFang SC;
+        font-weight:bold;
+        color:rgba(51,51,51,1);
+      }
+      .address{
+        display:flex;
+        align-items:center;
+        font-size:15px;
+        font-family:PingFang SC;
+        font-weight:500;
+        color:rgba(102,102,102,1);
+        img{
+          width:16px;
+          height:16px;
+          padding-right:8px;
+        }
+        span{
+          text-align:left;
+        }
+      }
+      .time{
+        text-align:left;
+        font-size:12px;
+        font-family:PingFang SC;
+        font-weight:500;
+        color:rgba(102,102,102,1);
+      }
+      .phone{
+        background:#F2F5FF;
+        padding:10px;
+        p{
+          display:flex;
+          align-items:center;
+          margin:0;
+          margin-top:10px;
+          &:first-child{
+            margin-top:0;
+          }
+          img{
+            
+            width:16px;
+            height:16px;
+            padding-right:10px;
+          }
+          span {
+            font-size:15px;
+            color:#333;
+          }
+        }
+      }
+    }
+  }
+  .search-write{
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    z-index:10;
+    .img-icon{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow:0px 0px 8px 0px rgba(0, 0, 0, 0.32);
+      &:last-child{
+        margin-top:10px;
+      }
+      span{
+        font-size: 13px;
+        color: #216AFF;
+        padding-top: 1px;
+      }
+    }
+  }
+  .reduce-content{
+    background:#2D65E3;
+    padding-bottom:40px;
+    .banner{
+      width:100%;
+      height: 125px;
+    }
+    .us-need-wrapper{
+      margin: 0 12px;
+      .us-need{
+        background:#174FCE;
+        border-radius:8px;
+        margin-bottom: 15px;
+        &.us{}
+        &.need{}
+        .title{
+          display:flex;
+          justify-content: center;
+          align-items:center;
+          height: 46px;
+          font-size:17px;
+          font-family:PingFang SC;
+          font-weight:bold;
+          color:rgba(255,255,255,1);
+          color: #fff;
+          .dot{
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #fff;
+            margin-left: 3px;
+          }
+          .title-name{
+            padding: 0 10px;
+          }
+        }
+        .tab-btn {
+          display: flex;
+          justify-content: center;
+          align-items:center;
+          .tab-img{
+            display: flex;
+            justify-content: center;
+            align-items:center;
+            font-size:15px;
+            font-family:PingFang SC;
+            font-weight:bold;
+            &:last-child{
+              margin-left: 19px;
+            }
+            &.xu{
+              background:url("../assets/image/xu2.png") no-repeat;
+              width: 125px;
+              height: 44px;
+              background-size: 100% 100%;
+              color:rgba(181,121,247,1);
+            }
+            &.xu1{
+              background:url("../assets/image/xu1.png") no-repeat;
+              width: 125px;
+              height: 44px;
+              background-size: 100% 100%;
+              color:#fff;
+            }
+            &.ti{
+              background:url("../assets/image/ti1.png") no-repeat;
+              width: 125px;
+              height: 44px;
+              background-size: 100% 100%;
+              color:#fff;
+            }
+            &.ti1{
+              background:url("../assets/image/ti2.png") no-repeat;
+              width: 125px;
+              height: 44px;
+              background-size: 100% 100%;
+              color:rgba(181,121,247,1);
+            }
+            span{
+              padding-left: 20px;            
+            }
+          }
+
+        }
+        .message{
+          display:flex;
+          justify-content: space-between;
+          align-items:center;
+          margin: 0 29px;
+          padding: 10px;
+          font-size:15px;
+          font-family:PingFang SC;
+          font-weight:500;
+          color:rgba(232,245,255,1);
+          background: #3A6FE5;
+          border-radius: 3px;
+          // border-top-left-radius: 3px;
+          // border-top-right-radius: 3px;
+          // &:first-child {
+            margin-bottom:1px;
+            // border-bottom-right-radius: 3px;
+            // border-bottom-left-radius: 3px;
+          // }
+          .message-content{
+            display:flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            .name-tel{
+            display:flex;
+            justify-content: flex-start;
+
+              .name{}
+              .tel{
+                padding-left: 10px;
+              }
+            }
+            .job{
+              font-size: 13px;
+              text-align:left;
+            }
+          }
+          .btn{
+            display:flex;
+            justify-content: center;
+            align-items:center;
+            width: 86px;
+            height: 32.5px;
+            background:url("../assets/image/block.png") no-repeat;
+            background-size: 86px 32.5px;
+            font-weight:bold;
+            font-style:italic;
+            
+          }
+        }
+        .code{
+            display:flex;
+            flex-direction:column;
+            justify-content: center;
+            align-items:center;
+            padding-bottom: 18.5px;
+          img{
+            width: 63px;
+            height: 63px;
+            margin:10px 0;
+          }
+          .btn{
+            font-size:12px;
+            font-family:PingFang SC;
+            font-weight:500;
+            color:rgba(255,255,255,1);
+          }
+        }
+        .form-wrapper{
+          padding: 0 18.5px 30px;
+          .van-cell{
+            border-radius: 5px;
+          }
+          .form-input{
+            display:flex;
+            flex-direction:column;
+            text-align: left;
+            font-size:14px;
+            font-family:PingFang SC;
+            font-weight:500;
+            color:rgba(255,255,255,1);
+            span{
+              height: 39px;
+              line-height: 39px;
+              img{
+                width: 10px;
+                height: 10px;
+                padding-right: 8px;
+              }
+            }
+            input{
+
+            }
+          }
+          .confirm-btn{
+            width:150px;
+            height:44px;
+            text-align: center;
+            line-height: 44px;
+            color:#fff;
+            font-size:18px;
+            font-family:PingFang SC;
+            font-weight:bold;
+            background:linear-gradient(270deg,rgba(255,145,0,1) 0%,rgba(255,126,0,1) 53%,rgba(255,145,0,1) 100%);
+            box-shadow:0px 0px 5px 0px rgba(0, 0, 0, 0.05);
+            border-radius:22px;
+            margin: 30px auto 0;
+          }
+        }
+
+      }
+    }
+
+
+
+
+
+
+
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    // align-items: center;
+    // margin-top: 100px;
+
+    // img{
+    //   width: 194px;
+    //   height:147px;
+    // }
+    // p{
+    //   font-size:15px;
+    //   font-family:PingFang SC;
+    //   font-weight:400;
+    //   color:rgba(153,153,153,1);
+    //   margin-top:23px;
+
+    // }
+  }
+  .cur-time-donate{
+    background: #eee;
+
+  }
+  .time-donate{
+    .top{
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      height: 36px;
+      font-size:16px;
+      font-family:PingFang SC;
+      font-weight:bold;
+      color:rgba(51,51,51,1);
+      padding: 0 12px;
+      background: #fff;
+      span{
+        padding-left:10px;
+        border-left: 3px solid #216AFF;
+      }
+
+    }
+    .donate-content{
+      padding-top: 15px;
+      &.donate-content-no{
+        
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 100px;
+
+        img{
+          width: 194px;
+          height:147px;
+        }
+        p{
+          font-size:15px;
+          font-family:PingFang SC;
+          font-weight:400;
+          color:rgba(153,153,153,1);
+          margin-top:23px;
+
+        }
+      }
+      .donate-list{
+        display: flex;
+        justify-content: space-between;
+        padding: 0 15px;
+        .time-wrapper{
+          display: flex;
+          flex-direction: column;
+          .time-length{
+            text-align: right;
+            font-size:15px;
+            font-family:PingFang SC;
+            font-weight:bold;
+            color:rgba(51,51,51,1);
+          }
+          .time-cur{
+            text-align: right;
+            font-size:12px;
+            font-family:PingFang SC;
+            font-weight:500;
+            color:rgba(102,102,102,1);
+            margin-top: 8.5px;
+
+          }
+        }
+        .line-split{
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          .dot{
+            width:9px;
+            height:9px;
+            background:rgba(33,106,255,1);
+            border-radius:50%;
+          }
+          .line{
+            width: 2px;
+            height: 100%;
+            background:#E2E2E2;
+          }
+        }
+        .main-content{
+          width:232px;
+          background:rgba(255,255,255,1);
+          border-radius:4px;
+          padding: 12px;
+          margin-bottom: 15px;
+          a{
+            display:block;
+            color:rgba(51,51,51,1);
+            .title-wrapper{
+              width:232px;
+              height: 20px;
+              text-align: left;
+              // white-space:nowrap;
+              // text-overflow:ellipsis;
+              // overflow:hidden; 
+              .tab-type{
+                font-size:12px;
+                font-family:PingFang SC;
+                font-weight:bold;
+                color:rgba(255,255,255,1);
+                padding: 3px 4px;
+                vertical-align:top;
+                margin-right: 8px;
+                &.por{
+                  background: #9141FF;
+                }
+                &.new{
+                  background: #ED563B;
+                }
+              }
+              .title{
+                width:175px;
+                font-size:16px;
+                font-family:PingFang SC;
+                font-weight:bold;
+                color:rgba(51,51,51,1);
+                vertical-align:top;
+
+              }
+            }
+            .articl{
+              font-size:13px;
+              font-family:PingFang SC;
+              font-weight:500;
+              color:rgba(102,102,102,1);
+              line-height:15px;
+              margin: 12px 0;
+              text-align: left;
+
+            }
+            .origin{
+              font-size:12px;
+              font-family:PingFang SC;
+              font-weight:500;
+              color:rgba(153,153,153,1);
+              text-align: right;
+              span {
+
+              }
+            }
+          }
+        }
+
+      }
+      .loading-more{
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        color: #999;
+        font-size: 14px;
+        background: #f1f1f1;
+        margin-top: 20px;
+      }
+
+    }
+
+
+
+  }
+  .cur-time-btn{
+    position: fixed;
+    top: 150px;
+    right: 17px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+    width: 44px;
+    height: 44px;
+    background:rgba(255,252,232,1);
+    box-shadow:0px 0px 8px 0px rgba(0, 0, 0, 0.32);
+    border-radius:50%;
+    z-index:999;
+    span{
+      font-size: 14px;
+      line-height: 15px;
+      font-family:PingFang SC;
+      font-weight:bold;
+      font-style: italic;
+      color: #FF4600;
+      margin-right: 2px;
+      &:last-child{
+        color: #FF9100;
+      }
+      // background: linear-gradient(to bottom, #FF4600, #FF9100);
+      // -webkit-background-clip: text;
+      // color: transparent;
+
+    }
+  }
+}
+</style>

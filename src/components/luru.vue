@@ -337,6 +337,8 @@ export default {
   data() {
     return {
       allCity:json,
+      showPicker:false,
+      pageShow:false,
       form1:{ // 录入表单
         hispotalName:'',
         address:'',

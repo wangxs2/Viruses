@@ -26,6 +26,13 @@
         <span  v-bind:style="{color:selectIndex==index?'#216AFF':'#666666','font-size':'12px','font-weight':'bold'}">{{iteam.name}}</span>
       </div>
     </div>
+    <!-- 防止过快的切换 -->
+    <van-overlay :z-index="20" :show="showmap">
+      <div class="wrapperfast" >
+        <van-loading size="64px" color="#1989fa"></van-loading>
+      </div>
+    </van-overlay>
+    <!-- 防止过快的切换 -->
     <!-- 民间组织 三类 -->
     <div id="myMap" class="container"></div>
     
@@ -601,6 +608,7 @@ export default {
   },
   data() {
     return {
+      showmap:false,
       menuList: [
         {
           id:1,
@@ -641,7 +649,7 @@ export default {
       phoneshow:false,
       downUpImg:true,
       showSearch:false,
-      reduceShow:true,
+      reduceShow:false,
       showDataLengthPoint:1, //显示当前搜索数据是否点击指针
       wuziList:[],
       cityList:[],
@@ -948,9 +956,7 @@ export default {
     },
     //加载海量点
     getmarkers(citys){
-      if(this.mass){
-       this.mass.clear()
-      }
+      
       const markerslist=[]
       citys.forEach(item => {
         if(item.linkTel!==undefined){
@@ -976,7 +982,7 @@ export default {
       })
       console.log(markerslist)
       this.createMarks(markerslist)
-   
+      this.showmap=false
       
     },
     createMarks(citys){
@@ -1079,6 +1085,10 @@ export default {
       })
     },
     getDataList(){
+      this.showmap=true
+      if(this.mass){
+       this.mass.clear()
+      }
       this.$fetchGet("hospital/selectHospital",this.query).then(res=> {
         let str=decodeURIComponent(encrypt.Decrypt(res.content))
         let alldata=JSON.parse(str)
@@ -1348,6 +1358,12 @@ export default {
   height: 100%;
   background: #f1f1f1;
   display:flex;
+  .wrapperfast{
+     display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
   .peopleTeam{
     position:fixed;
     top:126px;
@@ -2196,7 +2212,7 @@ export default {
     background:rgba(255,252,232,1);
     box-shadow:0px 0px 8px 0px rgba(0, 0, 0, 0.32);
     border-radius:50%;
-    z-index:999;
+    z-index:10;
     &.cur-time-btn1{
       position: fixed;
       top: 150px;

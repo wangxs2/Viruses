@@ -142,3 +142,23 @@ export function fetchDelete(url, params) {
       })
   })
 }
+
+// post请求方法上传文件
+export function fetchPostFile(url, params, contentType) {
+  return new Promise((resolve, reject) => {
+    Axios.post(url, {
+      headers: {
+        'Content-Type': "multipart/form-data"
+      },
+    }).then(
+      res => {
+        resolve(res);
+      },
+      error => {
+        reject(error)
+      }
+    ).catch((error) => {
+      reject(error);
+    })
+  })
+}

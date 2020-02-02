@@ -737,7 +737,7 @@ export default {
       styleUp:true,
       isoneClosePoint:1,
       curTimeTopContent:"", // 实时资讯统计
-      luruSelectModel:true, //录入选择弹框
+      luruSelectModel:false, //录入选择弹框
       contectModel:false, // 联系人弹框
       luruSelectData:[ //录入选择数据
         {

@@ -30,7 +30,7 @@
                   <van-radio-group v-model="form1.type" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruTypeRadio" :key="i+item.name">
 
-                    <van-radio :name="item.i" checked-color="#07c160">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3" :label="item.name" @click="secectRadio(item.id)">{{item.name}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
@@ -40,7 +40,7 @@
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form1.sup" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruSupRadio" :key="i+item.name">
-                    <van-radio :name="item.i" checked-color="#07c160" shape="square">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3" shape="square">{{item.name}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
@@ -91,7 +91,7 @@
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form1.needOrgin" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruSourceRadio" :key="i+item.name">
-                    <van-radio :name="item.i" checked-color="#07c160">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3">{{item.name}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
@@ -131,7 +131,7 @@
                   <van-radio-group v-model="form2.type" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruTypeRadio1" :key="i+item.name">
 
-                    <van-radio :name="item.i" checked-color="#07c160">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3">{{item.name}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
@@ -141,7 +141,7 @@
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form2.sup" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruSupRadio1" :key="i+item.name">
-                    <van-radio :name="item.i" checked-color="#07c160" shape="square">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3" shape="square">{{item.name}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
@@ -151,7 +151,7 @@
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form2.sup1" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruneedRadio" :key="i+item.name">
-                    <van-radio :name="item.i" checked-color="#07c160" shape="square">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3" shape="square">{{item.name}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
@@ -264,7 +264,7 @@
                   <van-radio-group v-model="form3.type" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruOriginizeTypeRadio" :key="i+item.name">
 
-                    <van-radio :name="item.i" checked-color="#07c160">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3">{{item.name}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
@@ -288,7 +288,7 @@
                 <div class="comfirm-radio">
                   <van-checkbox-group v-model="form3.supContect"class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruOriginizeSupRadio" :key="i+item.name">
-                    <van-checkbox :name="item.i">{{item.name}}</van-checkbox>
+                    <van-checkbox :name="item.id" shape="square" checked-color="#2D65E3">{{item.name}}</van-checkbox>
                     </div>
                    </van-checkbox-group>
                   <div class="author">
@@ -335,8 +335,8 @@ export default {
         hispotalName:'',
         address:'',
         addressDetail:"",
-        type:'',
-        sup:'',
+        type:1,
+        sup:1,
         needList:{
             name:'',
             num:'',
@@ -346,7 +346,7 @@ export default {
             tel:'',
         },
         startTime:'',
-        needOrgin:'',
+        needOrgin:1,
         needImg:'',
 
       },
@@ -372,9 +372,9 @@ export default {
         hispotalName:'',
         address:'',
         addressDetail:"",
-        type:'',
-        sup:'',
-        sup1:'',
+        type:1,
+        sup:1,
+        sup1:1,
         needList:{
             name:'',
             num:''
@@ -412,14 +412,14 @@ export default {
         rang:'',
         startTiTime:'',
         endTiTime:'',
-        type:'',
+        type:1,
         linkUrl:'',
         
         contectTelList:{
             name:'',
             tel:'',
         },
-        supContect:'',
+        supContect:[1],
         author:'',
         authorWrite:'',
 
@@ -606,6 +606,9 @@ export default {
     }
   },
   methods:{
+      secectRadio(index){
+          this.form1.type=index
+      },
       onConfirm(){
           this.showPicker=false
 

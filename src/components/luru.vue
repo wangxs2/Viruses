@@ -67,7 +67,7 @@
                 <div class="comfirm-input-wrapper">
                   <div class="comfirm-input" v-for="(item,i) in form1.contectTelList" :key="i">
                     <van-field class="contect" v-model="item.name" type="text" placeholder="输入联系人" />-
-                    <van-field class="tel" v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)" />
+                    <van-field class="tel" v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)" @blur="linkTelBlur(1,item.tel)"/>
                     
                   </div>
                 </div>
@@ -177,9 +177,9 @@
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-input-wrapper">
-                  <div class="comfirm-input" v-for="(item,i) in form1.contectTelList" :key="i">
+                  <div class="comfirm-input" v-for="(item,i) in form2.contectTelList" :key="i">
                     <van-field class="contect" v-model="item.name" type="text" placeholder="输入联系人" />-
-                    <van-field class="tel" v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)" />
+                    <van-field class="tel" v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)"  @blur="linkTelBlur(2,item.tel)"/>
                     
                   </div>
                 </div>
@@ -340,6 +340,8 @@ export default {
       testnum:'',
       form1:{ // 录入表单
         hispotalName:'',
+        province:'',//省
+        city:'',//市
         address:'',
         addressArr:[],
         addressDetail:"",
@@ -396,6 +398,8 @@ export default {
       form2:{ // 录入表单
         hispotalName:'',
         addressArr:[],
+        province:'',//省
+        city:'',//市
         address:'',
         addressDetail:"",
         type:3,
@@ -679,28 +683,54 @@ export default {
     }
   },
   methods:{
+    linkTelBlur(type,tel){
+      // var strTel=/^[\d\-,]+$/g
+      // var strTel=/^[\d\-]+$/g
+      // if (type==1){
+      //   if (!strTel.test(tel)){
+          
+      //   }else{
+      //     this.$toast('当前填写电话格式有误');
+      //   }
+
+      // }
+
+    },
     confirmtwo(){
       let linkPeopleArr=[]
-         this.form1.contectTelList.forEach(v=> {
-           linkPeopleArr.push(v.name+"-"+v.tel)
+         this.form2.contectTelList.forEach(v=> {
+           if (!v.name&&!v.tel){
+            linkPeopleArr.push(v.name+"-"+v.tel)
+           }
          })
       
-          let params= { 
-            materialType:2,
-            name:this.form2.hispotalName,
-            province:this.form2.addressArr[0].text,
-            city:this.form2.addressArr[1].text,
-            address:this.form2.addressDetail,
-            materialDetails:this.form2.materialDetails,//需求表
-            type:this.form2.type,
-            status:this.form2.sup,
-            isLogistics:this.form2.sup1,
-            linkPeople:linkPeopleArr.join(','),
-            createTime:this.form2.startTime,
-            file:this.form2.fileList,
-      
-          }
-          console.log(params,"提交2")
+            
+
+      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||this.form2.materialDetails.length==0||linkPeopleArr.length==0||this.form2.startTime==""||this.form2.fileList.length==0){
+          this.$toast('请完善信息');
+      }else if (this.form2.contectTelList[0].tel==''&&this.form2.contectTelList[1].tel==''&&this.form2.contectTelList[2].tel==''){
+          this.$toast('请至少填写一位联系人');
+
+      } else{
+
+        
+            let params= { 
+              materialType:2,
+              name:this.form2.hispotalName,
+              province:this.form2.province,
+              city:this.form2.city,
+              address:this.form2.addressDetail,
+              materialDetails:this.form2.materialDetails,//需求表
+              type:this.form2.type,
+              status:this.form2.sup,
+              isLogistics:this.form2.sup1,
+              linkPeople:linkPeopleArr.join(','),
+              createTime:this.form2.startTime,
+              file:this.form2.fileList,
+        
+            }
+            console.log(params,"提交2")
+      }
           
           // this.$fetchPostFile("donateCount/findDoateCount",params).then(res=> {
           //   if (res.code=="success") {
@@ -716,14 +746,18 @@ export default {
     secectRadio(index){
         this.form1.type=index
     },
-    onConfirm(){
+    onConfirm(value){
         this.showPicker=false
-        this.form1.address=this.form1.addressArr[0].text+"/"+this.form1.addressArr[1].text
+        this.form1.address=value[0].text+value[1].text
+        this.form1.province=value[0].text
+        this.form1.city=value[1].text
 
     },
-    onConfirm1(){
+    onConfirm1(value){
         this.showPicker1=false
-        this.form2.address=this.form2.addressArr[0].text+"/"+this.form2.addressArr[1].text
+        this.form2.address=value[0].text+value[1].text
+        this.form2.province=value[0].text
+        this.form2.city=value[1].text
 
     },
     //添加需求表
@@ -838,13 +872,21 @@ export default {
     confirmone(){
       let linkPeopleArr=[]
          this.form1.contectTelList.forEach(v=> {
-           linkPeopleArr.push(v.name+"-"+v.tel)
+           if (!v.name&&!v.tel){
+            linkPeopleArr.push(v.name+"-"+v.tel)
+           }
          })
+        if (this.form1.hispotalName==""||this.form1.province==""||this.form1.city==""|| this.form1.addressDetail==""||this.form1.materialDetails.length==0||this.form1.startTime==""||this.form1.fileList.length==0){
+            this.$toast('请完善信息');
+        }else if (this.form1.contectTelList[0].tel==''&&this.form1.contectTelList[1].tel==''&&this.form1.contectTelList[2].tel==''){
+            this.$toast('请至少填写一位联系人');
+
+        } else{
           let params= { 
             materialType:1,
             name:this.form1.hispotalName,
-            province:this.form1.addressArr[0].text,
-            city:this.form1.addressArr[1].text,
+            province:this.form1.province,
+            city:this.form1.province,
             address:this.form1.addressDetail,
             materialDetails:this.form1.materialDetails,//需求表
             type:this.form1.type,
@@ -867,6 +909,7 @@ export default {
           //     this.$toast(res.message);
           //   }
           // })
+        }
     },
     confirmthree(){
         // console.log(this.form3.fileList);

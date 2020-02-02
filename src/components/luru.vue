@@ -213,46 +213,45 @@
             <div class="form-wrapper" v-if="curActiveIndex==2">
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">机构名称</span>
-                <van-field v-model="form3.hispotalName" type="text" placeholder="请填写" :error-message="errorMessage3.hispotalName"/>
+                <van-field v-model="form3.name" type="text" placeholder="请填写" :error-message="errorMessage3.hispotalName"/>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
-                <van-field v-model="form3.address" type="text" readonly placeholder="省市" :error-message="errorMessage3.address" @click="showPicker = true"/>
+                <van-field v-model="form3.address2" type="text" readonly placeholder="省市" :error-message="errorMessage3.address2" @click="showPicker = true"/>
                 <van-popup v-model="showPicker" position="bottom">
-                    <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm" @change="onChange" />
+                    <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm3" @change="onChange" />
                 </van-popup>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">详细地址(门牌号)</span>
-                <van-field v-model="form3.addressDetail" type="text" placeholder="街道、门牌号等" :error-message="errorMessage3.addressDetail"/>
+                <van-field v-model="form3.address" type="text" placeholder="街道、门牌号等" :error-message="errorMessage3.address"/>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">服务覆盖范围</span>
-                <van-field v-model="form3.rang" type="text" placeholder="输入例如：山东全省16个地市" :error-message="errorMessage3.rang"/>
+                <van-field v-model="form3.serviceRange" type="text" placeholder="输入例如：山东全省16个地市" :error-message="errorMessage3.serviceRange"/>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">请选择可提供服务的起始日期</span>
-                <van-field v-model="form3.startTiTime" placeholder="选择时间" readonly @click="startTimePop = true"/>
+                <van-field v-model="form3.startTime" placeholder="选择时间" readonly @click="startTimePop = true"/>
                 <van-popup v-model="startTimePop" position="bottom">
                   <van-datetime-picker
-                    v-model="currentDate1"
-                    type="date"
+                    v-model="currentDate3"
+                    type="datetime"
                     :min-date="minDate1"
-                    @confirm="confirmTime1"
                     @cancel="cancelTime1"
-                    :formatter="formatter1"
+                    @confirm="quemsg"
                   />
                 </van-popup>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">请选择可提供服务的结束日期</span>
-                <van-field v-model="form3.endTiTime" placeholder="选择时间" readonly @click="startTimePop = true"/>
+                <van-field v-model="form3.endTime" placeholder="选择时间" readonly @click="startTimePop = true"/>
                 <van-popup v-model="startTimePop" position="bottom">
                   <van-datetime-picker
                     v-model="currentDate1"
-                    type="date"
+                    type="datetime"
                     :min-date="minDate1"
-                    @confirm="confirmTime1"
+                    @confirm="confirmTime31"
                     @cancel="cancelTime1"
                     :formatter="formatter1"
                   />
@@ -439,12 +438,13 @@ export default {
         materialType:3,//民间组织
         name:'',//机构名称
         province:'',//省
-        city:'',//省
+        city:'',//市
+        address2:'',
         address:'',//地址
         serviceRange:"",//覆盖范围
         rang:'',
-        startTiTime:'',
-        endTiTime:'',
+        startTime:'',
+        endTime:'',
         type:1,
         linkUrl:'',
         contectTelList:{
@@ -460,7 +460,9 @@ export default {
       errorMessage3:{
         hispotalName:'',
         address:'',
+        address2:'',
         addressDetail:"",
+        serviceRange:'',
         rang:'',
         startTiTime:'',
         endTiTime:'',
@@ -571,6 +573,7 @@ export default {
       minDate: new Date(),
       startTimePop:false,
       currentDate1:new Date(),
+      currentDate3:new Date(),
       startTime1:'',
       minDate1: new Date(),
       startTimePop1:false,
@@ -688,6 +691,21 @@ export default {
       }
       
     },
+    //民间组织添加省市
+    onConfirm3(value){
+      this.showPicker=false
+      this.form3.address2=value[0].text+value[1].text
+      this.form3.province=value[0].text
+      this.form3.city=value[1].text
+    },
+    //民间组织选择时间
+    quemsg(){
+      this.startTimePop = false
+      // console.log(val)
+    },
+    confirmTime31(val){
+
+    },
     onChange(picker, values,index){
           picker.setColumnValues(1,this.cityDate(this.allCity,values[0].text))
     }, 
@@ -803,6 +821,7 @@ export default {
     },
     // 点击确定
     confirmTime1() {
+      // console.log()
       this.startTimePop = false;
       this.startTime =
         this.currentDate.getFullYear() +
@@ -825,6 +844,7 @@ export default {
     },
     // 点击取消
     cancelTime1() {
+      console.log(12)
       this.startTimePop = false;
     },
 

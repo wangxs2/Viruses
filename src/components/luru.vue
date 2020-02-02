@@ -99,15 +99,16 @@
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">需求证明</span>
                 <div class="need-img-wrapper">
-                  <img style="" src="../assets/image/reduce2.png" alt="">
-                  <div class="need-img-list">
-                    <img style="" src="../assets/image/add2.png" alt="">
-                  </div>
-                  <img style="" src="../assets/image/add2.png" alt="">
+                  <van-uploader
+                    v-model="form1.fileList"
+                    multiple accept="image/*"
+                    :max-count="5"
+                    :after-read="afterRead"
+                  />
                   <span>最多可上传5张</span>
                 </div>
               </div>
-              <div class="confirm-btn" @click="confirm">提交</div>
+              <div class="confirm-btn" @click="confirmtwo">提交</div>
             </div>
             <div class="form-wrapper" v-if="curActiveIndex==1">
               <div class="form-input">
@@ -200,15 +201,16 @@
               <div class="form-input">
                 <span>身份证明</span>
                 <div class="need-img-wrapper">
-                  <img style="" src="../assets/image/reduce2.png" alt="">
-                  <div class="need-img-list">
-                    <img style="" src="../assets/image/add2.png" alt="">
-                  </div>
-                  <img style="" src="../assets/image/add2.png" alt="">
+                  <van-uploader
+                    v-model="form2.fileList"
+                    multiple accept="image/*"
+                    :max-count="2"
+                    :after-read="afterRead"
+                  />
                   <span>企业提供方请上传营业执照照片，非人提供方请上传身份证正反面照片</span>
                 </div>
               </div>
-              <div class="confirm-btn" @click="confirm">提交</div>
+              <div class="confirm-btn" @click="confirmone">提交</div>
             </div>
             <div class="form-wrapper" v-if="curActiveIndex==2">
               <div class="form-input">
@@ -251,8 +253,8 @@
                     v-model="currentDate1"
                     type="datetime"
                     :min-date="minDate1"
-                    @confirm="confirmTime31"
-                    @cancel="cancelTime1"
+                    @confirm="confirmTime2"
+                    @cancel="ddd"
                     :formatter="formatter1"
                   />
                 </van-popup>
@@ -364,6 +366,7 @@ export default {
                 tel:'',
             }
         ],
+        fileList:[],
         startTime:'',
         needOrgin:1,
         needImg:'',
@@ -412,6 +415,7 @@ export default {
                 tel:'',
             }
         ],
+        fileList:[],
         startTime:'',
         needOrgin:'',
         needImg:'',
@@ -492,16 +496,16 @@ export default {
       ],
       luruTypeRadio:[ //录入类型单选数据
         {
-          id:1,
+          id:4,
           name:"定点医院"
         },{
-          id:2,
+          id:5,
           name:"发热门诊"
         },{
-          id:3,
+          id:6,
           name:"防空指挥部"
         },{
-          id:4,
+          id:7,
           name:"普通医院"
         },
       ], 
@@ -534,10 +538,10 @@ export default {
       ], 
       luruSupRadio1:[ //录入物资对接情况单选数据
         {
-          id:1,
+          id:4,
           name:"捐赠"
         },{
-          id:2,
+          id:5,
           name:"采购"
         },
       ], 
@@ -546,7 +550,7 @@ export default {
           id:1,
           name:"是"
         },{
-          id:2,
+          id:0,
           name:"否"
         }
       ],
@@ -669,7 +673,6 @@ export default {
     },
     //添加需求表
     addDemand(){
-      // this.
       if(this.form1.materialDetails[this.testindex].needsName==''||this.form1.materialDetails[this.testindex].needsNum==''){
         this.$toast('请完善信息');
       }else{
@@ -682,7 +685,6 @@ export default {
     },
     //删除需求表
     deleteDemand(index){
-      console.log(this.testindex)
       if(this.testindex<1){
         this.$toast('至少添加一条需求');
       }else{
@@ -737,14 +739,66 @@ export default {
     //民间组织上传图片之后
     afterRead(file) {
       // 此时可以自行将文件上传至服务器
-      console.log(this.form3.fileList);
+      this.form1.needImg = file.file; // 文件流
+    },
+    confirmone(){
+      
+        //   let params= { 
+        //     name:this.form1.hispotalName
+        //     province:this.form1.address[0]
+        //     city:this.form1.address[1]
+        //     address:this.form1.addressDetail
+        //     this.form1.materialDetails:[
+        //       {
+        //         needsName:'',
+        //         needsNum:'',
+        //       }
+        //     ],//需求表
+        //     type:this.form1.type
+        //     status:this.form1.sup
+        //     this.form1.needList:{
+        //         name:'',
+        //         num:'',
+        //     },
+        //     this.form1.contectTelList:[
+        //         {
+        //             name:'',
+        //             tel:'',
+        //         },
+        //         {
+        //             name:'',
+        //             tel:'',
+        //         },
+        //         {
+        //             name:'',
+        //             tel:'',
+        //         }
+        //     ],
+        //  createTime:this.form1.startTime,
+        // source:this.form1.needOrgin,
+        // file:this.form1.needImg,
+      
+        //   }
+          
+          this.$fetchPostFile("donateCount/findDoateCount",params).then(res=> {
+            if (res.code=="success") {
+              this.$toast(res.message);
+              this.reduceShow=false
+            } else  if (res.code=="error") {
+              this.$toast(res.message);
+            } else  if (res.code==504) {
+              this.$toast(res.message);
+            }
+          })
+    },
+    confirmtwo(){
+        console.log(this.form2.fileList);
     },
     confirmthree(){
         console.log(this.form3.fileList);
     },
     // 录入表单提交
     confirm(){
-      if (this.clickTabPoint) {
 
         this.formVil()
         if (this.form.company && this.form.address && this.form.people && this.form.tel && this.form.need) {
@@ -778,10 +832,6 @@ export default {
         } else {
           this.$toast('请完善信息');
         }
-      } else {
-          this.$toast('请选择提交申请方');
-
-      }
 
     },
       
@@ -820,8 +870,28 @@ export default {
       this.startTimePop = false;
     },
     // 点击确定
+    confirmTime2() {
+      this.startTimePop = false;
+      this.startTime =
+        this.currentDate.getFullYear() +
+        "-" +
+        (Number(this.currentDate.getMonth()) + 1) +
+        "-" +
+        this.currentDate.getDate()
+    },
+    // 点击确定
     confirmTime1() {
       // console.log()
+      this.startTimePop = false;
+      this.startTime =
+        this.currentDate.getFullYear() +
+        "-" +
+        (Number(this.currentDate.getMonth()) + 1) +
+        "-" +
+        this.currentDate.getDate()
+    },
+    // 点击确定
+    ddd() {
       this.startTimePop = false;
       this.startTime =
         this.currentDate.getFullYear() +

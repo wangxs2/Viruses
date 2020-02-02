@@ -594,7 +594,6 @@
 <script>
  import encrypt from '@/libs/encrypt'
  import luru from '@/components/luru'
-// @ is an alias to /src
 export default {
   name: "home",
   components:{

@@ -1,19 +1,9 @@
 <template>
     <div class="luru">
       <div class="reduce-content">
-        <!-- <img class="down-up" src="../assets/image/reduce.png" alt="">
-        <p>正在加紧开发...</p>
-        <p>联系电话：18368091476</p>
-        <img style="width:160px;height:160px" src="../assets/image/gzh.jpg" alt=""> -->
         <img style="" class="banner" src="../assets/image/banner.png" alt="">
         <div class="us-need-wrapper">
           <div class="us-need need">
-
-            <!-- <div class="title">
-              <span class="dot" v-for="(item,i) in 3" :key="i+'f'"></span>
-              <span class="title-name">需求填写</span>
-              <span class="dot" v-for="(item,i) in 3" :key="i+'g'"></span>
-            </div> -->
             <div class="tab-btn">
               <span :class="curActiveIndex==i?'active':''" v-for="(item,i) in luruSelectData" :key="item.type+'tab'" @click="needTi(i)">{{item.name}}</span>
             </div>
@@ -25,13 +15,10 @@
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
-                <van-field v-model="form1.address" type="text" placeholder="省市" :error-message="errorMessage1.address"/>
-                 <van-field readonly  clickablelabel="城市" placeholder="选择城市" @click="showPicker = true"/>
-                    <van-popup v-model="showPicker" position="bottom">
-                        <!-- vant Picker 根据 绑定的columns数据，来渲染几级联动，这里我们使用的是三级联动 -->
-                        <van-picker v-if="pageShow" show-toolbar :columns="columns" @cancel="onCancel"
-            @confirm="onConfirm" @change="onChange" :item-height="35" />
-                    </van-popup>
+                <van-field v-model="form1.address" type="text" readonly placeholder="省市" :error-message="errorMessage1.address" @click="showPicker = true"/>
+                <van-popup v-model="showPicker" position="bottom">
+                    <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm" @change="onChange" />
+                </van-popup>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">详细地址(门牌号)</span>
@@ -43,7 +30,7 @@
                   <van-radio-group v-model="form1.type" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruTypeRadio" :key="i+item.name">
 
-                    <van-radio :name="item.i" checked-color="#07c160">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3" :label="item.name" @click="secectRadio(item.id)">{{item.name}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
@@ -53,7 +40,7 @@
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form1.sup" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruSupRadio" :key="i+item.name">
-                    <van-radio :name="item.i" checked-color="#07c160" shape="square">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3" shape="square">{{item.name}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
@@ -67,20 +54,20 @@
                       <div class="name">物资名称</div>
                       <div class="num">需求数量</div>
                     </div>
-                    <div class="comfirm-need-body">
-                      <div class="name"><van-field class="sup-name" v-model="form1.needList.name" type="text" placeholder="输入物资名称" input-align="center"/></div>
-                      <div class="num"><van-field class="sup-num" v-model="form1.needList.num" type="text" placeholder="请输入" input-align="center" /><img style="" src="../assets/image/reduce1.png" alt=""></div>
+                    <div class="comfirm-need-body" v-for="(iteam,index) in form1.materialDetails" :key="index">
+                      <div class="name"><van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/></div>
+                      <div class="num"><van-field class="sup-num" v-model="iteam.needsNum" type="text" placeholder="请输入" testnum input-align="center" /><img @click="deleteDemand" style="" src="../assets/image/reduce1.png" alt=""></div>
                     </div>
                   </div>
-                  <div class="comfirm-need-bottom"><img style="" src="../assets/image/add1.png" alt="">添加</div>
+                  <div class="comfirm-need-bottom" @click="addDemand"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
                 </div>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-input-wrapper">
-                  <div class="comfirm-input">
-                    <van-field class="contect" v-model="form1.contectTelList.name" type="text" placeholder="输入联系人" />-
-                    <van-field class="tel" v-model="form1.contectTelList.tel" type="text" placeholder="输入电话号码(建议手机)" />
+                  <div class="comfirm-input" v-for="(item,i) in form1.contectTelList" :key="i">
+                    <van-field class="contect" :v-model="item.name" type="text" placeholder="输入联系人" />-
+                    <van-field class="tel" :v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)" />
                     
                   </div>
                 </div>
@@ -104,7 +91,7 @@
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form1.needOrgin" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruSourceRadio" :key="i+item.name">
-                    <van-radio :name="item.i" checked-color="#07c160">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3">{{item.name}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
@@ -129,7 +116,10 @@
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
-                <van-field v-model="form2.address" type="text" placeholder="省市" :error-message="errorMessage2.address"/>
+                <van-field v-model="form2.address" type="text" readonly placeholder="省市" :error-message="errorMessage2.address" @click="showPicker = true"/>
+                <van-popup v-model="showPicker" position="bottom">
+                    <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm" @change="onChange" />
+                </van-popup>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">详细地址(门牌号)</span>
@@ -141,7 +131,7 @@
                   <van-radio-group v-model="form2.type" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruTypeRadio1" :key="i+item.name">
 
-                    <van-radio :name="item.i" checked-color="#07c160">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3">{{item.name}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
@@ -151,7 +141,7 @@
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form2.sup" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruSupRadio1" :key="i+item.name">
-                    <van-radio :name="item.i" checked-color="#07c160" shape="square">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3" shape="square">{{item.name}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
@@ -161,7 +151,7 @@
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form2.sup1" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruneedRadio" :key="i+item.name">
-                    <van-radio :name="item.i" checked-color="#07c160" shape="square">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3" shape="square">{{item.name}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
@@ -186,9 +176,9 @@
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-input-wrapper">
-                  <div class="comfirm-input">
-                    <van-field class="contect" v-model="form2.contectTelList.name" type="text" placeholder="输入联系人" />-
-                    <van-field class="tel" v-model="form2.contectTelList.tel" type="text" placeholder="输入电话号码(建议手机)" />
+                  <div class="comfirm-input" v-for="(item,i) in form1.contectTelList" :key="i">
+                    <van-field class="contect" :v-model="item.name" type="text" placeholder="输入联系人" />-
+                    <van-field class="tel" :v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)" />
                     
                   </div>
                 </div>
@@ -227,7 +217,10 @@
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
-                <van-field v-model="form3.address" type="text" placeholder="省市区" :error-message="errorMessage3.address"/>
+                <van-field v-model="form3.address" type="text" readonly placeholder="省市" :error-message="errorMessage3.address" @click="showPicker = true"/>
+                <van-popup v-model="showPicker" position="bottom">
+                    <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm" @change="onChange" />
+                </van-popup>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">详细地址(门牌号)</span>
@@ -242,12 +235,12 @@
                 <van-field v-model="form3.startTiTime" placeholder="选择时间" readonly @click="startTimePop = true"/>
                 <van-popup v-model="startTimePop" position="bottom">
                   <van-datetime-picker
-                    v-model="currentDate"
-                    type="datetime"
-                    :min-date="minDate"
-                    @confirm="confirmTime"
-                    @cancel="cancelTime"
-                    :formatter="formatter"
+                    v-model="currentDate1"
+                    type="date"
+                    :min-date="minDate1"
+                    @confirm="confirmTime1"
+                    @cancel="cancelTime1"
+                    :formatter="formatter1"
                   />
                 </van-popup>
               </div>
@@ -256,12 +249,12 @@
                 <van-field v-model="form3.endTiTime" placeholder="选择时间" readonly @click="startTimePop = true"/>
                 <van-popup v-model="startTimePop" position="bottom">
                   <van-datetime-picker
-                    v-model="currentDate"
-                    type="datetime"
-                    :min-date="minDate"
-                    @confirm="confirmTime"
-                    @cancel="cancelTime"
-                    :formatter="formatter"
+                    v-model="currentDate1"
+                    type="date"
+                    :min-date="minDate1"
+                    @confirm="confirmTime1"
+                    @cancel="cancelTime1"
+                    :formatter="formatter1"
                   />
                 </van-popup>
               </div>
@@ -283,9 +276,9 @@
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-input-wrapper">
-                  <div class="comfirm-input">
-                    <van-field class="contect" v-model="form3.contectTelList.name" type="text" placeholder="输入联系人" />-
-                    <van-field class="tel" v-model="form3.contectTelList.tel" type="text" placeholder="输入电话号码(建议手机)" />
+                  <div class="comfirm-input" v-for="(item,i) in form1.contectTelList" :key="i">
+                    <van-field class="contect" :v-model="item.name" type="text" placeholder="输入联系人" />-
+                    <van-field class="tel" :v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)" />
                     
                   </div>
                 </div>
@@ -339,23 +332,40 @@ export default {
     return {
       allCity:json,
       showPicker:false,
-      pageShow:false,
+      testindex:0,
+      testnum:'',
       form1:{ // 录入表单
         hispotalName:'',
         address:'',
         addressDetail:"",
-        type:'',
-        sup:'',
+        materialDetails:[
+          {
+            needsName:'',
+            needsNum:'',
+          }
+        ],//需求表
+        type:1,
+        sup:1,
         needList:{
             name:'',
             num:'',
         },
-        contectTelList:{
-            name:'',
-            tel:'',
-        },
+        contectTelList:[
+            {
+                name:'',
+                tel:'',
+            },
+            {
+                name:'',
+                tel:'',
+            },
+            {
+                name:'',
+                tel:'',
+            }
+        ],
         startTime:'',
-        needOrgin:'',
+        needOrgin:1,
         needImg:'',
 
       },
@@ -381,17 +391,27 @@ export default {
         hispotalName:'',
         address:'',
         addressDetail:"",
-        type:'',
-        sup:'',
-        sup1:'',
+        type:1,
+        sup:1,
+        sup1:1,
         needList:{
             name:'',
             num:''
         },
-        contectTelList:{
-            name:'',
-            tel:''
-        },
+        contectTelList:[
+            {
+                name:'',
+                tel:'',
+            },
+            {
+                name:'',
+                tel:'',
+            },
+            {
+                name:'',
+                tel:'',
+            }
+        ],
         startTime:'',
         needOrgin:'',
         needImg:'',
@@ -424,7 +444,7 @@ export default {
         rang:'',
         startTiTime:'',
         endTiTime:'',
-        type:'',
+        type:1,
         linkUrl:'',
         contectTelList:{
             name:'',
@@ -549,6 +569,10 @@ export default {
       startTime:'',
       minDate: new Date(),
       startTimePop:false,
+      currentDate1:new Date(),
+      startTime1:'',
+      minDate1: new Date(),
+      startTimePop1:false,
       curActiveIndex:0, // 录入头部切换当前index
       luruOriginizeTypeRadio:[ // 录入机构类型单选数据
         {
@@ -588,15 +612,90 @@ export default {
         },
 
       ],
+      columns:[
+          
+        {
+            values: '',
+            className: 'column1'
+        },
+        {
+            values: '',
+            className: 'column2',
+            defaultIndex: 0
+        },
+      ],
 
     };
   },
   created() {
   },
  mounted () {
-     console.log(this.allCity)
+     this.columns[0].values = Object.values(this.allCity).map(function(e){
+        return {text:e.name}
+    })
+    // 默认展示二级的数据
+    if (this.allCity[0].city){
+        this.columns[1].values = Object.values(this.allCity[0].city).map(function(e){
+            return {text:e.name}
+        })
+    }
   },
   methods:{
+    secectRadio(index){
+        this.form1.type=index
+    },
+    onConfirm(){
+        this.showPicker=false
+
+    },
+    //添加需求表
+    addDemand(){
+      // this.
+      if(this.form1.materialDetails[this.testindex].needsName==''||this.form1.materialDetails[this.testindex].needsNum==''){
+        this.$toast('请完善信息');
+      }else{
+        this.testindex++
+        this.form1.materialDetails.push({
+          needsName:'',
+          needsNum:'',
+        })
+      }
+    },
+    //删除需求表
+    deleteDemand(index){
+      console.log(this.testindex)
+      if(this.testindex<1){
+        this.$toast('至少添加一条需求');
+      }else{
+        this.form1.materialDetails.splice(index,1)
+        this.testindex--
+      }
+      
+    },
+    onChange(picker, values,index){
+          picker.setColumnValues(1,this.cityDate(this.allCity,values[0].text))
+    }, 
+    cityDate(data,province){
+          var x=[]
+          data.forEach(function(res){
+              if (res.city){
+
+                  if(res.name == province){
+                      for (let i = 0; i < res.city.length; i++) {
+                          let obj = {}
+                          obj.text = res.city[i].name
+                          x.push(obj);
+                      }
+          
+                      
+                  }
+              }
+          })
+          return x
+      },
+    onCancel(){
+        this.showPicker=false
+    },
     // 录入需求提供切换
     needTi(type){
       this.curActiveIndex=type
@@ -684,6 +783,32 @@ export default {
     },
     // 点击取消
     cancelTime() {
+      this.startTimePop = false;
+    },
+    // 点击确定
+    confirmTime1() {
+      this.startTimePop = false;
+      this.startTime =
+        this.currentDate.getFullYear() +
+        "-" +
+        (Number(this.currentDate.getMonth()) + 1) +
+        "-" +
+        this.currentDate.getDate()
+    },
+    // 处理控件显示的时间格式
+    formatter1(type, value) {
+      // 格式化选择器日期
+      if (type === "year") {
+        return `${value}年`;
+      } else if (type === "month") {
+        return `${value}月`;
+      } else if (type === "day") {
+        return `${value}日`;
+      }
+      return value;
+    },
+    // 点击取消
+    cancelTime1() {
       this.startTimePop = false;
     },
 
@@ -878,6 +1003,10 @@ export default {
                 display:flex;
                 justify-content: space-between;
                 align-items: center;
+                margin-bottom:10px;
+                &:last-child{
+                  margin-bottom:0;
+                }
                 .contect{
                   width: 105px;
                 }

@@ -227,7 +227,7 @@
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
-                <van-field v-model="form3.address" type="text" placeholder="省市" :error-message="errorMessage3.address"/>
+                <van-field v-model="form3.address" type="text" placeholder="省市区" :error-message="errorMessage3.address"/>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">详细地址(门牌号)</span>
@@ -271,7 +271,7 @@
                   <van-radio-group v-model="form3.type" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruOriginizeTypeRadio" :key="i+item.name">
 
-                    <van-radio :name="item.i" checked-color="#07c160">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3">{{item.name}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
@@ -293,9 +293,9 @@
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">服务提供类型</span>
                 <div class="comfirm-radio">
-                  <van-checkbox-group v-model="form3.supContect"class="radio-group">
+                  <van-checkbox-group v-model="form3.supContect" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruOriginizeSupRadio" :key="i+item.name">
-                    <van-checkbox :name="item.i">{{item.name}}</van-checkbox>
+                    <van-checkbox shape="square" checked-color="#2D65E3" :name="item.id">{{item.name}}</van-checkbox>
                     </div>
                    </van-checkbox-group>
                   <div class="author">
@@ -312,15 +312,16 @@
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">身份证明</span>
                 <div class="need-img-wrapper">
-                  <img style="" src="../assets/image/reduce2.png" alt="">
-                  <div class="need-img-list">
-                    <img style="" src="../assets/image/add2.png" alt="">
-                  </div>
-                  <img style="" src="../assets/image/add2.png" alt="">
+                  <van-uploader
+                    v-model="form3.fileList"
+                    multiple
+                    :max-count="2"
+                    :after-read="afterRead"
+                  />
                   <!-- <span>企业提供方请上传营业执照照片，非人提供方请上传身份证正反面照片</span> -->
                 </div>
               </div>
-              <div class="confirm-btn" @click="confirm">提交</div>
+              <div class="confirm-btn" @click="confirmthree">提交</div>
             </div>
 
           </div>
@@ -414,20 +415,23 @@ export default {
         needImg:'',
       },
       form3:{ // 录入表单
-        hispotalName:'',
-        address:'',
-        addressDetail:"",
+        materialType:3,//民间组织
+        name:'',//机构名称
+        province:'',//省
+        city:'',//省
+        address:'',//地址
+        serviceRange:"",//覆盖范围
         rang:'',
         startTiTime:'',
         endTiTime:'',
         type:'',
         linkUrl:'',
-        
         contectTelList:{
             name:'',
             tel:'',
         },
-        supContect:'',
+        fileList:[],
+        supContect:[],
         author:'',
         authorWrite:'',
 
@@ -596,6 +600,14 @@ export default {
     // 录入需求提供切换
     needTi(type){
       this.curActiveIndex=type
+    },
+    //民间组织上传图片之后
+    afterRead(file) {
+      // 此时可以自行将文件上传至服务器
+      console.log(this.form3.fileList);
+    },
+    confirmthree(){
+        console.log(this.form3.fileList);
     },
     // 录入表单提交
     confirm(){

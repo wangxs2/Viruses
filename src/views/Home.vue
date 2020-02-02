@@ -146,86 +146,22 @@
     <!-- 搜索录入图标 -->
     <div class="search-write">
       <div class="img-icon" @click="searchBtn">
-        <van-icon name="search" size="20" color="#216AFF"/>
+        <img src="../assets/image/searchimg.png" />
         <span>搜索</span>
       </div>
       <div class="img-icon" @click="writeBtn">
-        <van-icon name="records" size="20" color="#216AFF"/>
+        <img src="../assets/image/write.png" />
         <span>录入</span>
+      </div>
+      <div class="img-icon" @click="contectBtn">
+        <img src="../assets/image/contect.png" />
+        <span>联系</span>
       </div>
     </div>
 
     <!-- 录入缺省页 -->
     <van-popup v-model="reduceShow" closeable position="bottom" :style="{ height: '100%' }">
-      <div class="reduce-content">
-        <!-- <img class="down-up" src="../assets/image/reduce.png" alt="">
-        <p>正在加紧开发...</p>
-        <p>联系电话：18368091476</p>
-        <img style="width:160px;height:160px" src="../assets/image/gzh.jpg" alt=""> -->
-        <img style="" class="banner" src="../assets/image/banner.png" alt="">
-        <div class="us-need-wrapper">
-          <div class="us-need us">
-            <div class="title">
-              <span class="dot" v-for="(item,i) in 3" :key="i+'s'"></span>
-              <span class="title-name">联系我们</span>
-              <span class="dot" v-for="(item,i) in 3" :key="i+'d'"></span>
-            </div>
-            <div class="message" v-for="(item,i) in conUs" :key="i">
-              <div class="message-content">
-                <div class="name-tel">
-                  <span class="name">{{item.name}}</span>
-                  <span class="tel">{{item.tel}}</span>
-                </div>
-                <span class="job">({{item.job}})</span>
-              </div>
-              <span class="btn" @click="commitTel(item.tel)">立即拨打</span>
-            </div>
-            <div class="code">
-              <img style="" src="../assets/image/gzh.jpg" alt="">
-              <span class="btn">上海产业技术研究院智能工程交通中心</span>
-            </div>
-          </div>
-          <div class="us-need need">
-
-            <div class="title">
-              <span class="dot" v-for="(item,i) in 3" :key="i+'f'"></span>
-              <span class="title-name">需求填写</span>
-              <span class="dot" v-for="(item,i) in 3" :key="i+'g'"></span>
-            </div>
-            <div class="tab-btn">
-              <div :class="[xuShow?'tab-img xu':'tab-img xu1']" @click="needTi(1)"><span>我是需求方</span></div>
-              <div :class="[tiShow?'tab-img ti':'tab-img ti1']" @click="needTi(2)"><span>我是提供方</span></div>
-            </div>
-            <div class="form-wrapper">
-              <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">单位名称</span>
-                <!-- <input type="text" v-model="searchText"> -->
-                <van-field v-model="form.company" placeholder="请填写" :error-message="errorMessage.company"  @blur="formBlur(1)"/>
-              </div>
-              <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">地址</span>
-                <van-field v-model="form.address" placeholder="请填写" :error-message="errorMessage.address"   @blur="formBlur(2)"/>
-              </div>
-              <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">联系人</span>
-                <van-field v-model="form.people" placeholder="请填写" :error-message="errorMessage.people"   @blur="formBlur(3)"/>
-              </div>
-              <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">电话</span>
-                <van-field v-model="form.tel" placeholder="请填写" :error-message="errorMessage.tel"  @blur="formBlur(4)"/>
-              </div>
-              <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">物资需求</span>
-                <van-field v-model="form.need" type="textarea" placeholder="请填写" :error-message="errorMessage.need" @blur="formBlur(5)"/>
-              </div>
-              <div class="confirm-btn" @click="confirm">提交</div>
-            </div>
-
-          </div>
-        </div>
-        
-        
-      </div>
+      <luru></luru>
       
     </van-popup>
 
@@ -581,9 +517,9 @@
                 <div class="title-wrapper">
                   <span class="tab-type por" v-if="item.isTop&&item.isTop==1">置顶</span>
                   <span class="tab-type new" v-if="item.isNew&&item.isNew==1">最新</span>
-                  <span class="title" v-if="(item.isTop||item.isNew)&&item.headline&&item.headline.length<10">{{item.headline}}</span>
+                  <span class="title" v-if="(item.isTop||item.isNew)&&item.headline&&item.headline.length<=10">{{item.headline}}</span>
                   <span class="title" v-else-if="(item.isTop||item.isNew)&&item.headline&&item.headline.length>10">{{item.headline.substring(0,11)}}...</span>
-                  <span class="title" v-else-if="!item.isTop&&!item.isNew&&item.headline&&item.headline.length<14">{{item.headline}}</span>
+                  <span class="title" v-else-if="!item.isTop&&!item.isNew&&item.headline&&item.headline.length<=14">{{item.headline}}</span>
                   <span class="title" v-else-if="!item.isTop&&!item.isNew&&item.headline&&item.headline.length>14">{{item.headline.substring(0,13)}}...</span>
                 </div>
                 <div class="articl">{{item.mainBody}}</div>
@@ -604,6 +540,49 @@
       
     </van-popup>
 
+    <!-- 录入弹框 -->
+    <div class="luru-model-wrapper" v-if="luruSelectModel">
+      <div class="luru-model">
+        <div class="luru-top-bg">
+          <span class="luru-title">抗击肺炎物资需求申请</span>
+        </div>
+        <div class="luru-select">
+          <span class="luru-btn" v-for="(item,i) in luruSelectData" :key="i" @clcik="luruSelectBtn(item.type)">{{item.name}}</span>
+        </div>
+        <div class="close-luru-model" @click="luruSelect"><van-icon name="cross" size="16" color="#fff"/></div>
+      </div>
+    </div>
+    <!-- 联系人弹框 -->
+    <div class="contect-model-wrapper" v-if="contectModel">
+      <div class="contect-model">
+        <div class="us-need us">
+          <div class="title">
+            <span class="dot" v-for="(item,i) in 3" :key="i+'s'"></span>
+            <span class="title-name">联系我们</span>
+            <span class="dot" v-for="(item,i) in 3" :key="i+'d'"></span>
+          </div>
+          <div class="message-wrapper">
+            <div class="message" v-for="(item,i) in conUs" :key="i">
+              <div class="message-content">
+                <div class="name-tel">
+                  <span class="name">{{item.name}}</span>
+                  <span class="tel">{{item.tel}}</span>
+                </div>
+                <span class="job">({{item.job}})</span>
+              </div>
+              <span class="btn" @click="commitTel(item.tel)">立即拨打</span>
+            </div>
+          </div>
+          <div class="code">
+            <img style="" src="../assets/image/gzh.jpg" alt="">
+            <span class="btn">上海产业技术研究院智能工程交通中心</span>
+          </div>
+        </div>
+        <div class="close-luru-model" @click="contectSelect"><van-icon name="cross" size="16" color="#fff"/></div>
+      </div>
+    </div>
+
+
 
     <!-- 医护用品规则说明 -->
 
@@ -612,9 +591,13 @@
 
 <script>
  import encrypt from '@/libs/encrypt'
+ import luru from '@/components/luru'
 // @ is an alias to /src
 export default {
   name: "home",
+  components:{
+    luru
+  },
   data() {
     return {
       menuList: [
@@ -657,7 +640,7 @@ export default {
       phoneshow:false,
       downUpImg:true,
       showSearch:false,
-      reduceShow:false,
+      reduceShow:true,
       showDataLengthPoint:1, //显示当前搜索数据是否点击指针
       wuziList:[],
       cityList:[],
@@ -712,6 +695,14 @@ export default {
           name: "赵博",
           tel: "13788926819",
         },{
+          job:"民间组织联系人",
+          name: "俞勤奋",
+          tel: "13916129028",
+        },{
+          job:"海外联系人",
+          name: "王雯",
+          tel: "00447779850819",
+        },{
           job:"志愿者联系人",
           name: "墨竹",
           tel: "18817582880",
@@ -731,7 +722,21 @@ export default {
       styleUp:true,
       isoneClosePoint:1,
       curTimeTopContent:"", // 实时资讯统计
-    };
+      luruSelectModel:false, //录入选择弹框
+      contectModel:false, // 联系人弹框
+      luruSelectData:[ //录入选择数据
+        {
+          name: "我是需求方",
+          type:1
+        },{
+          name: "我是提供方",
+          type:2
+        },{
+          name: "我是民间组织",
+          type:3
+        }
+      ],
+    }
   },
   created() {
     this.getCurTimeDataList()
@@ -761,6 +766,20 @@ export default {
     // this.getProvinceList()
   },
   methods:{
+    contectBtn(){
+      this.contectModel=true
+    },
+    contectSelect(){
+      this.contectModel=false
+    },
+    // 录入弹框隐藏
+    luruSelect(){
+      this.luruSelectModel=false
+    },
+    // 录入弹框选择
+    luruSelectBtn(type) {
+
+    },
     getCurTimeContent(){
       this.$fetchGet("donateCount/findDonateCount").then(res=> {
         if (res&&res.length){
@@ -823,36 +842,6 @@ export default {
     commitTel(tel){
       window.location.href = "tel:" + tel
     },
-    // 录入需求提供切换
-    needTi(type){
-      if (!this.clickTabPoint){
-        
-      
-      this.form.company=this.form.company
-      this.form.address=this.form.address
-      this.form.people=this.form.people
-      this.form.tel=this.form.tel
-      this.form.need=this.form.need
-
-
-
-      } else {
-        this.clearErrorMessage()
-
-      }
-
-        this.clickTabPoint=1
-  
-        if (type==1){
-          this.xuShow=false
-          this.tiShow=false
-        } else if (type==2) {
-          this.tiShow=true
-          this.xuShow=true
-        }
-  
-        this.curTabIndex=type
-    },
     // 清空表单输入及错误提示
     clearErrorMessage(){
       
@@ -867,48 +856,6 @@ export default {
       this.errorMessage.people=''
       this.errorMessage.tel=''
       this.errorMessage.need=''
-
-    },
-    // 录入表单提交
-    confirm(){
-      if (this.clickTabPoint) {
-
-        this.formVil()
-        if (this.form.company && this.form.address && this.form.people && this.form.tel && this.form.need) {
-  
-          let params= {
-            cmpyName:this.form.company,
-            address:this.form.address,
-            linkPeople:this.form.people,
-            linkTel:this.form.tel,
-            descr:this.form.need,
-            mark:this.curTabIndex
-  
-          }
-          
-          this.$fetchPost("infoApply/save",params).then(res=> {
-            if (res.code=="success") {
-              this.$toast(res.message);
-              this.form.company=''
-              this.form.address=''
-              this.form.people=''
-              this.form.tel=''
-              this.form.need=''
-              this.reduceShow=false
-            } else  if (res.code=="error") {
-              this.$toast(res.message);
-            } else  if (res.code==504) {
-              this.$toast(res.message);
-            }
-          })
-  
-        } else {
-          this.$toast('请完善信息');
-        }
-      } else {
-          this.$toast('请选择提交申请方');
-
-      }
 
     },
     // 提交非空验证
@@ -1384,12 +1331,14 @@ export default {
   }
 };
 </script>
-<style>
+<style lang="scss">
 
 .van-popup__close-icon--top-right{
   top: 9px!important;
   right: 3px!important;
 }
+
+
 </style>
 <style lang="scss" scoped>
 .home {
@@ -2027,8 +1976,12 @@ export default {
       border-radius: 50%;
       background: #fff;
       box-shadow:0px 0px 8px 0px rgba(0, 0, 0, 0.32);
-      &:last-child{
+      // &:last-child{
         margin-top:10px;
+      // }
+      img{
+        width: 18px;
+        height: 18px;
       }
       span{
         font-size: 13px;
@@ -2036,228 +1989,6 @@ export default {
         padding-top: 1px;
       }
     }
-  }
-  .reduce-content{
-    background:#2D65E3;
-    padding-bottom:40px;
-    .banner{
-      width:100%;
-      height: 125px;
-    }
-    .us-need-wrapper{
-      margin: 0 12px;
-      .us-need{
-        background:#174FCE;
-        border-radius:8px;
-        margin-bottom: 15px;
-        &.us{}
-        &.need{}
-        .title{
-          display:flex;
-          justify-content: center;
-          align-items:center;
-          height: 46px;
-          font-size:17px;
-          font-family:PingFang SC;
-          font-weight:bold;
-          color:rgba(255,255,255,1);
-          color: #fff;
-          .dot{
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: #fff;
-            margin-left: 3px;
-          }
-          .title-name{
-            padding: 0 10px;
-          }
-        }
-        .tab-btn {
-          display: flex;
-          justify-content: center;
-          align-items:center;
-          .tab-img{
-            display: flex;
-            justify-content: center;
-            align-items:center;
-            font-size:15px;
-            font-family:PingFang SC;
-            font-weight:bold;
-            &:last-child{
-              margin-left: 19px;
-            }
-            &.xu{
-              background:url("../assets/image/xu2.png") no-repeat;
-              width: 125px;
-              height: 44px;
-              background-size: 100% 100%;
-              color:rgba(181,121,247,1);
-            }
-            &.xu1{
-              background:url("../assets/image/xu1.png") no-repeat;
-              width: 125px;
-              height: 44px;
-              background-size: 100% 100%;
-              color:#fff;
-            }
-            &.ti{
-              background:url("../assets/image/ti1.png") no-repeat;
-              width: 125px;
-              height: 44px;
-              background-size: 100% 100%;
-              color:#fff;
-            }
-            &.ti1{
-              background:url("../assets/image/ti2.png") no-repeat;
-              width: 125px;
-              height: 44px;
-              background-size: 100% 100%;
-              color:rgba(181,121,247,1);
-            }
-            span{
-              padding-left: 20px;            
-            }
-          }
-
-        }
-        .message{
-          display:flex;
-          justify-content: space-between;
-          align-items:center;
-          margin: 0 29px;
-          padding: 10px;
-          font-size:15px;
-          font-family:PingFang SC;
-          font-weight:500;
-          color:rgba(232,245,255,1);
-          background: #3A6FE5;
-          border-radius: 3px;
-          // border-top-left-radius: 3px;
-          // border-top-right-radius: 3px;
-          // &:first-child {
-            margin-bottom:1px;
-            // border-bottom-right-radius: 3px;
-            // border-bottom-left-radius: 3px;
-          // }
-          .message-content{
-            display:flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            .name-tel{
-            display:flex;
-            justify-content: flex-start;
-
-              .name{}
-              .tel{
-                padding-left: 10px;
-              }
-            }
-            .job{
-              font-size: 13px;
-              text-align:left;
-            }
-          }
-          .btn{
-            display:flex;
-            justify-content: center;
-            align-items:center;
-            width: 86px;
-            height: 32.5px;
-            background:url("../assets/image/block.png") no-repeat;
-            background-size: 86px 32.5px;
-            font-weight:bold;
-            font-style:italic;
-            
-          }
-        }
-        .code{
-            display:flex;
-            flex-direction:column;
-            justify-content: center;
-            align-items:center;
-            padding-bottom: 18.5px;
-          img{
-            width: 63px;
-            height: 63px;
-            margin:10px 0;
-          }
-          .btn{
-            font-size:12px;
-            font-family:PingFang SC;
-            font-weight:500;
-            color:rgba(255,255,255,1);
-          }
-        }
-        .form-wrapper{
-          padding: 0 18.5px 30px;
-          .van-cell{
-            border-radius: 5px;
-          }
-          .form-input{
-            display:flex;
-            flex-direction:column;
-            text-align: left;
-            font-size:14px;
-            font-family:PingFang SC;
-            font-weight:500;
-            color:rgba(255,255,255,1);
-            span{
-              height: 39px;
-              line-height: 39px;
-              img{
-                width: 10px;
-                height: 10px;
-                padding-right: 8px;
-              }
-            }
-            input{
-
-            }
-          }
-          .confirm-btn{
-            width:150px;
-            height:44px;
-            text-align: center;
-            line-height: 44px;
-            color:#fff;
-            font-size:18px;
-            font-family:PingFang SC;
-            font-weight:bold;
-            background:linear-gradient(270deg,rgba(255,145,0,1) 0%,rgba(255,126,0,1) 53%,rgba(255,145,0,1) 100%);
-            box-shadow:0px 0px 5px 0px rgba(0, 0, 0, 0.05);
-            border-radius:22px;
-            margin: 30px auto 0;
-          }
-        }
-
-      }
-    }
-
-
-
-
-
-
-
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: center;
-    // align-items: center;
-    // margin-top: 100px;
-
-    // img{
-    //   width: 194px;
-    //   height:147px;
-    // }
-    // p{
-    //   font-size:15px;
-    //   font-family:PingFang SC;
-    //   font-weight:400;
-    //   color:rgba(153,153,153,1);
-    //   margin-top:23px;
-
-    // }
   }
   .cur-time-donate{
     background: #eee;
@@ -2487,6 +2218,195 @@ export default {
       // -webkit-background-clip: text;
       // color: transparent;
 
+    }
+  }
+  .luru-model-wrapper{
+    position: fixed;
+    top:0;
+    left: 0;
+    bottom: 0;
+    right:0;
+    z-index: 999;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    background:rgba(0,0,0,.5);
+
+    .luru-model{
+      position: relative;
+      width: 327px;
+      background: #fff;
+      border-radius: 5px;
+      .luru-top-bg{
+        display: flex;
+        justify-content: center;
+        // align-items: center;
+        width: 100%;
+        height:130px;
+        background:url("../assets/image/luru1.png") no-repeat;
+        background-size: 100% 130px;
+        
+        .luru-title{
+          font-size:24px;
+          font-family:PingFang SC;
+          font-weight:800;
+          color:rgba(255,255,255,1);
+          margin-top:30px;
+        }
+      }
+      .luru-img{
+        display: block;
+        width: 187px;
+        height: 181px;
+        margin: 10px auto;
+      }
+      .luru-select{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items:center;
+        padding:30px 0;
+
+        .luru-btn{
+          width:200px;
+          height:40px;
+          text-align:center;
+          line-height: 40px;
+          background:#026FFD;
+          border-radius:20px;
+          width:200px;
+          font-size:16px;
+          font-family:PingFang SC;
+          font-weight:800;
+          color:rgba(255,255,255,1);
+          margin-bottom: 15px;
+          &:last-child{
+            margin-bottom: 0;
+          }
+
+        }
+      }
+      .close-luru-model{
+        position: absolute;
+        top:4px;
+        right: 12px;
+      }
+    }
+  }
+  
+  .contect-model-wrapper{
+    position: fixed;
+    top:0;
+    left: 0;
+    bottom: 0;
+    right:0;
+    z-index: 999;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    background:rgba(0,0,0,.5);
+
+    .contect-model{
+      position: relative;
+      width: 339px;
+      background:#174FCE;
+      border-radius: 5px;
+      .us-need{
+        border-radius:8px;
+        &.us{}
+        &.need{}
+        .title{
+          display:flex;
+          justify-content: center;
+          align-items:center;
+          height: 60px;
+          font-size:17px;
+          font-family:PingFang SC;
+          font-weight:bold;
+          color:rgba(255,255,255,1);
+          .dot{
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #fff;
+            margin-left: 3px;
+          }
+          .title-name{
+            padding: 0 10px;
+          }
+        }
+        .message-wrapper{
+          border-radius: 5px;
+          background: #3A6FE5;
+          padding: 0 10px;
+          margin: 0 24px;
+          .message{
+            display:flex;
+            justify-content: space-between;
+            align-items:center;
+            font-size:15px;
+            padding: 10px 0;
+            font-family:PingFang SC;
+            font-weight:500;
+            color:rgba(232,245,255,1);
+            border-bottom: 1px solid #174FCE;
+            .message-content{
+              display:flex;
+              flex-direction: column;
+              justify-content: flex-start;
+              .name-tel{
+              display:flex;
+              justify-content: flex-start;
+
+                .name{}
+                .tel{
+                  padding-left: 10px;
+                }
+              }
+              .job{
+                font-size: 13px;
+                text-align:left;
+              }
+            }
+            .btn{
+              display:flex;
+              justify-content: center;
+              align-items:center;
+              width: 86px;
+              height: 32.5px;
+              background:url("../assets/image/block.png") no-repeat;
+              background-size: 86px 32.5px;
+              font-weight:bold;
+              font-style:italic;
+              
+            }
+          }
+        }
+        .code{
+            display:flex;
+            flex-direction:column;
+            justify-content: center;
+            align-items:center;
+            padding: 18px 0 30px;
+          img{
+            width: 63px;
+            height: 63px;
+            margin-bottom:10px;
+          }
+          .btn{
+            font-size:12px;
+            font-family:PingFang SC;
+            font-weight:500;
+            color:rgba(255,255,255,1);
+          }
+        }
+
+      }
+      .close-luru-model{
+        position: absolute;
+        top:4px;
+        right: 12px;
+      }
     }
   }
 }

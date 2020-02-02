@@ -51,9 +51,6 @@
         <div class="material" v-if="mapobj.needsNamearr!==undefined">
           <div v-for="(item,index) in mapobj.needsNamearr"
                  :key="index" class="boll-item"><span class="boll"></span>{{item}}</div>
-          <div class="boll-item"><span class="boll"></span>医用一次性乳胶手套</div>
-          <div class="boll-item"><span class="boll"></span>医用帽子</div>
-          <div class="boll-item"><span class="boll"></span>一次性手术衣</div>
         </div>
         <div v-if="mapobj.needsDescrarr!==undefined" v-for="(itrm,index) in mapobj.needsDescrarr"
                  :key="index" class="remark">{{itrm}}</div>

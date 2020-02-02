@@ -1325,7 +1325,6 @@ export default {
 </script>
 <style lang="scss">
 
-<style>
 .likeAddAnimate-enter-active, .likeAddAnimate-leave-active{
   transition: all 1.5s ease
 }

@@ -26,6 +26,12 @@
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
                 <van-field v-model="form1.address" type="text" placeholder="省市" :error-message="errorMessage1.address"/>
+                 <van-field readonly  clickablelabel="城市" placeholder="选择城市" @click="showPicker = true"/>
+                    <van-popup v-model="showPicker" position="bottom">
+                        <!-- vant Picker 根据 绑定的columns数据，来渲染几级联动，这里我们使用的是三级联动 -->
+                        <van-picker v-if="pageShow" show-toolbar :columns="columns" @cancel="onCancel"
+            @confirm="onConfirm" @change="onChange" :item-height="35" />
+                    </van-popup>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">详细地址(门牌号)</span>
@@ -104,7 +110,7 @@
                 </div>
               </div>
               <div class="form-input">
-                <span>需求证明</span>
+                <span><img style="" src="../assets/image/star.png" alt="">需求证明</span>
                 <div class="need-img-wrapper">
                   <img style="" src="../assets/image/reduce2.png" alt="">
                   <div class="need-img-list">
@@ -118,7 +124,7 @@
             </div>
             <div class="form-wrapper" v-if="curActiveIndex==1">
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">医院名称</span>
+                <span><img style="" src="../assets/image/star.png" alt="">提供方名称</span>
                 <van-field v-model="form2.hispotalName" type="text" placeholder="请填写" :error-message="errorMessage2.hispotalName"/>
               </div>
               <div class="form-input">
@@ -133,7 +139,7 @@
                 <span><img style="" src="../assets/image/star.png" alt="">类型</span>
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form2.type" class="radio-group">
-                    <div class="sig-radio" v-for="(item,i) in luruTypeRadio" :key="i+item.name">
+                    <div class="sig-radio" v-for="(item,i) in luruTypeRadio1" :key="i+item.name">
 
                     <van-radio :name="item.i" checked-color="#07c160">{{item.name}}</van-radio>
                     </div>
@@ -141,10 +147,20 @@
                 </div>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">物资对接情况</span>
+                <span><img style="" src="../assets/image/star.png" alt="">物资提供方式</span>
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form2.sup" class="radio-group">
-                    <div class="sig-radio" v-for="(item,i) in luruSupRadio" :key="i+item.name">
+                    <div class="sig-radio" v-for="(item,i) in luruSupRadio1" :key="i+item.name">
+                    <van-radio :name="item.i" checked-color="#07c160" shape="square">{{item.name}}</van-radio>
+                    </div>
+                  </van-radio-group>
+                </div>
+              </div>
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">是否需要物流</span>
+                <div class="comfirm-radio">
+                  <van-radio-group v-model="form2.sup1" class="radio-group">
+                    <div class="sig-radio" v-for="(item,i) in luruneedRadio" :key="i+item.name">
                     <van-radio :name="item.i" checked-color="#07c160" shape="square">{{item.name}}</van-radio>
                     </div>
                   </van-radio-group>
@@ -178,7 +194,7 @@
                 </div>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">需求发布时间</span>
+                <span><img style="" src="../assets/image/star.png" alt="">物资提供时间</span>
                 <van-field v-model="form2.startTime" placeholder="选择时间" readonly @click="startTimePop = true"/>
                 <van-popup v-model="startTimePop" position="bottom">
                   <van-datetime-picker
@@ -192,24 +208,14 @@
                 </van-popup>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">需求来源</span>
-                <div class="comfirm-radio">
-                  <van-radio-group v-model="form2.needOrgin" class="radio-group">
-                    <div class="sig-radio" v-for="(item,i) in luruSourceRadio" :key="i+item.name">
-                    <van-radio :name="item.i" checked-color="#07c160">{{item.name}}</van-radio>
-                    </div>
-                  </van-radio-group>
-                </div>
-              </div>
-              <div class="form-input">
-                <span>需求证明</span>
+                <span>身份证明</span>
                 <div class="need-img-wrapper">
                   <img style="" src="../assets/image/reduce2.png" alt="">
                   <div class="need-img-list">
                     <img style="" src="../assets/image/add2.png" alt="">
                   </div>
                   <img style="" src="../assets/image/add2.png" alt="">
-                  <span>最多可上传5张</span>
+                  <span>企业提供方请上传营业执照照片，非人提供方请上传身份证正反面照片</span>
                 </div>
               </div>
               <div class="confirm-btn" @click="confirm">提交</div>
@@ -271,7 +277,7 @@
                 </div>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">链接</span>
+                <span>链接</span>
                 <van-field v-model="form3.linkUrl" type="textarea" placeholder="请填写" :error-message="errorMessage3.linkUrl" @blur="formBlur(5)"/>
               </div>
               <div class="form-input">
@@ -285,30 +291,8 @@
                 </div>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">需求发布时间</span>
-                <van-field v-model="form3.startTime" placeholder="选择时间" readonly @click="startTimePop = true"/>
-                <van-popup v-model="startTimePop" position="bottom">
-                  <van-datetime-picker
-                    v-model="currentDate"
-                    type="datetime"
-                    :min-date="minDate"
-                    @confirm="confirmTime"
-                    @cancel="cancelTime"
-                    :formatter="formatter"
-                  />
-                </van-popup>
-              </div>
-              <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">物资对接情况</span>
+                <span><img style="" src="../assets/image/star.png" alt="">服务提供类型</span>
                 <div class="comfirm-radio">
-                  <!-- <van-radio-group v-model="form3.supContect" class="radio-group">
-                    <div class="sig-radio" v-for="(item,i) in luruOriginizeSupRadio" :key="i+item.name">
-                    <van-radio :name="item.i" checked-color="#07c160" shape="square">{{item.name}}</van-radio>
-                    </div>
-                  </van-radio-group>
- -->
-
-
                   <van-checkbox-group v-model="form3.supContect"class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruOriginizeSupRadio" :key="i+item.name">
                     <van-checkbox :name="item.i">{{item.name}}</van-checkbox>
@@ -325,6 +309,17 @@
                 <span>其他说明</span>
                 <van-field v-model="form3.authorWrite" type="textarea" placeholder="请填写" :error-message="errorMessage3.authorWrite" @blur="formBlur(5)"/>
               </div>
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">身份证明</span>
+                <div class="need-img-wrapper">
+                  <img style="" src="../assets/image/reduce2.png" alt="">
+                  <div class="need-img-list">
+                    <img style="" src="../assets/image/add2.png" alt="">
+                  </div>
+                  <img style="" src="../assets/image/add2.png" alt="">
+                  <!-- <span>企业提供方请上传营业执照照片，非人提供方请上传身份证正反面照片</span> -->
+                </div>
+              </div>
               <div class="confirm-btn" @click="confirm">提交</div>
             </div>
 
@@ -337,11 +332,11 @@
 </template> 
 
 <script>
-// import json from "@/libs/coCityJson"
+import json from "@/libs/city_code.json"
 export default {
   data() {
     return {
-    //   allCity:json,
+      allCity:json,
       form1:{ // 录入表单
         hispotalName:'',
         address:'',
@@ -385,6 +380,7 @@ export default {
         addressDetail:"",
         type:'',
         sup:'',
+        sup1:'',
         needList:{
             name:'',
             num:''
@@ -413,7 +409,6 @@ export default {
             tel:'',
         },
         startTime:'',
-        needOrgin:'',
         needImg:'',
       },
       form3:{ // 录入表单
@@ -430,7 +425,6 @@ export default {
             name:'',
             tel:'',
         },
-        startTime:'',
         supContect:'',
         author:'',
         authorWrite:'',
@@ -480,9 +474,21 @@ export default {
         },{
           id:4,
           name:"普通医院"
+        },
+      ], 
+      luruTypeRadio1:[ //录入类型单选数据
+        {
+          id:1,
+          name:"企业"
         },{
-          id:5,
-          name:"红十字会"
+          id:2,
+          name:"个人"
+        },{
+          id:3,
+          name:"公益组织"
+        },{
+          id:4,
+          name:"海外组织"
         },
       ], 
       luruSupRadio:[ //录入物资对接情况单选数据
@@ -497,6 +503,24 @@ export default {
           name:"接受采购"
         },
       ], 
+      luruSupRadio1:[ //录入物资对接情况单选数据
+        {
+          id:1,
+          name:"捐赠"
+        },{
+          id:2,
+          name:"采购"
+        },
+      ], 
+      luruneedRadio:[ //录入需求来源单选数据
+        {
+          id:1,
+          name:"是"
+        },{
+          id:2,
+          name:"否"
+        }
+      ],
       luruSourceRadio:[ //录入需求来源单选数据
         {
           id:1,
@@ -557,13 +581,14 @@ export default {
           name:"其他服务"
         },
 
-      ]
+      ],
 
     };
   },
   created() {
   },
  mounted () {
+     console.log(this.allCity)
   },
   methods:{
     // 录入需求提供切换
@@ -938,8 +963,7 @@ export default {
                 font-family:PingFang SC;
                 font-weight:500;
                 color:rgba(118,160,255,1);
-                vertical-align: bottom,
-
+                line-height: 14px;
               }
             }
           }

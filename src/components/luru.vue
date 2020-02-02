@@ -330,6 +330,7 @@ import json from "@/libs/city_code.json"
 export default {
   data() {
     return {
+      
       allCity:json,
       showPicker:false,
       testindex:0,
@@ -627,9 +628,24 @@ export default {
 
     };
   },
+  props:['curTabIndex'],
   created() {
   },
+  watch:{
+    'curTabIndex':{
+      deep:true,
+      handler(newV,oldV){
+        this.curActiveIndex=newV
+      }
+    }
+  },
+ computed: {
+  curActiveIndex: function () {
+   return this.curActiveIndex // 监听switchStatusData 的变化
+  }
+ },
  mounted () {
+   this.curActiveIndex=this.curTabIndex
      this.columns[0].values = Object.values(this.allCity).map(function(e){
         return {text:e.name}
     })

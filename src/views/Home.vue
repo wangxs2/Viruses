@@ -170,7 +170,7 @@
 
     <!-- 录入缺省页 -->
     <van-popup v-model="reduceShow" closeable position="bottom" :style="{ height: '100%' }">
-      <luru></luru>
+      <luru :curTabIndex="curTabIndex"></luru>
       
     </van-popup>
 
@@ -556,7 +556,7 @@
           <span class="luru-title">抗击肺炎物资需求申请</span>
         </div>
         <div class="luru-select">
-          <span class="luru-btn" v-for="(item,i) in luruSelectData" :key="i" @clcik="luruSelectBtn(item.type)">{{item.name}}</span>
+          <span class="luru-btn" v-for="(item,i) in luruSelectData" :key="i" @click="luruSelectBtn(item.type)">{{item.name}}</span>
         </div>
         <div class="close-luru-model" @click="luruSelect"><van-icon name="cross" size="16" color="#fff"/></div>
       </div>
@@ -737,7 +737,7 @@ export default {
       styleUp:true,
       isoneClosePoint:1,
       curTimeTopContent:"", // 实时资讯统计
-      luruSelectModel:false, //录入选择弹框
+      luruSelectModel:true, //录入选择弹框
       contectModel:false, // 联系人弹框
       luruSelectData:[ //录入选择数据
         {
@@ -751,6 +751,7 @@ export default {
           type:3
         }
       ],
+      curTabIndex:undefined,
     }
   },
   created() {
@@ -774,10 +775,14 @@ export default {
     // 录入弹框隐藏
     luruSelect(){
       this.luruSelectModel=false
+      this.curTabIndex=undefined
     },
     // 录入弹框选择
     luruSelectBtn(type) {
-
+      this.curTabIndex=type-1
+      this.luruSelectModel=false
+      this.reduceShow=true
+      console.log(this.curTabIndex)
     },
     getCurTimeContent(){
       this.$fetchGet("donateCount/findDonateCount").then(res=> {
@@ -1041,13 +1046,15 @@ export default {
     },
     // 录入按钮
     writeBtn(){
-      this.show=false
-      this.reduceShow=!this.reduceShow
-      this.xuShow=true
-      this.tiShow=false
-      this.clickTabPoint=0
+      // this.show=false
+      // this.reduceShow=!this.reduceShow
+      // this.xuShow=true
+      // this.tiShow=false
+      // this.clickTabPoint=0
+
+      this.luruSelectModel=true
       
-      this.clearErrorMessage()
+      // this.clearErrorMessage()
     },
     // 物资
     getWuziList(){

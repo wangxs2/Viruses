@@ -564,7 +564,7 @@
     <van-popup v-model="curTimeDonate" closeable position="bottom" :style="{ height: '100%' }" class="cur-time-donate">
       <div class="time-donate">
         <!-- <div class="top"><span>实时播报</span></div> -->
-        <div class="top"><span>{{curTimeTopContent}}</span></div>
+        <!-- <div class="top"><span>{{curTimeTopContent}}</span></div> -->
         <div class="donate-content" v-if="curTimeNoDataShow">
           <div class="donate-list" v-for="(item, i) in curTimeDataList" :key="i">
             <div class="time-wrapper">

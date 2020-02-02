@@ -1028,7 +1028,7 @@ export default {
         }
         
       })
-      
+      console.log(markerslist)
       this.createMarks(markerslist)
    
       

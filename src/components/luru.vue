@@ -105,8 +105,8 @@
                     :max-count="5"
                     :after-read="afterRead"
                   />
-                  <span>最多可上传5张</span>
                 </div>
+                  <span class="desc">最多可上传5张</span>
               </div>
               <div class="confirm-btn" @click="confirmone">提交</div>
             </div>
@@ -199,7 +199,7 @@
                 </van-popup>
               </div>
               <div class="form-input">
-                <span>身份证明</span>
+                <span><img style="" src="../assets/image/star.png" alt="">身份证明</span>
                 <div class="need-img-wrapper">
                   <van-uploader
                     v-model="form2.fileList"
@@ -207,8 +207,8 @@
                     :max-count="2"
                     :after-read="afterRead1"
                   />
-                  <span>企业提供方请上传营业执照照片，非人提供方请上传身份证正反面照片</span>
                 </div>
+                  <span class="desc">企业提供方请上传营业执照照片，非人提供方请上传身份证正反面照片</span>
               </div>
               <div class="confirm-btn" @click="confirmtwo">提交</div>
             </div>
@@ -730,18 +730,18 @@ export default {
         
             }
             console.log(params,"提交2")
+          this.$fetchPostFile("donateCount/findDoateCount",params).then(res=> {
+            if (res.code=="success") {
+              this.$toast(res.message);
+              this.reduceShow=false
+            } else  if (res.code=="error") {
+              this.$toast(res.message);
+            } else  if (res.code==504) {
+              this.$toast(res.message);
+            }
+          })
       }
           
-          // this.$fetchPostFile("donateCount/findDoateCount",params).then(res=> {
-          //   if (res.code=="success") {
-          //     this.$toast(res.message);
-          //     this.reduceShow=false
-          //   } else  if (res.code=="error") {
-          //     this.$toast(res.message);
-          //   } else  if (res.code==504) {
-          //     this.$toast(res.message);
-          //   }
-          // })
     },
     secectRadio(index){
         this.form1.type=index
@@ -899,16 +899,16 @@ export default {
           }
           console.log(params,"提交1")
           
-          // this.$fetchPostFile("donateCount/findDoateCount",params).then(res=> {
-          //   if (res.code=="success") {
-          //     this.$toast(res.message);
-          //     this.reduceShow=false
-          //   } else  if (res.code=="error") {
-          //     this.$toast(res.message);
-          //   } else  if (res.code==504) {
-          //     this.$toast(res.message);
-          //   }
-          // })
+          this.$fetchPostFile("donateCount/findDoateCount",params).then(res=> {
+            if (res.code=="success") {
+              this.$toast(res.message);
+              this.reduceShow=false
+            } else  if (res.code=="error") {
+              this.$toast(res.message);
+            } else  if (res.code==504) {
+              this.$toast(res.message);
+            }
+          })
         }
     },
     confirmthree(){
@@ -1307,13 +1307,13 @@ export default {
                 border-radius:5px;
                 margin-right: 5px;
               }
-              span{
-                font-size:12px;
-                font-family:PingFang SC;
-                font-weight:500;
-                color:rgba(118,160,255,1);
-                line-height: 14px;
-              }
+            }
+            .desc{
+              font-size:12px;
+              font-family:PingFang SC;
+              font-weight:500;
+              color:rgba(118,160,255,1);
+              line-height: 14px;
             }
           }
           .confirm-btn{

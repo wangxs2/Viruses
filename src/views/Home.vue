@@ -4,26 +4,28 @@
       <div style="font-size:17px">共抗新冠肺炎</div>
       <div style="font-size:16px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span></div>
     </div>
-    <div class="countbottom">中华全国工商业联合会 上海市慈善基金会 上海产业技术研究院联合发布</div>
+    <div class="countbottom"><span style="color:#216AFF"><a href="http://www.acfic.org.cn">中华全国工商业联合会</a></span> <span style="color:#216AFF"><a href="http://www.scf.org.cn">上海市慈善基金会</a></span> <span style="color:#216AFF"><a href="https://www.siti.sh.cn">上海产业技术研究院</a></span>联合发布</div>
     <div class="twobif">{{zanz.encourage}}次</div>
     <div class="threebif" @click="dzanclick">
       <van-icon  name="good-job" size="30" color="#ffffff" />
     </div>
-    <div class="dzan" v-if="isdzan">+1</div>
+    <transition name="likeAddAnimate">
+     <div class="dzan" v-if="isdzan">+1</div>
+    </transition>
     <div class="forew" v-if="seven">
       近七天数据
     </div>
     <div class="write">
       <p>更多物资跟踪：新冠肺炎物资捐赠对接记录 <span style="color:#1989fa" @click="agreement=true">免责声明</span></p></div>
     <!-- 民间组织 三类 -->
-    <!-- <div class="peopleTeam">
+    <div class="peopleTeam">
       <div class="txtimg" v-for="(iteam,index) in menuList"
         :key="index"
         @click="toRouterIndex(iteam,index)">
         <img :src="iteam.imgUrl[selectIndex==index?0:1]" />
         <span  v-bind:style="{color:selectIndex==index?'#216AFF':'#666666','font-size':'12px','font-weight':'bold'}">{{iteam.name}}</span>
       </div>
-    </div> -->
+    </div>
     <!-- 民间组织 三类 -->
     <div id="myMap" class="container"></div>
     
@@ -45,20 +47,18 @@
                  :key="index"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
         </div>
         <!-- <span class="person">接受个人捐赠</span> -->
-        <div v-if="mapobj.needsNamearr!==undefined" style="font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">所需疫情防控物资 <van-icon style="margin-left:10px" name="warning-o" color="#FF2727"  size="12" /> <span @click="specifications=true" style="color:#FF2727;font-size:12px">物资标准</span></div>
+        <div v-if="mapobj.needsNamearr!==undefined" style="font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'所需疫情防控物资':'可提供的物资或者服务'}} <van-icon v-if="query.orgType==1" style="margin-left:10px" name="warning-o" color="#FF2727"  size="12" /> <span v-if="query.orgType==1" @click="specifications=true" style="color:#FF2727;font-size:12px">物资标准</span></div>
         <div class="material" v-if="mapobj.needsNamearr!==undefined">
           <div v-for="(item,index) in mapobj.needsNamearr"
                  :key="index" class="boll-item"><span class="boll"></span>{{item}}</div>
-          <div class="boll-item"><span class="boll"></span>医用一次性乳胶手套</div>
-          <div class="boll-item"><span class="boll"></span>医用帽子</div>
-          <div class="boll-item"><span class="boll"></span>一次性手术衣</div>
         </div>
         <div v-if="mapobj.needsDescrarr!==undefined" v-for="(itrm,index) in mapobj.needsDescrarr"
                  :key="index" class="remark">{{itrm}}</div>
+        <div v-if="mapobj.orgDescr!==undefined" style="font-size:12px;color:#999999;text-align:left">备注：{{mapobj.orgDescr}}</div>
         <van-divider />
         <div>
           <van-button v-if="mapobj.linkTelarr!==undefined" round color="#216AFF" style="margin-right:12px" @click="dialPhoneNumber()">我要联系</van-button>
-          <van-button round color="linear-gradient(to right, #FF6600, #FF7B10)" @click="shakeTime(mapobj.hospitalName)" icon="good-job-o" type="info">为医院点赞加油 {{mapobj.encourageNum}}次</van-button>
+          <van-button round color="linear-gradient(to right, #FF6600, #FF7B10)" @click="shakeTime(mapobj.hospitalName)" icon="good-job-o" type="info">点赞加油 {{mapobj.encourageNum}}次</van-button>
         </div>
       </div>
     </van-popup>
@@ -114,11 +114,13 @@
         <div class="go-back">
           <van-icon name="arrow-left" @click="goback" size="16"/>
         </div>
-        <!-- <input type="text" v-model="searchText" @blur="blurSearch"> -->
         <span style="font-size:16px">{{searchText}}</span>
         <div class="go-back" @click="rightModel" >
           <van-icon name="wap-nav" size="24" />
           <span v-if="showDataLengthPoint" >{{total || 0}}</span>
+        </div>
+        <div class="go-back">
+          <van-icon name="cross" @click="clearText" size="16" />
         </div>
       </div>
       <!-- <div class="btn" @click="rightModel" >
@@ -186,7 +188,7 @@
         <div class="contentfont">4.5 本平台如被恶意篡改用于不正当募捐使用，一律追责。</div>
         <div class="contentfont">4.6 本平台唯一官方网址：http://rescue.sisiits.com:9966/visur（新冠肺炎物资公益平台）如被人恶意假借名义进行不正当行为，与本平台无关。并且保留对对方追究法律责任的权力。</div>
         <div class="leftfont">第五条 争议解决及法律适用 </div>
-        <div class="contentfont">5.1在用户有意向捐赠或物资对接后，如果在本协议约定内容履行过程中，对相关事宜的履行发生争议，用户同意按照中华人民共扣国颁布的相关法律法规来解决争议。</div>
+        <div class="contentfont">5.1在用户有意向捐赠或物资对接后，如果在本协议约定内容履行过程中，对相关事宜的履行发生争议，用户同意按照中华人民共和国颁布的相关法律法规来解决争议。</div>
         
         
         
@@ -494,11 +496,11 @@
     </van-popup>
 
     <!-- 实时捐赠 -->
-    <div  :class="[styleUp?'cur-time-btn cur-time-btn1':'cur-time-btn cur-time-btn2']" class="cur-time-btn" @click="curTimeBtn"><span>实时</span><span>播报</span></div>
+    <div class="cur-time-btn" @click="curTimeBtn"><span>实时</span><span>播报</span></div>
     <van-popup v-model="curTimeDonate" closeable position="bottom" :style="{ height: '100%' }" class="cur-time-donate">
       <div class="time-donate">
         <!-- <div class="top"><span>实时播报</span></div> -->
-        <div class="top"><span>{{curTimeTopContent}}</span></div>
+        <!-- <div class="top"><span>{{curTimeTopContent}}</span></div> -->
         <div class="donate-content" v-if="curTimeNoDataShow">
           <div class="donate-list" v-for="(item, i) in curTimeDataList" :key="i">
             <div class="time-wrapper">
@@ -681,6 +683,12 @@ export default {
         tel:'',
         need:''
       },
+      //头部的查询信息
+      query:{
+        content:'',
+        hour:'',
+        orgType:1,
+      },
       xuShow:true, 
       tiShow:false,
       curTabIndex:null, // 录入当前切换
@@ -742,22 +750,6 @@ export default {
     this.getCurTimeDataList()
   },
  mounted () {
-   // H5 plus事件处理
-			function plusReady() {
-				// 设置系统状态栏背景为红色
-				var type = plus.os.name;
-				if(type == "iOS") {
-					plus.navigator.setStatusBarBackground("#1989fa");
-				} else {
-					plus.navigator.setStatusBarBackground("#1989fa");
-				}
-			}
-			if(window.plus) {
-				plusReady();
-			} else {
-				document.addEventListener("plusready", plusReady, false);
-			} 
-
     this.getMap()
     this.getDataList()
     this.getWuziList()
@@ -824,8 +816,12 @@ export default {
 
     },
     //三类民间组织
-    toRouterIndex(){
-
+    toRouterIndex(iteam,index){
+      this.selectIndex=index
+      this.query.orgType=index+1
+      this.getDataList()
+      this.getWuziList()
+      this.getCityList()
     },
     // 加载更多
     loadMoreData(){
@@ -933,10 +929,15 @@ export default {
     },
     //大拇指点赞
     dzanclick(){
-      this.isdzan=true
-      setTimeout( ()=> {
+      console.log(this.isdzan)
+     this.isdzan=true
+      this.$fetchGet("encourage/saveEncourage", {
+        hospitalName:''
+      }).then(res => {
+        this.zanz.encourage++
         this.isdzan=false
-    }, 1000);
+       
+      });
     },
     // 搜索按钮
     searchBtn(){
@@ -967,11 +968,7 @@ export default {
         }
         if(item.longitude){
           item.lnglat=[item.gaodeLon, item.gaodeLat]
-          item.style=(item.type == 2&&item.isLack==1)
-              ? 0
-              : (item.type == 2&&item.isLack==0)?1
-              : (item.type == 1&&item.isLack==0)?2
-              :(item.type == 1&&item.isLack==1)?3:4,
+          item.style= this.query.orgType==2?7:this.query.orgType==3?8:item.orgStatus
 
           markerslist.push(item)
           // 
@@ -984,20 +981,25 @@ export default {
       
     },
     createMarks(citys){
-      // let style = [
-      //   {
-      //     url: require('../assets/image/icon6.png'),
-      //     anchor: new AMap.Pixel(9, 9),
-      //     size: new AMap.Size(18, 18)
-      //   },
-      //   {
-      //     url: require('../assets/image/icon4.png'),
-      //     anchor: new AMap.Pixel(9, 9),
-      //     size: new AMap.Size(18, 18)
-      //   },
-      // ];
+    
       let style = [{
             url: require('../assets/image/icon4.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }, {
+            url: require('../assets/image/icon5.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }, {
+            url: require('../assets/image/icon4.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }, {
+            url: require('../assets/image/icon2.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }, {
+            url: require('../assets/image/icon51.png'),
             anchor: new AMap.Pixel(9, 9),
             size: new AMap.Size(18, 18)
         }, {
@@ -1009,15 +1011,15 @@ export default {
             anchor: new AMap.Pixel(9, 9),
             size: new AMap.Size(18, 18)
         }, {
-            url: require('../assets/image/icon2.png'),
+            url: require('../assets/image/list4.png'),
             anchor: new AMap.Pixel(9, 9),
             size: new AMap.Size(18, 18)
         }, {
-            url: require('../assets/image/icon5.png'),
+            url: require('../assets/image/list6.png'),
             anchor: new AMap.Pixel(9, 9),
             size: new AMap.Size(18, 18)
         }
-        ];
+    ];
     this.mass = new AMap.MassMarks(citys, {
       zIndex: 111,
       cursor: 'pointer',
@@ -1045,7 +1047,8 @@ export default {
     // 物资
     getWuziList(){
       let params={
-        top:6
+        top:6,
+        orgType:this.query.orgType
       }
       this.$fetchGet("hospital/findTopSupplies",params).then(res=> {
         if (res) {
@@ -1056,7 +1059,8 @@ export default {
     // 城市
     getCityList(){
       let params={
-        top:8
+        top:8,
+        orgType:this.query.orgType
       }
       this.$fetchGet("hospital/findTopCity",params).then(res=> {
         if (res){
@@ -1075,25 +1079,12 @@ export default {
         }
       })
     },
-    getDataList(data,type){
-      //  this.mass.clear()
-      let params={}
-      if(type==1){
-        params={
-          content:data
-        }
-      } else if (type==2){
-        params={
-          hour:data.substring(2,4)
-        }
-      } else{
-        params={
-          orgType:1
-        }
-      }
-
-      this.$fetchGet("hospital/selectHospital",params).then(res=> {
-        res.forEach(item=> {
+    getDataList(){
+      this.$fetchGet("hospital/selectHospital",this.query).then(res=> {
+        let str=decodeURIComponent(encrypt.Decrypt(res.content))
+        let alldata=JSON.parse(str)
+        
+        alldata.datas.forEach(item=> {
           if (item.linkTel){
             if (item.linkTel.indexOf(",") != -1 ||item.linkTel.indexOf("，") != -1) {
               item.linkTelList=item.linkTel.split(",") || item.linkTel.split("，") 
@@ -1110,25 +1101,23 @@ export default {
             }
           }
         })
-        this.dataList=res
+        this.dataList=alldata.datas
         if (this.dataList) {
           this.total=this.dataList.length
         }
-        // console.log(encrypt.Decrypt("9YCbVfmEYbvfEmdkyV3kyA=="))
-        if(res.length==0){
+        
+        if(alldata.datas.length==0){
+          if(this.mass){
+            this.mass.clear()
+            }
           this.$toast('暂无数据！');
         }else{
-          // this.mapinit(res)
-          this.getmarkers(res)
+          this.getmarkers(alldata.datas)
           
         }
 
 
       })
-    },
-    // 第二搜索失焦查询数据
-    blurSearch(){
-      this.getDataList(this.searchText,1)
     },
     // 选择时间
     selectTimeItem(item) {
@@ -1138,7 +1127,8 @@ export default {
       this.isone=false
       this.searchText=item
       this.seven=false
-      this.getDataList(item,2)
+      this.query.hour=item.substring(2,4)
+      this.getDataList()
 
     },
     // 选择物资，城市
@@ -1148,7 +1138,8 @@ export default {
       this.styleUp=true
       this.isone=false
       this.searchText=item
-      this.getDataList(item,1)
+      this.query.content=item
+      this.getDataList()
     },
     // 右边弹框显示
     rightModel(){
@@ -1169,7 +1160,8 @@ export default {
         this.showSearch=true
         this.styleUp=true
         this.isone=false
-        this.getDataList(this.searchText,1)
+        this.query.content=this.searchText
+        this.getDataList()
 
       }else {
         this.$toast('请输入或选择搜索关键字');
@@ -1196,12 +1188,12 @@ export default {
     clearText(){
       this.searchText=""   
       this.showDataLengthPoint=1
+      this.query.content=""
+      this.query.hour=""
       this.getDataList() 
-
       this.showSearch=false
       this.styleUp=false
       if (!this.isoneClosePoint){
-
         this.isone=false
       }else {
         this.isone=true
@@ -1220,7 +1212,7 @@ export default {
          this.initMap()
          this.mapobj.encourageNum++
         }else{
-          this.$toast('您已经点过赞了');
+          this.$toast('您已点赞，请稍后点赞');
         }
         
       });
@@ -1333,6 +1325,18 @@ export default {
 </script>
 <style lang="scss">
 
+<style>
+.likeAddAnimate-enter-active, .likeAddAnimate-leave-active{
+  transition: all 1.5s ease
+}
+.likeAddAnimate-enter,.likeAddAnimate-leave{
+  transform: translate(0) scale(0);
+  opacity: 1
+}
+.likeAddAnimate-enter-to, .likeAddAnimate-leave-to{
+  transform: translate(0,-100px) scale(1.5);
+  opacity: 0.8
+}
 .van-popup__close-icon--top-right{
   top: 9px!important;
   right: 3px!important;
@@ -1456,17 +1460,17 @@ export default {
     top:62px;
     right:28px;
     z-index:11;
-    width:16px;
-    height:16px;
-    background:rgba(51,51,51,0.6);
+    width:20px;
+    height:20px;
+    background:rgba(51,51,51,1);
     color:#ffffff;
-    font-size:10px;
-    line-height:16px;
+    font-size:12px;
+    line-height:20px;
     border-radius:50%;
   }
   .threebif{
     position:fixed;
-    top:66px;
+    top:68px;
     right:28px;
     z-index:10;
     width:44px;
@@ -1490,6 +1494,9 @@ export default {
       right:24px;
 
     }
+  }
+  .threebif:active {
+    top: 70px; /**向下偏移2px **/
   }
   .two-dir{
     position:fixed;
@@ -1834,6 +1841,7 @@ export default {
         justify-content:center;
         align-items:center;
         padding: 10px;
+        position:relative;
         span{
           position:absolute;
           top:8px;

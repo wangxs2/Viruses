@@ -1,19 +1,9 @@
 <template>
     <div class="luru">
       <div class="reduce-content">
-        <!-- <img class="down-up" src="../assets/image/reduce.png" alt="">
-        <p>正在加紧开发...</p>
-        <p>联系电话：18368091476</p>
-        <img style="width:160px;height:160px" src="../assets/image/gzh.jpg" alt=""> -->
         <img style="" class="banner" src="../assets/image/banner.png" alt="">
         <div class="us-need-wrapper">
           <div class="us-need need">
-
-            <!-- <div class="title">
-              <span class="dot" v-for="(item,i) in 3" :key="i+'f'"></span>
-              <span class="title-name">需求填写</span>
-              <span class="dot" v-for="(item,i) in 3" :key="i+'g'"></span>
-            </div> -->
             <div class="tab-btn">
               <span :class="curActiveIndex==i?'active':''" v-for="(item,i) in luruSelectData" :key="item.type+'tab'" @click="needTi(i)">{{item.name}}</span>
             </div>
@@ -25,13 +15,10 @@
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
-                <van-field v-model="form1.address" type="text" placeholder="省市" :error-message="errorMessage1.address"/>
-                 <van-field readonly  clickablelabel="城市" placeholder="选择城市" @click="showPicker = true"/>
-                    <van-popup v-model="showPicker" position="bottom">
-                        <!-- vant Picker 根据 绑定的columns数据，来渲染几级联动，这里我们使用的是三级联动 -->
-                        <van-picker v-if="pageShow" show-toolbar :columns="columns" @cancel="onCancel"
-            @confirm="onConfirm" @change="onChange" :item-height="35" />
-                    </van-popup>
+                <van-field v-model="form1.address" type="text" readonly placeholder="省市" :error-message="errorMessage1.address" @click="showPicker = true"/>
+                <van-popup v-model="showPicker" position="bottom">
+                    <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm" @change="onChange" />
+                </van-popup>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">详细地址(门牌号)</span>
@@ -129,7 +116,10 @@
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
-                <van-field v-model="form2.address" type="text" placeholder="省市" :error-message="errorMessage2.address"/>
+                <van-field v-model="form2.address" type="text" readonly placeholder="省市" :error-message="errorMessage2.address" @click="showPicker = true"/>
+                <van-popup v-model="showPicker" position="bottom">
+                    <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm" @change="onChange" />
+                </van-popup>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">详细地址(门牌号)</span>
@@ -227,7 +217,10 @@
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
-                <van-field v-model="form3.address" type="text" placeholder="省市" :error-message="errorMessage3.address"/>
+                <van-field v-model="form3.address" type="text" readonly placeholder="省市" :error-message="errorMessage3.address" @click="showPicker = true"/>
+                <van-popup v-model="showPicker" position="bottom">
+                    <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm" @change="onChange" />
+                </van-popup>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">详细地址(门牌号)</span>
@@ -337,6 +330,7 @@ export default {
   data() {
     return {
       allCity:json,
+      showPicker:false,
       form1:{ // 录入表单
         hispotalName:'',
         address:'',
@@ -582,15 +576,64 @@ export default {
         },
 
       ],
+      columns:[
+          
+        {
+            values: '',
+            className: 'column1'
+        },
+        {
+            values: '',
+            className: 'column2',
+            defaultIndex: 0
+        },
+      ],
+      city:[]
 
     };
   },
   created() {
   },
  mounted () {
-     console.log(this.allCity)
+     this.columns[0].values = Object.values(this.allCity).map(function(e){
+        return {text:e.name}
+    })
+    // 默认展示二级的数据
+    if (this.allCity[0].city){
+        this.columns[1].values = Object.values(this.allCity[0].city).map(function(e){
+            return {text:e.name}
+        })
+    }
   },
   methods:{
+      onConfirm(){
+          this.showPicker=false
+
+      },
+      onChange(picker, values,index){
+            picker.setColumnValues(1,this.cityDate(this.allCity,values[0].text))
+      }, 
+      cityDate(data,province){
+            var x=[]
+            data.forEach(function(res){
+                if (res.city){
+
+                    if(res.name == province){
+                        for (let i = 0; i < res.city.length; i++) {
+                            let obj = {}
+                            obj.text = res.city[i].name
+                            x.push(obj);
+                        }
+            
+                       
+                    }
+                }
+            })
+            return x
+        },
+      onCancel(){
+          this.showPicker=false
+      },
     // 录入需求提供切换
     needTi(type){
       this.curActiveIndex=type

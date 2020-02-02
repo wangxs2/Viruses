@@ -65,9 +65,9 @@
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-input-wrapper">
-                  <div class="comfirm-input">
-                    <van-field class="contect" v-model="form1.contectTelList.name" type="text" placeholder="输入联系人" />-
-                    <van-field class="tel" v-model="form1.contectTelList.tel" type="text" placeholder="输入电话号码(建议手机)" />
+                  <div class="comfirm-input" v-for="(item,i) in form1.contectTelList" :key="i">
+                    <van-field class="contect" :v-model="item.name" type="text" placeholder="输入联系人" />-
+                    <van-field class="tel" :v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)" />
                     
                   </div>
                 </div>
@@ -176,9 +176,9 @@
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-input-wrapper">
-                  <div class="comfirm-input">
-                    <van-field class="contect" v-model="form2.contectTelList.name" type="text" placeholder="输入联系人" />-
-                    <van-field class="tel" v-model="form2.contectTelList.tel" type="text" placeholder="输入电话号码(建议手机)" />
+                  <div class="comfirm-input" v-for="(item,i) in form1.contectTelList" :key="i">
+                    <van-field class="contect" :v-model="item.name" type="text" placeholder="输入联系人" />-
+                    <van-field class="tel" :v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)" />
                     
                   </div>
                 </div>
@@ -235,12 +235,12 @@
                 <van-field v-model="form3.startTiTime" placeholder="选择时间" readonly @click="startTimePop = true"/>
                 <van-popup v-model="startTimePop" position="bottom">
                   <van-datetime-picker
-                    v-model="currentDate"
-                    type="datetime"
-                    :min-date="minDate"
-                    @confirm="confirmTime"
-                    @cancel="cancelTime"
-                    :formatter="formatter"
+                    v-model="currentDate1"
+                    type="date"
+                    :min-date="minDate1"
+                    @confirm="confirmTime1"
+                    @cancel="cancelTime1"
+                    :formatter="formatter1"
                   />
                 </van-popup>
               </div>
@@ -249,12 +249,12 @@
                 <van-field v-model="form3.endTiTime" placeholder="选择时间" readonly @click="startTimePop = true"/>
                 <van-popup v-model="startTimePop" position="bottom">
                   <van-datetime-picker
-                    v-model="currentDate"
-                    type="datetime"
-                    :min-date="minDate"
-                    @confirm="confirmTime"
-                    @cancel="cancelTime"
-                    :formatter="formatter"
+                    v-model="currentDate1"
+                    type="date"
+                    :min-date="minDate1"
+                    @confirm="confirmTime1"
+                    @cancel="cancelTime1"
+                    :formatter="formatter1"
                   />
                 </van-popup>
               </div>
@@ -276,9 +276,9 @@
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-input-wrapper">
-                  <div class="comfirm-input">
-                    <van-field class="contect" v-model="form3.contectTelList.name" type="text" placeholder="输入联系人" />-
-                    <van-field class="tel" v-model="form3.contectTelList.tel" type="text" placeholder="输入电话号码(建议手机)" />
+                  <div class="comfirm-input" v-for="(item,i) in form1.contectTelList" :key="i">
+                    <van-field class="contect" :v-model="item.name" type="text" placeholder="输入联系人" />-
+                    <van-field class="tel" :v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)" />
                     
                   </div>
                 </div>
@@ -341,10 +341,20 @@ export default {
             name:'',
             num:'',
         },
-        contectTelList:{
-            name:'',
-            tel:'',
-        },
+        contectTelList:[
+            {
+                name:'',
+                tel:'',
+            },
+            {
+                name:'',
+                tel:'',
+            },
+            {
+                name:'',
+                tel:'',
+            }
+        ],
         startTime:'',
         needOrgin:1,
         needImg:'',
@@ -379,10 +389,20 @@ export default {
             name:'',
             num:''
         },
-        contectTelList:{
-            name:'',
-            tel:''
-        },
+        contectTelList:[
+            {
+                name:'',
+                tel:'',
+            },
+            {
+                name:'',
+                tel:'',
+            },
+            {
+                name:'',
+                tel:'',
+            }
+        ],
         startTime:'',
         needOrgin:'',
         needImg:'',
@@ -414,11 +434,20 @@ export default {
         endTiTime:'',
         type:1,
         linkUrl:'',
-        
-        contectTelList:{
-            name:'',
-            tel:'',
-        },
+        contectTelList:[
+            {
+                name:'',
+                tel:'',
+            },
+            {
+                name:'',
+                tel:'',
+            },
+            {
+                name:'',
+                tel:'',
+            }
+        ],
         supContect:[1],
         author:'',
         authorWrite:'',
@@ -537,6 +566,10 @@ export default {
       startTime:'',
       minDate: new Date(),
       startTimePop:false,
+      currentDate1:new Date(),
+      startTime1:'',
+      minDate1: new Date(),
+      startTimePop1:false,
       curActiveIndex:0, // 录入头部切换当前index
       luruOriginizeTypeRadio:[ // 录入机构类型单选数据
         {
@@ -588,7 +621,6 @@ export default {
             defaultIndex: 0
         },
       ],
-      city:[]
 
     };
   },
@@ -606,37 +638,37 @@ export default {
     }
   },
   methods:{
-      secectRadio(index){
-          this.form1.type=index
-      },
-      onConfirm(){
-          this.showPicker=false
+    secectRadio(index){
+        this.form1.type=index
+    },
+    onConfirm(){
+        this.showPicker=false
 
-      },
-      onChange(picker, values,index){
-            picker.setColumnValues(1,this.cityDate(this.allCity,values[0].text))
-      }, 
-      cityDate(data,province){
-            var x=[]
-            data.forEach(function(res){
-                if (res.city){
+    },
+    onChange(picker, values,index){
+          picker.setColumnValues(1,this.cityDate(this.allCity,values[0].text))
+    }, 
+    cityDate(data,province){
+          var x=[]
+          data.forEach(function(res){
+              if (res.city){
 
-                    if(res.name == province){
-                        for (let i = 0; i < res.city.length; i++) {
-                            let obj = {}
-                            obj.text = res.city[i].name
-                            x.push(obj);
-                        }
-            
-                       
-                    }
-                }
-            })
-            return x
-        },
-      onCancel(){
-          this.showPicker=false
+                  if(res.name == province){
+                      for (let i = 0; i < res.city.length; i++) {
+                          let obj = {}
+                          obj.text = res.city[i].name
+                          x.push(obj);
+                      }
+          
+                      
+                  }
+              }
+          })
+          return x
       },
+    onCancel(){
+        this.showPicker=false
+    },
     // 录入需求提供切换
     needTi(type){
       this.curActiveIndex=type
@@ -716,6 +748,32 @@ export default {
     },
     // 点击取消
     cancelTime() {
+      this.startTimePop = false;
+    },
+    // 点击确定
+    confirmTime1() {
+      this.startTimePop = false;
+      this.startTime =
+        this.currentDate.getFullYear() +
+        "-" +
+        (Number(this.currentDate.getMonth()) + 1) +
+        "-" +
+        this.currentDate.getDate()
+    },
+    // 处理控件显示的时间格式
+    formatter1(type, value) {
+      // 格式化选择器日期
+      if (type === "year") {
+        return `${value}年`;
+      } else if (type === "month") {
+        return `${value}月`;
+      } else if (type === "day") {
+        return `${value}日`;
+      }
+      return value;
+    },
+    // 点击取消
+    cancelTime1() {
       this.startTimePop = false;
     },
 
@@ -910,6 +968,10 @@ export default {
                 display:flex;
                 justify-content: space-between;
                 align-items: center;
+                margin-bottom:10px;
+                &:last-child{
+                  margin-bottom:0;
+                }
                 .contect{
                   width: 105px;
                 }

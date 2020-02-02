@@ -17,7 +17,7 @@
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
                 <van-field v-model="form1.address" type="text" readonly placeholder="省市" :error-message="errorMessage1.address" @click="showPicker = true"/>
                 <van-popup v-model="showPicker" position="bottom">
-                    <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm" @change="onChange" />
+                    <van-picker show-toolbar  :columns="columns" @cancel="onCancel" @confirm="onConfirm" @change="onChange" />
                 </van-popup>
               </div>
               <div class="form-input">
@@ -66,8 +66,8 @@
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-input-wrapper">
                   <div class="comfirm-input" v-for="(item,i) in form1.contectTelList" :key="i">
-                    <van-field class="contect" :v-model="item.name" type="text" placeholder="输入联系人" />-
-                    <van-field class="tel" :v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)" />
+                    <van-field class="contect" v-model="item.name" type="text" placeholder="输入联系人" />-
+                    <van-field class="tel" v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)" />
                     
                   </div>
                 </div>
@@ -108,7 +108,7 @@
                   <span>最多可上传5张</span>
                 </div>
               </div>
-              <div class="confirm-btn" @click="confirmtwo">提交</div>
+              <div class="confirm-btn" @click="confirmone">提交</div>
             </div>
             <div class="form-wrapper" v-if="curActiveIndex==1">
               <div class="form-input">
@@ -117,9 +117,9 @@
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
-                <van-field v-model="form2.address" type="text" readonly placeholder="省市" :error-message="errorMessage2.address" @click="showPicker = true"/>
-                <van-popup v-model="showPicker" position="bottom">
-                    <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm" @change="onChange" />
+                <van-field v-model="form2.address" type="text" readonly placeholder="省市" :error-message="errorMessage2.address" @click="showPicker1 = true"/>
+                <van-popup v-model="showPicker1" position="bottom">
+                    <van-picker show-toolbar :columns="columns" @cancel="onCancel1" @confirm="onConfirm1" @change="onChange1" />
                 </van-popup>
               </div>
               <div class="form-input">
@@ -166,34 +166,34 @@
                       <div class="name">物资名称</div>
                       <div class="num">需求数量</div>
                     </div>
-                    <div class="comfirm-need-body">
-                      <div class="name"><van-field class="sup-name" v-model="form2.needList.name" type="text" placeholder="输入物资名称" input-align="center"/></div>
-                      <div class="num"><van-field class="sup-num" v-model="form2.needList.num" type="text" placeholder="请输入" input-align="center" /><img style="" src="../assets/image/reduce1.png" alt=""></div>
+                    <div class="comfirm-need-body" v-for="(iteam,index) in form2.materialDetails" :key="index">
+                      <div class="name"><van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/></div>
+                      <div class="num"><van-field class="sup-num" v-model="iteam.needsNum" type="text" placeholder="请输入" testnum input-align="center" /><img @click="deleteDemand1" style="" src="../assets/image/reduce1.png" alt=""></div>
                     </div>
                   </div>
-                  <div class="comfirm-need-bottom"><img style="" src="../assets/image/add1.png" alt="">添加</div>
+                  <div class="comfirm-need-bottom" @click="addDemand1"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
                 </div>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-input-wrapper">
                   <div class="comfirm-input" v-for="(item,i) in form1.contectTelList" :key="i">
-                    <van-field class="contect" :v-model="item.name" type="text" placeholder="输入联系人" />-
-                    <van-field class="tel" :v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)" />
+                    <van-field class="contect" v-model="item.name" type="text" placeholder="输入联系人" />-
+                    <van-field class="tel" v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)" />
                     
                   </div>
                 </div>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">物资提供时间</span>
-                <van-field v-model="form2.startTime" placeholder="选择时间" readonly @click="startTimePop = true"/>
-                <van-popup v-model="startTimePop" position="bottom">
+                <van-field v-model="form2.startTime" placeholder="选择时间" readonly @click="startTimePopNeed = true"/>
+                <van-popup v-model="startTimePopNeed" position="bottom">
                   <van-datetime-picker
-                    v-model="currentDate"
+                    v-model="currentDateNeed"
                     type="datetime"
                     :min-date="minDate"
-                    @confirm="confirmTime"
-                    @cancel="cancelTime"
+                    @confirm="confirmTimeNeed"
+                    @cancel="cancelTimeNeed"
                     :formatter="formatter"
                   />
                 </van-popup>
@@ -205,12 +205,12 @@
                     v-model="form2.fileList"
                     multiple accept="image/*"
                     :max-count="2"
-                    :after-read="afterRead"
+                    :after-read="afterRead1"
                   />
                   <span>企业提供方请上传营业执照照片，非人提供方请上传身份证正反面照片</span>
                 </div>
               </div>
-              <div class="confirm-btn" @click="confirmone">提交</div>
+              <div class="confirm-btn" @click="confirmtwo">提交</div>
             </div>
             <div class="form-wrapper" v-if="curActiveIndex==2">
               <div class="form-input">
@@ -335,11 +335,14 @@ export default {
       
       allCity:json,
       showPicker:false,
+      showPicker1:false,
       testindex:0,
+      testindex1:0,
       testnum:'',
       form1:{ // 录入表单
         hispotalName:'',
         address:'',
+        addressArr:[],
         addressDetail:"",
         materialDetails:[
           {
@@ -347,7 +350,7 @@ export default {
             needsNum:'',
           }
         ],//需求表
-        type:1,
+        type:4,
         sup:1,
         needList:{
             name:'',
@@ -365,7 +368,7 @@ export default {
             {
                 name:'',
                 tel:'',
-            }
+            },
         ],
         fileList:[],
         startTime:'',
@@ -393,11 +396,18 @@ export default {
       },
       form2:{ // 录入表单
         hispotalName:'',
+        addressArr:[],
         address:'',
         addressDetail:"",
-        type:1,
-        sup:1,
+        type:3,
+        sup:4,
         sup1:1,
+        materialDetails:[
+          {
+            needsName:'',
+            needsNum:'',
+          }
+        ],//需求表
         needList:{
             name:'',
             num:''
@@ -414,7 +424,7 @@ export default {
             {
                 name:'',
                 tel:'',
-            }
+            },
         ],
         fileList:[],
         startTime:'',
@@ -509,16 +519,16 @@ export default {
       ], 
       luruTypeRadio1:[ //录入类型单选数据
         {
-          id:1,
+          id:3,
           name:"企业"
         },{
-          id:2,
+          id:8,
           name:"个人"
         },{
-          id:3,
+          id:9,
           name:"公益组织"
         },{
-          id:4,
+          id:10,
           name:"海外组织"
         },
       ], 
@@ -575,6 +585,10 @@ export default {
       minDate: new Date(),
       startTimePop:false,
       currentDate1:new Date(),
+      startTimePopNeed:false,
+      currentDateNeed:new Date(),
+
+
       startTime1:'',
       minDate1: new Date(),
       startTimePop1:false,
@@ -629,6 +643,7 @@ export default {
             defaultIndex: 0
         },
       ],
+      currentCity:[],
 
     };
   },
@@ -661,11 +676,51 @@ export default {
     }
   },
   methods:{
+    confirmtwo(){
+      let linkPeopleArr=[]
+         this.form1.contectTelList.forEach(v=> {
+           linkPeopleArr.push(v.name+"-"+v.tel)
+         })
+      
+          let params= { 
+            materialType:2,
+            name:this.form2.hispotalName,
+            province:this.form2.addressArr[0].text,
+            city:this.form2.addressArr[1].text,
+            address:this.form2.addressDetail,
+            materialDetails:this.form2.materialDetails,//需求表
+            type:this.form2.type,
+            status:this.form2.sup,
+            isLogistics:this.form2.sup1,
+            linkPeople:linkPeopleArr.join(','),
+            createTime:this.form2.startTime,
+            file:this.form2.fileList,
+      
+          }
+          console.log(params,"提交2")
+          
+          // this.$fetchPostFile("donateCount/findDoateCount",params).then(res=> {
+          //   if (res.code=="success") {
+          //     this.$toast(res.message);
+          //     this.reduceShow=false
+          //   } else  if (res.code=="error") {
+          //     this.$toast(res.message);
+          //   } else  if (res.code==504) {
+          //     this.$toast(res.message);
+          //   }
+          // })
+    },
     secectRadio(index){
         this.form1.type=index
     },
     onConfirm(){
         this.showPicker=false
+        this.form1.address=this.form1.addressArr[0].text+"/"+this.form1.addressArr[1].text
+
+    },
+    onConfirm1(){
+        this.showPicker1=false
+        this.form2.address=this.form2.addressArr[0].text+"/"+this.form2.addressArr[1].text
 
     },
     //添加需求表
@@ -690,8 +745,39 @@ export default {
       }
       
     },
+    //添加需求表
+    addDemand1(){
+      if(this.form2.materialDetails[this.testindex1].needsName==''||this.form2.materialDetails[this.testindex1].needsNum==''){
+        this.$toast('请完善信息');
+      }else{
+        this.testindex1++
+        this.form2.materialDetails.push({
+          needsName:'',
+          needsNum:'',
+        })
+      }
+    },
+    //删除需求表
+    deleteDemand1(index){
+      if(this.testindex1<1){
+        this.$toast('至少添加一条需求');
+      }else{
+        this.form2.materialDetails.splice(index,1)
+        this.testindex1--
+      }
+      
+    },
     onChange(picker, values,index){
           picker.setColumnValues(1,this.cityDate(this.allCity,values[0].text))
+          console.log(values)
+          
+        this.form1.addressArr=values
+    }, 
+    onChange1(picker, values,index){
+          picker.setColumnValues(1,this.cityDate(this.allCity,values[0].text))
+          console.log(values)
+          
+        this.form2.addressArr=values
     }, 
     cityDate(data,province){
           var x=[]
@@ -714,6 +800,9 @@ export default {
     onCancel(){
         this.showPicker=false
     },
+    onCancel1(){
+        this.showPicker1=false
+    },
     // 录入需求提供切换
     needTi(type){
       this.curActiveIndex=type
@@ -721,106 +810,54 @@ export default {
     //民间组织上传图片之后
     afterRead(file) {
       // 此时可以自行将文件上传至服务器
-      this.form1.needImg = file.file; // 文件流
+      this.form1.fileList.push(file.file) // 文件流
+    },
+    //民间组织上传图片之后
+    afterRead1(file) {
+      // 此时可以自行将文件上传至服务器
+      this.form2.fileList.push(file.file) // 文件流
     },
     confirmone(){
+      let linkPeopleArr=[]
+         this.form1.contectTelList.forEach(v=> {
+           linkPeopleArr.push(v.name+"-"+v.tel)
+         })
+          let params= { 
+            materialType:1,
+            name:this.form1.hispotalName,
+            province:this.form1.addressArr[0].text,
+            city:this.form1.addressArr[1].text,
+            address:this.form1.addressDetail,
+            materialDetails:this.form1.materialDetails,//需求表
+            type:this.form1.type,
+            status:this.form1.sup,
+            linkPeople:linkPeopleArr.join(','),
+            createTime:this.form1.startTime,
+            source:this.form1.needOrgin,
+            file:this.form1.fileList,
       
-        //   let params= { 
-        //     name:this.form1.hispotalName
-        //     province:this.form1.address[0]
-        //     city:this.form1.address[1]
-        //     address:this.form1.addressDetail
-        //     this.form1.materialDetails:[
-        //       {
-        //         needsName:'',
-        //         needsNum:'',
-        //       }
-        //     ],//需求表
-        //     type:this.form1.type
-        //     status:this.form1.sup
-        //     this.form1.needList:{
-        //         name:'',
-        //         num:'',
-        //     },
-        //     this.form1.contectTelList:[
-        //         {
-        //             name:'',
-        //             tel:'',
-        //         },
-        //         {
-        //             name:'',
-        //             tel:'',
-        //         },
-        //         {
-        //             name:'',
-        //             tel:'',
-        //         }
-        //     ],
-        //  createTime:this.form1.startTime,
-        // source:this.form1.needOrgin,
-        // file:this.form1.needImg,
-      
-        //   }
+          }
+          console.log(params,"提交1")
           
-          this.$fetchPostFile("donateCount/findDoateCount",params).then(res=> {
-            if (res.code=="success") {
-              this.$toast(res.message);
-              this.reduceShow=false
-            } else  if (res.code=="error") {
-              this.$toast(res.message);
-            } else  if (res.code==504) {
-              this.$toast(res.message);
-            }
-          })
-    },
-    confirmtwo(){
-        console.log(this.form2.fileList);
+          // this.$fetchPostFile("donateCount/findDoateCount",params).then(res=> {
+          //   if (res.code=="success") {
+          //     this.$toast(res.message);
+          //     this.reduceShow=false
+          //   } else  if (res.code=="error") {
+          //     this.$toast(res.message);
+          //   } else  if (res.code==504) {
+          //     this.$toast(res.message);
+          //   }
+          // })
     },
     confirmthree(){
-        console.log(this.form3.fileList);
-    },
-    // 录入表单提交
-    confirm(){
-
-        this.formVil()
-        if (this.form.company && this.form.address && this.form.people && this.form.tel && this.form.need) {
-  
-          let params= {
-            cmpyName:this.form.company,
-            address:this.form.address,
-            linkPeople:this.form.people,
-            linkTel:this.form.tel,
-            descr:this.form.need,
-            mark:this.curTabIndex
-  
-          }
-          
-          this.$fetchPost("infoApply/save",params).then(res=> {
-            if (res.code=="success") {
-              this.$toast(res.message);
-              this.form.company=''
-              this.form.address=''
-              this.form.people=''
-              this.form.tel=''
-              this.form.need=''
-              this.reduceShow=false
-            } else  if (res.code=="error") {
-              this.$toast(res.message);
-            } else  if (res.code==504) {
-              this.$toast(res.message);
-            }
-          })
-  
-        } else {
-          this.$toast('请完善信息');
-        }
-
+        // console.log(this.form3.fileList);
     },
       
     // 点击确定
     confirmTime() {
       this.startTimePop = false;
-      this.startTime =
+      this.form1.startTime =
         this.currentDate.getFullYear() +
         "-" +
         (Number(this.currentDate.getMonth()) + 1) +
@@ -830,6 +867,30 @@ export default {
         this.currentDate.getHours() +
         ":" +
         this.currentDate.getMinutes();
+        console.log(this.form1.startTime)
+    },
+    // 点击取消
+    cancelTime() {
+      this.startTimePop = false;
+    },
+      
+    // 点击确定
+    confirmTimeNeed() {
+      this.startTimePopNeed = false;
+      this.form2.startTime =
+        this.currentDateNeed.getFullYear() +
+        "-" +
+        (Number(this.currentDateNeed.getMonth()) + 1) +
+        "-" +
+        this.currentDateNeed.getDate() +
+        " " +
+        this.currentDateNeed.getHours() +
+        ":" +
+        this.currentDateNeed.getMinutes();
+    },
+    // 点击取消
+    cancelTimeNeed() {
+      this.startTimePopNeed = false;
     },
     // 处理控件显示的时间格式
     formatter(type, value) {
@@ -846,10 +907,6 @@ export default {
         return `${value}分`;
       }
       return value;
-    },
-    // 点击取消
-    cancelTime() {
-      this.startTimePop = false;
     },
     // 点击确定
     confirmTime2() {

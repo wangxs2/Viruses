@@ -784,58 +784,6 @@ selectNeedName1(i){
         }
 
     },
-    confirmtwo(){
-      let linkPeopleArr=[],fileImgArr=[]
-         this.form2.contectTelList.forEach(v=> {
-           if (v.name&&v.tel){
-            linkPeopleArr.push(v.name+"-"+v.tel)
-           }
-         })
-        //  this.form2.fileList.forEach(v=> {
-        //      if (v.content){
-        //          fileImgArr.push(v.content)
-        //      }
-        //  })
-      
-            
-
-      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||this.form2.materialDetails.length==0||linkPeopleArr.length==0||this.form2.startTime==""||this.meedUrlArr2.length==0){
-          this.$toast('请完善信息');
-      }else if (this.form2.contectTelList[0].tel==''&&this.form2.contectTelList[1].tel==''&&this.form2.contectTelList[2].tel==''){
-          this.$toast('请至少填写一位联系人');
-
-      } else{
-
-        
-            let params= { 
-              materialType:2,
-              name:this.form2.hispotalName,
-              province:this.form2.province,
-              city:this.form2.city,
-              address:this.form2.addressDetail,
-              materialDetails:this.form2.materialDetails,//需求表
-              type:this.form2.type,
-              status:this.form2.sup,
-              isLogistics:this.form2.sup1,
-              linkPeople:linkPeopleArr.join(','),
-              createTime:this.form2.startTime,
-              file:this.meedUrlArr2.join(","),
-        
-            }
-            console.log(params,"提交2")
-          this.$fetchPost("material/save",params,'json').then(res=> {
-            if (res.code=="success") {
-              this.$toast(res.message);
-              this.reduceShow=false
-            } else  if (res.code=="error") {
-              this.$toast(res.message);
-            } else  if (res.code==504) {
-              this.$toast(res.message);
-            }
-          })
-      }
-          
-    },
     secectRadio(index){
         this.form1.type=index
     },
@@ -1066,37 +1014,7 @@ selectNeedName1(i){
             }
         })
     },
-    //民间组织录入身份证明
-    uploadImg2 (file) {
-        let formdata1 = new FormData();
-        formdata1.append('files', file);
-        this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
-            this.$toast(res.message);
-            if(res.code=='success'){
-              this.meedUrlArr2.push(res.content)
-              this.showimg=false
-            }
-        })
-    },
-    tiRead(val){
-      this.showimg=true
-      this.uploadImg2(val.file)
-    },
-    //删除图片的回调
-    tidelete(val){
-      this.showimg=true
-      let formdata1 = new FormData();
-      formdata1.append('files', val.file);
-      this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
-          if(res.code=='success'){
-            this.$toast("删除成功");
-            this.meedUrlArr2.splice(this.meedUrlArr2.findIndex(item => item === res.content), 1)
-            this.showimg=false
-          }
-          console.log(this.meedUrlArr2)
-      })
-    },
-    //民间组织录入身份证明
+    //需求方录入需求证明
     uploadImg1 (file) {
         let formdata1 = new FormData();
         formdata1.append('files', file);
@@ -1108,23 +1026,53 @@ selectNeedName1(i){
             }
         })
     },
+    //提供方录入身份证明
+    uploadImg2 (file) {
+        let formdata1 = new FormData();
+        formdata1.append('files', file);
+        this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
+            this.$toast(res.message);
+            if(res.code=='success'){
+              this.meedUrlArr2.push(res.content)
+              this.showimg=false
+            }
+        })
+    },
     xuRead(val){
       this.showimg=true
       this.uploadImg1(val.file)
+    },
+    tiRead(val){
+      this.showimg=true
+      this.uploadImg2(val.file)
     },
     //删除图片的回调
     xudelete(val){
       this.showimg=true
       let formdata1 = new FormData();
       formdata1.append('files', val.file);
-      this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
+      this.deleteImg(formdata1,1)
+    },
+    //删除图片的回调
+    tidelete(val){
+      this.showimg=true
+      let formdata1 = new FormData();
+      formdata1.append('files', val.file);
+      this.deleteImg(formdata1,2)
+    },
+    deleteImg(params,type) {
+      this.$fetchPostFile("material/saveFiles",params).then(res=> {
           if(res.code=='success'){
             this.$toast("删除成功");
-            this.meedUrlArr1.splice(this.meedUrlArr1.findIndex(item => item === res.content), 1)
+            if (type==1){
+              this.meedUrlArr1.splice(this.meedUrlArr1.findIndex(item => item === res.content), 1)
+            }else if (type==2){
+              this.meedUrlArr2.splice(this.meedUrlArr2.findIndex(item => item === res.content), 1)
+            }
             this.showimg=false
           }
-          console.log(this.meedUrlArr1)
       })
+
     },
     confirmone(){
       let linkPeopleArr=[],fileImgArr=[]
@@ -1167,6 +1115,47 @@ selectNeedName1(i){
             }
           })
         }
+    },
+    confirmtwo(){
+      let linkPeopleArr=[],fileImgArr=[]
+         this.form2.contectTelList.forEach(v=> {
+           if (v.name&&v.tel){
+            linkPeopleArr.push(v.name+"-"+v.tel)
+           }
+         })
+      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||this.form2.materialDetails.length==0||linkPeopleArr.length==0||this.form2.startTime==""||this.meedUrlArr2.length==0){
+          this.$toast('请完善信息');
+      }else if (this.form2.contectTelList[0].tel==''&&this.form2.contectTelList[1].tel==''&&this.form2.contectTelList[2].tel==''){
+          this.$toast('请至少填写一位联系人');
+
+      } else{
+            let params= { 
+              materialType:2,
+              name:this.form2.hispotalName,
+              province:this.form2.province,
+              city:this.form2.city,
+              address:this.form2.addressDetail,
+              materialDetails:this.form2.materialDetails,//需求表
+              type:this.form2.type,
+              status:this.form2.sup,
+              isLogistics:this.form2.sup1,
+              linkPeople:linkPeopleArr.join(','),
+              createTime:this.form2.startTime,
+              file:this.meedUrlArr2.join(","),
+        
+            }
+          this.$fetchPost("material/save",params,'json').then(res=> {
+            if (res.code=="success") {
+              this.$toast(res.message);
+              this.reduceShow=false
+            } else  if (res.code=="error") {
+              this.$toast(res.message);
+            } else  if (res.code==504) {
+              this.$toast(res.message);
+            }
+          })
+      }
+          
     },
     // 点击确定
     confirmTime() {

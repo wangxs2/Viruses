@@ -807,7 +807,7 @@ linkTelBlur(type,tel,index){
           if (type==1){
 
             this.form1.contectTelList[index].tel=''
-          }else if(type==1){
+          }else if(type==2){
 
             this.form2.contectTelList[index].tel=''
             

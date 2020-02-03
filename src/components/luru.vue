@@ -570,7 +570,7 @@ export default {
           name:"发热门诊"
         },{
           id:6,
-          name:"防空指挥部"
+          name:"防控指挥部"
         },{
           id:7,
           name:"普通医院"

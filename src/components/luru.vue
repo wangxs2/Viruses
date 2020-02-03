@@ -50,7 +50,7 @@
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form1.sup" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruSupRadio" :key="i+item.name">
-                    <van-radio :name="item.id" checked-color="#2D65E3" shape="square">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3">{{item.name}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
@@ -160,7 +160,7 @@
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form2.sup" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruSupRadio1" :key="i+item.name">
-                    <van-radio :name="item.id" checked-color="#2D65E3" shape="square">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3">{{item.name}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
@@ -170,7 +170,7 @@
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form2.sup1" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruneedRadio" :key="i+item.name">
-                    <van-radio :name="item.id" checked-color="#2D65E3" shape="square">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3">{{item.name}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
@@ -402,6 +402,8 @@ export default {
                 tel:'',
             },
         ],
+        longitude:'',
+        latitude:'',
         fileList:[],
         startTime:'',
         needOrgin:1,
@@ -462,6 +464,8 @@ export default {
                 tel:'',
             },
         ],
+        longitude:'',
+        latitude:'',
         fileList:[],
         startTime:'',
         needOrgin:'',
@@ -700,13 +704,15 @@ export default {
             defaultIndex: 0
         },
       ],
-      needList:["N95口罩","外科口罩","一次性医用口罩","隔离衣","一次性手术衣","医用帽","护目镜","防护眼罩","防护面罩","医用手套","防污染鞋套","长筒防护靴","测温仪","84消毒液","75%浓度酒精","一次性消毒床罩","消毒设备","对口药品","负压担架","负压救护车","消洗设备","全面型呼吸防护器","其他"],
+      needList:["N95口罩","外科口罩","一次性医用口罩","隔离衣","一次性手术衣","医用帽","护目镜、防护眼罩","防护面罩","医用手套","防污染鞋套","长筒防护靴","测温仪","84消毒液、75%浓度酒精","一次性消毒床罩","消毒设备","对口药品","负压担架、负压救护车","消洗设备","全面型呼吸防护器","其他"],
       currentCity:[],
       startTimePopNeedName:false,
       selectIndex:0,
       selectIndex1:0,
       contectTelPoint:0,
       contectTelPoint1:0,
+      params1:{},
+      params2:{},
 
     };
   },
@@ -1107,7 +1113,7 @@ linkTelBlur(type,tel){
         } else{
           
          console.log(this.form1.materialDetails,"hahaha")
-          let params= { 
+          this.params1= { 
             materialType:1,
             name:this.form1.hispotalName,
             province:this.form1.province,
@@ -1120,18 +1126,12 @@ linkTelBlur(type,tel){
             createTime:this.form1.startTime,
             source:this.form1.needOrgin,
             file:this.meedUrlArr1.join(','),
-      
-          }
-          this.$fetchPost("material/save",params,'json').then(res=> {
-            if (res.code=="success") {
-              this.$toast(res.message);
-              this.reduceShow=false
-            } else  if (res.code=="error") {
-              this.$toast(res.message);
-            } else  if (res.code==504) {
-              this.$toast(res.message);
+              longitude:'',
+              latitude:'',
             }
-          })
+
+
+            this.addresschange1(this.params1.province+this.params1.city+this.params1.address,1)
         }
     },
     confirmtwo(){
@@ -1147,7 +1147,7 @@ linkTelBlur(type,tel){
           this.$toast('请至少填写一位联系人');
 
       } else{
-            let params= { 
+            this.params2= { 
               materialType:2,
               name:this.form2.hispotalName,
               province:this.form2.province,
@@ -1160,20 +1160,49 @@ linkTelBlur(type,tel){
               linkPeople:linkPeopleArr.join(','),
               createTime:this.form2.startTime,
               file:this.meedUrlArr2.join(","),
-        
+              longitude:'',
+              latitude:'',
             }
-          this.$fetchPost("material/save",params,'json').then(res=> {
-            if (res.code=="success") {
-              this.$toast(res.message);
-              this.reduceShow=false
-            } else  if (res.code=="error") {
-              this.$toast(res.message);
-            } else  if (res.code==504) {
-              this.$toast(res.message);
-            }
-          })
+
+
+            this.addresschange1(this.params2.province+this.params2.city+this.params2.address,2)
       }
           
+    },
+    //地址解析
+    addresschange1(address,type){
+      var geocoder = new AMap.Geocoder();
+      geocoder.getLocation(address, (status, result)=> {
+          if (status === 'complete'&&result.geocodes.length) {
+          
+            let lnglat = result.geocodes[0].location
+            //  return lnglat
+            if (type==1){
+
+              this.params1.longitude=lnglat.lng
+              this.params1.latitude=lnglat.lat
+              this.$fetchPost("material/save",this.params1,'json').then(res=> {
+                  this.$toast(res.message);
+                  if(res.code=="success"){
+                    this.showresult=true
+                  }
+              })
+            }else if (type==2){
+              this.params2.longitude=lnglat.lng
+              this.params2.latitude=lnglat.lat
+              this.$fetchPost("material/save",this.params2,'json').then(res=> {
+                  this.$toast(res.message);
+                  if(res.code=="success"){
+                    this.showresult=true
+                  }
+              })
+
+            }
+            
+          }else{
+              // log.error('根据地址查询位置失败');
+          }
+      });
     },
     // 点击确定
     confirmTime() {

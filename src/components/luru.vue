@@ -116,6 +116,8 @@
                   <van-uploader
                     v-model="form1.fileList"
                     multiple accept="image/*"
+                    :after-read="xuRead" 
+                    @delete="xudelete"
                     :max-count="5"
                   />
                 </div>
@@ -225,6 +227,8 @@
                   <van-uploader
                     v-model="form2.fileList"
                     multiple accept="image/*"
+                    :after-read="tiRead" 
+                    @delete="tidelete"
                     :max-count="2"
                   />
                 </div>
@@ -511,6 +515,8 @@ export default {
         materialDetails1:[],
       },
       meedUrlArr:[],
+      meedUrlArr1:[],
+      meedUrlArr2:[],
       errorMessage3:{
         hispotalName:'',
         address:'',
@@ -793,7 +799,7 @@ selectNeedName1(i){
       
             
 
-      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||this.form2.materialDetails.length==0||linkPeopleArr.length==0||this.form2.startTime==""||this.form2.fileList.length==0){
+      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||this.form2.materialDetails.length==0||linkPeopleArr.length==0||this.form2.startTime==""||this.meedUrlArr2.length==0){
           this.$toast('请完善信息');
       }else if (this.form2.contectTelList[0].tel==''&&this.form2.contectTelList[1].tel==''&&this.form2.contectTelList[2].tel==''){
           this.$toast('请至少填写一位联系人');
@@ -813,11 +819,11 @@ selectNeedName1(i){
               isLogistics:this.form2.sup1,
               linkPeople:linkPeopleArr.join(','),
               createTime:this.form2.startTime,
-              file:this.form2.fileList,
+              file:this.meedUrlArr2.join(","),
         
             }
             console.log(params,"提交2")
-          this.$fetchPostFile("material/save",params).then(res=> {
+          this.$fetchPost("material/save",params,'json').then(res=> {
             if (res.code=="success") {
               this.$toast(res.message);
               this.reduceShow=false
@@ -1048,6 +1054,78 @@ selectNeedName1(i){
         })
       }
     },
+    //民间组织录入身份证明
+    uploadImg (file) {
+        let formdata1 = new FormData();
+        formdata1.append('files', file);
+        this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
+            this.$toast(res.message);
+            if(res.code=='success'){
+              this.meedUrlArr.push(res.content)
+              this.showimg=false
+            }
+        })
+    },
+    //民间组织录入身份证明
+    uploadImg2 (file) {
+        let formdata1 = new FormData();
+        formdata1.append('files', file);
+        this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
+            this.$toast(res.message);
+            if(res.code=='success'){
+              this.meedUrlArr2.push(res.content)
+              this.showimg=false
+            }
+        })
+    },
+    tiRead(val){
+      this.showimg=true
+      this.uploadImg2(val.file)
+    },
+    //删除图片的回调
+    tidelete(val){
+      this.showimg=true
+      let formdata1 = new FormData();
+      formdata1.append('files', val.file);
+      this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
+          if(res.code=='success'){
+            this.$toast("删除成功");
+            this.meedUrlArr2.splice(this.meedUrlArr2.findIndex(item => item === res.content), 1)
+            this.showimg=false
+          }
+          console.log(this.meedUrlArr2)
+      })
+    },
+    //民间组织录入身份证明
+    uploadImg1 (file) {
+        let formdata1 = new FormData();
+        formdata1.append('files', file);
+        this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
+            this.$toast(res.message);
+            if(res.code=='success'){
+              this.meedUrlArr1.push(res.content)
+              this.showimg=false
+            }
+        })
+    },
+    xuRead(val){
+      this.showimg=true
+      this.uploadImg1(val.file)
+    },
+    //删除图片的回调
+    xudelete(val){
+      this.showimg=true
+      let formdata1 = new FormData();
+      formdata1.append('files', val.file);
+      this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
+          if(res.code=='success'){
+            this.$toast("删除成功");
+            this.meedUrlArr1.splice(this.meedUrlArr1.findIndex(item => item === res.content), 1)
+            this.showimg=false
+          }
+          console.log(this.meedUrlArr1)
+      })
+    },
     confirmone(){
       let linkPeopleArr=[],fileImgArr=[]
          this.form1.contectTelList.forEach(v=> {
@@ -1055,12 +1133,14 @@ selectNeedName1(i){
             linkPeopleArr.push(v.name+"-"+v.tel)
            }
          })
-        if (this.form1.hispotalName==""||this.form1.province==""||this.form1.city==""|| this.form1.addressDetail==""||this.form1.materialDetails.length==0||this.form1.startTime==""||this.form1.fileList.length==0){
+        if (this.form1.hispotalName==""||this.form1.province==""||this.form1.city==""|| this.form1.addressDetail==""||this.form1.materialDetails.length==0||this.form1.startTime==""||this.meedUrlArr1.length==0){
             this.$toast('请完善信息');
         }else if (this.form1.contectTelList[0].tel==''&&this.form1.contectTelList[1].tel==''&&this.form1.contectTelList[2].tel==''){
             this.$toast('请至少填写一位联系人');
 
         } else{
+          
+         console.log(this.form1.materialDetails,"hahaha")
           let params= { 
             materialType:1,
             name:this.form1.hispotalName,
@@ -1073,10 +1153,10 @@ selectNeedName1(i){
             linkPeople:linkPeopleArr.join(','),
             createTime:this.form1.startTime,
             source:this.form1.needOrgin,
-            file:this.form1.fileList,
+            file:this.meedUrlArr1.join(','),
       
           }
-          this.$fetchPostFile("material/save",params).then(res=> {
+          this.$fetchPost("material/save",params,'json').then(res=> {
             if (res.code=="success") {
               this.$toast(res.message);
               this.reduceShow=false
@@ -1112,7 +1192,7 @@ selectNeedName1(i){
     cancelTime() {
       this.startTimePop = false;
     },
-      
+    
     // 点击确定
     confirmTimeNeed() {
         

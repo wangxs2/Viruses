@@ -1133,7 +1133,7 @@ linkTelBlur(type,tel,index){
             linkPeople:linkPeopleArr.join(','),
             createTime:this.form1.startTime,
             source:this.form1.needOrgin,
-            file:this.meedUrlArr1.join(','),
+            picUrl:this.meedUrlArr1.join(','),
               longitude:'',
               latitude:'',
       
@@ -1167,7 +1167,7 @@ linkTelBlur(type,tel,index){
               isLogistics:this.form2.sup1,
               linkPeople:linkPeopleArr.join(','),
               createTime:this.form2.startTime,
-              file:this.meedUrlArr2.join(","),
+              picUrl:this.meedUrlArr2.join(","),
               longitude:'',
               latitude:'',
         

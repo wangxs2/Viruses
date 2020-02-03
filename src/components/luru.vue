@@ -1049,27 +1049,9 @@ selectNeedName1(i){
         this.form3.picUrl=this.meedUrlArr.join(",")
         console.log(this.form3)
        
-        this.$fetchPostFile("material/save",this.form3,'json').then(res=> {
+        this.$fetchPost("material/save",this.form3,'json').then(res=> {
             this.$toast(res.message);
         })
-
-
-        var settings = {
-            url: "http://47.100.200.255:19955/kindnessplatform/material/saveFiles",
-            method: "post",
-            timeout: 0,
-            headers: {
-              "Content-Type": "application/json"
-            },
-            processData: false,
-          mimeType: "multipart/form-data",
-            contentType: false,
-            data: this.form3.files
-          };
-
-          $.ajax(settings).done(function (response) {
-            console.log(response);
-          });
       }
     },
     confirmone(){

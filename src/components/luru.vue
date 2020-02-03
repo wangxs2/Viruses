@@ -11,7 +11,7 @@
     </van-dialog>
     <!-- 防止过快的切换 -->
       <div class="reduce-content">
-        <img style="" class="banner" src="../assets/image/banner.png" alt="">
+        <div  class="banner" :style="{'background-image':bannerback}"></div>
         <div class="us-need-wrapper">
           <div class="us-need need">
             <div class="tab-btn">
@@ -359,7 +359,7 @@ import json from "@/libs/city_code.json"
 export default {
   data() {
     return {
-      
+      bannerback:"url("+require("../assets/image/banner.png")+")",
       allCity:json,
       showPicker:false,
       startTimePop3:false,
@@ -1348,6 +1348,8 @@ linkTelBlur(type,tel,index){
     .banner{
       width:100%;
       height: 125px;
+      
+      background-size: 100% 100%;
     }
     .us-need-wrapper{
       margin: 0 12px;

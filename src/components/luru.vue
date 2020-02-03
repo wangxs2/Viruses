@@ -755,9 +755,11 @@ addresschange(address){
          this.form3.longitude=lnglat.lng
          this.form3.latitude=lnglat.lat
          this.$fetchPost("material/save",this.form3,'json').then(res=> {
-            this.$toast(res.message);
+            
             if(res.code=="success"){
               this.showresult=true
+            }else{
+              this.$toast(res.message);
             }
         })
          
@@ -1124,7 +1126,7 @@ linkTelBlur(type,tel){
           }
           this.$fetchPost("material/save",params,'json').then(res=> {
             if (res.code=="success") {
-              this.$toast(res.message);
+              this.showresult=true
               this.reduceShow=false
             } else  if (res.code=="error") {
               this.$toast(res.message);
@@ -1164,7 +1166,7 @@ linkTelBlur(type,tel){
             }
           this.$fetchPost("material/save",params,'json').then(res=> {
             if (res.code=="success") {
-              this.$toast(res.message);
+              this.showresult=true
               this.reduceShow=false
             } else  if (res.code=="error") {
               this.$toast(res.message);

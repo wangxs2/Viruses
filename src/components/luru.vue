@@ -6,6 +6,9 @@
         <van-loading size="64px" color="#1989fa"></van-loading>
       </div>
     </van-overlay>
+    <van-dialog v-model="showresult" title="提交成功">
+      <div>我们将尽快与您联系<br>审核通过后，平台可见</div>
+    </van-dialog>
     <!-- 防止过快的切换 -->
       <div class="reduce-content">
         <img style="" class="banner" src="../assets/image/banner.png" alt="">
@@ -423,6 +426,7 @@ export default {
         needOrgin:'',
         needImg:'',
       },
+      showresult:false,
       form2:{ // 录入表单
       selectItem:'',
         hispotalName:'',
@@ -753,12 +757,7 @@ addresschange(address){
          this.$fetchPost("material/save",this.form3,'json').then(res=> {
             this.$toast(res.message);
             if(res.code=="success"){
-              this.$dialog.alert({
-                title: '提交成功',
-                message: '我们将尽快与您联系，审核通过后，平台可见'
-              }).then(() => {
-                // on close
-              });
+              this.showresult=true
             }
         })
          
@@ -1007,7 +1006,7 @@ linkTelBlur(type,tel){
       this.curActiveIndex=type
     },
     //民间组织录入身份证明
-    uploadImg (file) {
+    uploadImgsa (file) {
         let formdata1 = new FormData();
         formdata1.append('files', file);
         this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
@@ -1022,7 +1021,7 @@ linkTelBlur(type,tel){
     saRead(val){
       this.showimg=true
       console.log(val.content)
-      this.uploadImg(val.file)
+      this.uploadImgsa(val.file)
     },
     //删除图片的回调
     sadelete(val){

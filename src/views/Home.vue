@@ -75,7 +75,7 @@
         :style="{ height: '20%' }">
       <div style="padding:12px 24px">
         <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr"
-                 :key="index" ><van-icon name="phone-o" color="#1989fa" size="34"  /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
+                 :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" color="#1989fa" size="34"  /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
       </div>
     </van-popup>
     <!-- 搜索部分 -->

@@ -234,27 +234,29 @@
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">请选择可提供服务的起始日期</span>
-                <van-field v-model="form3.startTime" placeholder="选择时间" readonly @click="startTimePop = true"/>
-                <van-popup v-model="startTimePop" position="bottom">
+                <van-field v-model="form3.startTime" placeholder="选择时间" readonly @click="startTimePop3 = true"/>
+                <van-popup v-model="startTimePop3" position="bottom">
                   <van-datetime-picker
                     v-model="currentDate3"
-                    type="datetime"
-                    :min-date="minDate1"
-                    @cancel="cancelTime1"
+                    type="date"
+                    :min-date="minDate"
+                    :max-date="maxDate"
+                    :formatter="formatter1"
                     @confirm="quemsg"
+                    @cancel="startTimePop3 = false"
                   />
                 </van-popup>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">请选择可提供服务的结束日期</span>
-                <van-field v-model="form3.endTime" placeholder="选择时间" readonly @click="startTimePop = true"/>
-                <van-popup v-model="startTimePop" position="bottom">
+                <van-field v-model="form3.endTime" placeholder="选择时间" readonly @click="startTimePop4 = true"/>
+                <van-popup v-model="startTimePop4" position="bottom">
                   <van-datetime-picker
                     v-model="currentDate1"
-                    type="datetime"
+                    type="date"
                     :min-date="minDate1"
                     @confirm="confirmTime2"
-                    @cancel="ddd"
+                    @cancel="startTimePop4 = false"
                     :formatter="formatter1"
                   />
                 </van-popup>
@@ -272,14 +274,14 @@
               </div>
               <div class="form-input">
                 <span>链接</span>
-                <van-field v-model="form3.linkUrl" type="textarea" placeholder="请填写" :error-message="errorMessage3.linkUrl" @blur="formBlur(5)"/>
+                <van-field v-model="form3.linkUrl" type="textarea" placeholder="请填写" :error-message="errorMessage3.linkUrl"/>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-input-wrapper">
-                  <div class="comfirm-input" v-for="(item,i) in form1.contectTelList" :key="i">
-                    <van-field class="contect" :v-model="item.name" type="text" placeholder="输入联系人" />-
-                    <van-field class="tel" :v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)" />
+                  <div class="comfirm-input" v-for="(item,i) in form3.contectTelList" :key="i">
+                    <van-field class="contect" v-model="item.name" type="text" placeholder="输入联系人" />-
+                    <van-field class="tel" v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)" />
                     
                   </div>
                 </div>
@@ -287,30 +289,28 @@
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">服务提供类型</span>
                 <div class="comfirm-radio">
-                  <van-checkbox-group v-model="form3.supContect" class="radio-group">
+                  <van-checkbox-group @change="changetype" v-model="form3.materialDetails1" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruOriginizeSupRadio" :key="i+item.name">
-                    <van-checkbox shape="square" checked-color="#2D65E3" :name="item.id">{{item.name}}</van-checkbox>
+                    <van-checkbox shape="square" checked-color="#2D65E3" :name="item.name">{{item.name}}</van-checkbox>
                     </div>
                    </van-checkbox-group>
                   <div class="author">
                     <span>备注(若选择其他，请填写备注)</span>
-                    
-                    <van-field v-model="form3.author" type="textarea" class="author-textarea" placeholder="请输入例如：枢纽组织" :error-message="errorMessage3.author" @blur="formBlur(5)"/>
+                    <van-field v-model="form3.needsDescr" type="textarea" class="author-textarea" placeholder="请输入例如：枢纽组织" :error-message="errorMessage3.author"/>
                   </div>
                 </div>
               </div>
               <div class="form-input">
                 <span>其他说明</span>
-                <van-field v-model="form3.authorWrite" type="textarea" placeholder="请填写" :error-message="errorMessage3.authorWrite" @blur="formBlur(5)"/>
+                <van-field v-model="form3.descr" type="textarea" placeholder="请填写" :error-message="errorMessage3.authorWrite"/>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">身份证明</span>
                 <div class="need-img-wrapper">
                   <van-uploader
-                    v-model="form3.fileList"
+                    v-model="form3.filst"
                     multiple
                     :max-count="2"
-                    :after-read="afterRead"
                   />
                   <!-- <span>企业提供方请上传营业执照照片，非人提供方请上传身份证正反面照片</span> -->
                 </div>
@@ -334,6 +334,8 @@ export default {
       
       allCity:json,
       showPicker:false,
+      startTimePop3:false,
+      startTimePop4:false,
       testindex:0,
       testnum:'',
       form1:{ // 录入表单
@@ -446,20 +448,30 @@ export default {
         address2:'',
         address:'',//地址
         serviceRange:"",//覆盖范围
-        rang:'',
         startTime:'',
         endTime:'',
         type:1,
         linkUrl:'',
-        contectTelList:{
-            name:'',
-            tel:'',
-        },
-        fileList:[],
-        supContect:[],
-        author:'',
-        authorWrite:'',
-
+        descr:'',//备注
+       contectTelList:[
+            {
+                name:'',
+                tel:'',
+            },
+            {
+                name:'',
+                tel:'',
+            },
+            {
+                name:'',
+                tel:'',
+            }
+        ],
+        linkPeople:'',
+        materialDetails:[],
+        materialDetails1:[],
+        files:[],
+        filst:[]
       },
       errorMessage3:{
         hispotalName:'',
@@ -575,6 +587,7 @@ export default {
       currentDate:new Date(),
       startTime:'',
       minDate: new Date(),
+      maxDate: new Date(2025, 10, 1),
       startTimePop:false,
       currentDate1:new Date(),
       currentDate3:new Date(),
@@ -637,6 +650,7 @@ export default {
   },
   props:['curTabIndex'],
   created() {
+    console.log(this.checkTel('008631-187866666'))
   },
   watch:{
     'curTabIndex':{
@@ -671,6 +685,12 @@ export default {
         this.showPicker=false
 
     },
+    //验证手机号的格式
+    checkTel(tel)
+      {
+        var mobile = /[^\0-9\/-]/g;
+        return mobile.test(tel);
+      },
     //添加需求表
     addDemand(){
       if(this.form1.materialDetails[this.testindex].needsName==''||this.form1.materialDetails[this.testindex].needsNum==''){
@@ -701,9 +721,35 @@ export default {
       this.form3.city=value[1].text
     },
     //民间组织选择时间
-    quemsg(){
-      this.startTimePop = false
-      // console.log(val)
+    quemsg(val){
+      this.startTimePop3 = false
+      this.form3.startTime=this.utiltime(val)
+    },
+    // 民间组织选择时间
+    confirmTime2(val) {
+      this.startTimePop4 = false;
+     this.form3.endTime=this.utiltime(val)
+    },
+    //服务提供类型
+    changetype(){
+      console.log(this.form3.materialDetails)
+    },
+    //格式化时间
+    utiltime(date){
+      let nstr = new Date(date) //当天时间
+      let now_year = nstr.getFullYear() //年份
+      let now_month =
+        nstr.getMonth() + 1 < 10
+          ? '0' + (nstr.getMonth() + 1)
+          : nstr.getMonth() + 1 //月份
+      let now_day = nstr.getDate() < 10 ? '0' + nstr.getDate() : nstr.getDate() //日期
+      return (
+        now_year +
+        '-' +
+        now_month +
+        '-' +
+        now_day
+      )
     },
     confirmTime31(val){
 
@@ -795,7 +841,49 @@ export default {
         console.log(this.form2.fileList);
     },
     confirmthree(){
-        console.log(this.form3.fileList);
+      console.log(this.form3.filst)
+      console.log(this.form3.filst[0].file)
+      let arr=[]
+      console.log(this.form3)
+      if(this.form3.name==""||this.form3.province==""||this.form3.city==""
+      ||this.form3.address==""||this.form3.serviceRange==""||
+      this.form3.startTime==""||this.form3.endTime==""||this.form3.materialDetails1.length==0||this.form3.filst.length==0){
+        this.$toast('请完善信息');
+      }else if(this.form3.contectTelList[0].tel==""&&this.form3.contectTelList[1].tel==""&&this.form3.contectTelList[2].tel==""){
+        this.$toast('请至少输入一位联系人');
+      }else{
+        
+        this.form3.materialDetails1.forEach(iteam=>{
+          let obj={}
+          if(iteam=="其他服务"){
+            obj.needsName=iteam
+            obj.needsNum=null
+            obj.descr=null
+          }else{
+            obj.needsName=iteam
+            obj.needsNum=null
+            obj.descr=null
+          }
+         
+          
+          this.form3.materialDetails.push(obj)
+        }),
+        this.form3.filst.forEach(itam=>{
+          this.form3.files.push(itam.file)
+          console.log(itam.file)
+        }),
+        this.form3.contectTelList.forEach(item=>{
+          if(item.tel!==''){
+            arr.push(item.name+":"+item.tel)
+          }
+        }),
+        this.form3.linkPeople=arr.join(",")
+        console.log(this.form3)
+       
+        this.$fetchPostFile("material/save",this.form3).then(res=> {
+            this.$toast(res.message);
+          })
+      }
     },
     // 录入表单提交
     confirm(){
@@ -869,16 +957,7 @@ export default {
     cancelTime() {
       this.startTimePop = false;
     },
-    // 点击确定
-    confirmTime2() {
-      this.startTimePop = false;
-      this.startTime =
-        this.currentDate.getFullYear() +
-        "-" +
-        (Number(this.currentDate.getMonth()) + 1) +
-        "-" +
-        this.currentDate.getDate()
-    },
+    
     // 点击确定
     confirmTime1() {
       // console.log()
@@ -890,6 +969,8 @@ export default {
         "-" +
         this.currentDate.getDate()
     },
+    
+
     // 点击确定
     ddd() {
       this.startTimePop = false;

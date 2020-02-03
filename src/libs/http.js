@@ -146,7 +146,7 @@ export function fetchDelete(url, params) {
 // post请求方法上传文件
 export function fetchPostFile(url, params, contentType) {
   return new Promise((resolve, reject) => {
-    Axios.post(url, {
+    Axios.post(url, params, {
       headers: {
         'Content-Type': "multipart/form-data"
       },

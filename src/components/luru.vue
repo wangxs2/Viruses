@@ -328,7 +328,7 @@
                 <span><img style="" src="../assets/image/star.png" alt="">身份证明</span>
                 <div class="need-img-wrapper">
                   <van-uploader
-                    v-model="form3.filst"
+                    v-model="filst"
                     :after-read="saRead" 
                     @delete="sadelete"
                     :max-count="2"
@@ -477,6 +477,7 @@ export default {
         startTime:'',
         needImg:'',
       },
+      filst:[],
       form3:{ // 录入表单
         materialType:3,//民间组织
         name:'',//机构名称
@@ -508,8 +509,6 @@ export default {
         linkPeople:'',
         materialDetails:[],
         materialDetails1:[],
-        files:[],
-        filst:[]
       },
       meedUrlArr:[],
       errorMessage3:{
@@ -1016,10 +1015,7 @@ selectNeedName1(i){
       })
     },
     confirmthree(){
-      console.log(this.form3.filst)
-      console.log(this.form3.filst[0].file)
       let arr=[]
-      console.log(this.form3)
       if(this.form3.name==""||this.form3.province==""||this.form3.city==""
       ||this.form3.address==""||this.form3.serviceRange==""||
       this.form3.startTime==""||this.form3.endTime==""||this.form3.materialDetails1.length==0||this.meedUrlArr.length==0){
@@ -1047,8 +1043,6 @@ selectNeedName1(i){
         }),
         this.form3.linkPeople=arr.join(",")
         this.form3.picUrl=this.meedUrlArr.join(",")
-        console.log(this.form3)
-       
         this.$fetchPost("material/save",this.form3,'json').then(res=> {
             this.$toast(res.message);
         })
@@ -1061,13 +1055,6 @@ selectNeedName1(i){
             linkPeopleArr.push(v.name+"-"+v.tel)
            }
          })
-         console.log(this.form1.fileList)
-        //  this.form1.fileList.forEach(v=> {
-        //      if (v.content){
-        //          fileImgArr.push(v.content)
-        //      }
-        //  })
-         console.log(fileImgArr)
         if (this.form1.hispotalName==""||this.form1.province==""||this.form1.city==""|| this.form1.addressDetail==""||this.form1.materialDetails.length==0||this.form1.startTime==""||this.form1.fileList.length==0){
             this.$toast('请完善信息');
         }else if (this.form1.contectTelList[0].tel==''&&this.form1.contectTelList[1].tel==''&&this.form1.contectTelList[2].tel==''){
@@ -1089,8 +1076,6 @@ selectNeedName1(i){
             file:this.form1.fileList,
       
           }
-          console.log(params,"提交1")
-          
           this.$fetchPostFile("material/save",params).then(res=> {
             if (res.code=="success") {
               this.$toast(res.message);

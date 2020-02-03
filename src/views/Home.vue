@@ -171,7 +171,7 @@
 
     <!-- 录入缺省页 -->
     <van-popup v-model="reduceShow" closeable position="bottom" :style="{ height: '100%' }">
-      <luru :curTabIndex="curTabIndex"></luru>
+      <luru @fatherMethod="fatherMethod" :curTabIndex="curTabIndex"></luru>
       
     </van-popup>
 
@@ -795,7 +795,9 @@ export default {
       this.isoneClosePoint=0
 
     },
-
+    fatherMethod(){
+      this.reduceShow=false
+    },
 
     // 获取实时资讯数据
     getCurTimeDataList(){

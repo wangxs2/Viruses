@@ -753,7 +753,7 @@ confirmNeedName(value){
 },
 //关闭弹窗
 closebig(){
-
+  this.$emit('fatherMethod');
 },
 //地址解析
 addresschange(address){
@@ -988,20 +988,21 @@ linkTelBlur(type,tel,index){
     },
     saRead(val){
       this.showimg=true
-      // this.uploadImgsa(val.file)
-      lrz(val.file, {
-          // width : 300
-          quality: 0.5    //自定义使用压缩方式
-      })  
-        .then(rst=> {
-            //成功时执行
-            console.log(rst)
-            this.uploadImgsa(rst)
-        }).catch(error=> {
-            //失败时执行
-        }).always(()=> {
-            //不管成功或失败，都会执行
-        })
+      console.log(val)
+      this.uploadImgsa(val.file)
+      // lrz(val.file, {
+      //     // width : 300
+      //     quality: 0.5    //自定义使用压缩方式
+      // })  
+      //   .then(rst=> {
+      //       //成功时执行
+      //       console.log(rst)
+      //       this.uploadImgsa(rst.file)
+      //   }).catch(error=> {
+      //       //失败时执行
+      //   }).always(()=> {
+      //       //不管成功或失败，都会执行
+      //   })
       
     },
     //删除图片的回调

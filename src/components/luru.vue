@@ -84,7 +84,7 @@
                 <div class="comfirm-input-wrapper">
                   <div class="comfirm-input" v-for="(item,i) in form1.contectTelList" :key="i">
                     <van-field class="contect" v-model="item.name" type="text" placeholder="输入联系人" />-
-                    <van-field class="tel" v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)" @blur="linkTelBlur(1,item.tel)"/>
+                    <van-field class="tel" v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)" @blur="linkTelBlur(1,item.tel,i)"/>
                     
                   </div>
                 </div>
@@ -205,7 +205,7 @@
                 <div class="comfirm-input-wrapper">
                   <div class="comfirm-input" v-for="(item,i) in form2.contectTelList" :key="i">
                     <van-field class="contect" v-model="item.name" type="text" placeholder="输入联系人" />-
-                    <van-field class="tel" v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)"  @blur="linkTelBlur(2,item.tel)"/>
+                    <van-field class="tel" v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)"  @blur="linkTelBlur(2,item.tel,i)"/>
                     
                   </div>
                 </div>
@@ -761,9 +761,10 @@ addresschange(address){
          this.form3.longitude=lnglat.lng
          this.form3.latitude=lnglat.lat
          this.$fetchPost("material/save",this.form3,'json').then(res=> {
-            this.$toast(res.message);
             if(res.code=="success"){
               this.showresult=true
+            }else{
+              this.$toast(res.message);
             }
         })
          
@@ -798,12 +799,19 @@ selectNeedName1(i){
   this.startTimePopNeedName=true
   this.selectIndex1=i
 },
-linkTelBlur(type,tel){
+linkTelBlur(type,tel,index){
+  console.log(index)
       
       var strTel=/^[\d\-]+$/g
         if (!strTel.test(tel)){
-            this.contectTelPoint=1
-            this.contectTelPoint1=1
+          if (type==1){
+
+            this.form1.contectTelList[index].tel=''
+          }else if(type==1){
+
+            this.form2.contectTelList[index].tel=''
+            
+          }
             this.$toast('当前填写电话格式有误')
         }
 
@@ -1101,7 +1109,7 @@ linkTelBlur(type,tel){
     confirmone(){
       let linkPeopleArr=[],fileImgArr=[]
          this.form1.contectTelList.forEach(v=> {
-           if (v.name&&v.tel){
+           if (v.tel||v.name&&v.tel){
             linkPeopleArr.push(v.name+"-"+v.tel)
            }
          })
@@ -1128,16 +1136,16 @@ linkTelBlur(type,tel){
             file:this.meedUrlArr1.join(','),
               longitude:'',
               latitude:'',
-            }
-
-
+      
+          }
             this.addresschange1(this.params1.province+this.params1.city+this.params1.address,1)
         }
+         
     },
     confirmtwo(){
       let linkPeopleArr=[],fileImgArr=[]
          this.form2.contectTelList.forEach(v=> {
-           if (v.name&&v.tel){
+           if (v.tel||v.name&&v.tel){
             linkPeopleArr.push(v.name+"-"+v.tel)
            }
          })
@@ -1162,9 +1170,8 @@ linkTelBlur(type,tel){
               file:this.meedUrlArr2.join(","),
               longitude:'',
               latitude:'',
+        
             }
-
-
             this.addresschange1(this.params2.province+this.params2.city+this.params2.address,2)
       }
           

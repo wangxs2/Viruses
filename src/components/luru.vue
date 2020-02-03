@@ -1356,10 +1356,14 @@ linkTelBlur(type,tel){
             font-family:PingFang SC;
             font-weight:bold;
             color:rgba(80,133,252,1);
-            border-right: 1px solid #fff;
+            // border-left: 1px solid #f1f1f1;
+            // border-right: 1px solid #f1f1f1;
             background: #0F46C0;
             &:last-child{
-              border: 0;
+              border-right: 0;
+            }
+            &:first-child{
+              border-left: 0;
             }
             &.active{
               background: #174FCE;

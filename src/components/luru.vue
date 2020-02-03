@@ -55,8 +55,15 @@
                       <div class="num">需求数量</div>
                     </div>
                     <div class="comfirm-need-body" v-for="(iteam,index) in form1.materialDetails" :key="index">
-                      <div class="name"><van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/></div>
-                      <div class="num"><van-field class="sup-num" v-model="iteam.needsNum" type="text" placeholder="请输入" testnum input-align="center" /><img @click="deleteDemand" style="" src="../assets/image/reduce1.png" alt=""></div>
+                      <div class="name">
+                        <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
+
+                        <van-field class="sup-name" readonly v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center" @click="selectNeedName(index)"/>
+                        <van-popup v-model="startTimePopNeedName" position="bottom">
+                        <van-picker show-toolbar :columns="needList" @confirm="confirmNeedName" @cancel="cancleNeedName" @change="changeNeedName" />
+                        </van-popup>
+                      </div>
+                      <div class="num"><van-field class="sup-num" v-model="iteam.needsNum" type="number" placeholder="请输入数字" testnum input-align="center" /><img @click="deleteDemand(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
                     </div>
                   </div>
                   <div class="comfirm-need-bottom" @click="addDemand"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
@@ -167,8 +174,16 @@
                       <div class="num">需求数量</div>
                     </div>
                     <div class="comfirm-need-body" v-for="(iteam,index) in form2.materialDetails" :key="index">
-                      <div class="name"><van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/></div>
-                      <div class="num"><van-field class="sup-num" v-model="iteam.needsNum" type="text" placeholder="请输入" testnum input-align="center" /><img @click="deleteDemand1" style="" src="../assets/image/reduce1.png" alt=""></div>
+                      <div class="name">
+                        <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
+
+                        
+                        <van-field class="sup-name" v-model="iteam.needsName" readonly type="text" placeholder="输入物资名称"   input-align="center" @click="selectNeedName1(index)"/>
+                        <van-popup v-model="startTimePopNeedName" position="bottom">
+                        <van-picker show-toolbar :columns="needList" @confirm="confirmNeedName1" @cancel="cancleNeedName" @change="changeNeedName1" />
+                        </van-popup>
+                      </div>
+                      <div class="num"><van-field class="sup-num" v-model="iteam.needsNum" type="number" placeholder="请输入数字" testnum input-align="center" /><img @click="deleteDemand1(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
                     </div>
                   </div>
                   <div class="comfirm-need-bottom" @click="addDemand1"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
@@ -339,6 +354,7 @@ export default {
       testindex1:0,
       testnum:'',
       form1:{ // 录入表单
+      selectItem:'',
         hispotalName:'',
         province:'',//省
         city:'',//市
@@ -396,6 +412,7 @@ export default {
         needImg:'',
       },
       form2:{ // 录入表单
+      selectItem:'',
         hispotalName:'',
         addressArr:[],
         province:'',//省
@@ -650,7 +667,11 @@ export default {
             defaultIndex: 0
         },
       ],
+      needList:["N95口罩","外科口罩","一次性医用口罩","隔离衣","一次性手术衣","医用帽","护目镜、防护眼罩","防护面罩","医用手套","防污染鞋套","长筒防护靴","测温仪","84消毒液","75%浓度酒精","一次性消毒床罩","消毒设备","对口药品","负压担架、负压救护车","消洗设备","全面型呼吸防护器","其他"],
       currentCity:[],
+      startTimePopNeedName:false,
+      selectIndex:0,
+      selectIndex1:0,
 
     };
   },
@@ -666,12 +687,12 @@ export default {
     }
   },
  computed: {
-  curActiveIndex: function () {
+  curActiveIndex1: function () {
    return this.curActiveIndex // 监听switchStatusData 的变化
   }
  },
  mounted () {
-   this.curActiveIndex=this.curTabIndex
+//    this.curActiveIndex=this.curTabIndex
      this.columns[0].values = Object.values(this.allCity).map(function(e){
         return {text:e.name}
     })
@@ -683,6 +704,37 @@ export default {
     }
   },
   methods:{
+confirmNeedName(value){
+  this.startTimePopNeedName=false
+  this.form1.materialDetails[this.selectIndex].needsName=value
+
+},
+cancleNeedName(){
+  this.startTimePopNeedName=false
+},
+changeNeedName(picker, value, index){
+  this.form1.selectItem=value
+},
+selectNeedName(i){
+  this.startTimePopNeedName=true
+  this.selectIndex=i
+},
+
+confirmNeedName1(value){
+  this.startTimePopNeedName=false
+  this.form2.materialDetails[this.selectIndex1].needsName=value
+
+},
+cancleNeedName1(){
+  this.startTimePopNeedName=false
+},
+changeNeedName1(picker, value, index){
+  this.form2.selectItem=value
+},
+selectNeedName1(i){
+  this.startTimePopNeedName=true
+  this.selectIndex1=i
+},
     linkTelBlur(type,tel){
       // var strTel=/^[\d\-,]+$/g
       // var strTel=/^[\d\-]+$/g
@@ -730,7 +782,7 @@ export default {
         
             }
             console.log(params,"提交2")
-          this.$fetchPostFile("donateCount/findDoateCount",params).then(res=> {
+          this.$fetchPostFile("material/save",params).then(res=> {
             if (res.code=="success") {
               this.$toast(res.message);
               this.reduceShow=false
@@ -775,6 +827,8 @@ export default {
     //删除需求表
     deleteDemand(index){
       if(this.testindex<1){
+        this.form1.materialDetails[index].needsName=''
+        this.form1.materialDetails[index].needsNum=''
         this.$toast('至少添加一条需求');
       }else{
         this.form1.materialDetails.splice(index,1)
@@ -797,6 +851,8 @@ export default {
     //删除需求表
     deleteDemand1(index){
       if(this.testindex1<1){
+        this.form2.materialDetails[index].needsName=''
+        this.form2.materialDetails[index].needsNum=''
         this.$toast('至少添加一条需求');
       }else{
         this.form2.materialDetails.splice(index,1)
@@ -899,7 +955,7 @@ export default {
           }
           console.log(params,"提交1")
           
-          this.$fetchPostFile("donateCount/findDoateCount",params).then(res=> {
+          this.$fetchPostFile("material/save",params).then(res=> {
             if (res.code=="success") {
               this.$toast(res.message);
               this.reduceShow=false

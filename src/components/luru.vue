@@ -991,8 +991,7 @@ linkTelBlur(type,tel,index){
       let name=val.file.name
       let type=val.file.type
       lrz(val.file, {
-          // width : 300
-          quality: 0.3    //自定义使用压缩方式
+          quality: 0.2    //自定义使用压缩方式
       })  
         .then(rst=> {
             //成功时执行
@@ -1010,16 +1009,32 @@ linkTelBlur(type,tel,index){
     //删除图片的回调
     sadelete(val){
       this.showimg=true
-      let formdata1 = new FormData();
-      formdata1.append('files', val.file);
-      this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
-          if(res.code=='success'){
-            this.$toast("图片删除成功");
-            this.meedUrlArr.splice(this.meedUrlArr.findIndex(item => item === res.content), 1)
-          }
-           this.showimg=false
-         
-      })
+      let name=val.file.name
+      let type=val.file.type
+      lrz(val.file, {
+          quality: 0.2    //自定义使用压缩方式
+      })  
+        .then(rst=> {
+            //成功时执行
+           let file = new window.File([rst.file], val.file.name, {
+              type: val.file.type
+              }) //把blob转化成file
+          let formdata1 = new FormData();
+          formdata1.append('files', file);
+          this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
+              if(res.code=='success'){
+                this.$toast("图片删除成功");
+                this.meedUrlArr.splice(this.meedUrlArr.findIndex(item => item === res.content), 1)
+              }
+              this.showimg=false
+            
+          })
+        }).catch(error=> {
+            //失败时执行
+        }).always(()=> {
+            //不管成功或失败，都会执行
+        })
+      
     },
     confirmthree(){
       let arr=[]
@@ -1096,25 +1111,87 @@ linkTelBlur(type,tel,index){
     },
     xuRead(val){
       this.showimg=true
-      this.uploadImg1(val.file)
+      let name=val.file.name
+      let type=val.file.type
+      lrz(val.file, {
+          quality: 0.2    //自定义使用压缩方式
+      })  
+        .then(rst=> {
+            //成功时执行
+           let file = new window.File([rst.file], val.file.name, {
+              type: val.file.type
+              }) //把blob转化成file
+          this.uploadImg1(file)
+        }).catch(error=> {
+            //失败时执行
+        }).always(()=> {
+            //不管成功或失败，都会执行
+        })
     },
     tiRead(val){
       this.showimg=true
-      this.uploadImg2(val.file)
+      let name=val.file.name
+      let type=val.file.type
+      lrz(val.file, {
+          quality: 0.2    //自定义使用压缩方式
+      })  
+        .then(rst=> {
+            //成功时执行
+           let file = new window.File([rst.file], val.file.name, {
+              type: val.file.type
+              }) //把blob转化成file
+          this.uploadImg2(file)
+        }).catch(error=> {
+            //失败时执行
+        }).always(()=> {
+            //不管成功或失败，都会执行
+        })
     },
     //删除图片的回调
     xudelete(val){
       this.showimg=true
-      let formdata1 = new FormData();
-      formdata1.append('files', val.file);
-      this.deleteImg(formdata1,1)
+      let name=val.file.name
+      let type=val.file.type
+      lrz(val.file, {
+          quality: 0.2    //自定义使用压缩方式
+      })  
+        .then(rst=> {
+            //成功时执行
+           let file = new window.File([rst.file], val.file.name, {
+              type: val.file.type
+              }) //把blob转化成file
+        let formdata1 = new FormData();
+        formdata1.append('files', file);
+        this.deleteImg(formdata1,1)
+        }).catch(error=> {
+            //失败时执行
+        }).always(()=> {
+            //不管成功或失败，都会执行
+        })
+      
     },
     //删除图片的回调
     tidelete(val){
       this.showimg=true
-      let formdata1 = new FormData();
-      formdata1.append('files', val.file);
+
+      let name=val.file.name
+      let type=val.file.type
+      lrz(val.file, {
+          quality: 0.2    //自定义使用压缩方式
+      })  
+        .then(rst=> {
+            //成功时执行
+           let file = new window.File([rst.file], val.file.name, {
+              type: val.file.type
+              }) //把blob转化成file
+        let formdata1 = new FormData();
+      formdata1.append('files', file);
       this.deleteImg(formdata1,2)
+        }).catch(error=> {
+            //失败时执行
+        }).always(()=> {
+            //不管成功或失败，都会执行
+        })
     },
     deleteImg(params,type) {
       this.$fetchPostFile("material/saveFiles",params).then(res=> {

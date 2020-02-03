@@ -305,7 +305,7 @@
                 <div class="comfirm-input-wrapper">
                   <div class="comfirm-input" v-for="(item,i) in form3.contectTelList" :key="i">
                     <van-field class="contect" v-model="item.name" type="text" placeholder="输入联系人" />-
-                    <van-field class="tel" v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)" />
+                    <van-field class="tel" v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)" @blur="checkTel(i,item.tel)" />
                     
                   </div>
                 </div>
@@ -495,6 +495,8 @@ export default {
         endTime:'',
         type:1,
         linkUrl:'',
+        longitude:'',
+        latitude:'',
         descr:'',//备注
        contectTelList:[
             {
@@ -706,7 +708,6 @@ export default {
   },
   props:['curTabIndex'],
   created() {
-    console.log(this.checkTel('008631-187866666'))
   },
   watch:{
     'curTabIndex':{
@@ -733,11 +734,38 @@ export default {
         })
     }
   },
-  methods:{
+methods:{
 confirmNeedName(value){
   this.startTimePopNeedName=false
   this.form1.materialDetails[this.selectIndex].needsName=value
 
+},
+//地址解析
+addresschange(address){
+  var geocoder = new AMap.Geocoder();
+  geocoder.getLocation(address, (status, result)=> {
+      if (status === 'complete'&&result.geocodes.length) {
+       
+        let lnglat = result.geocodes[0].location
+        //  return lnglat
+         this.form3.longitude=lnglat.lng
+         this.form3.latitude=lnglat.lat
+         this.$fetchPost("material/save",this.form3,'json').then(res=> {
+            this.$toast(res.message);
+            if(res.code=="success"){
+              this.$dialog.alert({
+                title: '提交成功',
+                message: '我们将尽快与您联系，审核通过后，平台可见'
+              }).then(() => {
+                // on close
+              });
+            }
+        })
+         
+      }else{
+          // log.error('根据地址查询位置失败');
+      }
+  });
 },
 cancleNeedName(){
   this.startTimePopNeedName=false
@@ -765,17 +793,8 @@ selectNeedName1(i){
   this.startTimePopNeedName=true
   this.selectIndex1=i
 },
-    linkTelBlur(type,tel){
-      // var strTel=/^[\d\-,]+$/g
-      // var strTel=/^[\d\-]+$/g
-      // if (type==1){
-      //   if (!strTel.test(tel)){
-          
-      //   }else{
-      //     this.$toast('当前填写电话格式有误');
-      //   }
-
-      // }
+linkTelBlur(type,tel){
+      
       var strTel=/^[\d\-]+$/g
         if (!strTel.test(tel)){
             this.contectTelPoint=1
@@ -802,10 +821,13 @@ selectNeedName1(i){
 
     },
     //验证手机号的格式
-    checkTel(tel)
+    checkTel(index,tel)
       {
-        var mobile = /[^\0-9\/-]/g;
-        return mobile.test(tel);
+        var strTel=/^[\d\-]+$/g
+        if (!strTel.test(tel)){
+            this.form3.contectTelList[index].tel=""
+            this.$toast('当前填写电话格式有误')
+        }
       },
     //添加需求表
     addDemand(){
@@ -874,7 +896,6 @@ selectNeedName1(i){
     },
     //服务提供类型
     changetype(){
-      console.log(this.form3.materialDetails)
     },
     //格式化时间
     utiltime(date){
@@ -898,13 +919,11 @@ selectNeedName1(i){
     },
     onChange(picker, values,index){
           picker.setColumnValues(1,this.cityDate(this.allCity,values[0].text))
-          console.log(values)
           
         this.form1.addressArr=values
     }, 
     onChange1(picker, values,index){
           picker.setColumnValues(1,this.cityDate(this.allCity,values[0].text))
-          console.log(values)
           
         this.form2.addressArr=values
     }, 
@@ -941,7 +960,7 @@ selectNeedName1(i){
         let formdata1 = new FormData();
         formdata1.append('files', file);
         this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
-            this.$toast(res.message);
+            this.$toast("图片上传成功");
             if(res.code=='success'){
               this.meedUrlArr.push(res.content)
               this.showimg=false
@@ -951,6 +970,7 @@ selectNeedName1(i){
     },
     saRead(val){
       this.showimg=true
+      console.log(val.content)
       this.uploadImg(val.file)
     },
     //删除图片的回调
@@ -960,11 +980,10 @@ selectNeedName1(i){
       formdata1.append('files', val.file);
       this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
           if(res.code=='success'){
-            this.$toast("删除成功");
+            this.$toast("图片删除成功");
             this.meedUrlArr.splice(this.meedUrlArr.findIndex(item => item === res.content), 1)
             this.showimg=false
           }
-          console.log(this.meedUrlArr)
          
       })
     },
@@ -982,13 +1001,14 @@ selectNeedName1(i){
           if(iteam=="其他服务"){
             obj.needsName=iteam
             obj.needsNum=null
-            obj.descr=null
+            obj.descr=this.form3.needsDescr
           }else{
             obj.needsName=iteam
             obj.needsNum=null
             obj.descr=null
           }
           this.form3.materialDetails.push(obj)
+          
         }),
         this.form3.contectTelList.forEach(item=>{
           if(item.tel!==''){
@@ -997,9 +1017,8 @@ selectNeedName1(i){
         }),
         this.form3.linkPeople=arr.join(",")
         this.form3.picUrl=this.meedUrlArr.join(",")
-        this.$fetchPost("material/save",this.form3,'json').then(res=> {
-            this.$toast(res.message);
-        })
+        this.addresschange(this.form3.province+this.form3.city+this.form3.address)
+        
       }
     },
     //民间组织录入身份证明
@@ -1175,7 +1194,6 @@ selectNeedName1(i){
         hh +
         ":" +
         mm;
-        console.log(this.form1.startTime)
     },
     // 点击取消
     cancelTime() {
@@ -1239,7 +1257,6 @@ selectNeedName1(i){
     },
     // 点击确定
     confirmTime1() {
-      // console.log()
       this.startTimePop = false;
       this.startTime =
         this.currentDate.getFullYear() +
@@ -1274,7 +1291,6 @@ selectNeedName1(i){
     },
     // 点击取消
     cancelTime1() {
-      console.log(12)
       this.startTimePop = false;
     },
 

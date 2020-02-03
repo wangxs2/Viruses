@@ -696,7 +696,7 @@ export default {
         hour:'',
         orgType:1,
       },
-      curTabIndex:null, // 录入当前切换
+      curTabIndex:1, // 录入当前切换
       clickTabPoint:0, // 录入提交是否选择tab按钮指针
       conUs:[ // 录入联系人
         {
@@ -747,7 +747,6 @@ export default {
           type:3
         }
       ],
-      curTabIndex:undefined,
     }
   },
   created() {
@@ -771,11 +770,12 @@ export default {
     // 录入弹框隐藏
     luruSelect(){
       this.luruSelectModel=false
-      this.curTabIndex=undefined
+      this.curTabIndex=null
     },
     // 录入弹框选择
     luruSelectBtn(type) {
-      this.curTabIndex=type-1
+      this.curTabIndex=type
+      console.log(this.curTabIndex)
       this.luruSelectModel=false
       this.reduceShow=true
     },

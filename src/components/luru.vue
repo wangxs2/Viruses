@@ -15,10 +15,10 @@
         <div class="us-need-wrapper">
           <div class="us-need need">
             <div class="tab-btn">
-              <span :class="curActiveIndex==i?'active':''" v-for="(item,i) in luruSelectData" :key="item.type+'tab'" @click="needTi(i)">{{item.name}}</span>
+              <span :class="curTabIndex==item.type?'active':''" v-for="(item,i) in luruSelectData" :key="item.type+'tab'" @click="needTi(item.type)">{{item.name}}</span>
             </div>
             
-            <div class="form-wrapper" v-if="curActiveIndex==0">
+            <div class="form-wrapper" v-if="curTabIndex==1">
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">医院名称</span>
                 <van-field v-model="form1.hispotalName" type="text" placeholder="请填写" :error-message="errorMessage1.hispotalName"/>
@@ -128,7 +128,7 @@
               </div>
               <div class="confirm-btn" @click="confirmone">提交</div>
             </div>
-            <div class="form-wrapper" v-if="curActiveIndex==1">
+            <div class="form-wrapper" v-if="curTabIndex==2">
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">提供方名称</span>
                 <van-field v-model="form2.hispotalName" type="text" placeholder="请填写" :error-message="errorMessage2.hispotalName"/>
@@ -239,7 +239,7 @@
               </div>
               <div class="confirm-btn" @click="confirmtwo">提交</div>
             </div>
-            <div class="form-wrapper" v-if="curActiveIndex==2">
+            <div class="form-wrapper" v-if="curTabIndex==3">
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">机构名称</span>
                 <van-field v-model="form3.name" type="text" placeholder="请填写" :error-message="errorMessage3.hispotalName"/>
@@ -654,7 +654,7 @@ export default {
       startTime1:'',
       minDate1: new Date(),
       startTimePop1:false,
-      curActiveIndex:0, // 录入头部切换当前index
+      // curActiveIndex:0, // 录入头部切换当前index
       luruOriginizeTypeRadio:[ // 录入机构类型单选数据
         {
           id:1,
@@ -717,24 +717,18 @@ export default {
 
     };
   },
-  props:['curTabIndex'],
+   props: {
+      curTabIndex:Number,
+      required: true,
+    },
   created() {
   },
   watch:{
-    'curTabIndex':{
-      deep:true,
-      handler(newV,oldV){
-        this.curActiveIndex=newV
-      }
-    }
   },
  computed: {
-  curActiveIndex1: function () {
-   return this.curActiveIndex // 监听switchStatusData 的变化
-  }
+  
  },
  mounted () {
-//    this.curActiveIndex=this.curTabIndex
      this.columns[0].values = Object.values(this.allCity).map(function(e){
         return {text:e.name}
     })
@@ -970,7 +964,7 @@ linkTelBlur(type,tel,index){
     },
     // 录入需求提供切换
     needTi(type){
-      this.curActiveIndex=type
+      this.curTabIndex=type
     },
     //民间组织录入身份证明
     uploadImgsa (file) {
@@ -1173,7 +1167,6 @@ linkTelBlur(type,tel,index){
     //删除图片的回调
     tidelete(val){
       this.showimg=true
-
       let name=val.file.name
       let type=val.file.type
       lrz(val.file, {

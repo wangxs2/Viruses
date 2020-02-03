@@ -676,28 +676,12 @@ export default {
         }
       ],
       mapobj:{},
-      form:{ // 录入表单
-        company:'',
-        address:'',
-        people:'',
-        tel:'',
-        need:''
-      },
-      errorMessage:{
-        company:'',
-        address:'',
-        people:'',
-        tel:'',
-        need:''
-      },
       //头部的查询信息
       query:{
         content:'',
         hour:'',
         orgType:1,
       },
-      xuShow:true, 
-      tiShow:false,
       curTabIndex:null, // 录入当前切换
       clickTabPoint:0, // 录入提交是否选择tab按钮指针
       conUs:[ // 录入联系人
@@ -731,8 +715,6 @@ export default {
       },
       curTimeNoDataShow: false, // 实时捐赠无数据显示
       loadMore:true, //加载更多按钮
-      xuTab:true,
-      tiTab:true,
       isdzan:false,
       styleUp:true,
       isoneClosePoint:1,
@@ -792,21 +774,16 @@ export default {
         }
       })
     },
+
+
     isoneClick(){
       this.isone=false
       this.styleUp=false
       this.isoneClosePoint=0
 
     },
-    xuClick(){
-      this.xuTab=!this.xuTab
-      this.tiTab=!this.tiTab
-    },
-    tiClick(){
-      
-      this.xuTab=!this.xuTab
-      this.tiTab=!this.tiTab
-    },
+
+
     // 获取实时资讯数据
     getCurTimeDataList(){
       this.$fetchGet("donate/getInfo",this.curTimeParams).then(res=> {
@@ -849,95 +826,6 @@ export default {
     // 录入立即拨打
     commitTel(tel){
       window.location.href = "tel:" + tel
-    },
-    // 清空表单输入及错误提示
-    clearErrorMessage(){
-      
-      this.form.company=''
-      this.form.address=''
-      this.form.people=''
-      this.form.tel=''
-      this.form.need=''
-      
-      this.errorMessage.company=''
-      this.errorMessage.address=''
-      this.errorMessage.people=''
-      this.errorMessage.tel=''
-      this.errorMessage.need=''
-
-    },
-    // 提交非空验证
-    formVil(){
-      
-
-      if (!this.form.company){
-        this.errorMessage.company="请输入单位名称"
-      } else {
-        this.errorMessage.company=""
-
-      }
-      if (!this.form.address){
-        this.errorMessage.address="请输入地址"
-      } else {
-        this.errorMessage.address=""
-
-      }
-      if (!this.form.people){
-        this.errorMessage.people="请输入联系人"
-      } else {
-        this.errorMessage.people=""
-
-      }
-      if (!this.form.tel){
-        this.errorMessage.tel="请输入电话"
-      } else {
-          this.errorMessage.tel=""
-      }
-      if ( !this.form.need){
-        this.errorMessage.need="请输入物资需求"
-      } else {
-        this.errorMessage.need=""
-
-      }
-    },
-    // input失焦非空验证
-    formBlur(type){
-        var strTel=/^[\d\-,]+$/g
-      if (type==1 && !this.form.company){
-        this.errorMessage.company="请输入单位名称"
-      } else {
-        this.errorMessage.company=""
-
-      }
-      if (type==2 && !this.form.address){
-        this.errorMessage.address="请输入地址"
-      } else {
-        this.errorMessage.address=""
-
-      }
-      if (type==3 && !this.form.people){
-        this.errorMessage.people="请输入联系人"
-      } else {
-        this.errorMessage.people=""
-
-      }
-      if (type==4 && !this.form.tel){
-        this.errorMessage.tel="请输入电话"
-      } else if (type==4 && this.form.tel) {
-        // if (strTel.test(this.form.tel)) {
-
-          this.errorMessage.tel=""
-        // } else {
-        //   this.errorMessage.tel="电话格式错误，多个电话中间用 , 隔开"
-        // }
-
-      }
-      if (type==5 && !this.form.need){
-        this.errorMessage.need="请输入物资需求"
-      } else {
-        this.errorMessage.need=""
-
-      }
     },
     //大拇指点赞
     dzanclick(){
@@ -1048,8 +936,6 @@ export default {
     writeBtn(){
       // this.show=false
       // this.reduceShow=!this.reduceShow
-      // this.xuShow=true
-      // this.tiShow=false
       // this.clickTabPoint=0
 
       this.luruSelectModel=true

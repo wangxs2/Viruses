@@ -749,16 +749,21 @@ selectNeedName1(i){
 
     },
     confirmtwo(){
-      let linkPeopleArr=[]
+      let linkPeopleArr=[],fileImgArr=[]
          this.form2.contectTelList.forEach(v=> {
-           if (!v.name&&!v.tel){
+           if (v.name&&v.tel){
             linkPeopleArr.push(v.name+"-"+v.tel)
            }
+         })
+         this.form2.fileList.forEach(v=> {
+             if (v.content){
+                 fileImgArr.push(v.content)
+             }
          })
       
             
 
-      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||this.form2.materialDetails.length==0||linkPeopleArr.length==0||this.form2.startTime==""||this.form2.fileList.length==0){
+      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||this.form2.materialDetails.length==0||linkPeopleArr.length==0||this.form2.startTime==""||fileImgArr.length==0){
           this.$toast('请完善信息');
       }else if (this.form2.contectTelList[0].tel==''&&this.form2.contectTelList[1].tel==''&&this.form2.contectTelList[2].tel==''){
           this.$toast('请至少填写一位联系人');
@@ -778,7 +783,7 @@ selectNeedName1(i){
               isLogistics:this.form2.sup1,
               linkPeople:linkPeopleArr.join(','),
               createTime:this.form2.startTime,
-              file:this.form2.fileList,
+              file:fileImgArr,
         
             }
             console.log(params,"提交2")
@@ -926,13 +931,19 @@ selectNeedName1(i){
       this.form2.fileList.push(file.file) // 文件流
     },
     confirmone(){
-      let linkPeopleArr=[]
+      let linkPeopleArr=[],fileImgArr=[]
          this.form1.contectTelList.forEach(v=> {
-           if (!v.name&&!v.tel){
+           if (v.name&&v.tel){
             linkPeopleArr.push(v.name+"-"+v.tel)
            }
          })
-        if (this.form1.hispotalName==""||this.form1.province==""||this.form1.city==""|| this.form1.addressDetail==""||this.form1.materialDetails.length==0||this.form1.startTime==""||this.form1.fileList.length==0){
+         this.form1.fileList.forEach(v=> {
+             if (v.content){
+                 fileImgArr.push(v.content)
+             }
+         })
+         console.log(fileImgArr)
+        if (this.form1.hispotalName==""||this.form1.province==""||this.form1.city==""|| this.form1.addressDetail==""||this.form1.materialDetails.length==0||this.form1.startTime==""||fileImgArr.length==0){
             this.$toast('请完善信息');
         }else if (this.form1.contectTelList[0].tel==''&&this.form1.contectTelList[1].tel==''&&this.form1.contectTelList[2].tel==''){
             this.$toast('请至少填写一位联系人');
@@ -950,7 +961,7 @@ selectNeedName1(i){
             linkPeople:linkPeopleArr.join(','),
             createTime:this.form1.startTime,
             source:this.form1.needOrgin,
-            file:this.form1.fileList,
+            file:fileImgArr,
       
           }
           console.log(params,"提交1")

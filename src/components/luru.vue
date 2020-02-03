@@ -1015,9 +1015,9 @@ selectNeedName1(i){
             this.$toast(res.message);
           })
       }
+    },
     //民间组织上传图片之后
     afterRead1(file) {
-      // 此时可以自行将文件上传至服务器
       this.form2.fileList.push(file.file) // 文件流
     },
     confirmone(){

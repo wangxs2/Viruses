@@ -984,17 +984,22 @@ selectNeedName1(i){
       
     // 点击确定
     confirmTime() {
+        let MM=(Number(this.currentDate.getMonth()) + 1)>=10?(Number(this.currentDate.getMonth()) + 1):'0'+(Number(this.currentDate.getMonth()) + 1)
+        let dd=this.currentDate.getDate()>=10?this.currentDate.getDate():'0'+this.currentDate.getDate()
+        let hh=this.currentDate.getHours()>=10?this.currentDate.getHours():'0'+this.currentDate.getHours()
+        let mm=this.currentDate.getMinutes()>=10?this.currentDate.getMinutes():'0'+this.currentDate.getMinutes()
+
       this.startTimePop = false;
       this.form1.startTime =
         this.currentDate.getFullYear() +
         "-" +
-        (Number(this.currentDate.getMonth()) + 1) +
+        MM +
         "-" +
-        this.currentDate.getDate() +
+        dd +
         " " +
-        this.currentDate.getHours() +
+        hh +
         ":" +
-        this.currentDate.getMinutes();
+        mm;
         console.log(this.form1.startTime)
     },
     // 点击取消
@@ -1004,17 +1009,23 @@ selectNeedName1(i){
       
     // 点击确定
     confirmTimeNeed() {
+        
+        let MM=(Number(this.currentDate.getMonth()) + 1)>=10?(Number(this.currentDate.getMonth()) + 1):'0'+(Number(this.currentDate.getMonth()) + 1)
+        let dd=this.currentDate.getDate()>=10?this.currentDate.getDate():'0'+this.currentDate.getDate()
+        let hh=this.currentDate.getHours()>=10?this.currentDate.getHours():'0'+this.currentDate.getHours()
+        let mm=this.currentDate.getMinutes()>=10?this.currentDate.getMinutes():'0'+this.currentDate.getMinutes()
+
       this.startTimePopNeed = false;
       this.form2.startTime =
-        this.currentDateNeed.getFullYear() +
+        this.currentDate.getFullYear() +
         "-" +
-        (Number(this.currentDateNeed.getMonth()) + 1) +
+        MM +
         "-" +
-        this.currentDateNeed.getDate() +
+        dd +
         " " +
-        this.currentDateNeed.getHours() +
+        hh +
         ":" +
-        this.currentDateNeed.getMinutes();
+        mm;
     },
     // 点击取消
     cancelTimeNeed() {

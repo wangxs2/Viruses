@@ -110,7 +110,6 @@
                     v-model="form1.fileList"
                     multiple accept="image/*"
                     :max-count="5"
-                    :after-read="afterRead"
                   />
                 </div>
                   <span class="desc">最多可上传5张</span>
@@ -220,7 +219,6 @@
                     v-model="form2.fileList"
                     multiple accept="image/*"
                     :max-count="2"
-                    :after-read="afterRead1"
                   />
                 </div>
                   <span class="desc">企业提供方请上传营业执照照片，非人提供方请上传身份证正反面照片</span>
@@ -685,6 +683,8 @@ export default {
       startTimePopNeedName:false,
       selectIndex:0,
       selectIndex1:0,
+      contectTelPoint:0,
+      contectTelPoint1:0,
 
     };
   },
@@ -760,6 +760,12 @@ selectNeedName1(i){
       //   }
 
       // }
+      var strTel=/^[\d\-]+$/g
+        if (!strTel.test(tel)){
+            this.contectTelPoint=1
+            this.contectTelPoint1=1
+            this.$toast('当前填写电话格式有误')
+        }
 
     },
     confirmtwo(){
@@ -769,15 +775,15 @@ selectNeedName1(i){
             linkPeopleArr.push(v.name+"-"+v.tel)
            }
          })
-         this.form2.fileList.forEach(v=> {
-             if (v.content){
-                 fileImgArr.push(v.content)
-             }
-         })
+        //  this.form2.fileList.forEach(v=> {
+        //      if (v.content){
+        //          fileImgArr.push(v.content)
+        //      }
+        //  })
       
             
 
-      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||this.form2.materialDetails.length==0||linkPeopleArr.length==0||this.form2.startTime==""||fileImgArr.length==0){
+      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||this.form2.materialDetails.length==0||linkPeopleArr.length==0||this.form2.startTime==""||this.form2.fileList.length==0){
           this.$toast('请完善信息');
       }else if (this.form2.contectTelList[0].tel==''&&this.form2.contectTelList[1].tel==''&&this.form2.contectTelList[2].tel==''){
           this.$toast('请至少填写一位联系人');
@@ -797,7 +803,7 @@ selectNeedName1(i){
               isLogistics:this.form2.sup1,
               linkPeople:linkPeopleArr.join(','),
               createTime:this.form2.startTime,
-              file:fileImgArr,
+              file:this.form2.fileList,
         
             }
             console.log(params,"提交2")
@@ -966,11 +972,6 @@ selectNeedName1(i){
     needTi(type){
       this.curActiveIndex=type
     },
-    //民间组织上传图片之后
-    afterRead(file) {
-      // 此时可以自行将文件上传至服务器
-      this.form1.fileList.push(file.file) // 文件流
-    },
     confirmthree(){
       console.log(this.form3.filst)
       console.log(this.form3.filst[0].file)
@@ -1016,10 +1017,6 @@ selectNeedName1(i){
           })
       }
     },
-    //民间组织上传图片之后
-    afterRead1(file) {
-      this.form2.fileList.push(file.file) // 文件流
-    },
     confirmone(){
       let linkPeopleArr=[],fileImgArr=[]
          this.form1.contectTelList.forEach(v=> {
@@ -1027,13 +1024,14 @@ selectNeedName1(i){
             linkPeopleArr.push(v.name+"-"+v.tel)
            }
          })
-         this.form1.fileList.forEach(v=> {
-             if (v.content){
-                 fileImgArr.push(v.content)
-             }
-         })
+         console.log(this.form1.fileList)
+        //  this.form1.fileList.forEach(v=> {
+        //      if (v.content){
+        //          fileImgArr.push(v.content)
+        //      }
+        //  })
          console.log(fileImgArr)
-        if (this.form1.hispotalName==""||this.form1.province==""||this.form1.city==""|| this.form1.addressDetail==""||this.form1.materialDetails.length==0||this.form1.startTime==""||fileImgArr.length==0){
+        if (this.form1.hispotalName==""||this.form1.province==""||this.form1.city==""|| this.form1.addressDetail==""||this.form1.materialDetails.length==0||this.form1.startTime==""||this.form1.fileList.length==0){
             this.$toast('请完善信息');
         }else if (this.form1.contectTelList[0].tel==''&&this.form1.contectTelList[1].tel==''&&this.form1.contectTelList[2].tel==''){
             this.$toast('请至少填写一位联系人');
@@ -1051,7 +1049,7 @@ selectNeedName1(i){
             linkPeople:linkPeopleArr.join(','),
             createTime:this.form1.startTime,
             source:this.form1.needOrgin,
-            file:fileImgArr,
+            file:this.form1.fileList,
       
           }
           console.log(params,"提交1")

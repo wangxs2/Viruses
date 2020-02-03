@@ -6,7 +6,7 @@
         <van-loading size="64px" color="#1989fa"></van-loading>
       </div>
     </van-overlay>
-    <van-dialog v-model="showresult" title="提交成功">
+    <van-dialog v-model="showresult" title="提交成功" @confirm="closebig">
       <div>我们将尽快与您联系<br>审核通过后，平台可见</div>
     </van-dialog>
     <!-- 防止过快的切换 -->
@@ -235,7 +235,7 @@
                     :max-count="2"
                   />
                 </div>
-                  <span class="desc">企业提供方请上传营业执照照片，非人提供方请上传身份证正反面照片</span>
+                  <span class="desc">企业提供方请上传营业执照照片，个人提供方请上传身份证正反面照片</span>
               </div>
               <div class="confirm-btn" @click="confirmtwo">提交</div>
             </div>
@@ -340,8 +340,9 @@
                     @delete="sadelete"
                     :max-count="2"
                   />
-                  <!-- <span>企业提供方请上传营业执照照片，非人提供方请上传身份证正反面照片</span> -->
+                  
                 </div>
+                <span class="desc">企业提供方请上传营业执照照片，个人提供方请上传身份证正反面照片</span>
               </div>
               <div class="confirm-btn" @click="confirmthree">提交</div>
             </div>
@@ -750,6 +751,10 @@ confirmNeedName(value){
   this.form1.materialDetails[this.selectIndex].needsName=value
 
 },
+//关闭弹窗
+closebig(){
+
+},
 //地址解析
 addresschange(address){
   var geocoder = new AMap.Geocoder();
@@ -800,7 +805,6 @@ selectNeedName1(i){
   this.selectIndex1=i
 },
 linkTelBlur(type,tel,index){
-  console.log(index)
       
       var strTel=/^[\d\-]+$/g
         if (!strTel.test(tel)){
@@ -976,15 +980,29 @@ linkTelBlur(type,tel,index){
             this.$toast("图片上传成功");
             if(res.code=='success'){
               this.meedUrlArr.push(res.content)
-              this.showimg=false
+              
             }
+            this.showimg=false
             
         })
     },
     saRead(val){
       this.showimg=true
-      console.log(val.content)
-      this.uploadImgsa(val.file)
+      // this.uploadImgsa(val.file)
+      lrz(val.file, {
+          // width : 300
+          quality: 0.5    //自定义使用压缩方式
+      })  
+        .then(rst=> {
+            //成功时执行
+            console.log(rst)
+            this.uploadImgsa(rst)
+        }).catch(error=> {
+            //失败时执行
+        }).always(()=> {
+            //不管成功或失败，都会执行
+        })
+      
     },
     //删除图片的回调
     sadelete(val){
@@ -995,8 +1013,8 @@ linkTelBlur(type,tel,index){
           if(res.code=='success'){
             this.$toast("图片删除成功");
             this.meedUrlArr.splice(this.meedUrlArr.findIndex(item => item === res.content), 1)
-            this.showimg=false
           }
+           this.showimg=false
          
       })
     },
@@ -1042,8 +1060,9 @@ linkTelBlur(type,tel,index){
             this.$toast(res.message);
             if(res.code=='success'){
               this.meedUrlArr.push(res.content)
-              this.showimg=false
+              
             }
+            this.showimg=false
         })
     },
     //需求方录入需求证明
@@ -1054,8 +1073,9 @@ linkTelBlur(type,tel,index){
             this.$toast(res.message);
             if(res.code=='success'){
               this.meedUrlArr1.push(res.content)
-              this.showimg=false
+              
             }
+            this.showimg=false
         })
     },
     //提供方录入身份证明
@@ -1066,8 +1086,9 @@ linkTelBlur(type,tel,index){
             this.$toast(res.message);
             if(res.code=='success'){
               this.meedUrlArr2.push(res.content)
-              this.showimg=false
+              
             }
+            this.showimg=false
         })
     },
     xuRead(val){
@@ -1101,8 +1122,9 @@ linkTelBlur(type,tel,index){
             }else if (type==2){
               this.meedUrlArr2.splice(this.meedUrlArr2.findIndex(item => item === res.content), 1)
             }
-            this.showimg=false
+            
           }
+          this.showimg=false
       })
 
     },
@@ -1120,7 +1142,6 @@ linkTelBlur(type,tel,index){
 
         } else{
           
-         console.log(this.form1.materialDetails,"hahaha")
           this.params1= { 
             materialType:1,
             name:this.form1.hispotalName,

@@ -778,7 +778,6 @@ export default {
       this.curTabIndex=type-1
       this.luruSelectModel=false
       this.reduceShow=true
-      console.log(this.curTabIndex)
     },
     getCurTimeContent(){
       this.$fetchGet("donateCount/findDonateCount").then(res=> {
@@ -843,7 +842,6 @@ export default {
     },
     //大拇指点赞
     dzanclick(){
-      console.log(this.isdzan)
      this.isdzan=true
       this.$fetchGet("encourage/saveEncourage", {
         hospitalName:''

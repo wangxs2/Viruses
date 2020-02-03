@@ -8,16 +8,14 @@ const webpack = require('webpack')
 module.exports = {
   lintOnSave: false,
   publicPath: './', // 部署项目路径
-  // baseUrl: process.env_NODE_ENV == 'production' ? '/vehiclerepair/' : '', // 部署项目路径
   devServer: {
     port: 8086, // 端口号
-    // host: 'localhost',
-    open: true, //配置自动启动浏览器
+    open: false, //配置自动启动浏览器
     proxy: {
       '/kindnessplatform': {
         // target: 'http://47.100.200.255:9966/kindnessplatform', // 线上
         target: 'http://47.100.200.255:19955/kindnessplatform',  // 测试
-        // changeOrigin: true,
+        changeOrigin: true,
         pathRewrite: {
           '^/kindnessplatform': '/'
         }

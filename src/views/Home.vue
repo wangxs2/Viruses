@@ -27,7 +27,7 @@
       </div>
     </div>
     <!-- 防止过快的切换 -->
-    <van-overlay :z-index="20" :show="showmap">
+    <van-overlay :z-index="40" :show="showmap">
       <div class="wrapperfast" >
         <van-loading size="64px" color="#1989fa"></van-loading>
       </div>
@@ -37,7 +37,7 @@
     <div id="myMap" class="container"></div>
     
     <!-- 医院的详情弹框 -->
-    <van-popup  v-model="isDetail" closeable :style="{width: '100%' }" round :duration="0">
+    <van-popup  v-model="isDetail" :z-index="30" closeable :style="{width: '100%' }" round :duration="0">
       <div class="contentDetail">
         <div style="font-size:18px;text-align:left">{{mapobj.hospitalName}}</div>
         <div class="address"> 
@@ -71,7 +71,8 @@
     </van-popup>
     <van-popup
         v-model="phoneshow"
-        position="bottom"
+        position="right"
+        :z-inde="31"
         :style="{ height: '20%' }">
       <div style="padding:12px 24px">
         <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr"
@@ -2116,7 +2117,7 @@ export default {
     left: 0;
     bottom: 0;
     right:0;
-    z-index: 999;
+    z-index: 30;
     display:flex;
     justify-content: center;
     align-items: center;
@@ -2189,7 +2190,7 @@ export default {
     left: 0;
     bottom: 0;
     right:0;
-    z-index: 999;
+    z-index:30;
     display:flex;
     justify-content: center;
     align-items: center;

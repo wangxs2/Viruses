@@ -148,7 +148,7 @@ export function fetchPostFile(url, params, contentType) {
   return new Promise((resolve, reject) => {
     Axios.post(url, params, {
       headers: {
-        'Content-Type': "multipart/form-data"
+        'Content-Type':'multipart/form-data'
       },
     }).then(
       res => {

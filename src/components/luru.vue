@@ -1,5 +1,12 @@
 <template>
     <div class="luru">
+      <!-- 防止过快的切换 -->
+    <van-overlay :z-index="30" :show="showimg">
+      <div class="wrapperfast" >
+        <van-loading size="64px" color="#1989fa"></van-loading>
+      </div>
+    </van-overlay>
+    <!-- 防止过快的切换 -->
       <div class="reduce-content">
         <img style="" class="banner" src="../assets/image/banner.png" alt="">
         <div class="us-need-wrapper">
@@ -322,7 +329,8 @@
                 <div class="need-img-wrapper">
                   <van-uploader
                     v-model="form3.filst"
-                    multiple
+                    :after-read="saRead" 
+                    @delete="sadelete"
                     :max-count="2"
                   />
                   <!-- <span>企业提供方请上传营业执照照片，非人提供方请上传身份证正反面照片</span> -->
@@ -477,6 +485,7 @@ export default {
         address2:'',
         address:'',//地址
         serviceRange:"",//覆盖范围
+        picUrl:'',
         startTime:'',
         endTime:'',
         type:1,
@@ -502,6 +511,7 @@ export default {
         files:[],
         filst:[]
       },
+      meedUrlArr:[],
       errorMessage3:{
         hispotalName:'',
         address:'',
@@ -523,6 +533,7 @@ export default {
         author:'',
         authorWrite:'',
       },
+      showimg:false,
       luruSelectData:[ //录入选择数据
         {
           name: "我是需求方",
@@ -972,6 +983,38 @@ selectNeedName1(i){
     needTi(type){
       this.curActiveIndex=type
     },
+    //民间组织录入身份证明
+    uploadImg (file) {
+        let formdata1 = new FormData();
+        formdata1.append('files', file);
+        this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
+            this.$toast(res.message);
+            if(res.code=='success'){
+              this.meedUrlArr.push(res.content)
+              this.showimg=false
+            }
+            
+        })
+    },
+    saRead(val){
+      this.showimg=true
+      this.uploadImg(val.file)
+    },
+    //删除图片的回调
+    sadelete(val){
+      this.showimg=true
+      let formdata1 = new FormData();
+      formdata1.append('files', val.file);
+      this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
+          if(res.code=='success'){
+            this.$toast("删除成功");
+            this.meedUrlArr.splice(this.meedUrlArr.findIndex(item => item === res.content), 1)
+            this.showimg=false
+          }
+          console.log(this.meedUrlArr)
+         
+      })
+    },
     confirmthree(){
       console.log(this.form3.filst)
       console.log(this.form3.filst[0].file)
@@ -979,12 +1022,11 @@ selectNeedName1(i){
       console.log(this.form3)
       if(this.form3.name==""||this.form3.province==""||this.form3.city==""
       ||this.form3.address==""||this.form3.serviceRange==""||
-      this.form3.startTime==""||this.form3.endTime==""||this.form3.materialDetails1.length==0||this.form3.filst.length==0){
+      this.form3.startTime==""||this.form3.endTime==""||this.form3.materialDetails1.length==0||this.meedUrlArr.length==0){
         this.$toast('请完善信息');
       }else if(this.form3.contectTelList[0].tel==""&&this.form3.contectTelList[1].tel==""&&this.form3.contectTelList[2].tel==""){
         this.$toast('请至少输入一位联系人');
       }else{
-        
         this.form3.materialDetails1.forEach(iteam=>{
           let obj={}
           if(iteam=="其他服务"){
@@ -998,21 +1040,36 @@ selectNeedName1(i){
           }
           this.form3.materialDetails.push(obj)
         }),
-        this.form3.filst.forEach(itam=>{
-          this.form3.files.push(itam.file)
-          console.log(itam.file)
-        }),
         this.form3.contectTelList.forEach(item=>{
           if(item.tel!==''){
             arr.push(item.name+":"+item.tel)
           }
         }),
         this.form3.linkPeople=arr.join(",")
+        this.form3.picUrl=this.meedUrlArr.join(",")
         console.log(this.form3)
        
-        this.$fetchPostFile("material/saveFiles",this.form3.files).then(res=> {
+        this.$fetchPostFile("material/save",this.form3,'json').then(res=> {
             this.$toast(res.message);
-          })
+        })
+
+
+        var settings = {
+            url: "http://47.100.200.255:19955/kindnessplatform/material/saveFiles",
+            method: "post",
+            timeout: 0,
+            headers: {
+              "Content-Type": "application/json"
+            },
+            processData: false,
+          mimeType: "multipart/form-data",
+            contentType: false,
+            data: this.form3.files
+          };
+
+          $.ajax(settings).done(function (response) {
+            console.log(response);
+          });
       }
     },
     confirmone(){
@@ -1192,7 +1249,12 @@ selectNeedName1(i){
 </style>
 <style lang="scss" scoped>
 .luru{
-    
+  .wrapperfast{
+     display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
   .reduce-content{
     background:#2D65E3;
     padding-bottom:40px;

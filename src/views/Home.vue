@@ -506,8 +506,7 @@
     <div class="cur-time-btn" @click="curTimeBtn"><span>实时</span><span>播报</span></div>
     <van-popup v-model="curTimeDonate" closeable position="bottom" :style="{ height: '100%' }" class="cur-time-donate">
       <div class="time-donate">
-        <!-- <div class="top"><span>实时播报</span></div> -->
-        <!-- <div class="top"><span>{{curTimeTopContent}}</span></div> -->
+        <!-- <div class="top"><img src="../assets/image/curtimewrite.png" alt=""><span class="top-content-write">{{curTimeTopContent}}</span></div> -->
         <div class="donate-content" v-if="curTimeNoDataShow">
           <div class="donate-list" v-for="(item, i) in curTimeDataList" :key="i">
             <div class="time-wrapper">
@@ -521,19 +520,20 @@
             </div>
 
             <div class="main-content">
-              <a :href="item.url">
+              <!-- <a :href="item.url"> -->
 
                 <div class="title-wrapper">
                   <span class="tab-type por" v-if="item.isTop&&item.isTop==1">置顶</span>
                   <span class="tab-type new" v-if="item.isNew&&item.isNew==1">最新</span>
-                  <span class="title" v-if="(item.isTop||item.isNew)&&item.headline&&item.headline.length<=10">{{item.headline}}</span>
+                  <!-- <span class="title" v-if="(item.isTop||item.isNew)&&item.headline&&item.headline.length<=10">{{item.headline}}</span>
                   <span class="title" v-else-if="(item.isTop||item.isNew)&&item.headline&&item.headline.length>10">{{item.headline.substring(0,11)}}...</span>
                   <span class="title" v-else-if="!item.isTop&&!item.isNew&&item.headline&&item.headline.length<=14">{{item.headline}}</span>
-                  <span class="title" v-else-if="!item.isTop&&!item.isNew&&item.headline&&item.headline.length>14">{{item.headline.substring(0,13)}}...</span>
+                  <span class="title" v-else-if="!item.isTop&&!item.isNew&&item.headline&&item.headline.length>14">{{item.headline.substring(0,13)}}...</span> -->
+                  <span class="title">{{item.headline}}</span>
                 </div>
                 <div class="articl">{{item.mainBody}}</div>
                 <div class="origin">信息来源：<span>{{item.publishSource}}</span></div>
-              </a>
+              <!-- </a> -->
             </div>
           </div>
           <div class="loading-more" v-if="loadMore" @click="loadMoreData">加载更多</div>
@@ -1405,51 +1405,6 @@ export default {
   .threebif:active {
     top: 70px; /**向下偏移2px **/
   }
-  .two-dir{
-    position:fixed;
-    top:160px;
-    left:20px;
-    z-index:10;
-    width:40px;
-    padding: 0 3px;
-    box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32);
-    border-radius:3px;
-    font-size: 10px;
-    background: #fff;
-    .tab-type{
-      display:flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 3px;
-      &:first-child{
-        border-bottom: 1px solid #f1f1f1;
-      }
-      &.xu{
-    color: #666;
-
-      }
-      &.ti{
-    color: #666;
-
-      }
-      &.xu1{
-    color: #0ff;
-
-      }
-      &.ti1{
-    color: #0ff;
-
-      }
-      img{
-        width: 18px;
-        height: 18px;
-      }
-      span{
-        margin-top:2px;
-      }
-    }
-  }
   table{
     td{
       font-size:12px;
@@ -1929,15 +1884,18 @@ export default {
     // }
     .top{
       display:flex;
-      justify-content: flex-end;
+      justify-content:space-between;
       align-items: center;
       width: 100%;
-      height: 60px;
-      background:url("../assets/image/curtime.png") no-repeat;
-      background-size: 100% 60px;
-      span{
+      background:linear-gradient(180deg,rgba(89,101,233,1) 0%,rgba(91,178,245,1) 100%);
+      padding:15px 14px;
+      box-sizing:border-box;
+      img{
+        width: 33px;
+        height: 30px;
+      }
+      .top-content-write{
         display: block;
-        padding-right: 15px;
         width: 285px;
         font-size:13px;
         text-align: left;
@@ -1945,6 +1903,8 @@ export default {
         font-weight:bold;
         color:rgba(255,255,255,1);
         line-height:18px;
+        padding-left: 15px;
+        border-left:1px solid #F2F1F1;
       }
 
     }
@@ -2018,12 +1978,13 @@ export default {
           border-radius:4px;
           padding: 12px;
           margin-bottom: 15px;
-          a{
+          // a{
             display:block;
             color:rgba(51,51,51,1);
             .title-wrapper{
               width:232px;
-              height: 20px;
+              line-height:20px;
+              // height: 20px;
               text-align: left;
               // white-space:nowrap;
               // text-overflow:ellipsis;
@@ -2050,6 +2011,7 @@ export default {
                 font-weight:bold;
                 color:rgba(51,51,51,1);
                 vertical-align:top;
+                // line-height:15px;
 
               }
             }
@@ -2073,7 +2035,7 @@ export default {
 
               }
             }
-          }
+          // }
         }
 
       }

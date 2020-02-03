@@ -988,16 +988,18 @@ linkTelBlur(type,tel,index){
     },
     saRead(val){
       this.showimg=true
-      console.log(val)
-      // this.uploadImgsa(val.file)
+      let name=val.file.name
+      let type=val.file.type
       lrz(val.file, {
           // width : 300
-          quality: 0.5    //自定义使用压缩方式
+          quality: 0.3    //自定义使用压缩方式
       })  
         .then(rst=> {
             //成功时执行
-           rst.file.name=rst.origin.name
-            this.uploadImgsa(rst.file)
+           let file = new window.File([rst.file], val.file.name, {
+              type: val.file.type
+              }) //把blob转化成file
+          this.uploadImgsa(file)
         }).catch(error=> {
             //失败时执行
         }).always(()=> {

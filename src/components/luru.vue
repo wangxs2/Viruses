@@ -755,7 +755,6 @@ addresschange(address){
          this.form3.longitude=lnglat.lng
          this.form3.latitude=lnglat.lat
          this.$fetchPost("material/save",this.form3,'json').then(res=> {
-            
             if(res.code=="success"){
               this.showresult=true
             }else{

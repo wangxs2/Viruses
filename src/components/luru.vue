@@ -17,7 +17,6 @@
             <div class="tab-btn">
               <span :class="curTabIndex==item.type?'active':''" v-for="(item,i) in luruSelectData" :key="item.type+'tab'" @click="needTi(item.type)">{{item.name}}</span>
             </div>
-            
             <div class="form-wrapper" v-if="curTabIndex==1">
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">医院名称</span>
@@ -1213,7 +1212,9 @@ linkTelBlur(type,tel,index){
         }else if (this.form1.contectTelList[0].tel==''&&this.form1.contectTelList[1].tel==''&&this.form1.contectTelList[2].tel==''){
             this.$toast('请至少填写一位联系人');
 
-        } else{
+        } else if(this.form1.materialDetails[this.form1.materialDetails.length-1].needsName||this.form1.materialDetails[this.form1.materialDetails.length-1].needsNum){
+          
+        }else{
           
           this.params1= { 
             materialType:1,

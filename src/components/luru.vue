@@ -709,8 +709,8 @@ export default {
       startTimePopNeedName:false,
       selectIndex:0,
       selectIndex1:0,
-      contectTelPoint:0,
-      contectTelPoint1:0,
+      needWritePoint:0,
+      needWritePoint1:0,
       params1:{},
       params2:{},
 
@@ -1207,7 +1207,16 @@ linkTelBlur(type,tel,index){
             linkPeopleArr.push(v.name+":"+v.tel)
            }
          })
-        if (this.form1.hispotalName==""||this.form1.province==""||this.form1.city==""|| this.form1.addressDetail==""||this.form1.materialDetails.length==0||this.form1.startTime==""||this.meedUrlArr1.length==0){
+         this.form1.materialDetails.forEach(v=> {
+           if (!v.needsName||!v.needsNum){
+             this.needWritePoint=1
+           } else{
+             this.needWritePoint=0
+
+           }
+         })
+
+        if (this.form1.hispotalName==""||this.form1.province==""||this.form1.city==""|| this.form1.addressDetail==""||this.needWritePoint||this.form1.startTime==""||this.meedUrlArr1.length==0){
             this.$toast('请完善信息');
         }else if (this.form1.contectTelList[0].tel==''&&this.form1.contectTelList[1].tel==''&&this.form1.contectTelList[2].tel==''){
             this.$toast('请至少填写一位联系人');
@@ -1244,7 +1253,19 @@ linkTelBlur(type,tel,index){
             linkPeopleArr.push(v.name+":"+v.tel)
            }
          })
-      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||this.form2.materialDetails.length==0||linkPeopleArr.length==0||this.form2.startTime==""||this.meedUrlArr2.length==0){
+
+         
+         this.form2.materialDetails.forEach(v=> {
+           if (!v.needsName||!v.needsNum){
+             this.needWritePoint1=1
+           } else{
+             this.needWritePoint1=0
+
+           }
+         })
+
+
+      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||this.needWritePoint1||linkPeopleArr.length==0||this.form2.startTime==""||this.meedUrlArr2.length==0){
           this.$toast('请完善信息');
       }else if (this.form2.contectTelList[0].tel==''&&this.form2.contectTelList[1].tel==''&&this.form2.contectTelList[2].tel==''){
           this.$toast('请至少填写一位联系人');

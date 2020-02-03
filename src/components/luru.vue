@@ -1110,7 +1110,7 @@ linkTelBlur(type,tel,index){
       let linkPeopleArr=[],fileImgArr=[]
          this.form1.contectTelList.forEach(v=> {
            if (v.tel||v.name&&v.tel){
-            linkPeopleArr.push(v.name+"-"+v.tel)
+            linkPeopleArr.push(v.name+":"+v.tel)
            }
          })
         if (this.form1.hispotalName==""||this.form1.province==""||this.form1.city==""|| this.form1.addressDetail==""||this.form1.materialDetails.length==0||this.form1.startTime==""||this.meedUrlArr1.length==0){
@@ -1146,7 +1146,7 @@ linkTelBlur(type,tel,index){
       let linkPeopleArr=[],fileImgArr=[]
          this.form2.contectTelList.forEach(v=> {
            if (v.tel||v.name&&v.tel){
-            linkPeopleArr.push(v.name+"-"+v.tel)
+            linkPeopleArr.push(v.name+":"+v.tel)
            }
          })
       if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||this.form2.materialDetails.length==0||linkPeopleArr.length==0||this.form2.startTime==""||this.meedUrlArr2.length==0){

@@ -47,7 +47,7 @@
         </div>
         <div class="address" style="font-size:12px"> 
           <div v-if="mapobj.source!==undefined&&mapobj.source!==''" style="color:#666666">信息来源：{{mapobj.source}}  <span style="color:#216AFF;cursor:pointer"> 点击查看</span></div>
-          <div v-if="mapobj.createTime!==undefined">发布日期：{{mapobj.createTime}}</div>
+          <div v-if="mapobj.createTime!==undefined">发布日期：{{(mapobj.createTime).replace("+"," ")}}</div>
         </div>
         <div class="tel-phone" v-if="mapobj.linkTelarr!==undefined">
           <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr"
@@ -142,7 +142,7 @@
         <div class="list-wrapper" v-for="(item,i) in dataList" :key="i" @click="detailright(item)">
           <p class="title">{{item.hospitalName}}</p>
           <p class="address" v-if="item.hospitalAddress!==undefined&&item.hospitalAddress!==''"><van-icon name="location-o" size="20" /><span>{{item.hospitalAddress}}</span></p>
-          <p class="time" v-if="item.createTime!==undefined&&item.createTime!==''">发布日期：{{item.createTime!==undefined?item.createTime.substring(0,16):''}}</p>
+          <p class="time" v-if="item.createTime!==undefined&&item.createTime!==''">发布日期：{{item.createTime!==undefined?item.createTime.substring(0,16).replace("+"," "):''}}</p>
           <div class="phone" v-if="item.linkTelList!==undefined">
             <p  v-for="(items,i) in item.linkTelList" :key="i"><van-icon name="phone-o" size="20" /><span>{{items}}</span></p>
           </div>
@@ -2133,9 +2133,8 @@ export default {
         // align-items: center;
         width: 100%;
         height:130px;
-        background:url("../assets/image/luru1.png") no-repeat;
+        background-image:url("../assets/image/luru1.png");
         background-size: 100% 130px;
-        
         .luru-title{
           font-size:24px;
           font-family:PingFang SC;

@@ -11,7 +11,7 @@
     </van-dialog>
     <!-- 防止过快的切换 -->
       <div class="reduce-content">
-        <img style="" class="banner" src="../assets/image/banner.png" alt="">
+        <div  class="banner"></div>
         <div class="us-need-wrapper">
           <div class="us-need need">
             <div class="tab-btn">
@@ -1313,6 +1313,8 @@ linkTelBlur(type,tel){
     .banner{
       width:100%;
       height: 125px;
+      background-image:url("../assets/image/banner.png");
+      background-size: 100% 100%;
     }
     .us-need-wrapper{
       margin: 0 12px;

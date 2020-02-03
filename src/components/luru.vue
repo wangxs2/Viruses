@@ -270,7 +270,7 @@
                     v-model="currentDate1"
                     type="date"
                     :min-date="minDate1"
-                    @confirm="confirmTime2"
+                    @confirm="quemsg2"
                     @cancel="startTimePop4 = false"
                     :formatter="formatter1"
                   />
@@ -898,7 +898,7 @@ selectNeedName1(i){
       this.form3.startTime=this.utiltime(val)
     },
     // 民间组织选择时间
-    confirmTime2(val) {
+    quemsg2(val) {
       this.startTimePop4 = false;
      this.form3.endTime=this.utiltime(val)
     },
@@ -995,8 +995,6 @@ selectNeedName1(i){
             obj.needsNum=null
             obj.descr=null
           }
-         
-          
           this.form3.materialDetails.push(obj)
         }),
         this.form3.filst.forEach(itam=>{
@@ -1011,7 +1009,7 @@ selectNeedName1(i){
         this.form3.linkPeople=arr.join(",")
         console.log(this.form3)
        
-        this.$fetchPostFile("material/save",this.form3).then(res=> {
+        this.$fetchPostFile("material/saveFiles",this.form3.files).then(res=> {
             this.$toast(res.message);
           })
       }
@@ -1068,10 +1066,6 @@ selectNeedName1(i){
           })
         }
     },
-    confirmthree(){
-        // console.log(this.form3.fileList);
-    },
-      
     // 点击确定
     confirmTime() {
         let MM=(Number(this.currentDate.getMonth()) + 1)>=10?(Number(this.currentDate.getMonth()) + 1):'0'+(Number(this.currentDate.getMonth()) + 1)

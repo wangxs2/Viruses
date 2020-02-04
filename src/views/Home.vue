@@ -37,7 +37,7 @@
     <div id="myMap" class="container"></div>
     
     <!-- 医院的详情弹框 -->
-    <van-popup  v-model="isDetail" :z-index="30" closeable :style="{width: '100%' }" round :duration="0">
+    <van-popup  v-model="isDetail"  closeable :style="{width: '100%' }" round :duration="0">
       <div class="contentDetail">
         <div style="font-size:18px;text-align:left">{{mapobj.hospitalName}}</div>
         <div class="address"> 
@@ -72,7 +72,6 @@
     <van-popup
         v-model="phoneshow"
         position="right"
-        :z-inde="31"
         :style="{ height: '20%' }">
       <div style="padding:12px 24px">
         <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr"

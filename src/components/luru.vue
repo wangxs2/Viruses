@@ -1220,11 +1220,7 @@ linkTelBlur(type,tel,index){
             this.$toast('请完善信息');
         }else if (this.form1.contectTelList[0].tel==''&&this.form1.contectTelList[1].tel==''&&this.form1.contectTelList[2].tel==''){
             this.$toast('请至少填写一位联系人');
-
-        } else if(this.form1.materialDetails[this.form1.materialDetails.length-1].needsName||this.form1.materialDetails[this.form1.materialDetails.length-1].needsNum){
-          
         }else{
-          
           this.params1= { 
             materialType:1,
             name:this.form1.hispotalName,

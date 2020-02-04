@@ -37,7 +37,7 @@
     <div id="myMap" class="container"></div>
     
     <!-- 医院的详情弹框 -->
-    <van-popup  v-model="isDetail" :z-index="30" closeable :style="{width: '100%' }" round :duration="0">
+    <van-popup  v-model="isDetail"  closeable :style="{width: '100%' }" round :duration="0">
       <div class="contentDetail">
         <div style="font-size:18px;text-align:left">{{mapobj.hospitalName}}</div>
         <div class="address"> 
@@ -71,9 +71,7 @@
     </van-popup>
     <van-popup
         v-model="phoneshow"
-        position="right"
-        :z-inde="31"
-        :style="{ height: '20%' }">
+        position="right">
       <div style="padding:12px 24px">
         <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr"
                  :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" color="#1989fa" size="34"  /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>

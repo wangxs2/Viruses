@@ -123,7 +123,7 @@
                     :max-count="5"
                   />
                 </div>
-                  <span class="desc">最多可上传5张</span>
+                  <span class="desc">最多可上传5张图片</span>
               </div>
               <div class="confirm-btn" @click="confirmone">提交</div>
             </div>
@@ -1033,9 +1033,9 @@ linkTelBlur(type,tel,index){
         })
     },
     saRead(val){
-      if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
-        this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
-      } else {
+      // if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
+      //   this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
+      // } else {
         this.showimg=true
         let name=val.file.name
         let type=val.file.type
@@ -1053,7 +1053,7 @@ linkTelBlur(type,tel,index){
           }).always(()=> {
               //不管成功或失败，都会执行
           })
-      }
+      // }
       
     },
     //删除图片的回调
@@ -1166,9 +1166,9 @@ linkTelBlur(type,tel,index){
     },
     xuRead(val){
       console.log(val)
-      if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
-        this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
-      }else {
+      // if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
+      //   this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
+      // }else {
         this.showimg=true
         let name=val.file.name
         let type=val.file.type
@@ -1186,12 +1186,12 @@ linkTelBlur(type,tel,index){
           }).always(()=> {
               //不管成功或失败，都会执行
           })
-      }
+      // }
     },
     tiRead(val){
-      if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
-        this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
-      }else {
+      // if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
+      //   this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
+      // }else {
         this.showimg=true
         let name=val.file.name
         let type=val.file.type
@@ -1209,7 +1209,7 @@ linkTelBlur(type,tel,index){
           }).always(()=> {
               //不管成功或失败，都会执行
           })
-      }
+      // }
     },
     //删除图片的回调
     xudelete(val){

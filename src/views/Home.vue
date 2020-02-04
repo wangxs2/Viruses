@@ -142,7 +142,7 @@
           <p class="title">{{item.hospitalName}}</p>
           <p class="address" v-if="item.hospitalAddress!==undefined&&item.hospitalAddress!==''"><van-icon name="location-o" size="20" /><span>{{item.hospitalAddress}}</span></p>
           <p class="time" v-if="item.createTime!==undefined&&item.createTime!==''">发布日期：{{item.createTime!==undefined?item.createTime.substring(0,16).replace("+"," "):''}}</p>
-          <div class="phone" v-if="item.linkTelPeopleList!==undefined">
+          <div class="phone" v-if="item.linkTelPeopleList!==undefined&&query.orgType!==3">
             <p  v-for="(items,i) in item.linkTelPeopleList" :key="i"><van-icon name="phone-o" size="20" /><span>{{items.name}}</span><span @click="searchRightModelPhone(items.tel)">{{items.tel}}</span></p>
           </div>
         </div>

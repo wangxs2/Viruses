@@ -532,7 +532,7 @@
             </div>
 
             <div class="main-content">
-              <!-- <a :href="item.url"> -->
+              <a :href="item.url?item.url:'javascript:void(0);'">
 
                 <div class="title-wrapper">
                   <span class="tab-type por" v-if="item.isTop&&item.isTop==1">置顶</span>
@@ -545,7 +545,7 @@
                 </div>
                 <div class="articl">{{item.mainBody}}</div>
                 <div class="origin">信息来源：<span>{{item.publishSource}}</span></div>
-              <!-- </a> -->
+              </a>
             </div>
           </div>
           <div class="loading-more" v-if="loadMore" @click="loadMoreData">加载更多</div>
@@ -720,12 +720,28 @@ export default {
         },
       ],
       curTimeDonate:false, // 实时捐赠弹框
-      curTimeDataList:[],
+      curTimeDataList:[
+        {
+          duration:"sss",
+          pubDate:"2019-12-13 22:33",
+          headline:"2222222222222222",
+          mainBody:"顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶",
+          publishSource:"ddddd"
+        },
+        {
+          duration:"sss",
+          pubDate:"2019-12-13 22:33",
+          headline:"2222222222222222",
+          mainBody:"顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶",
+          publishSource:"ddddd",
+          url:"http://www.baidu.com"
+        }
+      ],
       curTimeParams:{
         page: 1, // 页数
         pageSize:10, // 偏移量
       },
-      curTimeNoDataShow: false, // 实时捐赠无数据显示
+      curTimeNoDataShow: true, // 实时捐赠无数据显示
       loadMore:true, //加载更多按钮
       isdzan:false,
       styleUp:true,
@@ -748,7 +764,7 @@ export default {
     }
   },
   created() {
-    this.getCurTimeDataList()
+    // this.getCurTimeDataList()
   },
  mounted () {
     this.getMap()
@@ -2015,7 +2031,7 @@ export default {
           border-radius:4px;
           padding: 12px;
           margin-bottom: 15px;
-          // a{
+          a{
             display:block;
             color:rgba(51,51,51,1);
             .title-wrapper{
@@ -2072,7 +2088,7 @@ export default {
 
               }
             }
-          // }
+          }
         }
 
       }

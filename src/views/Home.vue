@@ -46,10 +46,10 @@
           <div v-if="mapobj.type==2" class="right-btn right-btn1">发热门诊</div>
         </div>
         <div class="address" style="font-size:12px"> 
-          <div v-if="mapobj.source!==undefined&&mapobj.source!==''" style="color:#666666">信息来源：{{mapobj.source}}  <span style="color:#216AFF;cursor:pointer"> 点击查看</span></div>
+          <div v-if="mapobj.source!==undefined&&mapobj.source!==''" style="color:#666666">信息来源：{{mapobj.source}}  <span style="color:#216AFF;cursor:pointer"> </span></div>
           <div v-if="mapobj.createTime!==undefined">发布日期：{{(mapobj.createTime).replace("+"," ")}}</div>
         </div>
-        <div class="tel-phone" v-if="mapobj.linkTelarr!==undefined">
+        <div class="tel-phone" v-if="mapobj.linkTelarr!==undefined&query.orgType!==3">
           <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr"
                  :key="index"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
         </div>
@@ -64,7 +64,7 @@
         <div v-if="mapobj.orgDescr!==undefined" style="font-size:12px;color:#999999;text-align:left">备注：{{mapobj.orgDescr}}</div>
         <van-divider />
         <div>
-          <van-button v-if="mapobj.linkTelarr!==undefined" round color="#216AFF" style="margin-right:12px" @click="dialPhoneNumber()">我要联系</van-button>
+          <van-button v-if="mapobj.linkTelarr!==undefined&&query.orgType!==3" round color="#216AFF" style="margin-right:12px" @click="dialPhoneNumber()">我要联系</van-button>
           <van-button round color="linear-gradient(to right, #FF6600, #FF7B10)" @click="shakeTime(mapobj.hospitalName)" icon="good-job-o" type="info">点赞加油 {{mapobj.encourageNum}}次</van-button>
         </div>
       </div>

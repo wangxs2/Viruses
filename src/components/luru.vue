@@ -47,11 +47,11 @@
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">物资对接情况</span>
                 <div class="comfirm-radio">
-                  <van-checkbox-group v-model="form1.sup" class="radio-group">
+                  <van-radio-group v-model="form1.sup" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruSupRadio" :key="i+item.name">
-                    <van-checkbox shape="square" checked-color="#2D65E3" :name="item.id">{{item.name}}</van-checkbox>
+                    <van-radio :name="item.id" checked-color="#2D65E3">{{item.name}}</van-radio>
                     </div>
-                  </van-checkbox-group>
+                  </van-radio-group>
                 </div>
               </div>
               <div class="form-input">
@@ -67,7 +67,7 @@
                       <div class="name">
                         <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
 
-                        <van-field class="sup-name" :readonly="readonly1" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center" @focus="needFocus(index)" @blur="needBlur(index)"/>
+                        <van-field class="sup-name" readonly v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center" @click="selectNeedName(index)"/>
                         <van-popup v-model="startTimePopNeedName" position="bottom">
                         <van-picker show-toolbar :columns="needList" @confirm="confirmNeedName" @cancel="cancleNeedName" @change="changeNeedName" />
                         </van-popup>
@@ -94,7 +94,7 @@
                 <van-popup v-model="startTimePop" position="bottom">
                   <van-datetime-picker
                     v-model="currentDate"
-                    type="date"
+                    type="datetime"
                     :min-date="minDate"
                     @confirm="confirmTime"
                     @cancel="cancelTime"
@@ -123,7 +123,7 @@
                     :max-count="5"
                   />
                 </div>
-                  <span class="desc">最多可上传5张</span>
+                  <span class="desc">最多可上传5张图片</span>
               </div>
               <div class="confirm-btn" @click="confirmone">提交</div>
             </div>
@@ -175,20 +175,20 @@
                 </div>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">可提供物资清单</span>
+                <span><img style="" src="../assets/image/star.png" alt="">需求表</span>
                 <div class="comfirm-need-input-wrapper">
                   <div class="comfirm-need-top">
 
                     <div class="comfirm-need-head">
                       <div class="name">物资名称</div>
-                      <div class="num">可提供数量</div>
+                      <div class="num">需求数量</div>
                     </div>
                     <div class="comfirm-need-body" v-for="(iteam,index) in form2.materialDetails" :key="index">
                       <div class="name">
                         <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
 
                         
-                        <van-field class="sup-name" v-model="iteam.needsName" :readonly="readonly2" type="text" placeholder="输入物资名称"   input-align="center"  @focus="needFocus1(index)" @blur="needBlur1(index)"/>
+                        <van-field class="sup-name" v-model="iteam.needsName" readonly type="text" placeholder="输入物资名称"   input-align="center" @click="selectNeedName1(index)"/>
                         <van-popup v-model="startTimePopNeedName" position="bottom">
                         <van-picker show-toolbar :columns="needList" @confirm="confirmNeedName1" @cancel="cancleNeedName" @change="changeNeedName1" />
                         </van-popup>
@@ -215,7 +215,7 @@
                 <van-popup v-model="startTimePopNeed" position="bottom">
                   <van-datetime-picker
                     v-model="currentDateNeed"
-                    type="date"
+                    type="datetime"
                     :min-date="minDate"
                     @confirm="confirmTimeNeed"
                     @cancel="cancelTimeNeed"
@@ -383,7 +383,7 @@ export default {
           }
         ],//需求表
         type:4,
-        sup:[],
+        sup:1,
         needList:{
             name:'',
             num:'',
@@ -415,7 +415,7 @@ export default {
         address:'',
         addressDetail:"",
         type:'',
-        sup:[],
+        sup:'',
         needList:{
             name:'',
             num:''
@@ -713,10 +713,6 @@ export default {
       needWritePoint1:0,
       params1:{},
       params2:{},
-      readonly1:true,//需求表中输入框是否可读
-      readonly2:true,//需求表中输入框是否可读
-      curNeed1:0,// 当前选择需求为其他
-      curNeed2:0,// 当前选择需求为其他
 
     };
   },
@@ -743,6 +739,11 @@ export default {
     }
   },
 methods:{
+confirmNeedName(value){
+  this.startTimePopNeedName=false
+  this.form1.materialDetails[this.selectIndex].needsName=value
+
+},
 //关闭弹窗
 closebig(){
   this.$emit('fatherMethod');
@@ -776,23 +777,25 @@ cancleNeedName(){
 changeNeedName(picker, value, index){
   this.form1.selectItem=value
 },
+selectNeedName(i){
+  this.startTimePopNeedName=true
+  this.selectIndex=i
+},
+
 confirmNeedName1(value){
-  
-  if(value=="其他"){
-    this.curNeed2=1
-    this.readonly2=false
-    this.form2.materialDetails[this.selectIndex1].needsName=''
-    this.$toast("请输入其他物资名称")
-  }else {
-    this.form2.materialDetails[this.selectIndex1].needsName=value
-  }
   this.startTimePopNeedName=false
+  this.form2.materialDetails[this.selectIndex1].needsName=value
+
 },
 cancleNeedName1(){
   this.startTimePopNeedName=false
 },
 changeNeedName1(picker, value, index){
   this.form2.selectItem=value
+},
+selectNeedName1(i){
+  this.startTimePopNeedName=true
+  this.selectIndex1=i
 },
 linkTelBlur(type,tel,index){
       
@@ -836,57 +839,9 @@ linkTelBlur(type,tel,index){
             this.$toast('当前填写电话格式有误')
         }
       },
-      confirmNeedName(value){
-        if(value=="其他"){
-          this.curNeed1=1
-          this.readonly1=false
-          this.form1.materialDetails[this.selectIndex].needsName=''
-          this.$toast("请输入其他物资名称")
-        }else {
-          this.form1.materialDetails[this.selectIndex].needsName=value
-        }
-        this.startTimePopNeedName=false
-
-      },
-      needBlur(index){
-        this.curNeed1=0
-      },
-      needBlur1(index){
-        this.curNeed2=0
-      },
-      needFocus(index){
-        if (this.curNeed1){
-          this.readonly1=false
-          this.startTimePopNeedName=false
-        }else {
-          if (this.form1.materialDetails[index].needsName) {
-            this.needList.forEach(v=> {
-              if (this.form1.materialDetails[index].needsName==v){
-                this.readonly1=true
-                this.startTimePopNeedName=true
-              }else {
-                this.readonly1=false
-              }
-            })
-          } else {
-            this.readonly1=true
-            this.startTimePopNeedName=true
-          }
-        }
-        this.curNeed1=0
-        this.selectIndex=index
-
-      },
     //添加需求表
     addDemand(){
-      
-      this.curNeed1=0
-      let x=this.form1.materialDetails.some(item =>{
-          return item.needsName == ""||item.needsNum == ""
-      })
-
-
-      if(x||this.form1.materialDetails[this.testindex].needsName==''||this.form1.materialDetails[this.testindex].needsNum==''){
+      if(this.form1.materialDetails[this.testindex].needsName==''||this.form1.materialDetails[this.testindex].needsNum==''){
         this.$toast('请完善信息');
       }else{
         this.testindex++
@@ -896,30 +851,6 @@ linkTelBlur(type,tel,index){
         })
       }
     },
-      needFocus1(index){
-        if (this.curNeed2){
-          this.readonly2=false
-          this.startTimePopNeedName=false
-        }else {
-          if (this.form2.materialDetails[index].needsName) {
-            this.needList.forEach(v=> {
-              if (this.form2.materialDetails[index].needsName==v){
-                this.readonly2=true
-                this.startTimePopNeedName=true
-              }else {
-                this.readonly2=false
-              }
-            })
-          } else {
-            this.readonly2=true
-            this.startTimePopNeedName=true
-          }
-        }
-        this.curNeed2=0
-        this.selectIndex1=index
-
-
-      },
     //删除需求表
     deleteDemand(index){
       if(this.testindex<1){
@@ -934,11 +865,7 @@ linkTelBlur(type,tel,index){
     },
     //添加需求表
     addDemand1(){
-      this.curNeed2=0
-      let x=this.form2.materialDetails.some(item =>{
-          return item.needsName == ""||item.needsNum == ""
-      })
-      if(x||this.form2.materialDetails[this.testindex1].needsName==''||this.form2.materialDetails[this.testindex1].needsNum==''){
+      if(this.form2.materialDetails[this.testindex1].needsName==''||this.form2.materialDetails[this.testindex1].needsNum==''){
         this.$toast('请完善信息');
       }else{
         this.testindex1++
@@ -1053,9 +980,9 @@ linkTelBlur(type,tel,index){
         })
     },
     saRead(val){
-      if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
-        this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
-      } else {
+      // if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
+      //   this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
+      // } else {
         this.showimg=true
         let name=val.file.name
         let type=val.file.type
@@ -1073,7 +1000,7 @@ linkTelBlur(type,tel,index){
           }).always(()=> {
               //不管成功或失败，都会执行
           })
-      }
+      // }
       
     },
     //删除图片的回调
@@ -1187,9 +1114,9 @@ linkTelBlur(type,tel,index){
     },
     xuRead(val){
       console.log(val)
-      if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
-        this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
-      }else {
+      // if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
+      //   this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
+      // }else {
         this.showimg=true
 
         let name=val.file.name
@@ -1208,12 +1135,12 @@ linkTelBlur(type,tel,index){
           }).always(()=> {
               //不管成功或失败，都会执行
           })
-      }
+      // }
     },
     tiRead(val){
-      if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
-        this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
-      }else {
+      // if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
+      //   this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
+      // }else {
         this.showimg=true
         let name=val.file.name
         let type=val.file.type
@@ -1231,7 +1158,7 @@ linkTelBlur(type,tel,index){
           }).always(()=> {
               //不管成功或失败，都会执行
           })
-      }
+      // }
     },
     //删除图片的回调
     xudelete(val){
@@ -1308,8 +1235,7 @@ linkTelBlur(type,tel,index){
           return item.name &&item.tel == ""||item.name=='' &&item.tel //返回true
       })
 
-
-        if (this.form1.hispotalName==""||this.form1.province==""||this.form1.city==""|| this.form1.addressDetail==""||this.form1.sup.length==0||x||this.form1.startTime==""||this.meedUrlArr1.length==0){
+        if (this.form1.hispotalName==""||this.form1.province==""||this.form1.city==""|| this.form1.addressDetail==""||this.needWritePoint||this.form1.startTime==""||this.meedUrlArr1.length==0){
             this.$toast('请完善信息');
         }else if (this.form1.contectTelList[0].tel==''&&this.form1.contectTelList[1].tel==''&&this.form1.contectTelList[2].tel==''){
             this.$toast('请至少填写一位联系人');
@@ -1325,7 +1251,7 @@ linkTelBlur(type,tel,index){
             address:this.form1.addressDetail,
             materialDetails:this.form1.materialDetails,//需求表
             type:this.form1.type,
-            status:this.form1.sup.join(","),
+            status:this.form1.sup,
             linkPeople:linkPeopleArr.join(','),
             createTime:this.form1.startTime,
             source:this.form1.needOrgin,
@@ -1334,7 +1260,6 @@ linkTelBlur(type,tel,index){
               latitude:'',
       
           }
-          // console.log(this.params1)
             this.addresschange1(this.params1.province+this.params1.city+this.params1.address,1)
         }
          
@@ -1382,7 +1307,6 @@ linkTelBlur(type,tel,index){
               latitude:'',
         
             }
-            // console.log(this.params2)
             this.addresschange1(this.params2.province+this.params2.city+this.params2.address,2)
       }
           
@@ -1426,6 +1350,8 @@ linkTelBlur(type,tel,index){
     confirmTime() {
         let MM=(Number(this.currentDate.getMonth()) + 1)>=10?(Number(this.currentDate.getMonth()) + 1):'0'+(Number(this.currentDate.getMonth()) + 1)
         let dd=this.currentDate.getDate()>=10?this.currentDate.getDate():'0'+this.currentDate.getDate()
+        let hh=this.currentDate.getHours()>=10?this.currentDate.getHours():'0'+this.currentDate.getHours()
+        let mm=this.currentDate.getMinutes()>=10?this.currentDate.getMinutes():'0'+this.currentDate.getMinutes()
 
       this.startTimePop = false;
       this.form1.startTime =
@@ -1433,8 +1359,11 @@ linkTelBlur(type,tel,index){
         "-" +
         MM +
         "-" +
-        dd
-        // console.log(this.form1.startTime)
+        dd +
+        " " +
+        hh +
+        ":" +
+        mm;
     },
     // 点击取消
     cancelTime() {
@@ -1444,17 +1373,22 @@ linkTelBlur(type,tel,index){
     // 点击确定
     confirmTimeNeed() {
         
-        let MM=(Number(this.currentDateNeed.getMonth()) + 1)>=10?(Number(this.currentDateNeed.getMonth()) + 1):'0'+(Number(this.currentDateNeed.getMonth()) + 1)
-        let dd=this.currentDateNeed.getDate()>=10?this.currentDateNeed.getDate():'0'+this.currentDateNeed.getDate()
+        let MM=(Number(this.currentDate.getMonth()) + 1)>=10?(Number(this.currentDate.getMonth()) + 1):'0'+(Number(this.currentDate.getMonth()) + 1)
+        let dd=this.currentDate.getDate()>=10?this.currentDate.getDate():'0'+this.currentDate.getDate()
+        let hh=this.currentDate.getHours()>=10?this.currentDate.getHours():'0'+this.currentDate.getHours()
+        let mm=this.currentDate.getMinutes()>=10?this.currentDate.getMinutes():'0'+this.currentDate.getMinutes()
 
       this.startTimePopNeed = false;
       this.form2.startTime =
-        this.currentDateNeed.getFullYear() +
+        this.currentDate.getFullYear() +
         "-" +
         MM +
         "-" +
-        dd
-        // console.log(this.form2.startTime)
+        dd +
+        " " +
+        hh +
+        ":" +
+        mm;
     },
     // 点击取消
     cancelTimeNeed() {
@@ -1469,6 +1403,10 @@ linkTelBlur(type,tel,index){
         return `${value}月`;
       } else if (type === "day") {
         return `${value}日`;
+      } else if (type === "hour") {
+        return `${value}时`;
+      } else if (type === "minute") {
+        return `${value}分`;
       }
       return value;
     },

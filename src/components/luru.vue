@@ -1033,23 +1033,27 @@ linkTelBlur(type,tel,index){
         })
     },
     saRead(val){
-      this.showimg=true
-      let name=val.file.name
-      let type=val.file.type
-      lrz(val.file, {
-          quality: 0.2    //自定义使用压缩方式
-      })  
-        .then(rst=> {
-            //成功时执行
-           let file = new window.File([rst.file], val.file.name, {
-              type: val.file.type
-              }) //把blob转化成file
-          this.uploadImgsa(file)
-        }).catch(error=> {
-            //失败时执行
-        }).always(()=> {
-            //不管成功或失败，都会执行
-        })
+      if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
+        this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
+      } else {
+        this.showimg=true
+        let name=val.file.name
+        let type=val.file.type
+        lrz(val.file, {
+            quality: 0.2    //自定义使用压缩方式
+        })  
+          .then(rst=> {
+              //成功时执行
+            let file = new window.File([rst.file], val.file.name, {
+                type: val.file.type
+                }) //把blob转化成file
+            this.uploadImgsa(file)
+          }).catch(error=> {
+              //失败时执行
+          }).always(()=> {
+              //不管成功或失败，都会执行
+          })
+      }
       
     },
     //删除图片的回调
@@ -1084,12 +1088,17 @@ linkTelBlur(type,tel,index){
     },
     confirmthree(){
       let arr=[]
+      let x=this.form3.contectTelList.some(item =>{
+          return item.name &&item.tel == ""||item.name=='' &&item.tel //返回true
+      })
       if(this.form3.name==""||this.form3.province==""||this.form3.city==""
       ||this.form3.address==""||this.form3.serviceRange==""||
       this.form3.startTime==""||this.form3.endTime==""||this.form3.materialDetails1.length==0||this.meedUrlArr.length==0){
         this.$toast('请完善信息');
       }else if(this.form3.contectTelList[0].tel==""&&this.form3.contectTelList[1].tel==""&&this.form3.contectTelList[2].tel==""){
         this.$toast('请至少输入一位联系人');
+      }else if (x){
+        this.$toast('请输入的联系人、联系电话相互对应');
       }else{
         this.form3.materialDetails1.forEach(iteam=>{
           let obj={}
@@ -1156,42 +1165,51 @@ linkTelBlur(type,tel,index){
         })
     },
     xuRead(val){
-      this.showimg=true
-      let name=val.file.name
-      let type=val.file.type
-      lrz(val.file, {
-          quality: 0.2    //自定义使用压缩方式
-      })  
-        .then(rst=> {
-            //成功时执行
-           let file = new window.File([rst.file], val.file.name, {
-              type: val.file.type
-              }) //把blob转化成file
-          this.uploadImg1(file)
-        }).catch(error=> {
-            //失败时执行
-        }).always(()=> {
-            //不管成功或失败，都会执行
-        })
+      console.log(val)
+      if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
+        this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
+      }else {
+        this.showimg=true
+        let name=val.file.name
+        let type=val.file.type
+        lrz(val.file, {
+            quality: 0.2    //自定义使用压缩方式
+        })  
+          .then(rst=> {
+              //成功时执行
+             let file = new window.File([rst.file], val.file.name, {
+                type: val.file.type
+                }) //把blob转化成file
+            this.uploadImg1(file)
+          }).catch(error=> {
+              //失败时执行
+          }).always(()=> {
+              //不管成功或失败，都会执行
+          })
+      }
     },
     tiRead(val){
-      this.showimg=true
-      let name=val.file.name
-      let type=val.file.type
-      lrz(val.file, {
-          quality: 0.2    //自定义使用压缩方式
-      })  
-        .then(rst=> {
-            //成功时执行
-           let file = new window.File([rst.file], val.file.name, {
-              type: val.file.type
-              }) //把blob转化成file
-          this.uploadImg2(file)
-        }).catch(error=> {
-            //失败时执行
-        }).always(()=> {
-            //不管成功或失败，都会执行
-        })
+      if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
+        this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
+      }else {
+        this.showimg=true
+        let name=val.file.name
+        let type=val.file.type
+        lrz(val.file, {
+            quality: 0.2    //自定义使用压缩方式
+        })  
+          .then(rst=> {
+              //成功时执行
+            let file = new window.File([rst.file], val.file.name, {
+                type: val.file.type
+                }) //把blob转化成file
+            this.uploadImg2(file)
+          }).catch(error=> {
+              //失败时执行
+          }).always(()=> {
+              //不管成功或失败，都会执行
+          })
+      }
     },
     //删除图片的回调
     xudelete(val){
@@ -1262,11 +1280,16 @@ linkTelBlur(type,tel,index){
       let x=this.form1.materialDetails.some(item =>{
           return item.needsName == ""||item.needsNum == "" //返回true
       })
+      let y=this.form1.contectTelList.some(item =>{
+          return item.name &&item.tel == ""||item.name=='' &&item.tel //返回true
+      })
         if (this.form1.hispotalName==""||this.form1.province==""||this.form1.city==""|| this.form1.addressDetail==""||this.form1.sup.length==0||x||this.form1.startTime==""||this.meedUrlArr1.length==0){
             this.$toast('请完善信息');
         }else if (this.form1.contectTelList[0].tel==''&&this.form1.contectTelList[1].tel==''&&this.form1.contectTelList[2].tel==''){
             this.$toast('请至少填写一位联系人');
-        }else{
+        }else if (y){
+        this.$toast('请输入的联系人、联系电话相互对应');
+      }else{
           this.params1= { 
             materialType:1,
             name:this.form1.hispotalName,
@@ -1300,11 +1323,16 @@ linkTelBlur(type,tel,index){
       let x=this.form2.materialDetails.some(item =>{
           return item.needsName == ""||item.needsNum == "" //返回true
       })
-      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||x||linkPeopleArr.length==0||this.form2.startTime==""||this.meedUrlArr2.length==0){
+      let y=this.form2.contectTelList.some(item =>{
+          return item.name &&item.tel == ""||item.name=='' &&item.tel //返回true
+      })
+      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||x||this.form2.startTime==""||this.meedUrlArr2.length==0){
           this.$toast('请完善信息');
       }else if (this.form2.contectTelList[0].tel==''&&this.form2.contectTelList[1].tel==''&&this.form2.contectTelList[2].tel==''){
           this.$toast('请至少填写一位联系人');
-      } else{
+      }else if (y){
+        this.$toast('请输入的联系人、联系电话相互对应');
+      }else{
             this.params2= { 
               materialType:2,
               name:this.form2.hispotalName,

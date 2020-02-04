@@ -47,11 +47,11 @@
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">物资对接情况</span>
                 <div class="comfirm-radio">
-                  <van-radio-group v-model="form1.sup" class="radio-group">
+                  <van-checkbox-group v-model="form1.sup" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruSupRadio" :key="i+item.name">
-                    <van-radio :name="item.id" checked-color="#2D65E3">{{item.name}}</van-radio>
+                    <van-checkbox shape="square" checked-color="#2D65E3" :name="item.id">{{item.name}}</van-checkbox>
                     </div>
-                  </van-radio-group>
+                  </van-checkbox-group>
                 </div>
               </div>
               <div class="form-input">
@@ -67,7 +67,7 @@
                       <div class="name">
                         <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
 
-                        <van-field class="sup-name" readonly v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center" @click="selectNeedName(index)"/>
+                        <van-field class="sup-name" :readonly="readonly1" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center" @focus="needFocus(index)" @blur="needBlur(index)"/>
                         <van-popup v-model="startTimePopNeedName" position="bottom">
                         <van-picker show-toolbar :columns="needList" @confirm="confirmNeedName" @cancel="cancleNeedName" @change="changeNeedName" />
                         </van-popup>
@@ -123,7 +123,7 @@
                     :max-count="5"
                   />
                 </div>
-                  <span class="desc">最多可上传5张图片</span>
+                  <span class="desc">最多可上传5张</span>
               </div>
               <div class="confirm-btn" @click="confirmone">提交</div>
             </div>
@@ -175,20 +175,20 @@
                 </div>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">需求表</span>
+                <span><img style="" src="../assets/image/star.png" alt="">可提供物资清单</span>
                 <div class="comfirm-need-input-wrapper">
                   <div class="comfirm-need-top">
 
                     <div class="comfirm-need-head">
                       <div class="name">物资名称</div>
-                      <div class="num">需求数量</div>
+                      <div class="num">可提供数量</div>
                     </div>
                     <div class="comfirm-need-body" v-for="(iteam,index) in form2.materialDetails" :key="index">
                       <div class="name">
                         <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
 
                         
-                        <van-field class="sup-name" v-model="iteam.needsName" readonly type="text" placeholder="输入物资名称"   input-align="center" @click="selectNeedName1(index)"/>
+                        <van-field class="sup-name" v-model="iteam.needsName" :readonly="readonly2" type="text" placeholder="输入物资名称"   input-align="center"  @focus="needFocus1(index)" @blur="needBlur1(index)"/>
                         <van-popup v-model="startTimePopNeedName" position="bottom">
                         <van-picker show-toolbar :columns="needList" @confirm="confirmNeedName1" @cancel="cancleNeedName" @change="changeNeedName1" />
                         </van-popup>
@@ -215,7 +215,7 @@
                 <van-popup v-model="startTimePopNeed" position="bottom">
                   <van-datetime-picker
                     v-model="currentDateNeed"
-                    type="datetime"
+                    type="date"
                     :min-date="minDate"
                     @confirm="confirmTimeNeed"
                     @cancel="cancelTimeNeed"
@@ -383,7 +383,7 @@ export default {
           }
         ],//需求表
         type:4,
-        sup:1,
+        sup:[],
         needList:{
             name:'',
             num:'',
@@ -408,14 +408,13 @@ export default {
         startTime:'',
         needOrgin:1,
         needImg:'',
-
       },
       errorMessage1:{
         hispotalName:'',
         address:'',
         addressDetail:"",
         type:'',
-        sup:'',
+        sup:[],
         needList:{
             name:'',
             num:''
@@ -470,7 +469,6 @@ export default {
         startTime:'',
         needOrgin:'',
         needImg:'',
-
       },
       errorMessage2:{
         hispotalName:'',
@@ -647,8 +645,6 @@ export default {
       currentDate1:new Date(),
       startTimePopNeed:false,
       currentDateNeed:new Date(),
-
-
       currentDate3:new Date(),
       startTime1:'',
       minDate1: new Date(),
@@ -665,7 +661,6 @@ export default {
           id:3,
           name:"企业"
         },
-
       ],
       luruOriginizeSupRadio:[ // 录入机构类型单选数据
         {
@@ -690,7 +685,6 @@ export default {
           id:7,
           name:"其他服务"
         },
-
       ],
       columns:[
           
@@ -713,7 +707,10 @@ export default {
       needWritePoint1:0,
       params1:{},
       params2:{},
-
+      readonly1:true,//需求表中输入框是否可读
+      readonly2:true,//需求表中输入框是否可读
+      curNeed1:0,// 当前选择需求为其他
+      curNeed2:0,// 当前选择需求为其他
     };
   },
    props: {
@@ -739,11 +736,6 @@ export default {
     }
   },
 methods:{
-confirmNeedName(value){
-  this.startTimePopNeedName=false
-  this.form1.materialDetails[this.selectIndex].needsName=value
-
-},
 //关闭弹窗
 closebig(){
   this.$emit('fatherMethod');
@@ -777,15 +769,17 @@ cancleNeedName(){
 changeNeedName(picker, value, index){
   this.form1.selectItem=value
 },
-selectNeedName(i){
-  this.startTimePopNeedName=true
-  this.selectIndex=i
-},
-
 confirmNeedName1(value){
+  
+  if(value=="其他"){
+    this.curNeed2=1
+    this.readonly2=false
+    this.form2.materialDetails[this.selectIndex1].needsName=''
+    this.$toast("请输入其他物资名称")
+  }else {
+    this.form2.materialDetails[this.selectIndex1].needsName=value
+  }
   this.startTimePopNeedName=false
-  this.form2.materialDetails[this.selectIndex1].needsName=value
-
 },
 cancleNeedName1(){
   this.startTimePopNeedName=false
@@ -793,25 +787,18 @@ cancleNeedName1(){
 changeNeedName1(picker, value, index){
   this.form2.selectItem=value
 },
-selectNeedName1(i){
-  this.startTimePopNeedName=true
-  this.selectIndex1=i
-},
 linkTelBlur(type,tel,index){
       
       var strTel=/^[\d\-]+$/g
         if (!strTel.test(tel)){
           if (type==1){
-
             this.form1.contectTelList[index].tel=''
           }else if(type==2){
-
             this.form2.contectTelList[index].tel=''
             
           }
             this.$toast('当前填写电话格式有误')
         }
-
     },
     secectRadio(index){
         this.form1.type=index
@@ -821,14 +808,12 @@ linkTelBlur(type,tel,index){
         this.form1.address=value[0].text+value[1].text
         this.form1.province=value[0].text
         this.form1.city=value[1].text
-
     },
     onConfirm1(value){
         this.showPicker1=false
         this.form2.address=value[0].text+value[1].text
         this.form2.province=value[0].text
         this.form2.city=value[1].text
-
     },
     //验证手机号的格式
     checkTel(index,tel)
@@ -839,9 +824,53 @@ linkTelBlur(type,tel,index){
             this.$toast('当前填写电话格式有误')
         }
       },
+      confirmNeedName(value){
+        if(value=="其他"){
+          this.curNeed1=1
+          this.readonly1=false
+          this.form1.materialDetails[this.selectIndex].needsName=''
+          this.$toast("请输入其他物资名称")
+        }else {
+          this.form1.materialDetails[this.selectIndex].needsName=value
+        }
+        this.startTimePopNeedName=false
+      },
+      needBlur(index){
+        this.curNeed1=0
+      },
+      needBlur1(index){
+        this.curNeed2=0
+      },
+      needFocus(index){
+        if (this.curNeed1){
+          this.readonly1=false
+          this.startTimePopNeedName=false
+        }else {
+          if (this.form1.materialDetails[index].needsName) {
+            this.needList.forEach(v=> {
+              if (this.form1.materialDetails[index].needsName==v){
+                this.readonly1=true
+                this.startTimePopNeedName=true
+              }else {
+                this.readonly1=false
+              }
+            })
+          } else {
+            this.readonly1=true
+            this.startTimePopNeedName=true
+          }
+        }
+        this.curNeed1=0
+        this.selectIndex=index
+      },
     //添加需求表
     addDemand(){
-      if(this.form1.materialDetails[this.testindex].needsName==''||this.form1.materialDetails[this.testindex].needsNum==''){
+      
+      this.curNeed1=0
+      let x=this.form1.materialDetails.some(item =>{
+          return item.needsName == ""||item.needsNum == ""
+      })
+      if(x||this.form1.materialDetails[this.testindex].needsName==''||this.form1.materialDetails[this.testindex].needsNum==''){
         this.$toast('请完善信息');
       }else{
         this.testindex++
@@ -851,6 +880,28 @@ linkTelBlur(type,tel,index){
         })
       }
     },
+      needFocus1(index){
+        if (this.curNeed2){
+          this.readonly2=false
+          this.startTimePopNeedName=false
+        }else {
+          if (this.form2.materialDetails[index].needsName) {
+            this.needList.forEach(v=> {
+              if (this.form2.materialDetails[index].needsName==v){
+                this.readonly2=true
+                this.startTimePopNeedName=true
+              }else {
+                this.readonly2=false
+              }
+            })
+          } else {
+            this.readonly2=true
+            this.startTimePopNeedName=true
+          }
+        }
+        this.curNeed2=0
+        this.selectIndex1=index
+      },
     //删除需求表
     deleteDemand(index){
       if(this.testindex<1){
@@ -865,7 +916,11 @@ linkTelBlur(type,tel,index){
     },
     //添加需求表
     addDemand1(){
-      if(this.form2.materialDetails[this.testindex1].needsName==''||this.form2.materialDetails[this.testindex1].needsNum==''){
+      this.curNeed2=0
+      let x=this.form2.materialDetails.some(item =>{
+          return item.needsName == ""||item.needsNum == ""
+      })
+      if(x||this.form2.materialDetails[this.testindex1].needsName==''||this.form2.materialDetails[this.testindex1].needsNum==''){
         this.$toast('请完善信息');
       }else{
         this.testindex1++
@@ -925,7 +980,6 @@ linkTelBlur(type,tel,index){
       )
     },
     confirmTime31(val){
-
     },
     onChange(picker, values,index){
           picker.setColumnValues(1,this.cityDate(this.allCity,values[0].text))
@@ -941,7 +995,6 @@ linkTelBlur(type,tel,index){
           var x=[]
           data.forEach(function(res){
               if (res.city){
-
                   if(res.name == province){
                       for (let i = 0; i < res.city.length; i++) {
                           let obj = {}
@@ -980,27 +1033,23 @@ linkTelBlur(type,tel,index){
         })
     },
     saRead(val){
-      // if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
-      //   this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
-      // } else {
-        this.showimg=true
-        let name=val.file.name
-        let type=val.file.type
-        lrz(val.file, {
-            quality: 0.2    //自定义使用压缩方式
-        })  
-          .then(rst=> {
-              //成功时执行
-            let file = new window.File([rst.file], val.file.name, {
-                type: val.file.type
-                }) //把blob转化成file
-            this.uploadImgsa(file)
-          }).catch(error=> {
-              //失败时执行
-          }).always(()=> {
-              //不管成功或失败，都会执行
-          })
-      // }
+      this.showimg=true
+      let name=val.file.name
+      let type=val.file.type
+      lrz(val.file, {
+          quality: 0.2    //自定义使用压缩方式
+      })  
+        .then(rst=> {
+            //成功时执行
+           let file = new window.File([rst.file], val.file.name, {
+              type: val.file.type
+              }) //把blob转化成file
+          this.uploadImgsa(file)
+        }).catch(error=> {
+            //失败时执行
+        }).always(()=> {
+            //不管成功或失败，都会执行
+        })
       
     },
     //删除图片的回调
@@ -1035,18 +1084,12 @@ linkTelBlur(type,tel,index){
     },
     confirmthree(){
       let arr=[]
-      let x=this.form3.contectTelList.some(item =>{
-          return item.name &&item.tel == ""||item.name=='' &&item.tel //返回true
-      })
       if(this.form3.name==""||this.form3.province==""||this.form3.city==""
       ||this.form3.address==""||this.form3.serviceRange==""||
       this.form3.startTime==""||this.form3.endTime==""||this.form3.materialDetails1.length==0||this.meedUrlArr.length==0){
         this.$toast('请完善信息');
       }else if(this.form3.contectTelList[0].tel==""&&this.form3.contectTelList[1].tel==""&&this.form3.contectTelList[2].tel==""){
         this.$toast('请至少输入一位联系人');
-      }else if (x){
-        this.$toast('请输入的联系人、联系电话相互对应');
-
       }else{
         this.form3.materialDetails1.forEach(iteam=>{
           let obj={}
@@ -1113,52 +1156,42 @@ linkTelBlur(type,tel,index){
         })
     },
     xuRead(val){
-      console.log(val)
-      // if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
-      //   this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
-      // }else {
-        this.showimg=true
-
-        let name=val.file.name
-        let type=val.file.type
-        lrz(val.file, {
-            quality: 0.2    //自定义使用压缩方式
-        })  
-          .then(rst=> {
-              //成功时执行
-             let file = new window.File([rst.file], val.file.name, {
-                type: val.file.type
-                }) //把blob转化成file
-            this.uploadImg1(file)
-          }).catch(error=> {
-              //失败时执行
-          }).always(()=> {
-              //不管成功或失败，都会执行
-          })
-      // }
+      this.showimg=true
+      let name=val.file.name
+      let type=val.file.type
+      lrz(val.file, {
+          quality: 0.2    //自定义使用压缩方式
+      })  
+        .then(rst=> {
+            //成功时执行
+           let file = new window.File([rst.file], val.file.name, {
+              type: val.file.type
+              }) //把blob转化成file
+          this.uploadImg1(file)
+        }).catch(error=> {
+            //失败时执行
+        }).always(()=> {
+            //不管成功或失败，都会执行
+        })
     },
     tiRead(val){
-      // if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
-      //   this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
-      // }else {
-        this.showimg=true
-        let name=val.file.name
-        let type=val.file.type
-        lrz(val.file, {
-            quality: 0.2    //自定义使用压缩方式
-        })  
-          .then(rst=> {
-              //成功时执行
-            let file = new window.File([rst.file], val.file.name, {
-                type: val.file.type
-                }) //把blob转化成file
-            this.uploadImg2(file)
-          }).catch(error=> {
-              //失败时执行
-          }).always(()=> {
-              //不管成功或失败，都会执行
-          })
-      // }
+      this.showimg=true
+      let name=val.file.name
+      let type=val.file.type
+      lrz(val.file, {
+          quality: 0.2    //自定义使用压缩方式
+      })  
+        .then(rst=> {
+            //成功时执行
+           let file = new window.File([rst.file], val.file.name, {
+              type: val.file.type
+              }) //把blob转化成file
+          this.uploadImg2(file)
+        }).catch(error=> {
+            //失败时执行
+        }).always(()=> {
+            //不管成功或失败，都会执行
+        })
     },
     //删除图片的回调
     xudelete(val){
@@ -1218,7 +1251,6 @@ linkTelBlur(type,tel,index){
           }
           this.showimg=false
       })
-
     },
     confirmone(){
       let linkPeopleArr=[],fileImgArr=[]
@@ -1227,22 +1259,14 @@ linkTelBlur(type,tel,index){
             linkPeopleArr.push(v.name+":"+v.tel)
            }
          })
-
       let x=this.form1.materialDetails.some(item =>{
           return item.needsName == ""||item.needsNum == "" //返回true
       })
-      let y=this.form1.contectTelList.some(item =>{
-          return item.name &&item.tel == ""||item.name=='' &&item.tel //返回true
-      })
-
-        if (this.form1.hispotalName==""||this.form1.province==""||this.form1.city==""|| this.form1.addressDetail==""||this.needWritePoint||this.form1.startTime==""||this.meedUrlArr1.length==0){
+        if (this.form1.hispotalName==""||this.form1.province==""||this.form1.city==""|| this.form1.addressDetail==""||this.form1.sup.length==0||x||this.form1.startTime==""||this.meedUrlArr1.length==0){
             this.$toast('请完善信息');
         }else if (this.form1.contectTelList[0].tel==''&&this.form1.contectTelList[1].tel==''&&this.form1.contectTelList[2].tel==''){
             this.$toast('请至少填写一位联系人');
-        }else if (y){
-        this.$toast('请输入的联系人、联系电话相互对应');
-
-      }else{
+        }else{
           this.params1= { 
             materialType:1,
             name:this.form1.hispotalName,
@@ -1251,7 +1275,7 @@ linkTelBlur(type,tel,index){
             address:this.form1.addressDetail,
             materialDetails:this.form1.materialDetails,//需求表
             type:this.form1.type,
-            status:this.form1.sup,
+            status:this.form1.sup.join(","),
             linkPeople:linkPeopleArr.join(','),
             createTime:this.form1.startTime,
             source:this.form1.needOrgin,
@@ -1260,6 +1284,7 @@ linkTelBlur(type,tel,index){
               latitude:'',
       
           }
+          // console.log(this.params1)
             this.addresschange1(this.params1.province+this.params1.city+this.params1.address,1)
         }
          
@@ -1271,25 +1296,15 @@ linkTelBlur(type,tel,index){
             linkPeopleArr.push(v.name+":"+v.tel)
            }
          })
-
          
       let x=this.form2.materialDetails.some(item =>{
           return item.needsName == ""||item.needsNum == "" //返回true
       })
-      let y=this.form2.contectTelList.some(item =>{
-          return item.name &&item.tel == ""||item.name=='' &&item.tel //返回true
-      })
-
-
-      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||x||this.form2.startTime==""||this.meedUrlArr2.length==0){
+      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||x||linkPeopleArr.length==0||this.form2.startTime==""||this.meedUrlArr2.length==0){
           this.$toast('请完善信息');
       }else if (this.form2.contectTelList[0].tel==''&&this.form2.contectTelList[1].tel==''&&this.form2.contectTelList[2].tel==''){
           this.$toast('请至少填写一位联系人');
-
-      }else if (y){
-        this.$toast('请输入的联系人、联系电话相互对应');
-
-      }else{
+      } else{
             this.params2= { 
               materialType:2,
               name:this.form2.hispotalName,
@@ -1307,6 +1322,7 @@ linkTelBlur(type,tel,index){
               latitude:'',
         
             }
+            // console.log(this.params2)
             this.addresschange1(this.params2.province+this.params2.city+this.params2.address,2)
       }
           
@@ -1320,7 +1336,6 @@ linkTelBlur(type,tel,index){
             let lnglat = result.geocodes[0].location
             //  return lnglat
             if (type==1){
-
               this.params1.longitude=lnglat.lng
               this.params1.latitude=lnglat.lat
               this.$fetchPost("material/save",this.params1,'json').then(res=> {
@@ -1338,7 +1353,6 @@ linkTelBlur(type,tel,index){
                     this.showresult=true
                   }
               })
-
             }
             
           }else{
@@ -1350,20 +1364,14 @@ linkTelBlur(type,tel,index){
     confirmTime() {
         let MM=(Number(this.currentDate.getMonth()) + 1)>=10?(Number(this.currentDate.getMonth()) + 1):'0'+(Number(this.currentDate.getMonth()) + 1)
         let dd=this.currentDate.getDate()>=10?this.currentDate.getDate():'0'+this.currentDate.getDate()
-        let hh=this.currentDate.getHours()>=10?this.currentDate.getHours():'0'+this.currentDate.getHours()
-        let mm=this.currentDate.getMinutes()>=10?this.currentDate.getMinutes():'0'+this.currentDate.getMinutes()
-
       this.startTimePop = false;
       this.form1.startTime =
         this.currentDate.getFullYear() +
         "-" +
         MM +
         "-" +
-        dd +
-        " " +
-        hh +
-        ":" +
-        mm;
+        dd
+        // console.log(this.form1.startTime)
     },
     // 点击取消
     cancelTime() {
@@ -1373,22 +1381,16 @@ linkTelBlur(type,tel,index){
     // 点击确定
     confirmTimeNeed() {
         
-        let MM=(Number(this.currentDate.getMonth()) + 1)>=10?(Number(this.currentDate.getMonth()) + 1):'0'+(Number(this.currentDate.getMonth()) + 1)
-        let dd=this.currentDate.getDate()>=10?this.currentDate.getDate():'0'+this.currentDate.getDate()
-        let hh=this.currentDate.getHours()>=10?this.currentDate.getHours():'0'+this.currentDate.getHours()
-        let mm=this.currentDate.getMinutes()>=10?this.currentDate.getMinutes():'0'+this.currentDate.getMinutes()
-
+        let MM=(Number(this.currentDateNeed.getMonth()) + 1)>=10?(Number(this.currentDateNeed.getMonth()) + 1):'0'+(Number(this.currentDateNeed.getMonth()) + 1)
+        let dd=this.currentDateNeed.getDate()>=10?this.currentDateNeed.getDate():'0'+this.currentDateNeed.getDate()
       this.startTimePopNeed = false;
       this.form2.startTime =
-        this.currentDate.getFullYear() +
+        this.currentDateNeed.getFullYear() +
         "-" +
         MM +
         "-" +
-        dd +
-        " " +
-        hh +
-        ":" +
-        mm;
+        dd
+        // console.log(this.form2.startTime)
     },
     // 点击取消
     cancelTimeNeed() {
@@ -1403,10 +1405,6 @@ linkTelBlur(type,tel,index){
         return `${value}月`;
       } else if (type === "day") {
         return `${value}日`;
-      } else if (type === "hour") {
-        return `${value}时`;
-      } else if (type === "minute") {
-        return `${value}分`;
       }
       return value;
     },
@@ -1436,7 +1434,6 @@ linkTelBlur(type,tel,index){
         this.currentDate.getDate()
     },
     
-
     // 点击确定
     ddd() {
       this.startTimePop = false;
@@ -1463,7 +1460,6 @@ linkTelBlur(type,tel,index){
     cancelTime1() {
       this.startTimePop = false;
     },
-
   }
 };
 </script>
@@ -1542,9 +1538,7 @@ linkTelBlur(type,tel,index){
               color: #fff;
               border: 0;
             }
-
           }
-
         }
         .message{
           display:flex;
@@ -1572,7 +1566,6 @@ linkTelBlur(type,tel,index){
             .name-tel{
             display:flex;
             justify-content: flex-start;
-
               .name{}
               .tel{
                 padding-left: 10px;
@@ -1698,7 +1691,6 @@ linkTelBlur(type,tel,index){
                   justify-content: center;
                   align-items:center;
                   width: 124px;
-
                 }
                 .comfirm-need-head{
                   display: flex;
@@ -1710,7 +1702,6 @@ linkTelBlur(type,tel,index){
                   border-bottom: 1px solid #F1F2F5;
                   .name{}
                   .num{}
-
                 }
                 .comfirm-need-body{
                   display: flex;
@@ -1725,13 +1716,11 @@ linkTelBlur(type,tel,index){
                     align-items:center;
                     .sup-num,.sup-name {
                       text-align:center;
-
                     }
                     img{
                       width:15px;
                       height: 15px;
                       padding-right: 5px;
-
                     }
                   }
                   
@@ -1751,9 +1740,7 @@ linkTelBlur(type,tel,index){
                   height: 15px;
                   margin-right:5px;
                 }
-
               }
-
             }
             .need-img-wrapper{
               display:flex;
@@ -1788,22 +1775,13 @@ linkTelBlur(type,tel,index){
             margin: 30px auto 0;
           }
         }
-
       }
     }
-
-
-
-
-
-
-
     // display: flex;
     // flex-direction: column;
     // justify-content: center;
     // align-items: center;
     // margin-top: 100px;
-
     // img{
     //   width: 194px;
     //   height:147px;
@@ -1814,7 +1792,6 @@ linkTelBlur(type,tel,index){
     //   font-weight:400;
     //   color:rgba(153,153,153,1);
     //   margin-top:23px;
-
     // }
   }
 }

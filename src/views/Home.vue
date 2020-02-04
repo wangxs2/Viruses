@@ -1164,6 +1164,12 @@ export default {
         return;
       }
       window.location.href = "tel:" + phoneNumber;
+      this.$fetchGet("recorder/savePhoneRecorder",{
+        orgName:this.mapobj.hospitalName,
+        type:this.query.orgType,
+      }).then(res => {
+        // this.zanz=res.content
+      });
     },
     getMap () {
       this.myMap = new AMap.Map("myMap", {

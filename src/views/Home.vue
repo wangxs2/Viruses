@@ -1001,7 +1001,8 @@ export default {
       this.$fetchGet("hospital/selectHospital",this.query).then(res=> {
         let str=decodeURIComponent(encrypt.Decrypt(res.content))
         let alldata=JSON.parse(str)
-        
+        console.log(alldata)
+        this.showmap=false
         alldata.datas.forEach(item=> {
           let arr=[],arr1=[]
           if (item.linkTel||item.linkPeople){
@@ -1041,7 +1042,7 @@ export default {
         if (this.dataList) {
           this.total=this.dataList.length
         }
-        
+        console.log(alldata.datas.length)
         if(alldata.datas.length==0){
           if(this.mass){
             this.mass.clear()

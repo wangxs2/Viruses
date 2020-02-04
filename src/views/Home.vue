@@ -1035,7 +1035,6 @@ export default {
                 }
               }
             }
-            console.log(arr,arr1)
           }
         })
         this.dataList=alldata.datas

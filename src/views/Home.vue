@@ -720,28 +720,12 @@ export default {
         },
       ],
       curTimeDonate:false, // 实时捐赠弹框
-      curTimeDataList:[
-        {
-          duration:"sss",
-          pubDate:"2019-12-13 22:33",
-          headline:"2222222222222222",
-          mainBody:"顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶",
-          publishSource:"ddddd"
-        },
-        {
-          duration:"sss",
-          pubDate:"2019-12-13 22:33",
-          headline:"2222222222222222",
-          mainBody:"顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶",
-          publishSource:"ddddd",
-          url:"http://www.baidu.com"
-        }
-      ],
+      curTimeDataList:[],
       curTimeParams:{
         page: 1, // 页数
         pageSize:10, // 偏移量
       },
-      curTimeNoDataShow: true, // 实时捐赠无数据显示
+      curTimeNoDataShow: false, // 实时捐赠无数据显示
       loadMore:true, //加载更多按钮
       isdzan:false,
       styleUp:true,
@@ -764,7 +748,7 @@ export default {
     }
   },
   created() {
-    // this.getCurTimeDataList()
+    this.getCurTimeDataList()
   },
  mounted () {
     this.getMap()

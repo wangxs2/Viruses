@@ -144,8 +144,8 @@
           <p class="title">{{item.hospitalName}}</p>
           <p class="address" v-if="item.hospitalAddress!==undefined&&item.hospitalAddress!==''"><van-icon name="location-o" size="20" /><span>{{item.hospitalAddress}}</span></p>
           <p class="time" v-if="item.createTime!==undefined&&item.createTime!==''">发布日期：{{item.createTime!==undefined?item.createTime.substring(0,16).replace("+"," "):''}}</p>
-          <div class="phone" v-if="item.linkTelList!==undefined">
-            <p  v-for="(items,i) in item.linkTelList" :key="i"><van-icon name="phone-o" size="20" /><span>{{items}}</span></p>
+          <div class="phone" v-if="item.linkTelPeopleList!==undefined">
+            <p  v-for="(items,i) in item.linkTelPeopleList" :key="i"><van-icon name="phone-o" size="20" /><span>{{items.name}}</span><span @click="searchRightModelPhone(items.tel)">{{items.tel}}</span></p>
           </div>
         </div>
       </div>
@@ -842,6 +842,10 @@ export default {
     commitTel(tel){
       window.location.href = "tel:" + tel
     },
+    // 搜索右边弹框电话立即拨打
+    searchRightModelPhone(tel){
+      window.location.href = "tel:" + tel
+    },
     //大拇指点赞
     dzanclick(){
      this.isdzan=true
@@ -1001,20 +1005,39 @@ export default {
         let alldata=JSON.parse(str)
         
         alldata.datas.forEach(item=> {
-          if (item.linkTel){
-            if (item.linkTel.indexOf(",") != -1 ||item.linkTel.indexOf("，") != -1) {
-              item.linkTelList=item.linkTel.split(",") || item.linkTel.split("，") 
-            } else if (item.linkTel.indexOf("、") != -1) {
-              item.linkTelList=item.linkTel.split("、")
-            }else if (item.linkTel.indexOf("\n") != -1) {
-              item.linkTelList=item.linkTel.split("\n")
-            }else if (item.linkTel.indexOf("；") != -1) {
-              item.linkTelList=item.linkTel.split("；")
-            }else if (item.linkTel.indexOf("/") != -1) {
-              item.linkTelList=item.linkTel.split("/")
+          let arr=[],arr1=[]
+          if (item.linkTel||item.linkPeople){
+            if (item.linkTel.indexOf(",") != -1) {
+              arr=item.linkTel.split(",")
+              arr1=item.linkPeople.split(",")
+              item.linkTelPeopleList=[]
+
+              for(var i = 0; i < arr.length; i++){
+                var obj = {};
+                for(var j = 0; j < arr1.length; j++){
+                  if(i==j){
+                    obj.tel = arr[i];
+                    obj.name = arr1[j];       
+                    item.linkTelPeopleList.push(obj);  
+                  }  
+                }
+              }
             }else {
-              item.linkTelList=[item.linkTel]
+              arr=[item.linkTel]
+              arr1=[item.linkPeople]
+              item.linkTelPeopleList=[]
+              for(var i = 0; i < arr.length; i++){
+                var obj = {};
+                for(var j = 0; j < arr1.length; j++){
+                  if(i==j){
+                    obj.tel = arr[i];
+                    obj.name = arr1[j];       
+                    item.linkTelPeopleList.push(obj);  
+                  }  
+                }
+              }
             }
+            console.log(arr,arr1)
           }
         })
         this.dataList=alldata.datas
@@ -1825,6 +1848,7 @@ export default {
         padding:10px;
         p{
           display:flex;
+          flex-wrap: wrap;
           align-items:center;
           margin:0;
           margin-top:10px;
@@ -1840,6 +1864,7 @@ export default {
           span {
             font-size:15px;
             color:#333;
+            padding-left:7px;
           }
         }
       }

@@ -850,8 +850,16 @@ export default {
       this.$fetchGet("encourage/saveEncourage", {
         hospitalName:''
       }).then(res => {
-        this.zanz.encourage++
+        // this.zanz.encourage++
+        // this.
+        if(res.code=="success"){
+          this.initMap()
+           
+        }else{
+          this.$toast(res.message);
+        }
         this.isdzan=false
+        
        
       });
     },

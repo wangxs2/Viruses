@@ -71,8 +71,7 @@
     </van-popup>
     <van-popup
         v-model="phoneshow"
-        position="right"
-        :style="{ height: '20%' }">
+        position="right">
       <div style="padding:12px 24px">
         <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr"
                  :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" color="#1989fa" size="34"  /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>

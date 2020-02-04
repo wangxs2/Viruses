@@ -94,7 +94,7 @@
                 <van-popup v-model="startTimePop" position="bottom">
                   <van-datetime-picker
                     v-model="currentDate"
-                    type="datetime"
+                    type="date"
                     :min-date="minDate"
                     @confirm="confirmTime"
                     @cancel="cancelTime"

@@ -80,6 +80,27 @@
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
+                <div class="comfirm-need-input-wrapper">
+                  <div class="comfirm-need-top">
+
+                    <div class="comfirm-need-head">
+                      <div class="name">联系人</div>
+                      <div class="num">联系方式</div>
+                    </div>
+                    <div class="comfirm-need-body" v-for="(iteam,index) in form1.contectTelList" :key="index">
+                      <div class="name">
+                        <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
+
+                        <van-field class="sup-name" v-model="iteam.name" type="text" placeholder="输入联系人"   input-align="center"/>
+                      </div>
+                      <div class="num"><van-field class="tel" v-model="iteam.tel" type="text" placeholder="输入电话号码(建议手机)" @blur="linkTelBlur(1,iteam.tel,index)"/><img @click="deleteTel(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
+                    </div>
+                  </div>
+                  <div class="comfirm-need-bottom" @click="addTel"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
+                </div>
+              </div>
+              <!-- <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-input-wrapper">
                   <div class="comfirm-input" v-for="(item,i) in form1.contectTelList" :key="i">
                     <van-field class="contect" v-model="item.name" type="text" placeholder="输入联系人" />-
@@ -87,7 +108,7 @@
                     
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">需求发布时间</span>
                 <van-field v-model="form1.startTime" placeholder="选择时间" readonly @click="startTimePop = true"/>
@@ -201,6 +222,27 @@
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
+                <div class="comfirm-need-input-wrapper">
+                  <div class="comfirm-need-top">
+
+                    <div class="comfirm-need-head">
+                      <div class="name">联系人</div>
+                      <div class="num">联系方式</div>
+                    </div>
+                    <div class="comfirm-need-body" v-for="(iteam,index) in form2.contectTelList" :key="index">
+                      <div class="name">
+                        <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
+
+                        <van-field class="sup-name" v-model="iteam.name" type="text" placeholder="输入联系人"   input-align="center"/>
+                      </div>
+                      <div class="num"><van-field class="tel" v-model="iteam.tel" type="text" placeholder="输入电话号码(建议手机)"  @blur="linkTelBlur(2,iteam.tel,index)"/><img @click="deleteTel1(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
+                    </div>
+                  </div>
+                  <div class="comfirm-need-bottom" @click="addTel1"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
+                </div>
+              </div>
+              <!-- <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-input-wrapper">
                   <div class="comfirm-input" v-for="(item,i) in form2.contectTelList" :key="i">
                     <van-field class="contect" v-model="item.name" type="text" placeholder="输入联系人" />-
@@ -208,7 +250,7 @@
                     
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">物资提供时间</span>
                 <van-field v-model="form2.startTime" placeholder="选择时间" readonly @click="startTimePopNeed = true"/>
@@ -304,6 +346,27 @@
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
+                <div class="comfirm-need-input-wrapper">
+                  <div class="comfirm-need-top">
+
+                    <div class="comfirm-need-head">
+                      <div class="name">联系人</div>
+                      <div class="num">联系方式</div>
+                    </div>
+                    <div class="comfirm-need-body" v-for="(iteam,index) in form3.contectTelList" :key="index">
+                      <div class="name">
+                        <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
+
+                        <van-field class="sup-name" v-model="iteam.name" type="text" placeholder="输入联系人"   input-align="center"/>
+                      </div>
+                      <div class="num"><van-field class="tel" v-model="iteam.tel" type="text" placeholder="输入电话号码(建议手机)"  @blur="linkTelBlur(3,iteam.tel,index)"/><img @click="deleteTel2(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
+                    </div>
+                  </div>
+                  <div class="comfirm-need-bottom" @click="addTel2"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
+                </div>
+              </div>
+              <!-- <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-input-wrapper">
                   <div class="comfirm-input" v-for="(item,i) in form3.contectTelList" :key="i">
                     <van-field class="contect" v-model="item.name" type="text" placeholder="输入联系人" />-
@@ -311,7 +374,7 @@
                     
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">服务提供类型</span>
                 <div class="comfirm-radio">
@@ -367,6 +430,9 @@ export default {
       showPicker1:false,
       testindex:0,
       testindex1:0,
+      telindex:0,
+      telindex1:0,
+      telindex2:0,
       testnum:'',
       form1:{ // 录入表单
       selectItem:'',
@@ -389,14 +455,6 @@ export default {
             num:'',
         },
         contectTelList:[
-            {
-                name:'',
-                tel:'',
-            },
-            {
-                name:'',
-                tel:'',
-            },
             {
                 name:'',
                 tel:'',
@@ -453,15 +511,7 @@ export default {
             {
                 name:'',
                 tel:'',
-            },
-            {
-                name:'',
-                tel:'',
-            },
-            {
-                name:'',
-                tel:'',
-            },
+            }
         ],
         longitude:'',
         latitude:'',
@@ -505,14 +555,6 @@ export default {
         latitude:'',
         descr:'',//备注
        contectTelList:[
-            {
-                name:'',
-                tel:'',
-            },
-            {
-                name:'',
-                tel:'',
-            },
             {
                 name:'',
                 tel:'',
@@ -736,6 +778,84 @@ export default {
     }
   },
 methods:{
+  deleteTel(index){
+      if(this.telindex<1){
+        this.form1.contectTelList[index].name=''
+        this.form1.contectTelList[index].tel=''
+        this.$toast('至少添加一条联系人');
+      }else{
+        this.form1.contectTelList.splice(index,1)
+        this.telindex--
+      }
+
+  },
+  addTel(){
+    let x=this.form1.contectTelList.some(item =>{
+          return item.name == ""||item.tel == ""
+      })
+      if(x||this.form1.contectTelList[this.telindex].name==''||this.form1.contectTelList[this.telindex].tel==''){
+        this.$toast('请完善信息');
+      }else{
+        this.telindex++
+        this.form1.contectTelList.push({
+          name:'',
+          tel:'',
+        })
+      }
+
+  },
+  deleteTel1(index){
+      if(this.telindex1<1){
+        this.form2.contectTelList[index].name=''
+        this.form2.contectTelList[index].tel=''
+        this.$toast('至少添加一条联系人');
+      }else{
+        this.form2.contectTelList.splice(index,1)
+        this.telindex1--
+      }
+
+  },
+  addTel1(){
+    let x=this.form2.contectTelList.some(item =>{
+          return item.name == ""||item.tel == ""
+      })
+      if(x||this.form2.contectTelList[this.telindex1].name==''||this.form2.contectTelList[this.telindex1].tel==''){
+        this.$toast('请完善信息');
+      }else{
+        this.telindex1++
+        this.form2.contectTelList.push({
+          name:'',
+          tel:'',
+        })
+      }
+
+  },
+  deleteTel2(index){
+      if(this.telindex2<1){
+        this.form3.contectTelList[index].name=''
+        this.form3.contectTelList[index].tel=''
+        this.$toast('至少添加一条联系人');
+      }else{
+        this.form3.contectTelList.splice(index,1)
+        this.telindex2--
+      }
+
+  },
+  addTel2(){
+    let x=this.form3.contectTelList.some(item =>{
+          return item.name == ""||item.tel == ""
+      })
+      if(x||this.form3.contectTelList[this.telindex2].name==''||this.form3.contectTelList[this.telindex2].tel==''){
+        this.$toast('请完善信息');
+      }else{
+        this.telindex2++
+        this.form3.contectTelList.push({
+          name:'',
+          tel:'',
+        })
+      }
+
+  },
 //关闭弹窗
 closebig(){
   this.$emit('fatherMethod');
@@ -795,6 +915,9 @@ linkTelBlur(type,tel,index){
             this.form1.contectTelList[index].tel=''
           }else if(type==2){
             this.form2.contectTelList[index].tel=''
+            
+          }else if(type==3){
+            this.form3.contectTelList[index].tel=''
             
           }
             this.$toast('当前填写电话格式有误')
@@ -1088,17 +1211,15 @@ linkTelBlur(type,tel,index){
     },
     confirmthree(){
       let arr=[]
-      let x=this.form3.contectTelList.some(item =>{
-          return item.name &&item.tel == ""||item.name=='' &&item.tel //返回true
+      let y=this.form3.contectTelList.some(item =>{
+          return item.tel == ""||item.name=='' //返回true
       })
       if(this.form3.name==""||this.form3.province==""||this.form3.city==""
       ||this.form3.address==""||this.form3.serviceRange==""||
       this.form3.startTime==""||this.form3.endTime==""||this.form3.materialDetails1.length==0||this.meedUrlArr.length==0){
         this.$toast('请完善信息');
-      }else if(this.form3.contectTelList[0].tel==""&&this.form3.contectTelList[1].tel==""&&this.form3.contectTelList[2].tel==""){
-        this.$toast('请至少输入一位联系人');
-      }else if (x){
-        this.$toast('请输入的联系人、联系电话相互对应');
+      }else if (y){
+        this.$toast('请输入联系人、联系电话且相互对应');
       }else{
         this.form3.materialDetails1.forEach(iteam=>{
           let obj={}
@@ -1272,24 +1393,22 @@ linkTelBlur(type,tel,index){
     },
     confirmone(){
       let linkPeopleArr=[],fileImgArr=[]
+      let x=this.form1.materialDetails.some(item =>{
+          return item.needsName == ""||item.needsNum == "" //返回true
+      })
+      let y=this.form1.contectTelList.some(item =>{
+          return item.tel == ""||item.name=='' //返回true
+      })
+        if (this.form1.hispotalName==""||this.form1.province==""||this.form1.city==""|| this.form1.addressDetail==""||this.form1.sup.length==0||x||this.form1.startTime==""||this.meedUrlArr1.length==0){
+            this.$toast('请完善信息');
+        }else if (y){
+        this.$toast('请输入联系人、联系电话且相互对应');
+      }else{
          this.form1.contectTelList.forEach(v=> {
            if (v.tel||v.name&&v.tel){
             linkPeopleArr.push(v.name+":"+v.tel)
            }
          })
-      let x=this.form1.materialDetails.some(item =>{
-          return item.needsName == ""||item.needsNum == "" //返回true
-      })
-      let y=this.form1.contectTelList.some(item =>{
-          return item.name &&item.tel == ""||item.name=='' &&item.tel //返回true
-      })
-        if (this.form1.hispotalName==""||this.form1.province==""||this.form1.city==""|| this.form1.addressDetail==""||this.form1.sup.length==0||x||this.form1.startTime==""||this.meedUrlArr1.length==0){
-            this.$toast('请完善信息');
-        }else if (this.form1.contectTelList[0].tel==''&&this.form1.contectTelList[1].tel==''&&this.form1.contectTelList[2].tel==''){
-            this.$toast('请至少填写一位联系人');
-        }else if (y){
-        this.$toast('请输入的联系人、联系电话相互对应');
-      }else{
           this.params1= { 
             materialType:1,
             name:this.form1.hispotalName,
@@ -1314,25 +1433,23 @@ linkTelBlur(type,tel,index){
     },
     confirmtwo(){
       let linkPeopleArr=[],fileImgArr=[]
-         this.form2.contectTelList.forEach(v=> {
-           if (v.tel||v.name&&v.tel){
-            linkPeopleArr.push(v.name+":"+v.tel)
-           }
-         })
          
       let x=this.form2.materialDetails.some(item =>{
           return item.needsName == ""||item.needsNum == "" //返回true
       })
       let y=this.form2.contectTelList.some(item =>{
-          return item.name &&item.tel == ""||item.name=='' &&item.tel //返回true
+          return item.tel == ""||item.name=='' //返回true
       })
       if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||x||this.form2.startTime==""||this.meedUrlArr2.length==0){
           this.$toast('请完善信息');
-      }else if (this.form2.contectTelList[0].tel==''&&this.form2.contectTelList[1].tel==''&&this.form2.contectTelList[2].tel==''){
-          this.$toast('请至少填写一位联系人');
       }else if (y){
-        this.$toast('请输入的联系人、联系电话相互对应');
+        this.$toast('请输入联系人、联系电话且相互对应');
       }else{
+         this.form2.contectTelList.forEach(v=> {
+           if (v.tel||v.name&&v.tel){
+            linkPeopleArr.push(v.name+":"+v.tel)
+           }
+         })
             this.params2= { 
               materialType:2,
               name:this.form2.hispotalName,

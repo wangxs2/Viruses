@@ -44,6 +44,9 @@
           <div class="left-font" v-if="mapobj.hospitalAddress!==undefined&&mapobj.hospitalAddress!==''" style="color:#666666;width:75%;word-wrap:break-word;text-align:left"><van-icon name="location-o" size="20" /> <div class="van-van-multi-ellipsis--l2" style="margin-left:2px">{{mapobj.hospitalAddress}}</div></div>
           <div v-if="mapobj.type==1" class="right-btn">定点医院</div>
           <div v-if="mapobj.type==2" class="right-btn right-btn1">发热门诊</div>
+          <div v-if="mapobj.status&&mapobj.status==1" class="right-btn right-btn2">正常经营</div>
+          <div v-if="mapobj.status&&mapobj.status==2" class="right-btn right-btn3">政府托管</div>
+          <div v-if="mapobj.status&&mapobj.status==3" class="right-btn right-btn4">尚未核实</div>
         </div>
         <div class="address" style="font-size:12px"> 
           <div v-if="mapobj.source!==undefined&&mapobj.source!==''" style="color:#666666">信息来源：{{mapobj.source}}  <span style="color:#216AFF;cursor:pointer"> </span></div>
@@ -1579,6 +1582,15 @@ export default {
        }
        .right-btn1{
          background:linear-gradient(90deg,rgba(232,52,248,1),rgba(209,97,255,1));
+       }
+       .right-btn2{
+         background:linear-gradient(90deg,rgba(34,139,34,1),rgba(144,238,144,1));
+       }
+       .right-btn3{
+         background:linear-gradient(90deg,rgba(	0,139,139,1),rgba(64,224,208,1));
+       }
+       .right-btn4{
+         background:linear-gradient(90deg,rgba(	105,105,105,1),rgba(169,169,169,1));
        }
      }
      .tel-phone{

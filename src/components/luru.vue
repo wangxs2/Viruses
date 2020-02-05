@@ -614,6 +614,9 @@ export default {
         },{
           id:7,
           name:"普通医院"
+        },{
+          id:0,
+          name:"其他"
         },
       ], 
       luruTypeRadio1:[ //录入类型单选数据
@@ -1842,14 +1845,14 @@ linkTelBlur(type,tel,index){
                     display: flex;
                     justify-content: center;
                     align-items:center;
-                    width: 124px;
+                    width: 104px;
                     border-right: 1px solid #F1F2F5;
                   }
                   .num{
                     display: flex;
                     justify-content: center;
                     align-items:center;
-                    width: 189px;
+                    width: 209px;
                   }
 
                 }

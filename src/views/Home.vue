@@ -888,7 +888,7 @@ export default {
         if(item.needsDescr!==undefined){
           item.needsDescrarr=item.needsDescr.split(",")
         }
-        if(item.longitude){
+        if(item.gaodeLon){
           item.lnglat=[item.gaodeLon, item.gaodeLat]
           item.style= this.query.orgType==2?7:this.query.orgType==3?8:item.orgStatus
 

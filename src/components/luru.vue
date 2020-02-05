@@ -19,7 +19,7 @@
             </div>
             <div class="form-wrapper" v-if="curTabIndex==1">
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">医院名称</span>
+                <span><img style="" src="../assets/image/star.png" alt="">名称</span>
                 <van-field v-model="form1.hispotalName" type="text" placeholder="请填写" :error-message="errorMessage1.hispotalName"/>
               </div>
               <div class="form-input">
@@ -81,7 +81,7 @@
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-need-input-wrapper">
-                  <div class="comfirm-need-top">
+                  <div class="comfirm-need-top comfirm-need-top-tel">
 
                     <div class="comfirm-need-head">
                       <div class="name">联系人</div>
@@ -223,7 +223,7 @@
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-need-input-wrapper">
-                  <div class="comfirm-need-top">
+                  <div class="comfirm-need-top comfirm-need-top-tel">
 
                     <div class="comfirm-need-head">
                       <div class="name">联系人</div>
@@ -347,7 +347,7 @@
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-need-input-wrapper">
-                  <div class="comfirm-need-top">
+                  <div class="comfirm-need-top comfirm-need-top-tel">
 
                     <div class="comfirm-need-head">
                       <div class="name">联系人</div>
@@ -1836,6 +1836,22 @@ linkTelBlur(type,tel,index){
                   justify-content: center;
                   align-items:center;
                   width: 124px;
+                }
+                &.comfirm-need-top-tel{
+                  .name{
+                    display: flex;
+                    justify-content: center;
+                    align-items:center;
+                    width: 124px;
+                    border-right: 1px solid #F1F2F5;
+                  }
+                  .num{
+                    display: flex;
+                    justify-content: center;
+                    align-items:center;
+                    width: 189px;
+                  }
+
                 }
                 .comfirm-need-head{
                   display: flex;

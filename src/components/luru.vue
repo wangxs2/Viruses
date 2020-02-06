@@ -77,6 +77,7 @@
                   </div>
                   <div class="comfirm-need-bottom" @click="addDemand"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
                 </div>
+                <span class="desc need-table-desc">数量填写可便于物资调配，如不确定数量可不填写</span>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
@@ -435,7 +436,7 @@ export default {
       telindex2:0,
       testnum:'',
       form1:{ // 录入表单
-      selectItem:'',
+        selectItem:'',
         hispotalName:'',
         province:'',//省
         city:'',//市
@@ -487,7 +488,7 @@ export default {
       },
       showresult:false,
       form2:{ // 录入表单
-      selectItem:'',
+        selectItem:'',
         hispotalName:'',
         addressArr:[],
         province:'',//省
@@ -781,6 +782,103 @@ export default {
     }
   },
 methods:{
+  clearForm1(){
+        this.form1.selectItem=''
+        this.form1.hispotalName=''
+        this.form1.province=''
+        this.form1.city=''
+        this.form1.address=''
+        this.form1.addressArr=[]
+        this.form1.addressDetail=''
+        this.form1.materialDetails=[
+          {
+            needsName:'',
+            needsNum:'',
+          }
+        ]
+        this.form1.type=4
+        this.form1.sup=[]
+        this.form1.needList={
+            name:'',
+            num:'',
+        },
+        this.form1.contectTelList=[
+            {
+                name:'',
+                tel:'',
+            }
+        ]
+        this.form1.longitude=''
+        this.form1.latitude=''
+        this.form1.fileList=[]
+        this.form1.startTime=''
+        this.form1.needOrgin=1
+        this.form1.needImg=''
+
+  },
+  clearForm2(){
+
+        this.form2.selectItem=''
+        this.form2.hispotalName=''
+        this.form2.addressArr=[]
+        this.form2.province=''
+        this.form2.city=''
+        this.form2.address=''
+        this.form2.addressDetail=''
+        this.form2.type=3
+        this.form2.sup=4
+        this.form2.sup1=1
+        this.form2.materialDetails=[
+          {
+            needsName:'',
+            needsNum:'',
+          }
+        ]
+        this.form2.needList={
+            name:'',
+            num:''
+        }
+        this.form2.contectTelList=[
+            {
+                name:'',
+                tel:'',
+            }
+        ]
+        this.form2.longitude=''
+        this.form2.latitude=''
+        this.form2.fileList=[]
+        this.form2.startTime=''
+        this.form2.needOrgin=''
+        this.form2.needImg=''
+
+  },
+  clearForm3(){
+        this.form3.materialType=3
+        this.form3.name=''
+        this.form3.province=''
+        this.form3.city=''
+        this.form3.address2=''
+        this.form3.address=''
+        this.form3.serviceRange=""
+        this.form3.picUrl=''
+        this.form3.startTime=''
+        this.form3.endTime=''
+        this.form3.type=1
+        this.form3.linkUrl=''
+        this.form3.longitude=''
+        this.form3.latitude=''
+        this.form3.descr=''
+        this.form3.contectTelList=[
+            {
+                name:'',
+                tel:'',
+            }
+        ]
+        this.form3.linkPeople=''
+        this.form3.materialDetails=[]
+        this.form3.materialDetails1=[]
+        this.form3.needsDescr=''
+  },
   deleteTel(index){
       if(this.telindex<1){
         this.form1.contectTelList[index].name=''
@@ -876,6 +974,7 @@ addresschange(address){
          this.$fetchPost("material/save",this.form3,'json').then(res=> {
             if(res.code=="success"){
               this.showresult=true
+              this.clearForm3()
             }else{
               this.$toast(res.message);
             }
@@ -994,10 +1093,11 @@ linkTelBlur(type,tel,index){
       
       this.curNeed1=0
       let x=this.form1.materialDetails.some(item =>{
-          return item.needsName == ""||item.needsNum == ""
+          // return item.needsName == ""||item.needsNum == ""
+          return item.needsName == ""
       })
-      if(x||this.form1.materialDetails[this.testindex].needsName==''||this.form1.materialDetails[this.testindex].needsNum==''){
-        this.$toast('请完善信息');
+      if(x||this.form1.materialDetails[this.testindex].needsName==''){
+        this.$toast('请完善信息(至少输入物资名称)');
       }else{
         this.testindex++
         this.form1.materialDetails.push({
@@ -1397,7 +1497,8 @@ linkTelBlur(type,tel,index){
     confirmone(){
       let linkPeopleArr=[],fileImgArr=[]
       let x=this.form1.materialDetails.some(item =>{
-          return item.needsName == ""||item.needsNum == "" //返回true
+          // return item.needsName == ""||item.needsNum == "" //返回true
+          return item.needsName == "" //返回true
       })
       let y=this.form1.contectTelList.some(item =>{
           return item.tel == ""||item.name=='' //返回true
@@ -1416,7 +1517,7 @@ linkTelBlur(type,tel,index){
             materialType:1,
             name:this.form1.hispotalName,
             province:this.form1.province,
-            city:this.form1.province,
+            city:this.form1.city,
             address:this.form1.addressDetail,
             materialDetails:this.form1.materialDetails,//需求表
             type:this.form1.type,
@@ -1490,6 +1591,7 @@ linkTelBlur(type,tel,index){
                   this.$toast(res.message);
                   if(res.code=="success"){
                     this.showresult=true
+                    this.clearForm1()
                   }
               })
             }else if (type==2){
@@ -1499,6 +1601,7 @@ linkTelBlur(type,tel,index){
                   this.$toast(res.message);
                   if(res.code=="success"){
                     this.showresult=true
+                    this.clearForm2()
                   }
               })
             }
@@ -1922,6 +2025,11 @@ linkTelBlur(type,tel,index){
               font-weight:500;
               color:rgba(118,160,255,1);
               line-height: 14px;
+              &.need-table-desc{
+                height:20px;
+                margin-top: 5px;
+
+              }
             }
           }
           .confirm-btn{

@@ -764,20 +764,23 @@ export default {
  mounted () {
     this.getMap()
     //地图的放大缩小
-    this.myMap.on("moveend", () => {
+    this.myMap.on("zoomend", () => {
       let numberMap = this.myMap.getZoom();
-      if(numberMap>5){
+      if(numberMap>5||numberMap==5){
         this.pointGroup.clearOverlays()
         if(this.mass==null){
           this.getDataList()
         }
         // 
       }else{
-        if(this.pointGroup.Pw.length==0){
-          if(this.mass){
+        if(this.mass){
+          alert(1)
             this.mass.clear()
             this.mass=null
           }
+        if(this.pointGroup.Pw.length==0){
+          console.log(this.mass)
+          
           if(this.query.orgType==1){
             this.getProvinMark("#216AFF")
           }else if(this.query.orgType==2){
@@ -918,7 +921,6 @@ export default {
     },
     //加载海量点
     getmarkers(citys){
-      
       const markerslist=[]
       citys.forEach(item => {
         if(item.linkTel!==undefined){
@@ -942,6 +944,7 @@ export default {
         }
         
       })
+      console.log(markerslist)
       this.createMarks(markerslist)
       this.showmap=false
       
@@ -1030,6 +1033,7 @@ export default {
     marker.on("click", (e) => {
       this.myMap.setZoomAndCenter(6, e.lnglat);
       this.getDataList()
+      console.log(this.mass)
     })
       return marker
     },
@@ -1090,61 +1094,59 @@ export default {
       this.showmap=true
       if(this.mass){
        this.mass.clear()
+       this.mass=null
       }
       this.$fetchGet("hospital/selectHospital",this.query).then(res=> {
         let str=decodeURIComponent(encrypt.Decrypt(res.content))
         let alldata=JSON.parse(str)
-        this.showmap=false
-        alldata.datas.forEach(item=> {
-          let arr=[],arr1=[]
-          if (item.linkTel||item.linkPeople){
-            if (item.linkTel.indexOf(",") != -1) {
-              arr=item.linkTel.split(",")
-              arr1=item.linkPeople.split(",")
-              item.linkTelPeopleList=[]
-
-              for(var i = 0; i < arr.length; i++){
-                var obj = {};
-                for(var j = 0; j < arr1.length; j++){
-                  if(i==j){
-                    obj.tel = arr[i];
-                    obj.name = arr1[j];       
-                    item.linkTelPeopleList.push(obj);  
-                  }  
-                }
-              }
-            }else {
-              arr=[item.linkTel]
-              arr1=[item.linkPeople]
-              item.linkTelPeopleList=[]
-              for(var i = 0; i < arr.length; i++){
-                var obj = {};
-                for(var j = 0; j < arr1.length; j++){
-                  if(i==j){
-                    obj.tel = arr[i];
-                    obj.name = arr1[j];       
-                    item.linkTelPeopleList.push(obj);  
-                  }  
-                }
-              }
-            }
-          }
-        })
         this.dataList=alldata.datas
-        if (this.dataList) {
-          this.total=this.dataList.length
-        }
-        if(alldata.datas.length==0){
+        this.showmap=false
+        if(this.dataList.length==0){
           if(this.mass){
             this.mass.clear()
+            this.mass=null
             }
           this.$toast('暂无数据！');
         }else{
           this.getmarkers(alldata.datas)
-          
+          this.total=this.dataList.length
+          this.dataList.forEach(item=> {
+            let arr=[],arr1=[]
+            if (item.linkTel||item.linkPeople){
+              if (item.linkTel.indexOf(",") != -1) {
+                  arr=item.linkTel.split(",")
+                  arr1=item.linkPeople.split(",")
+                  item.linkTelPeopleList=[]
+                  for(var i = 0; i < arr.length; i++){
+                    var obj = {};
+                    for(var j = 0; j < arr1.length; j++){
+                      if(i==j){
+                        obj.tel = arr[i];
+                        obj.name = arr1[j];       
+                        item.linkTelPeopleList.push(obj);  
+                      }  
+                    }
+               }
+              }else {
+                arr=[item.linkTel]
+                arr1=[item.linkPeople]
+                item.linkTelPeopleList=[]
+                for(var i = 0; i < arr.length; i++){
+                  var obj = {};
+                  for(var j = 0; j < arr1.length; j++){
+                    if(i==j){
+                      obj.tel = arr[i];
+                      obj.name = arr1[j];       
+                      item.linkTelPeopleList.push(obj);  
+                    }  
+                  }
+                }
+              }
+            }
+          })
+          console.log(this.mass)
         }
-
-
+       
       })
     },
     // 选择时间

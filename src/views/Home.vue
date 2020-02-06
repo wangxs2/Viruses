@@ -660,7 +660,7 @@ export default {
       isone:true,
       myMap:null,
       mass:null,
-      pointGroup: new AMap.OverlayGroup(), // 点集合
+      pointGroup: new AMap.OverlayGroup(), // 省集合
       isDetail:false,
       agreement:false,
       specifications:false,//医用规则说明
@@ -755,14 +755,41 @@ export default {
   },
   created() {
     this.getCurTimeDataList()
-  },
- mounted () {
-    this.getMap()
-    this.getDataList()
+    // this.getDataList()
     this.getWuziList()
     this.getCityList()
     this.getCurTimeContent()
-    // this.getProvinceList()
+    this.getProvinMark("#216AFF")
+  },
+ mounted () {
+    this.getMap()
+    //地图的放大缩小
+    this.myMap.on("moveend", () => {
+      let numberMap = this.myMap.getZoom();
+      if(numberMap>5){
+        this.pointGroup.clearOverlays()
+        if(this.mass==null){
+          this.getDataList()
+        }
+        // 
+      }else{
+        if(this.pointGroup.Pw.length==0){
+          if(this.mass){
+            this.mass.clear()
+            this.mass=null
+          }
+          if(this.query.orgType==1){
+            this.getProvinMark("#216AFF")
+          }else if(this.query.orgType==2){
+            this.getProvinMark("#FF7550")
+          }else{
+            this.getProvinMark("#DE78FF")
+          }
+        }
+       
+      }
+      
+    })
   },
   methods:{
     contectBtn(){
@@ -826,7 +853,20 @@ export default {
     toRouterIndex(iteam,index){
       this.selectIndex=index
       this.query.orgType=index+1
-      this.getDataList()
+      if(this.mass){
+        this.mass.clear()
+        this.mass=null
+      }
+      this.myMap.setZoomAndCenter(4,[111.160477,32.1624]);
+      if(index==0){
+        this.getProvinMark("#216AFF")
+      }else if(index==1){
+        this.getProvinMark("#FF7550")
+      }else{
+        this.getProvinMark("#DE78FF")
+      }
+      
+      // this.getDataList()
       this.getWuziList()
       this.getCityList()
     },
@@ -907,7 +947,6 @@ export default {
       
     },
     createMarks(citys){
-    
       let style = [{
             url: require('../assets/image/icon4.png'),
             anchor: new AMap.Pixel(9, 9),
@@ -945,20 +984,62 @@ export default {
             anchor: new AMap.Pixel(9, 9),
             size: new AMap.Size(18, 18)
         }
-    ];
-    this.mass = new AMap.MassMarks(citys, {
-      zIndex: 111,
-      cursor: 'pointer',
-      style: style
-      });
-      this.mass.on("click", (e) => {
-      // alert(2)
-      this.isDetail=true
-      let str=e.data
-      this.mapobj=str
+      ];
+      this.mass = new AMap.MassMarks(citys, {
+        zIndex: 111,
+        cursor: 'pointer',
+        style: style
+        });
+        this.mass.on("click", (e) => {
+        // alert(2)
+        this.isDetail=true
+        let str=e.data
+        this.mapobj=str
+      })
+        this.mass.setMap(this.myMap);
+    },
+    //初始化 获取省的点
+    getProvinMark(color){
+      this.pointGroup.clearOverlays()
+      this.$fetchGet("area/countByProvince",{
+        orgType:this.query.orgType
+      }).then(res=> {
+        if (res.code=="success") {
+          if(res.content.length>0){
+            res.content.forEach(iteam=>{
+              this.pointGroup.addOverlay(this.createdProvin(color,iteam))
+            })
+            this.myMap.add(this.pointGroup)
+          }else{
+            this.$toast("暂无数据");
+          }
+        }else{
+          this.$toast(res.message);
+        }
+      })
+    },
+    //创建省的聚合点
+    createdProvin(color,row){
+      let marker = new AMap.Marker({
+        position: new AMap.LngLat(row.longitude, row.latitude),
+        offset: new AMap.Pixel(-40, -40),
+        content: this.setContent(color, row),
+        topWhenClick: true,
+        extData: { row }
+      })
+    marker.on("click", (e) => {
+      this.myMap.setZoomAndCenter(6, e.lnglat);
+      this.getDataList()
     })
-      this.mass.setMap(this.myMap);
-
+      return marker
+    },
+    //设置圆圈的颜色
+    setContent(color, row) {
+      return `<div style="box-shadow:0px 0px 12px 0px rgba(0, 0, 0, 0.3);background-color: ${color};font-size:6px;color:#ffffff; height:60px; width:60px;border-radius:50%;">
+            <p style="margin:0;padding-top:16px">${row.province}</p>
+            <p style="margin:0">${row.countNum}家</p>
+        </div>
+      `
     },
     // 录入按钮
     writeBtn(){
@@ -1207,7 +1288,6 @@ export default {
 
     },
     mapinit(res){
-    //  alert(2)
      this.myMap.clearMap()
       const markerslist=[]
       res.forEach(item => {
@@ -1233,19 +1313,14 @@ export default {
       this.myMap.add(markerslist)
       
     },
-    // 添加点集合
-  addPointGroup(overlays) {
-    this.pointGroup.addOverlays(overlays)
-    this.myMap.add(this.pointGroup)
-  },
+
   initMap(){
     
     this.$fetchGet("view/viewCount").then(res => {
       this.zanz=res.content
     });
   },
-    // lacal
-    // new AMap.LngLat(row.longitude, row.latitude),
+  
   createPoint(row) {
     let marker = new AMap.Marker({
       position: new AMap.LngLat(row.gaodeLon, row.gaodeLat),

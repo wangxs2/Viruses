@@ -225,12 +225,12 @@
         <div class="bigfont">医用防护用品规格参考表</div>
         <div class="smallfont">注：捐赠者也可根据医院具体物资匮乏情况，与医院核实之后调整相应物资标准。</div>
         <div class="smallfont">⚠️针对海外产品，所有产品最好都提供所在国作为医疗用品的上市证明。</div>
-        <div>
-          <table border="1" cellspacing="0" cellpadding="0">
+        <div class="table-list">
+          <table border="1" cellspacing="0" cellpadding="0" style="word-break:break-all;">
             <tr>
-              <td><div style="width:40px">物品</div></td>
-              <td><div style="width:180px;padding:6px">医用规格（必须符合或高于）</div></td>
-              <td>厂家 & 型号（不限于）</td>
+              <td class="td-1"><div>物品</div></td>
+              <td class="td-2"><div>医用规格（必须符合或高于）</div></td>
+              <td class="td-3"><div>厂家 & 型号（不限于）</div></td>
             </tr>
             <tr>
               <td rowspan="4">口罩</td>
@@ -310,11 +310,14 @@
               <td>Winner 稳健医疗  一次性医用防护服（他家只有一款）</td>
             </tr>
             <tr>
-              <td>Ansell
-                Microgard 2000/2500/2500plus （欧美）
-                重松製作所　型号：マイクロガード2000b/2000plus/2300plus/2500plus/3000/4000
-              日進医療器 型号：リーダー感染症対策防護服高ウイルスバリアアズワン 型号：感染症対策防護服
-                [1/29 01:00 更新]</td>
+              <td>
+                <div>
+                  Ansell
+                  Microgard 2000/2500/2500plus （欧美）重松製作所　型号：マイクロガード2000b/2000plus/2300plus/2500plus/3000/4000
+                  日進医療器 型号：リーダー感染症対策防護服高ウイルスバリアアズワン 型号：感染症対策防護服
+                  [1/29 01:00 更新]
+                </div>
+              </td>
             </tr>
             <tr>
               <td>护目镜</td>
@@ -394,7 +397,7 @@
         <div class="smallfont">下图标红的两款，才属于医护级别，需要 Fluid Resistant Claim！
         美国 NIOSH 认证，N95/N99+Fluid resistant（CDC美国疾控认证） 欧标是 FFP2 或 FFP3，不带呼吸阀，同时具备 fluid resistant</div>
         <div>
-          <img src="../assets/image/img1.png" >
+          <img class="img-1" src="../assets/image/img1.png" >
         </div>
         <div class="smallfont">普通防护口罩 （普通人和不接触高压液体喷溅的医务人员使用）</div>
         <div class="smallfont" style="color:red">欧标 FFP2/FFP3 </div>
@@ -403,17 +406,17 @@
         <div class="smallfont" style="color:red">美标：ASTM F2100-II 标准，level 2 & level 3 可以</div>
         <div class="smallfont" style="color:red">欧标：EN14683  + Type IIR </div>
          <div>
-          <img src="../assets/image/img2.png" >
+          <img class="img-2" src="../assets/image/img2.png" >
         </div>
         <div>
-          <img src="../assets/image/img3.png" >
+          <img class="img-3" src="../assets/image/img3.png" >
         </div>
         <div class="smallfont" style="color:red">如何在口罩上寻找到标准 & 不合规口罩示例</div>
         <div>
-          <img src="../assets/image/img4.png" >
+          <img class="img-4" src="../assets/image/img4.png" >
         </div>
         <div>
-          <img src="../assets/image/img5.png" >
+          <img class="img-5" src="../assets/image/img5.png" >
         </div>
         <div class="smallfont">⚠️有呼吸阀是不可以的
           具体澄清一下：符合 GB 2626 + 无呼吸阀的款也是医院需要的，属于下面这档防护口罩：
@@ -422,14 +425,14 @@
         <div class="leftfont">可用防护口罩图例（分医护 & 普通）</div>
         <div class="leftfont">a) 3M 型号 9132/1860 （官方推荐）</div>
         <div>
-          <img src="../assets/image/img6.png" >
+          <img class="img-6" src="../assets/image/img6.png" >
         </div>
         <div>
-          <img src="../assets/image/img7.png" >
+          <img class="img-7" src="../assets/image/img7.png" >
         </div>
         <div class="leftfont">符合 GB 19083</div>
         <div>
-          <img src="../assets/image/img8.png" >
+          <img class="img-8" src="../assets/image/img8.png" >
         </div>
         <div class="smallfont">b) 3M 1870+ </div>
         <div class="smallfont">c）其他防护口罩 （普通人和不接触高压液体喷溅的医务人员使用）</div>
@@ -445,11 +448,11 @@
         g) Spectra SHIELD-9500
           f）其他欧标 FFP2 FFP 3</div>
         <div>
-          <img src="../assets/image/img9.png" >
+          <img class="img-9" src="../assets/image/img9.png" >
         </div>
         <div class="smallfont">合规医用外科口罩（图片所示为医生确认可用）“稳健医疗” 符合YY0469</div>
         <div>
-          <img src="../assets/image/img10.png" >
+          <img class="img-10" src="../assets/image/img10.png" >
         </div>
         <div class="leftfont">2.防护衣</div>
         <div class="smallfont">防护服 符合国标 GB19082-2003 或 19082-2009《医用一次性防护服技术要求》</div>
@@ -465,27 +468,27 @@
           二级以上医用防护服：一般衣服上有红蓝条纹</div>
           <div class="leftfont">Dupont Tyvek 1422A[复星官方文件 2020/01/25]</div>
           <div>
-            <img src="../assets/image/img11.png" >
+            <img class="img-11" src="../assets/image/img11.png" >
           </div>
           <div class="smallfont">也称杜邦 TYVEK 医用一次性防护服[也是当前工厂加工款]</div>
           <div>
-            <img src="../assets/image/img12.png" >
+            <img class="img-12" src="../assets/image/img12.png" >
           </div>
           <div class="smallfont">3) 杜邦 TYVEK 800J(黄色边条） 或 600（蓝色边条，也称 TYVEK classic plus）
             [01/25 一线医生确认 + 1/26 更新 600 + 1/27 更新图片]</div>
           <div>
-            <img src="../assets/image/img13.png" >
+            <img class="img-13" src="../assets/image/img13.png" >
           </div>
           <div>
-            <img src="../assets/image/img14.png" >
+            <img class="img-14" src="../assets/image/img14.png" >
           </div>
           <div class="smallfont">4）3M 4565</div>
           <div>
-            <img src="../assets/image/img15.png" >
+            <img class="img-15" src="../assets/image/img15.png" >
           </div>
           <div class="smallfont">5）Winner 稳健医疗，医用防护服</div>
           <div>
-            <img src="../assets/image/img16.png" >
+            <img class="img-16" src="../assets/image/img16.png" >
           </div>
           <div class="smallfont">7）日本防护服 JIS T 8060, JIS T 8061, JIS T 8062 [1/27 11:00 更新，来自武汉大学人民医院设备科]</div>
           <div class="smallfont">欧洲防护服
@@ -495,22 +498,22 @@
             防水性/密闭性：分为Type 1-6，数字越小等级越高；医用推荐 Type4(B) 及以上; 也可对照编码 type 3&4 对应 EN14605 ；下图中也有图标
           </div>
           <div>
-            <img src="../assets/image/img17.png" >
+            <img class="img-17" src="../assets/image/img17.png" >
           </div>
           <div>
-            <img src="../assets/image/img18.png" >
+            <img class="img-18" src="../assets/image/img18.png" >
           </div>
           <div>
-            <img src="../assets/image/img19.png" >
+            <img class="img-19" src="../assets/image/img19.png" >
           </div>
           <div>
-            <img src="../assets/image/img20.png" >
+            <img class="img-20" src="../assets/image/img20.png" >
           </div>
           <div>
-            <img src="../assets/image/img21.png" >
+            <img class="img-21" src="../assets/image/img21.png" >
           </div>
           <div>
-            <img src="../assets/image/img22.png" >
+            <img class="img-22" src="../assets/image/img22.png" >
           </div>
 
       </div>
@@ -1456,7 +1459,27 @@ export default {
   table{
     td{
       font-size:12px;
+      padding: 5px;
     }
+    .td-1{
+          width: 40px;
+          text-align:center;
+    }
+    .td-2{
+          width: 170px;
+          text-align:center;
+    }
+    .td-3{
+          width: 105px;
+    }
+  }
+  .table-list{
+    width: 100%;
+    table{
+      width: 100%;
+      table-layout: fixed;
+    }
+
   }
   .agreement-content{
     box-sizing: border-box;
@@ -1483,6 +1506,10 @@ export default {
       margin-top:8px;
       line-height:26px;
       color:#333333;
+    }
+    img{
+      width: 100%;
+
     }
   }
   .writefont{

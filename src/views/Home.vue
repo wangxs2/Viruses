@@ -755,44 +755,43 @@ export default {
   },
   created() {
     this.getCurTimeDataList()
-    // this.getDataList()
+    this.getDataList()
     this.getWuziList()
     this.getCityList()
     this.getCurTimeContent()
-    this.getProvinMark("#216AFF")
+    // this.getProvinMark("#216AFF")
   },
  mounted () {
     this.getMap()
     //地图的放大缩小
-    this.myMap.on("zoomend", () => {
-      let numberMap = this.myMap.getZoom();
-      if(numberMap>5||numberMap==5){
-        this.pointGroup.clearOverlays()
-        if(this.mass==null){
-          this.getDataList()
-        }
-        // 
-      }else{
-        if(this.mass){
-          alert(1)
-            this.mass.clear()
-            this.mass=null
-          }
-        if(this.pointGroup.Pw.length==0){
-          console.log(this.mass)
+    // this.myMap.on("zoomend", () => {
+    //   let numberMap = this.myMap.getZoom();
+    //   if(numberMap>5||numberMap==5){
+    //     this.pointGroup.clearOverlays()
+    //     if(this.mass==null){
+    //       this.getDataList()
+    //     }
+    //   }else{
+    //     if(this.mass){
+    //       alert(1)
+    //         this.mass.clear()
+    //         this.mass=null
+    //       }
+    //     if(this.pointGroup.Pw.length==0){
+    //       console.log(this.mass)
           
-          if(this.query.orgType==1){
-            this.getProvinMark("#216AFF")
-          }else if(this.query.orgType==2){
-            this.getProvinMark("#FF7550")
-          }else{
-            this.getProvinMark("#DE78FF")
-          }
-        }
+    //       if(this.query.orgType==1){
+    //         this.getProvinMark("#216AFF")
+    //       }else if(this.query.orgType==2){
+    //         this.getProvinMark("#FF7550")
+    //       }else{
+    //         this.getProvinMark("#DE78FF")
+    //       }
+    //     }
        
-      }
+    //   }
       
-    })
+    // })
   },
   methods:{
     contectBtn(){
@@ -856,20 +855,20 @@ export default {
     toRouterIndex(iteam,index){
       this.selectIndex=index
       this.query.orgType=index+1
-      if(this.mass){
-        this.mass.clear()
-        this.mass=null
-      }
-      this.myMap.setZoomAndCenter(4,[111.160477,32.1624]);
-      if(index==0){
-        this.getProvinMark("#216AFF")
-      }else if(index==1){
-        this.getProvinMark("#FF7550")
-      }else{
-        this.getProvinMark("#DE78FF")
-      }
+      // if(this.mass){
+      //   this.mass.clear()
+      //   this.mass=null
+      // }
+      // this.myMap.setZoomAndCenter(4,[111.160477,32.1624]);
+      // if(index==0){
+      //   this.getProvinMark("#216AFF")
+      // }else if(index==1){
+      //   this.getProvinMark("#FF7550")
+      // }else{
+      //   this.getProvinMark("#DE78FF")
+      // }
       
-      // this.getDataList()
+      this.getDataList()
       this.getWuziList()
       this.getCityList()
     },

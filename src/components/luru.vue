@@ -616,7 +616,7 @@ export default {
           name:"普通医院"
         },{
           id:0,
-          name:"其他"
+          name:"其他抗疫单位"
         },
       ], 
       luruTypeRadio1:[ //录入类型单选数据

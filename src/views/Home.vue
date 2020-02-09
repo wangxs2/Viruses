@@ -13,7 +13,7 @@
      <div class="dzan" v-if="isdzan">+1</div>
     </transition>
     <div class="forew" v-if="seven">
-      近七天数据
+      近14天数据
     </div>
     <div class="write">
       <p>更多物资跟踪：新冠肺炎物资捐赠对接记录 <span style="color:#1989fa" @click="agreement=true">用户协议</span></p></div>
@@ -782,7 +782,6 @@ export default {
     //         this.mass=null
     //       }
     //     if(this.pointGroup.Pw.length==0){
-    //       console.log(this.mass)
           
     //       if(this.query.orgType==1){
     //         this.getProvinMark("#216AFF")
@@ -956,7 +955,6 @@ export default {
         }
         
       })
-      console.log(markerslist)
       this.createMarks(markerslist)
       this.showmap=false
       
@@ -1057,7 +1055,6 @@ export default {
     marker.on("click", (e) => {
       this.myMap.setZoomAndCenter(6, e.lnglat);
       this.getDataList()
-      console.log(this.mass)
     })
       return marker
     },
@@ -1168,7 +1165,6 @@ export default {
               }
             }
           })
-          console.log(this.mass)
         }
        
       })

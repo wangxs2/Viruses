@@ -943,6 +943,8 @@ export default {
           if(this.query.orgType==2){
             if(item.status){
              item.style=item.status==1?9:item.status==2?10:item.status==3?11:11
+            }else{
+              item.style=11
             }
           }else if(this.query.orgType==3){
             item.style=8

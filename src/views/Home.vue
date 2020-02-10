@@ -13,7 +13,7 @@
      <div class="dzan" v-if="isdzan">+1</div>
     </transition>
     <div class="forew" v-if="seven">
-      近七天数据
+      近14天数据
     </div>
     <div class="write">
       <p>更多物资跟踪：新冠肺炎物资捐赠对接记录 <span style="color:#1989fa" @click="agreement=true">用户协议</span></p></div>
@@ -37,42 +37,46 @@
     <div id="myMap" class="container"></div>
     
     <!-- 医院的详情弹框 -->
-    <van-popup  v-model="isDetail"  closeable :style="{width: '100%' }" round :duration="0">
-      <div class="contentDetail">
-        <div style="font-size:18px;text-align:left">{{mapobj.hospitalName}}</div>
-        <div class="address"> 
-          <div class="left-font" v-if="mapobj.hospitalAddress!==undefined&&mapobj.hospitalAddress!==''" style="color:#666666;width:75%;word-wrap:break-word;text-align:left"><van-icon name="location-o" size="20" /> <div class="van-van-multi-ellipsis--l2" style="margin-left:2px">{{mapobj.hospitalAddress}}</div></div>
-          <div v-if="mapobj.type==1" class="right-btn">定点医院</div>
-          <div v-if="mapobj.type==2" class="right-btn right-btn1">发热门诊</div>
-          <div v-if="mapobj.status&&mapobj.status==1" class="right-btn right-btn2">正常经营</div>
-          <div v-if="mapobj.status&&mapobj.status==2" class="right-btn right-btn3">政府托管</div>
-          <div v-if="mapobj.status&&mapobj.status==3" class="right-btn right-btn4">尚未核实</div>
-        </div>
-        <div class="address" style="font-size:12px"> 
-          <div v-if="mapobj.source!==undefined&&mapobj.source!==''" style="color:#666666">信息来源：{{mapobj.source}}  <span style="color:#216AFF;cursor:pointer"> </span></div>
-          <div v-if="mapobj.createTime!==undefined">发布日期：{{(mapobj.createTime).replace("+"," ")}}</div>
-        </div>
-        <div class="tel-phone" v-if="mapobj.linkTelarr!==undefined&query.orgType!==3">
-          <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr"
-                 :key="index"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
-        </div>
-        <!-- <span class="person">接受个人捐赠</span> -->
-        <div v-if="mapobj.needsNamearr!==undefined" style="font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'所需疫情防控物资':'可提供的物资或者服务'}} <van-icon v-if="query.orgType==1" style="margin-left:10px" name="warning-o" color="#FF2727"  size="12" /> <span v-if="query.orgType==1" @click="specifications=true" style="color:#FF2727;font-size:12px">物资标准</span></div>
-        <div class="material" v-if="mapobj.needsNamearr!==undefined">
-          <div v-for="(item,index) in mapobj.needsNamearr"
-                 :key="index" class="boll-item"><span class="boll"></span>{{item}}</div>
-        </div>
-        <div v-if="mapobj.needsDescrarr!==undefined" v-for="(itrm,index) in mapobj.needsDescrarr"
-                 :key="index" class="remark">{{itrm}}</div>
-        <div v-if="mapobj.orgDescr!==undefined" style="font-size:12px;color:#999999;text-align:left">备注：{{mapobj.orgDescr}}</div>
-        <van-divider />
-        <div>
-          <van-button v-if="mapobj.linkTelarr!==undefined&&query.orgType!==3" round color="#216AFF" style="margin-right:12px" @click="dialPhoneNumber()">我要联系</van-button>
-          <van-button round color="linear-gradient(to right, #FF6600, #FF7B10)" @click="shakeTime(mapobj.hospitalName)" icon="good-job-o" type="info">点赞加油 {{mapobj.encourageNum}}次</van-button>
+    <van-overlay  :show="isDetail" :z-index="90" :duration="0"	>
+      <div class="hospatilBox">
+        <div class="contentDetail">
+          <van-icon class="closeimg" @click="isDetail=false" :size="24" name="cross" />
+          <div style="font-size:18px;text-align:left">{{mapobj.hospitalName}}</div>
+          <div class="address"> 
+            <div class="left-font" v-if="mapobj.hospitalAddress!==undefined&&mapobj.hospitalAddress!==''" style="color:#666666;width:75%;word-wrap:break-word;text-align:left"><van-icon name="location-o" size="20" /> <div class="van-van-multi-ellipsis--l2" style="margin-left:2px;font-size:15px">{{mapobj.hospitalAddress}}</div></div>
+            <div v-if="mapobj.type==1" class="right-btn">定点医院</div>
+            <div v-if="mapobj.type==2" class="right-btn right-btn1">发热门诊</div>
+            <div v-if="mapobj.status&&mapobj.status==1" class="right-btn right-btn2">正常经营</div>
+            <div v-if="mapobj.status&&mapobj.status==2" class="right-btn right-btn3">政府托管</div>
+            <div v-if="mapobj.status&&mapobj.status==3" class="right-btn right-btn4">尚未核实</div>
+          </div>
+          <div class="address" style="font-size:12px"> 
+            <div v-if="mapobj.source!==undefined&&mapobj.source!==''" style="color:#666666">信息来源：{{mapobj.source}}  <span style="color:#216AFF;cursor:pointer"> </span></div>
+            <div v-if="mapobj.createTime!==undefined">发布日期：{{(mapobj.createTime).replace("+"," ")}}</div>
+          </div>
+          <div class="tel-phone" v-if="mapobj.linkTelarr!==undefined&query.orgType!==3">
+            <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr"
+                  :key="index"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
+          </div>
+          <!-- <span class="person">接受个人捐赠</span> -->
+          <div v-if="mapobj.needsNamearr!==undefined" style="font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'所需疫情防控物资':'可提供的物资或者服务'}} <van-icon v-if="query.orgType==1" style="margin-left:10px" name="warning-o" color="#FF2727"  size="12" /> <span v-if="query.orgType==1" @click="specifications=true" style="color:#FF2727;font-size:12px">物资标准</span></div>
+          <div class="material" v-if="mapobj.needsNamearr!==undefined">
+            <div v-for="(item,index) in mapobj.needsNamearr"
+                  :key="index" class="boll-item"><span class="boll"></span>{{item}}</div>
+          </div>
+          <div v-if="mapobj.needsDescrarr!==undefined" v-for="(itrm,index) in mapobj.needsDescrarr"
+                  :key="index" class="remark">{{itrm}}</div>
+          <div v-if="mapobj.orgDescr!==undefined" style="font-size:12px;color:#999999;text-align:left">备注：{{mapobj.orgDescr}}</div>
+          <!-- <van-divider /> -->
+          <div>
+            <span class="btnSty" v-if="mapobj.linkTelarr!==undefined&&query.orgType!==3"  style="margin-right:12px" @click="dialPhoneNumber()">我要联系</span>
+            <span class="btnSty" style="background:linear-gradient(90deg,rgba(255,102,0,1),rgba(255,123,16,1));" @click="shakeTime(mapobj.hospitalName)"><van-icon color="#ffffff" size="20" name="good-job" />点赞加油 {{mapobj.encourageNum}}次</span>
+          </div>
         </div>
       </div>
-    </van-popup>
+    </van-overlay>
     <van-popup
+    round
         v-model="phoneshow"
         position="right">
       <div style="padding:12px 24px">
@@ -660,7 +664,7 @@ export default {
       isone:true,
       myMap:null,
       mass:null,
-      pointGroup: new AMap.OverlayGroup(), // 点集合
+      pointGroup: new AMap.OverlayGroup(), // 省集合
       isDetail:false,
       agreement:false,
       specifications:false,//医用规则说明
@@ -755,14 +759,42 @@ export default {
   },
   created() {
     this.getCurTimeDataList()
-  },
- mounted () {
-    this.getMap()
     this.getDataList()
     this.getWuziList()
     this.getCityList()
     this.getCurTimeContent()
-    // this.getProvinceList()
+    // this.getProvinMark("#216AFF")
+  },
+ mounted () {
+    this.getMap()
+    //地图的放大缩小
+    // this.myMap.on("zoomend", () => {
+    //   let numberMap = this.myMap.getZoom();
+    //   if(numberMap>5||numberMap==5){
+    //     this.pointGroup.clearOverlays()
+    //     if(this.mass==null){
+    //       this.getDataList()
+    //     }
+    //   }else{
+    //     if(this.mass){
+    //       alert(1)
+    //         this.mass.clear()
+    //         this.mass=null
+    //       }
+    //     if(this.pointGroup.Pw.length==0){
+          
+    //       if(this.query.orgType==1){
+    //         this.getProvinMark("#216AFF")
+    //       }else if(this.query.orgType==2){
+    //         this.getProvinMark("#FF7550")
+    //       }else{
+    //         this.getProvinMark("#DE78FF")
+    //       }
+    //     }
+       
+    //   }
+      
+    // })
   },
   methods:{
     contectBtn(){
@@ -779,7 +811,6 @@ export default {
     // 录入弹框选择
     luruSelectBtn(type) {
       this.curTabIndex=type
-      console.log(this.curTabIndex)
       this.luruSelectModel=false
       this.reduceShow=true
     },
@@ -827,6 +858,19 @@ export default {
     toRouterIndex(iteam,index){
       this.selectIndex=index
       this.query.orgType=index+1
+      // if(this.mass){
+      //   this.mass.clear()
+      //   this.mass=null
+      // }
+      // this.myMap.setZoomAndCenter(4,[111.160477,32.1624]);
+      // if(index==0){
+      //   this.getProvinMark("#216AFF")
+      // }else if(index==1){
+      //   this.getProvinMark("#FF7550")
+      // }else{
+      //   this.getProvinMark("#DE78FF")
+      // }
+      
       this.getDataList()
       this.getWuziList()
       this.getCityList()
@@ -879,7 +923,6 @@ export default {
     },
     //加载海量点
     getmarkers(citys){
-      
       const markerslist=[]
       citys.forEach(item => {
         if(item.linkTel!==undefined){
@@ -897,19 +940,26 @@ export default {
         if(item.gaodeLon){
           item.lnglat=[item.gaodeLon, item.gaodeLat]
           item.style= this.query.orgType==2?7:this.query.orgType==3?8:item.orgStatus
+          if(this.query.orgType==2){
+            if(item.status){
+             item.style=item.status==1?9:item.status==2?10:item.status==3?11:''
+            }
+          }else if(this.query.orgType==3){
+            item.style=8
+          }else{
+            item.style=item.orgStatus
+          }
 
           markerslist.push(item)
           // 
         }
         
       })
-      console.log(markerslist)
       this.createMarks(markerslist)
       this.showmap=false
       
     },
     createMarks(citys){
-    
       let style = [{
             url: require('../assets/image/icon4.png'),
             anchor: new AMap.Pixel(9, 9),
@@ -946,21 +996,75 @@ export default {
             url: require('../assets/image/list6.png'),
             anchor: new AMap.Pixel(9, 9),
             size: new AMap.Size(18, 18)
+        },{
+            url: require('../assets/image/list8.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        },{
+            url: require('../assets/image/list9.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        },{
+            url: require('../assets/image/list10.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
         }
-    ];
-    this.mass = new AMap.MassMarks(citys, {
-      zIndex: 111,
-      cursor: 'pointer',
-      style: style
-      });
-      this.mass.on("click", (e) => {
-      // alert(2)
-      this.isDetail=true
-      let str=e.data
-      this.mapobj=str
+      ];
+      this.mass = new AMap.MassMarks(citys, {
+        zIndex: 111,
+        cursor: 'pointer',
+        style: style
+        });
+        this.mass.on("click", (e) => {
+        // alert(2)
+        this.isDetail=true
+        let str=e.data
+        this.mapobj=str
+      })
+        this.mass.setMap(this.myMap);
+    },
+    //初始化 获取省的点
+    getProvinMark(color){
+      this.pointGroup.clearOverlays()
+      this.$fetchGet("area/countByProvince",{
+        orgType:this.query.orgType
+      }).then(res=> {
+        if (res.code=="success") {
+          if(res.content.length>0){
+            res.content.forEach(iteam=>{
+              this.pointGroup.addOverlay(this.createdProvin(color,iteam))
+            })
+            this.myMap.add(this.pointGroup)
+          }else{
+            this.$toast("暂无数据");
+          }
+        }else{
+          this.$toast(res.message);
+        }
+      })
+    },
+    //创建省的聚合点
+    createdProvin(color,row){
+      let marker = new AMap.Marker({
+        position: new AMap.LngLat(row.longitude, row.latitude),
+        offset: new AMap.Pixel(-40, -40),
+        content: this.setContent(color, row),
+        topWhenClick: true,
+        extData: { row }
+      })
+    marker.on("click", (e) => {
+      this.myMap.setZoomAndCenter(6, e.lnglat);
+      this.getDataList()
     })
-      this.mass.setMap(this.myMap);
-
+      return marker
+    },
+    //设置圆圈的颜色
+    setContent(color, row) {
+      return `<div style="box-shadow:0px 0px 12px 0px rgba(0, 0, 0, 0.3);background-color: ${color};font-size:6px;color:#ffffff; height:60px; width:60px;border-radius:50%;">
+            <p style="margin:0;padding-top:16px">${row.province}</p>
+            <p style="margin:0">${row.countNum}家</p>
+        </div>
+      `
     },
     // 录入按钮
     writeBtn(){
@@ -1011,63 +1115,58 @@ export default {
       this.showmap=true
       if(this.mass){
        this.mass.clear()
+       this.mass=null
       }
       this.$fetchGet("hospital/selectHospital",this.query).then(res=> {
         let str=decodeURIComponent(encrypt.Decrypt(res.content))
         let alldata=JSON.parse(str)
-        console.log(alldata)
-        this.showmap=false
-        alldata.datas.forEach(item=> {
-          let arr=[],arr1=[]
-          if (item.linkTel||item.linkPeople){
-            if (item.linkTel.indexOf(",") != -1) {
-              arr=item.linkTel.split(",")
-              arr1=item.linkPeople.split(",")
-              item.linkTelPeopleList=[]
-
-              for(var i = 0; i < arr.length; i++){
-                var obj = {};
-                for(var j = 0; j < arr1.length; j++){
-                  if(i==j){
-                    obj.tel = arr[i];
-                    obj.name = arr1[j];       
-                    item.linkTelPeopleList.push(obj);  
-                  }  
-                }
-              }
-            }else {
-              arr=[item.linkTel]
-              arr1=[item.linkPeople]
-              item.linkTelPeopleList=[]
-              for(var i = 0; i < arr.length; i++){
-                var obj = {};
-                for(var j = 0; j < arr1.length; j++){
-                  if(i==j){
-                    obj.tel = arr[i];
-                    obj.name = arr1[j];       
-                    item.linkTelPeopleList.push(obj);  
-                  }  
-                }
-              }
-            }
-          }
-        })
         this.dataList=alldata.datas
-        if (this.dataList) {
-          this.total=this.dataList.length
-        }
-        console.log(alldata.datas.length)
-        if(alldata.datas.length==0){
+        this.showmap=false
+        if(this.dataList.length==0){
           if(this.mass){
             this.mass.clear()
+            this.mass=null
             }
           this.$toast('暂无数据！');
         }else{
           this.getmarkers(alldata.datas)
-          
+          this.total=this.dataList.length
+          this.dataList.forEach(item=> {
+            let arr=[],arr1=[]
+            if (item.linkTel||item.linkPeople){
+              if (item.linkTel.indexOf(",") != -1) {
+                  arr=item.linkTel.split(",")
+                  arr1=item.linkPeople.split(",")
+                  item.linkTelPeopleList=[]
+                  for(var i = 0; i < arr.length; i++){
+                    var obj = {};
+                    for(var j = 0; j < arr1.length; j++){
+                      if(i==j){
+                        obj.tel = arr[i];
+                        obj.name = arr1[j];       
+                        item.linkTelPeopleList.push(obj);  
+                      }  
+                    }
+               }
+              }else {
+                arr=[item.linkTel]
+                arr1=[item.linkPeople]
+                item.linkTelPeopleList=[]
+                for(var i = 0; i < arr.length; i++){
+                  var obj = {};
+                  for(var j = 0; j < arr1.length; j++){
+                    if(i==j){
+                      obj.tel = arr[i];
+                      obj.name = arr1[j];       
+                      item.linkTelPeopleList.push(obj);  
+                    }  
+                  }
+                }
+              }
+            }
+          })
         }
-
-
+       
       })
     },
     // 选择时间
@@ -1211,7 +1310,6 @@ export default {
 
     },
     mapinit(res){
-    //  alert(2)
      this.myMap.clearMap()
       const markerslist=[]
       res.forEach(item => {
@@ -1237,19 +1335,14 @@ export default {
       this.myMap.add(markerslist)
       
     },
-    // 添加点集合
-  addPointGroup(overlays) {
-    this.pointGroup.addOverlays(overlays)
-    this.myMap.add(this.pointGroup)
-  },
+
   initMap(){
     
     this.$fetchGet("view/viewCount").then(res => {
       this.zanz=res.content
     });
   },
-    // lacal
-    // new AMap.LngLat(row.longitude, row.latitude),
+  
   createPoint(row) {
     let marker = new AMap.Marker({
       position: new AMap.LngLat(row.gaodeLon, row.gaodeLat),
@@ -1585,88 +1678,114 @@ export default {
     background:rgba(242,245,255,0.7);
     color:#999999;
   }
-  .contentDetail{
-     padding: 12px;
-     padding-top:20px;
-     box-sizing: border-box;
-      
-     .address{
-       margin-top:14px;
-       font-size:15px;
-       display:flex;
-       justify-content:space-between;
-       align-items: center;
-       
-      
-       .right-btn{
-        width:64px;
-        height:20px;
-        background:linear-gradient(90deg,rgba(255,122,15,1),rgba(255,188,60,1));
-        border-radius:10px;
-        font-size:12px;
-        color:#fff;
-        line-height:21px;
-       }
-       .right-btn1{
-         background:linear-gradient(90deg,rgba(232,52,248,1),rgba(209,97,255,1));
-       }
-       .right-btn2{
-         background:linear-gradient(90deg,rgba(34,139,34,1),rgba(144,238,144,1));
-       }
-       .right-btn3{
-         background:linear-gradient(90deg,rgba(	0,139,139,1),rgba(64,224,208,1));
-       }
-       .right-btn4{
-         background:linear-gradient(90deg,rgba(	105,105,105,1),rgba(169,169,169,1));
-       }
-     }
-     .tel-phone{
-       background: #F2F5FF;
-       padding: 12px;
-       font-size:15px;
-        margin:14px 0;
-     }
-     .person{
-       display: inline-block;
-       width:90px;
-        height:22px;
-        background:linear-gradient(90deg,rgba(130,124,255,1),rgba(164,119,255,1));
-        border-radius:0px 11px 11px 11px;
-        color:#fff;
-        font-size:12px;
-        font-weight:none;
-        text-align:center;
-        line-height:22px;
-        margin-left:6px;
-     }
-     .material{
-       display: flex;
-       flex-wrap: wrap;
-       color: #216AFF;
-        font-size: 15px;
-        margin-bottom: 6px;
-      .boll{
-        display: inline-block;
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: #216AFF;
-        margin-right: 6px;
+  .hospatilBox{
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    .contentDetail{
+      width:100%;
+        // height:100%;
+      padding: 12px;
+      padding-top:20px;
+      background:#fff;
+      box-sizing: border-box;
+      border-radius:10px;
+      position:relative;
+      .btnSty{
+        display:inline-block;
+        font-size:15px;
+        padding:8px 16px;
+        padding-top:6px;
+        color:#FFFFFF;
+        background:#216AFF;
+        border-radius:18px;
+        
       }
-      .boll-item{
-        display: flex;
+      .closeimg{
+        position:absolute;
+        top:10px;
+        right:10px;
+      }
+      .address{
+        margin-top:14px;
+        font-size:15px;
+        display:flex;
+        justify-content:space-between;
         align-items: center;
-        width: 50%;
-        margin-bottom: 8px;
+        
+        
+        .right-btn{
+          width:64px;
+          height:20px;
+          background:#a485fd;
+          border-radius:10px;
+          font-size:12px;
+          color:#fff;
+          line-height:21px;
+        }
+        .right-btn1{
+          background:#ff9d28;
+        }
+        .right-btn2{
+          background:#1bcc91;
+        }
+        .right-btn3{
+          background:#6196ff;
+        }
+        .right-btn4{
+          background:#ff7e69;
+        }
       }
-     }
-     .remark{
-       color: #999999;
-       font-size: 12px;
-       text-align: left;
-       margin-bottom: 6px;
-     }
+      .tel-phone{
+        background: #F2F5FF;
+        padding: 12px;
+        font-size:15px;
+          margin:14px 0;
+      }
+      .person{
+        display: inline-block;
+        width:90px;
+          height:22px;
+          background:linear-gradient(90deg,rgba(130,124,255,1),rgba(164,119,255,1));
+          border-radius:0px 11px 11px 11px;
+          color:#fff;
+          font-size:12px;
+          font-weight:none;
+          text-align:center;
+          line-height:22px;
+          margin-left:6px;
+      }
+      .material{
+        display: flex;
+        flex-wrap: wrap;
+        color: #216AFF;
+        font-size: 14px;
+        margin-bottom: 6px;
+        .boll{
+          display: inline-block;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #216AFF;
+          margin-right: 6px;
+        }
+        .boll-item{
+          display: flex;
+          align-items: center;
+          width: 50%;
+          margin-bottom: 8px;
+        }
+      }
+      .remark{
+        color: #999999;
+        font-size: 12px;
+        text-align: left;
+        margin-bottom: 6px;
+      }
+    }
   }
+ 
   .search-wrapper{
     // position: absolute;
     // left:0;

@@ -80,8 +80,8 @@
         v-model="phoneshow"
         position="right">
       <div style="padding:12px 24px">
-        <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr"
-                 :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" color="#1989fa" size="34"  /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
+        <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr1"
+                 :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" color="#1989fa" size="34"  /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr1[index]}}  {{iteam}}</div></div>
       </div>
     </van-popup>
     <!-- 搜索部分 -->
@@ -925,12 +925,12 @@ export default {
     getmarkers(citys){
       const markerslist=[]
       citys.forEach(item => {
-        if(item.linkTel!==undefined){
-          item.linkTelarr=item.linkTel.split(",")
-        }
-        if(item.linkPeople!==undefined){
-          item.linkPeoplearr=item.linkPeople.split(",")
-        }
+        // if(item.linkTel!==undefined){
+        //   item.linkTelarr=item.linkTel.split(",")
+        // }
+        // if(item.linkPeople!==undefined){
+        //   item.linkPeoplearr=item.linkPeople.split(",")
+        // }
         if(item.needsName!==undefined){
           item.needsNamearr=item.needsName.split(",")
         }

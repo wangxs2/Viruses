@@ -37,7 +37,7 @@
     <div id="myMap" class="container"></div>
     
     <!-- 医院的详情弹框 -->
-    <van-overlay  :show="isDetail" :z-index="90" :duration="0"	>
+    <van-overlay  :show="isDetail" :z-index="99" :duration="0"	>
       <div class="hospatilBox">
         <div class="contentDetail">
           <van-icon class="closeimg" @click="isDetail=false" :size="24" name="cross" />
@@ -64,7 +64,7 @@
             <div v-for="(item,index) in mapobj.needsNamearr"
                   :key="index" class="boll-item"><span class="boll"></span>{{item}}</div>
           </div>
-          <div v-if="mapobj.needsDescrarr!==undefined" v-for="(itrm,index) in mapobj.needsDescrarr"
+          <div v-if="mapobj.needsDescrarr!==undefined&&mapobj.hospitalAddress!==''" v-for="(itrm,index) in mapobj.needsDescrarr"
                   :key="index" class="remark">{{itrm}}</div>
           <div v-if="mapobj.orgDescr!==undefined" style="font-size:12px;color:#999999;text-align:left">备注：{{mapobj.orgDescr}}</div>
           <!-- <van-divider /> -->
@@ -76,7 +76,7 @@
       </div>
     </van-overlay>
     <van-popup
-    round
+        :z-index="100"
         v-model="phoneshow"
         position="right">
       <div style="padding:12px 24px">
@@ -142,15 +142,15 @@
       </div> -->
     </div>
     <!-- 搜索2右边弹框 -->
-    <van-popup v-model="showModel" position="right" :style="{ height: '100%' }">
+    <van-popup v-model="showModel" :z-index="89" position="right" :style="{ height: '100%' }">
       <div class="list-content">
 
         <div class="list-wrapper" v-for="(item,i) in dataList" :key="i" @click="detailright(item)">
           <p class="title">{{item.hospitalName}}</p>
           <p class="address" v-if="item.hospitalAddress!==undefined&&item.hospitalAddress!==''"><van-icon name="location-o" size="20" /><span>{{item.hospitalAddress}}</span></p>
           <p class="time" v-if="item.createTime!==undefined&&item.createTime!==''">发布日期：{{item.createTime!==undefined?item.createTime.substring(0,16).replace("+"," "):''}}</p>
-          <div class="phone" v-if="item.linkTelPeopleList!==undefined&&query.orgType!==3">
-            <p  v-for="(items,i) in item.linkTelPeopleList" :key="i"><van-icon name="phone-o" size="20" /><span>{{items.name}}</span><span @click="searchRightModelPhone(items.tel)">{{items.tel}}</span></p>
+          <div class="phone" v-if="item.linkPeoplearr1!==undefined&&query.orgType!==3">
+            <p  v-for="(items,i) in item.linkPeoplearr1" :key="i"><van-icon name="phone-o" size="20" /><span>{{items}}</span><span @click="searchRightModelPhone(item.linkTelarr1[i])">{{item.linkTelarr1[i]}}</span></p>
           </div>
         </div>
       </div>
@@ -758,7 +758,7 @@ export default {
     }
   },
   created() {
-    this.getCurTimeDataList()
+    // this.getCurTimeDataList()
     this.getDataList()
     this.getWuziList()
     this.getCityList()
@@ -942,7 +942,7 @@ export default {
           item.style= this.query.orgType==2?7:this.query.orgType==3?8:item.orgStatus
           if(this.query.orgType==2){
             if(item.status){
-             item.style=item.status==1?9:item.status==2?10:item.status==3?11:''
+             item.style=item.status==1?9:item.status==2?10:item.status==3?11:11
             }
           }else if(this.query.orgType==3){
             item.style=8
@@ -1015,11 +1015,15 @@ export default {
         cursor: 'pointer',
         style: style
         });
-        this.mass.on("click", (e) => {
+      this.mass.on("click", (e) => {
         // alert(2)
+        console.log(e.data)
         this.isDetail=true
-        let str=e.data
-        this.mapobj=str
+        if(e.data){
+          let str=e.data
+          this.mapobj=str
+        }
+        
       })
         this.mass.setMap(this.myMap);
     },
@@ -1118,53 +1122,43 @@ export default {
        this.mass=null
       }
       this.$fetchGet("hospital/selectHospital",this.query).then(res=> {
-        let str=decodeURIComponent(encrypt.Decrypt(res.content))
-        let alldata=JSON.parse(str)
-        this.dataList=alldata.datas
+        // let str=decodeURIComponent(encrypt.Decrypt(res.content))
+        // let alldata=JSON.parse(str)
+        // this.dataList=alldata.datas
         this.showmap=false
-        if(this.dataList.length==0){
+        if(res.content.length==0){
           if(this.mass){
             this.mass.clear()
             this.mass=null
             }
           this.$toast('暂无数据！');
         }else{
-          this.getmarkers(alldata.datas)
-          this.total=this.dataList.length
-          this.dataList.forEach(item=> {
-            let arr=[],arr1=[]
-            if (item.linkTel||item.linkPeople){
-              if (item.linkTel.indexOf(",") != -1) {
-                  arr=item.linkTel.split(",")
-                  arr1=item.linkPeople.split(",")
-                  item.linkTelPeopleList=[]
-                  for(var i = 0; i < arr.length; i++){
-                    var obj = {};
-                    for(var j = 0; j < arr1.length; j++){
-                      if(i==j){
-                        obj.tel = arr[i];
-                        obj.name = arr1[j];       
-                        item.linkTelPeopleList.push(obj);  
-                      }  
-                    }
-               }
-              }else {
-                arr=[item.linkTel]
-                arr1=[item.linkPeople]
-                item.linkTelPeopleList=[]
-                for(var i = 0; i < arr.length; i++){
-                  var obj = {};
-                  for(var j = 0; j < arr1.length; j++){
-                    if(i==j){
-                      obj.tel = arr[i];
-                      obj.name = arr1[j];       
-                      item.linkTelPeopleList.push(obj);  
-                    }  
-                  }
-                }
-              }
+          let arrsa=res.content
+          arrsa.forEach(itam=>{
+            if(itam.hospitalAddress){
+              itam.hospitalAddress=decodeURIComponent(encrypt.Decrypt(itam.hospitalAddress))
             }
+            if(itam.hospitalName){
+              itam.hospitalName=decodeURIComponent(encrypt.Decrypt(itam.hospitalName))
+            }
+            if(itam.linkPeople){
+              itam.linkPeople=decodeURIComponent(encrypt.Decrypt(itam.linkPeople))
+              itam.linkPeoplearr1=itam.linkPeople.split(",")
+            }
+            if(itam.linkTel){
+              itam.linkTel=decodeURIComponent(encrypt.Decrypt(itam.linkTel))
+              itam.linkTelarr1=itam.linkTel.split(",")
+            }
+            if(itam.gaodeLat){
+              itam.gaodeLat=decodeURIComponent(encrypt.Decrypt(itam.gaodeLat))
+              itam.gaodeLon=decodeURIComponent(encrypt.Decrypt(itam.gaodeLon))
+            }
+            
           })
+          this.total=arrsa.length
+          this.dataList=arrsa
+          console.log(arrsa)
+          this.getmarkers(arrsa)
         }
        
       })

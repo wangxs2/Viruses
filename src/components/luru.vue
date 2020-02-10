@@ -814,6 +814,9 @@ methods:{
         this.form1.startTime=''
         this.form1.needOrgin=1
         this.form1.needImg=''
+        this.curNeed1=0
+        this.testindex=0
+        this.telindex=0
 
   },
   clearForm2(){
@@ -850,6 +853,10 @@ methods:{
         this.form2.startTime=''
         this.form2.needOrgin=''
         this.form2.needImg=''
+        
+        this.curNeed2=0
+        this.testindex1=0
+        this.telindex1=0
 
   },
   clearForm3(){
@@ -878,6 +885,8 @@ methods:{
         this.form3.materialDetails=[]
         this.form3.materialDetails1=[]
         this.form3.needsDescr=''
+        this.filst=[]
+        this.telindex2=0
   },
   deleteTel(index){
       if(this.telindex<1){

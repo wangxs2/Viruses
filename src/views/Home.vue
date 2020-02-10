@@ -69,7 +69,7 @@
           <div v-if="mapobj.orgDescr!==undefined" style="font-size:12px;color:#999999;text-align:left">备注：{{mapobj.orgDescr}}</div>
           <!-- <van-divider /> -->
           <div>
-            <span class="btnSty" v-if="mapobj.linkTelarr!==undefined&&query.orgType!==3"  style="margin-right:12px" @click="dialPhoneNumber()">我要联系</span>
+            <span class="btnSty" v-if="mapobj.linkTelarr1!==undefined&&query.orgType!==3"  style="margin-right:12px" @click="dialPhoneNumber()">我要联系</span>
             <span class="btnSty" style="background:linear-gradient(90deg,rgba(255,102,0,1),rgba(255,123,16,1));" @click="shakeTime(mapobj.hospitalName)"><van-icon color="#ffffff" size="20" name="good-job" />点赞加油 {{mapobj.encourageNum}}次</span>
           </div>
         </div>

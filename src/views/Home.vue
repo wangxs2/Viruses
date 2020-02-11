@@ -144,16 +144,28 @@
     <!-- 搜索2右边弹框 -->
     <van-popup v-model="showModel" :z-index="89" position="right" :style="{ height: '100%' }">
       <div class="list-content">
+        <div v-if="dataList.length">
 
-        <div class="list-wrapper" v-for="(item,i) in dataList" :key="i" @click="detailright(item)">
-          <p class="title">{{item.hospitalName}}</p>
-          <p class="address" v-if="item.hospitalAddress!==undefined&&item.hospitalAddress!==''"><van-icon name="location-o" size="20" /><span>{{item.hospitalAddress}}</span></p>
-          <p class="time" v-if="item.createTime!==undefined&&item.createTime!==''">发布日期：{{item.createTime!==undefined?item.createTime.substring(0,16).replace("+"," "):''}}</p>
-          <div class="phone" v-if="item.linkTelarr1!==undefined&&query.orgType!==3">
-            <p  v-for="(items,i) in item.linkTelarr1" :key="i"><van-icon name="phone-o" size="20" /><span>{{item.linkPeoplearr1==undefined?"":item.linkPeoplearr1[i]}}</span><span @click="searchRightModelPhone(items)">{{items}}</span></p>
+          <div class="list-wrapper" v-for="(item,i) in dataList" :key="i" @click="detailright(item)">
+            <p class="title">{{item.hospitalName}}</p>
+            <p class="address" v-if="item.hospitalAddress!==undefined&&item.hospitalAddress!==''"><van-icon name="location-o" size="20" /><span>{{item.hospitalAddress}}</span></p>
+            <p class="time" v-if="item.createTime!==undefined&&item.createTime!==''">发布日期：{{item.createTime!==undefined?item.createTime.substring(0,16).replace("+"," "):''}}</p>
+            <div class="phone" v-if="item.linkPeoplearr1!==undefined&&query.orgType!==3">
+              <p  v-for="(items,i) in item.linkPeoplearr1" :key="i"><van-icon name="phone-o" size="20" /><span>{{items}}</span><span @click="searchRightModelPhone(item.linkTelarr1[i])">{{item.linkTelarr1[i]}}</span></p>
+            </div>
+          </div>
+          </div>
+        <div v-else>
+          
+          <div class="list-wrapper list-wrapper-no">
+            <img class="down-up" src="../assets/image/reduce.png" alt="">
+            <p>没有数据哦!</p>
+
           </div>
         </div>
+
       </div>
+      
       
     </van-popup>
 
@@ -758,7 +770,7 @@ export default {
     }
   },
   created() {
-    // this.getCurTimeDataList()
+    this.getCurTimeDataList()
     this.getDataList()
     this.getWuziList()
     this.getCityList()
@@ -1133,6 +1145,8 @@ export default {
             this.mass.clear()
             this.mass=null
             }
+          this.total=0
+          this.dataList=res.content
           this.$toast('暂无数据！');
         }else{
           let arrsa=res.content
@@ -1975,6 +1989,28 @@ export default {
     .list-wrapper{
       padding-bottom: 15px;
       border-bottom:1px solid #dddddd;
+      &.list-wrapper-no{
+        
+          
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 100px;
+
+        img{
+          width: 194px;
+          height:147px;
+        }
+        p{
+          font-size:15px;
+          font-family:PingFang SC;
+          font-weight:400;
+          color:rgba(153,153,153,1);
+          margin-top:23px;
+
+        }
+      }
       &:last-child{
         border:0
       }

@@ -7,7 +7,7 @@
     <div class="countbottom"><span style="color:#216AFF"><a href="http://www.acfic.org.cn">中华全国工商业联合会</a></span> <span style="color:#216AFF"><a href="http://www.scf.org.cn">上海市慈善基金会</a></span> <span style="color:#216AFF"><a href="https://www.siti.sh.cn">上海产业技术研究院</a></span>联合发布</div>
     <div class="twobif">{{zanz.encourage}}次</div>
     <div class="threebif" @click="dzanclick">
-      <van-icon  name="good-job" size="30" color="#ffffff" />
+      <van-icon  name="good-job" :size="30" color="#ffffff" />
     </div>
     <transition name="likeAddAnimate">
      <div class="dzan" v-if="isdzan">+1</div>
@@ -1461,7 +1461,7 @@ export default {
     z-index:10;
     width:100px;
     height:24px;
-    line-height:24px;
+    line-height:25px;
     font-size:12px;
     background:rgba(254,59,57,1);
     opacity:0.7;

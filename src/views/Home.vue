@@ -54,9 +54,9 @@
             <div v-if="mapobj.source!==undefined&&mapobj.source!==''" style="color:#666666">信息来源：{{mapobj.source}}  <span style="color:#216AFF;cursor:pointer"> </span></div>
             <div v-if="mapobj.createTime!==undefined">发布日期：{{(mapobj.createTime).replace("+"," ")}}</div>
           </div>
-          <div class="tel-phone" v-if="mapobj.linkTelarr!==undefined&query.orgType!==3">
-            <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr"
-                  :key="index"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr[index]}}  {{iteam}}</div></div>
+          <div class="tel-phone" v-if="mapobj.linkTelarr1!==undefined&query.orgType!==3">
+            <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr1"
+                  :key="index"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr1==undefined?"":mapobj.linkPeoplearr1[index]}}  {{iteam}}</div></div>
           </div>
           <!-- <span class="person">接受个人捐赠</span> -->
           <div v-if="mapobj.needsNamearr!==undefined" style="font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'所需疫情防控物资':'可提供的物资或者服务'}} <van-icon v-if="query.orgType==1" style="margin-left:10px" name="warning-o" color="#FF2727"  size="12" /> <span v-if="query.orgType==1" @click="specifications=true" style="color:#FF2727;font-size:12px">物资标准</span></div>
@@ -64,12 +64,12 @@
             <div v-for="(item,index) in mapobj.needsNamearr"
                   :key="index" class="boll-item"><span class="boll"></span>{{item}}</div>
           </div>
-          <div v-if="mapobj.needsDescrarr!==undefined&&mapobj.hospitalAddress!==''" v-for="(itrm,index) in mapobj.needsDescrarr"
+          <div v-if="mapobj.needsDescrarr!==undefined&&mapobj.needsDescrarr!==''" v-for="(itrm,index) in mapobj.needsDescrarr"
                   :key="index" class="remark">{{itrm}}</div>
           <div v-if="mapobj.orgDescr!==undefined" style="font-size:12px;color:#999999;text-align:left">备注：{{mapobj.orgDescr}}</div>
           <!-- <van-divider /> -->
           <div>
-            <span class="btnSty" v-if="mapobj.linkTelarr!==undefined&&query.orgType!==3"  style="margin-right:12px" @click="dialPhoneNumber()">我要联系</span>
+            <span class="btnSty" v-if="mapobj.linkTelarr1!==undefined&&query.orgType!==3"  style="margin-right:12px" @click="dialPhoneNumber()">我要联系</span>
             <span class="btnSty" style="background:linear-gradient(90deg,rgba(255,102,0,1),rgba(255,123,16,1));" @click="shakeTime(mapobj.hospitalName)"><van-icon color="#ffffff" size="20" name="good-job" />点赞加油 {{mapobj.encourageNum}}次</span>
           </div>
         </div>
@@ -81,7 +81,7 @@
         position="right">
       <div style="padding:12px 24px">
         <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr1"
-                 :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" color="#1989fa" size="34"  /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr1[index]}}  {{iteam}}</div></div>
+                 :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" color="#1989fa" size="34"  /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr1==undefined?"":mapobj.linkPeoplearr1[index]}}  {{iteam}}</div></div>
       </div>
     </van-popup>
     <!-- 搜索部分 -->
@@ -955,6 +955,8 @@ export default {
           if(this.query.orgType==2){
             if(item.status){
              item.style=item.status==1?9:item.status==2?10:item.status==3?11:11
+            }else{
+              item.style=11
             }
           }else if(this.query.orgType==3){
             item.style=8
@@ -1155,9 +1157,11 @@ export default {
             if(itam.hospitalName){
               itam.hospitalName=decodeURIComponent(encrypt.Decrypt(itam.hospitalName))
             }
-            if(itam.linkPeople){
+            // console.log(itam.linkPeople)
+            if(itam.linkPeople!==undefined){
               itam.linkPeople=decodeURIComponent(encrypt.Decrypt(itam.linkPeople))
               itam.linkPeoplearr1=itam.linkPeople.split(",")
+              // console.log(itam.linkPeoplearr1)
             }
             if(itam.linkTel){
               itam.linkTel=decodeURIComponent(encrypt.Decrypt(itam.linkTel))

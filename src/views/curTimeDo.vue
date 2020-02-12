@@ -53,9 +53,9 @@
                                             </div>
                                             <div class="desc">{{item.body}}</div>
                                         </div>
-                                        <div class="list-item-bottom" @click="showPdf(item.linksCur)">
-                                            <span class="time" v-if="item.updateTime">{{item.updateTime.substring(0,10)}}</span>
-                                            <span class="btn"><img class="down-up" src="../assets/image/pdf.png" alt="">查看任务详单</span>
+                                        <div class="list-item-bottom">
+                                            <span class="time" v-if="item.updateTime">{{item.updateTime.substring(0,16)}}</span>
+                                            <span class="btn" @click="showPdf(item.linksCur)" v-if="item.links"><img class="down-up" src="../assets/image/pdf.png" alt="">查看任务详单</span>
                                         </div>
                                         <div class="tab" style="background:rgba(255,69,69,1)" v-if="item.status==0">等待资助</div>
                                         <div class="tab" style="background:rgba(2,199,150,1)" v-else-if="item.status==1">资助完成</div>
@@ -76,9 +76,9 @@
                                             </div>
                                             <div class="desc">{{item.body}}</div>
                                         </div>
-                                        <div class="list-item-bottom" @click="showPdf(item.linksCur)">
-                                            <span class="time" v-if="item.updateTime">{{item.updateTime.substring(0,10)}}</span>
-                                            <span class="btn"><img class="down-up" src="../assets/image/pdf.png" alt="">查看任务详单</span>
+                                        <div class="list-item-bottom">
+                                            <span class="time" v-if="item.updateTime">{{item.updateTime.substring(0,16)}}</span>
+                                            <span class="btn" @click="showPdf(item.linksCur)" v-if="item.links"><img class="down-up" src="../assets/image/pdf.png" alt="">查看任务详单</span>
                                         </div>
                                         <div class="tab1" style="color:#FF4545" v-if="item.status==0">未核实</div>
                                         <div class="tab1" style="color:#02C796" v-else-if="item.status==2">已完结</div>
@@ -100,9 +100,9 @@
                                             </div>
                                             <div class="desc">{{item.body}}</div>
                                         </div>
-                                        <div class="list-item-bottom" @click="showPdf(item.linksCur)">
-                                            <span class="time" v-if="item.updateTime">{{item.updateTime.substring(0,10)}}</span>
-                                            <span class="btn"><img class="down-up" src="../assets/image/pdf.png" alt="">查看任务详单</span>
+                                        <div class="list-item-bottom">
+                                            <span class="time" v-if="item.updateTime">{{item.updateTime.substring(0,16)}}</span>
+                                            <span class="btn" @click="showPdf(item.linksCur)" v-if="item.links"><img class="down-up" src="../assets/image/pdf.png" alt="">查看任务详单</span>
                                         </div>
                                         <div class="tab1" style="color:#FF4545" v-if="item.status==0">未核实</div>
                                         <div class="tab1" style="color:#02C796" v-else-if="item.status==2">已完结</div>
@@ -302,11 +302,12 @@ export default {
           // 处理数据
           if (rows&&rows.length>0){
             rows.forEach(item => {
+              if (item.links){
                 item.links=item.links.split(";")
                 if (item.links&&item.links.length){
                     item.linksCur=item.links[0]
                 }
-                console.log(item.linksCur)
+              }
             })
             this.curTimeDataList = this.curTimeDataList.concat(rows)
             this.loading1 = false;
@@ -336,11 +337,12 @@ export default {
           // 处理数据
           if (rows&&rows.length>0){
             rows.forEach(item => {
+              if (item.links){
                 item.links=item.links.split(";")
                 if (item.links&&item.links.length){
                     item.linksCur=item.links[0]
                 }
-                console.log(item.linksCur)
+              }
             })
             this.curTimeDataList = this.curTimeDataList.concat(rows)
             this.loading2 = false;
@@ -370,11 +372,12 @@ export default {
           // 处理数据
           if (rows&&rows.length>0){
             rows.forEach(item => {
+              if (item.links){
                 item.links=item.links.split(";")
                 if (item.links&&item.links.length){
                     item.linksCur=item.links[0]
                 }
-                console.log(item.linksCur)
+              }
             })
             this.curTimeDataList = this.curTimeDataList.concat(rows)
             this.loading3 = false;

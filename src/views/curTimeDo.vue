@@ -303,7 +303,7 @@ export default {
             rows.forEach(item => {
                 item.links=item.links.split(";")
                 if (item.links&&item.links.length){
-                    item.linksCur="http://47.100.200.255:19955"+item.links[0]
+                    item.linksCur=item.links[0]
                 }
                 console.log(item.linksCur)
             })
@@ -337,7 +337,7 @@ export default {
             rows.forEach(item => {
                 item.links=item.links.split(";")
                 if (item.links&&item.links.length){
-                    item.linksCur="http://47.100.200.255:19955"+item.links[0]
+                    item.linksCur=item.links[0]
                 }
                 console.log(item.linksCur)
             })
@@ -371,7 +371,7 @@ export default {
             rows.forEach(item => {
                 item.links=item.links.split(";")
                 if (item.links&&item.links.length){
-                    item.linksCur="http://47.100.200.255:19955"+item.links[0]
+                    item.linksCur=item.links[0]
                 }
                 console.log(item.linksCur)
             })

@@ -433,11 +433,11 @@ export default {
     width: 100%;
     height:100%;
     }
-    .van-cell{
+    .cur-time-do .van-cell{
         padding:0;
         background: #f1f1f1;
     }
-    .van-cell:not(:last-child)::after{
+    .cur-time-do .van-cell:not(:last-child)::after{
         border:0;
     }
     .van-tabs__nav{

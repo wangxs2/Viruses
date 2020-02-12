@@ -54,7 +54,7 @@
                                             <div class="desc">{{item.body}}</div>
                                         </div>
                                         <div class="list-item-bottom">
-                                            <span class="time" v-if="item.updateTime">{{item.updateTime.substring(0,16)}}</span>
+                                            <span class="time" v-if="item.updateTime">{{item.updateTime.substring(0,10)}}</span>
                                             <span class="btn" @click="showPdf(item.linksCur)" v-if="item.links"><img class="down-up" src="../assets/image/pdf.png" alt="">查看任务详单</span>
                                         </div>
                                         <div class="tab" style="background:rgba(255,69,69,1)" v-if="item.status==0">等待资助</div>
@@ -77,7 +77,7 @@
                                             <div class="desc">{{item.body}}</div>
                                         </div>
                                         <div class="list-item-bottom">
-                                            <span class="time" v-if="item.updateTime">{{item.updateTime.substring(0,16)}}</span>
+                                            <span class="time" v-if="item.updateTime">{{item.updateTime.substring(0,10)}}</span>
                                             <span class="btn" @click="showPdf(item.linksCur)" v-if="item.links"><img class="down-up" src="../assets/image/pdf.png" alt="">查看任务详单</span>
                                         </div>
                                         <div class="tab1" style="color:#FF4545" v-if="item.status==0">未核实</div>
@@ -101,7 +101,7 @@
                                             <div class="desc">{{item.body}}</div>
                                         </div>
                                         <div class="list-item-bottom">
-                                            <span class="time" v-if="item.updateTime">{{item.updateTime.substring(0,16)}}</span>
+                                            <span class="time" v-if="item.updateTime">{{item.updateTime.substring(0,10)}}</span>
                                             <span class="btn" @click="showPdf(item.linksCur)" v-if="item.links"><img class="down-up" src="../assets/image/pdf.png" alt="">查看任务详单</span>
                                         </div>
                                         <div class="tab1" style="color:#FF4545" v-if="item.status==0">未核实</div>

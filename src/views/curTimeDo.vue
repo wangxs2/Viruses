@@ -221,10 +221,8 @@ export default {
     showPdf(curUrl){
         // curUrl="http://storage.xuetangx.com/public_assets/xuetangx/PDF/PlayerAPI_v1.0.6.pdf"
         // console.log(curUrl.substr(28))
-        this.showPdfWord=true
-        this.url=curUrl
-        // this.url=`${process.env.VUE_APP_PAGE_URL+curUrl.substr(28)}`
-        // console.log(this.url)
+        // this.showPdfWord=true
+        // this.url=curUrl
         window.open(curUrl)
     },
     onLoad(){

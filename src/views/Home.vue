@@ -13,7 +13,7 @@
      <div class="dzan" v-if="isdzan">+1</div>
     </transition>
     <div class="forew" v-if="seven">
-      近14天数据
+      近一个月数据
     </div>
     <div class="write">
       <p>更多物资跟踪：新冠肺炎物资捐赠对接记录 <span style="color:#1989fa" @click="agreement=true">用户协议</span></p></div>

@@ -54,6 +54,7 @@ export default {
     loadFile (url) {
       let _this = this
       PDFJS.getDocument(url).then(function (pdf) {
+        console.log(pdf)
         _this.pdfDoc = pdf
         _this.pages = _this.pdfDoc.numPages
         _this.$nextTick(() => {
@@ -65,6 +66,7 @@ export default {
   mounted () {
     // let url = Base64.decode(this.$route.query.url)
     let url = this.$route.query.url
+    console.log(url)
     this.loadFile(url)
   }
 }

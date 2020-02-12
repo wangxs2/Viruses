@@ -3,36 +3,51 @@
         <div class="cur-time-donate">
       <div class="time-donate">
         <!-- <div class="top"><span>实时播报</span></div> -->
-        <div class="top"><span>{{curTimeTopContent}}</span><van-icon name="cross" size="20" @click="closeCurTime"/></div>
+        <!-- <div class="top"><span>{{curTimeTopContent}}</span><van-icon name="cross" size="20" @click="closeCurTime"/></div> -->
+        <div class="top" id="top-content"><img src="../assets/image/curtimewrite.png" alt=""><span class="top-content-write">{{curTimeTopContent||'撒旦解放了事件发生解放拉萨连锁咖啡店记录数据分类数据分类是基辅罗斯拉萨扩大解放了首府拉萨解放了手机发了多少顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶'}}</span><van-icon name="cross" size="20" @click="closeCurTime"/></div>
         <div class="donate-content" v-if="curTimeNoDataShow">
-          <div class="donate-list" v-for="(item, i) in curTimeDataList" :key="i">
-            <div class="time-wrapper">
-              <span class="time-length">{{item.duration}}</span>
-              <span class="time-cur" v-if="item.pubDate">{{item.pubDate.substring(5,16)}}</span>
-            </div>
 
-            <div class="line-split">
-              <span class="dot"></span>
-              <span class="line"></span>
-            </div>
 
-            <div class="main-content">
-              <a :href="item.url">
 
-                <div class="title-wrapper">
-                  <span class="tab-type por" v-if="item.isTop&&item.isTop==1">置顶</span>
-                  <span class="tab-type new" v-if="item.isNew&&item.isNew==1">最新</span>
-                  <span class="title" v-if="(item.isTop||item.isNew)&&item.headline&&item.headline.length<10">{{item.headline}}</span>
-                  <span class="title" v-else-if="(item.isTop||item.isNew)&&item.headline&&item.headline.length>10">{{item.headline.substring(0,11)}}...</span>
-                  <span class="title" v-else-if="!item.isTop&&!item.isNew&&item.headline&&item.headline.length<14">{{item.headline}}</span>
-                  <span class="title" v-else-if="!item.isTop&&!item.isNew&&item.headline&&item.headline.length>14">{{item.headline.substring(0,13)}}...</span>
+          <van-pull-refresh v-model="isDownLoading" @refresh="onDownRefresh">
+            <van-list
+              v-model="isUpLoading"
+              :finished="upFinished"
+              :immediate-check="false"
+              :offset="10"
+              finished-text="我是有底线的"
+              @load="onLoadList">
+              <div v-if="curTimeDataList.length > 0" class="allcontent">
+                <div class="donate-list" v-for="(item, i) in curTimeDataList" :key="i">
+                  <div class="time-wrapper">
+                    <span class="time-length">{{item.duration}}</span>
+                    <span class="time-cur" v-if="item.pubDate">{{item.pubDate.substring(5,16)}}</span>
+                  </div>
+
+                  <div class="line-split">
+                    <span class="dot"></span>
+                    <span class="line"></span>
+                  </div>
+
+                  <div class="main-content">
+                    <a :href="item.url">
+
+                      <div class="title-wrapper">
+                        <span class="tab-type por" v-if="item.isTop&&item.isTop==1">置顶</span>
+                        <span class="tab-type new" v-if="item.isNew&&item.isNew==1">最新</span>
+                        <span class="title" v-if="(item.isTop||item.isNew)&&item.headline&&item.headline.length<10">{{item.headline}}</span>
+                        <span class="title" v-else-if="(item.isTop||item.isNew)&&item.headline&&item.headline.length>10">{{item.headline.substring(0,11)}}...</span>
+                        <span class="title" v-else-if="!item.isTop&&!item.isNew&&item.headline&&item.headline.length<14">{{item.headline}}</span>
+                        <span class="title" v-else-if="!item.isTop&&!item.isNew&&item.headline&&item.headline.length>14">{{item.headline.substring(0,13)}}...</span>
+                      </div>
+                      <div class="articl">{{item.mainBody}}</div>
+                      <div class="origin">信息来源：<span>{{item.publishSource}}</span></div>
+                    </a>
+                  </div>
                 </div>
-                <div class="articl">{{item.mainBody}}</div>
-                <div class="origin">信息来源：<span>{{item.publishSource}}</span></div>
-              </a>
-            </div>
-          </div>
-
+              </div>
+            </van-list>
+          </van-pull-refresh>
         </div>
         <div class="donate-content donate-content-no" v-else>
          <img class="down-up" src="../assets/image/reduce.png" alt="">
@@ -56,7 +71,7 @@ export default {
       curTimeDataList:[],
       curTimeParams:{
         page: 1, // 页数
-        pageSize:3, // 偏移量
+        pageSize:10, // 偏移量
       },
       curTimeNoDataShow: false, // 实时捐赠无数据显示
       loadMore:true, //加载更多按钮
@@ -66,6 +81,18 @@ export default {
       noMore: false,
       isoneClosePoint:1,
       curTimeTopContent:"", // 实时资讯统计
+      hasMore: false,
+      isLoading: false,
+      list:[],
+      nullTip: '空空如也~',
+      pageSize: 10, // 每页条数
+      pageIndex: 1, // 页码
+      dtWinNumberInfos: [], // 请求数据
+      isDownLoading: false, // 下拉刷新
+      isUpLoading: false, // 上拉加载
+      upFinished: false, // 上拉加载完毕
+      offset: 100, // 滚动条与底部距离小于 offset 时触发load事件
+      topHeight:0
 
     };
   },
@@ -75,8 +102,60 @@ export default {
 		  window.addEventListener('scroll', this.scrollHandle, true)
   },
  mounted () {
+   this.topHeight=document.getElementById("top-content").offsetHeight
+   
   },
   methods:{
+    // 获取实时资讯数据
+    getCurTimeDataList(){
+      this.$fetchGet("donate/getInfo",this.curTimeParams).then(res=> {
+        if (res.total){
+          this.curTimeNoDataShow= true
+          const rows =res.list
+          if (rows == null || rows.length === 0) {
+            // 加载结束
+            this.upFinished = true
+            return
+          }
+          if (rows.length < this.curTimeParams.pageSize) {
+            // 最后一页不足10条的情况
+            this.upFinished = true
+          }
+          // 处理数据
+          if (this.curTimeParams.page === 1) {
+            this.curTimeDataList = rows
+          } else {
+            this.curTimeDataList = this.curTimeDataList.concat(rows)
+          }
+          
+        } else {
+          this.curTimeNoDataShow= false
+        }
+
+      }).catch(error => {
+      }).finally(() => {
+        this.isDownLoading = false
+        this.isUpLoading = false
+      })
+  
+
+    },
+    onDownRefresh() {
+      this.curTimeParams.page = 1
+      this.upFinished = false // 不写这句会导致你上拉到底过后在下拉刷新将不能触发下拉加载事件
+      this.getCurTimeDataList() // 加载数据
+    },
+    // 上拉加载请求方法
+    onLoadList() {
+      this.curTimeParams.page++
+      this.getCurTimeDataList()
+    },
+    // 实时资讯按钮
+    curTimeBtn(){
+      this.curTimeDonate=true
+      this.showHome=false
+      
+    },
     getCurTimeContent(){
       this.$fetchGet("donateCount/findDonateCount").then(res=> {
         if (res&&res.length){
@@ -93,60 +172,6 @@ export default {
       this.curTimeDataList=[]
       this.getCurTimeDataList()
 
-    },
-    // 获取实时资讯数据
-    getCurTimeDataList(){
-      this.$fetchGet("donate/getInfo",this.curTimeParams).then(res=> {
-        if (res.total){
-          this.curTimeNoDataShow= true
-          if (res.list&&res.list.length){
-
-            this.curTimeDataList=this.curTimeDataList.concat(res.list)
-          }else {
-				 				this.noMore = true
-
-          }
-				 			this.flag = false // 数据加载完成之后放开节流阀
-        } else {
-          this.curTimeNoDataShow= false
-        }
-
-      })
-  
-
-    },
-    // 加载更多
-    loadMoreData(){
-      this.curTimeParams.page++
-      this.getCurTimeDataList()
-
-    },
-    // 实时资讯按钮
-    curTimeBtn(){
-      this.curTimeDonate=true
-      this.showHome=false
-      
-    },
-    scrollHandle(){
-      // 获取页面页面的滚动高度
-				let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight  
-				// 获取页面滚动距离顶部的高度,  window.pageYOffse 兼容苹果
-		   	 	let scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop  
-		    	// 获取页面的可视高度
-          let clientHeight = document.documentElement.clientHeight || document.body.clientHeight
-          console.log(scrollHeight,scrollTop,clientHeight)
-
-          // 我们可以在这里判断页面的滚动是否到了底部
-				if (scrollTop + clientHeight === scrollHeight) {
-					if (this.flag) return 
-					this.flag = true
-          this.curTimeParams.page++
-			 		// 根据noMore 看是否还有数据  默认为false  
-			 		if (!this.noMore) {
-             // 滚动到底部执行数据加载
-             this.getCurTimeDataList()
-			 		}			 		
-				 }
     },
   }
 };
@@ -172,21 +197,39 @@ export default {
 
   }
   .time-donate{
+    // .top{
+    //   display: flex;
+    //   justify-content: flex-start;
+    //   align-items: center;
+    //   height: 36px;
+    //   font-size:16px;
+    //   font-family:PingFang SC;
+    //   font-weight:bold;
+    //   color:rgba(51,51,51,1);
+    //   padding: 0 12px;
+    //   background: #fff;
+    //   span{
+    //     padding-left:10px;
+    //     border-left: 3px solid #216AFF;
+    //   }
+
+    // }
+
     .top{
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
       display:flex;
-      justify-content: flex-end;
+      justify-content:space-between;
       align-items: center;
       width: 100%;
-      height: 60px;
-      background:url("../assets/image/curtime.png") no-repeat;
-      background-size: 100% 60px;
-      span{
+      background:linear-gradient(180deg,rgba(89,101,233,1) 0%,rgba(91,178,245,1) 100%);
+      padding:15px 10px;
+      box-sizing:border-box;
+      img{
+        width: 33px;
+        height: 30px;
+        margin-right: 10px;
+      }
+      .top-content-write{
         display: block;
-        padding-right: 15px;
         width: 285px;
         font-size:13px;
         text-align: left;
@@ -194,12 +237,13 @@ export default {
         font-weight:bold;
         color:rgba(255,255,255,1);
         line-height:18px;
+        padding-left: 10px;
+        border-left:1px solid #F2F1F1;
       }
 
     }
     .donate-content{
-      padding-top: 80px;
-      padding-bottom:15px;
+      padding-top: 15px;
       &.donate-content-no{
         
         display: flex;
@@ -273,7 +317,8 @@ export default {
             color:rgba(51,51,51,1);
             .title-wrapper{
               width:232px;
-              height: 20px;
+              line-height:20px;
+              // height: 20px;
               text-align: left;
               // white-space:nowrap;
               // text-overflow:ellipsis;
@@ -300,6 +345,7 @@ export default {
                 font-weight:bold;
                 color:rgba(51,51,51,1);
                 vertical-align:top;
+                // line-height:15px;
 
               }
             }

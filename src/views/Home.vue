@@ -537,51 +537,15 @@
     </van-popup>
 
     <!-- 实时捐赠 -->
-    <div class="cur-time-btn" @click="curTimeBtn"><span>实时</span><span>播报</span></div>
-    <van-popup v-model="curTimeDonate" closeable position="bottom" :style="{ height: '100%' }" class="cur-time-donate">
-      <div class="time-donate">
-        <!-- <div class="top"><img src="../assets/image/curtimewrite.png" alt=""><span class="top-content-write">{{curTimeTopContent}}</span></div> -->
-        <div class="donate-content" v-if="curTimeNoDataShow">
-          <div class="donate-list" v-for="(item, i) in curTimeDataList" :key="i">
-            <div class="time-wrapper">
-              <span class="time-length">{{item.duration}}</span>
-              <span class="time-cur" v-if="item.pubDate">{{item.pubDate.substring(5,16)}}</span>
-            </div>
-
-            <div class="line-split">
-              <span class="dot"></span>
-              <span class="line"></span>
-            </div>
-
-            <div class="main-content">
-              <a :href="item.url?item.url:'javascript:void(0);'">
-
-                <div class="title-wrapper">
-                  <span class="tab-type por" v-if="item.isTop&&item.isTop==1">置顶</span>
-                  <span class="tab-type new" v-if="item.isNew&&item.isNew==1">最新</span>
-                  <!-- <span class="title" v-if="(item.isTop||item.isNew)&&item.headline&&item.headline.length<=10">{{item.headline}}</span>
-                  <span class="title" v-else-if="(item.isTop||item.isNew)&&item.headline&&item.headline.length>10">{{item.headline.substring(0,11)}}...</span>
-                  <span class="title" v-else-if="!item.isTop&&!item.isNew&&item.headline&&item.headline.length<=14">{{item.headline}}</span>
-                  <span class="title" v-else-if="!item.isTop&&!item.isNew&&item.headline&&item.headline.length>14">{{item.headline.substring(0,13)}}...</span> -->
-                  <span class="title">{{item.headline}}</span>
-                </div>
-                <div class="articl">{{item.mainBody}}</div>
-                <div class="origin">信息来源：<span>{{item.publishSource}}</span></div>
-              </a>
-            </div>
-          </div>
-          <div class="loading-more" v-if="loadMore" @click="loadMoreData">加载更多</div>
-          <div class="loading-more" v-else>没有更多了</div>
-
-        </div>
-        <div class="donate-content donate-content-no" v-else>
-         <img class="down-up" src="../assets/image/reduce.png" alt="">
-         <p>没有数据哦!</p>
-
-        </div>
+    <div class="cur-time-btn">
+      <div class="cur-time-img" @click="curTimeBtn(0)">
+        <img src="../assets/image/curtimewrite.png" alt="">
       </div>
-      
-    </van-popup>
+      <div class="line"></div>
+      <div class="cur-time-img" @click="curTimeBtn(1)">
+        <img src="../assets/image/renwu.png" alt="">
+      </div>
+    </div>
 
     <!-- 录入弹框 -->
     <div class="luru-model-wrapper" v-if="luruSelectModel">
@@ -626,7 +590,6 @@
     </div>
 
 
-
     <!-- 医护用品规则说明 -->
 
   </div>
@@ -638,7 +601,7 @@
 export default {
   name: "home",
   components:{
-    luru
+    luru,
   },
   data() {
     return {
@@ -741,14 +704,6 @@ export default {
           tel: "18817582880",
         },
       ],
-      curTimeDonate:false, // 实时捐赠弹框
-      curTimeDataList:[],
-      curTimeParams:{
-        page: 1, // 页数
-        pageSize:10, // 偏移量
-      },
-      curTimeNoDataShow: false, // 实时捐赠无数据显示
-      loadMore:true, //加载更多按钮
       isdzan:false,
       styleUp:true,
       isoneClosePoint:1,
@@ -770,7 +725,6 @@ export default {
     }
   },
   created() {
-    this.getCurTimeDataList()
     this.getDataList()
     this.getWuziList()
     this.getCityList()
@@ -845,27 +799,6 @@ export default {
     fatherMethod(){
       this.reduceShow=false
     },
-
-    // 获取实时资讯数据
-    getCurTimeDataList(){
-      this.$fetchGet("donate/getInfo",this.curTimeParams).then(res=> {
-        if (res.total){
-          this.curTimeNoDataShow= true
-           this.curTimeDataList=this.curTimeDataList.concat(res.list)
-          if (this.curTimeDataList.length<res.total) {
-            this.loadMore=true
-
-          } else {
-            this.loadMore=false
-          }
-        } else {
-          this.curTimeNoDataShow= false
-        }
-
-      })
-  
-
-    },
     //三类民间组织
     toRouterIndex(iteam,index){
       this.selectIndex=index
@@ -887,16 +820,14 @@ export default {
       this.getWuziList()
       this.getCityList()
     },
-    // 加载更多
-    loadMoreData(){
-      this.curTimeParams.page++
-      this.getCurTimeDataList()
-
-    },
     // 实时资讯按钮
-    curTimeBtn(){
-      this.curTimeDonate=true
-      // this.$router.push({path:'/curTime'})
+    curTimeBtn(data){
+      this.$router.push({
+        path:'/curTimeDo',
+        query: {
+          curIndex:data
+        }
+      })
     },
     // 录入立即拨打
     commitTel(tel){
@@ -2151,6 +2082,94 @@ export default {
       }
 
     }
+    .tab-list-btn{
+      display:flex;
+      justify-content:space-around;
+      // align-items:center;
+      height:44px;
+      background:rgba(255,255,255,1);
+      span{
+        font-size:15px;
+        font-family:PingFang SC;
+        font-weight:bold;
+        color:rgba(51,51,51,1);
+        margin-top:15px;
+        &.active{
+          padding-bottom:12px;
+          border-bottom: 4px solid rgba(33,106,255,1);
+        }
+
+      }
+    }
+    .renwu-list-wrapper{
+
+      padding:0 12px;
+      .renwu-list-item{
+        position:relative;
+        margin-top: 20px;
+        padding: 12px;
+        text-align:left;
+        background:rgba(255,255,255,1);
+        border-radius:4px;
+        .list-item-top{
+          .item-content{
+            .title{
+              font-size:15px;
+              font-family:PingFang SC;
+              font-weight:bold;
+              color:rgba(51,51,51,1);
+              padding-bottom:12px;
+              .name{}
+              .num{}
+
+            }
+            .money{
+              font-size:13px;
+              font-family:PingFang SC;
+              font-weight:500;
+              color:rgba(102,102,102,1);
+              padding-bottom:12px;
+
+            }
+            .direction{
+              font-size:13px;
+              font-family:PingFang SC;
+              font-weight:500;
+              color:rgba(102,102,102,1);
+              padding-bottom:12px;
+
+            }
+
+          }
+
+        }
+        .list-item-bottom{
+          font-size:12px;
+          font-family:PingFang SC;
+          font-weight:500;
+          color:rgba(153,153,153,1);
+        }
+        .tab{
+          position: absolute;
+          top:0;
+          right:0;
+          width:64px;
+          height: 64px;
+          img{
+            width:64px;
+            height: 64px;
+          }
+          // height: 30px; 
+          // width: 80px; 
+          // background: #f00;
+          // text-align: center;
+          // text-decoration: none;
+          // font-size:12px;
+          // color:#fff;
+          // transform: rotate(45deg);
+        }
+      }
+    }
     .donate-content{
       padding-top: 15px;
       &.donate-content-no{
@@ -2303,41 +2322,36 @@ export default {
     right: 28px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center; 
-    width: 44px;
-    height: 44px;
+    width:44px;
+    height:88px;
     background:rgba(255,252,232,1);
-    box-shadow:0px 0px 8px 0px rgba(0, 0, 0, 0.32);
-    border-radius:50%;
+    box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32);
+    border-radius:6px;
     z-index:10;
-    &.cur-time-btn1{
-      position: fixed;
-      top: 150px;
-      right: 17px;
-
-    }
-    &.cur-time-btn2{
-      position: fixed;
-      top: 100px;
-      right: 17px;
-
-    }
-    span{
-      font-size: 14px;
-      line-height: 15px;
-      font-family:PingFang SC;
-      font-weight:bold;
-      font-style: italic;
-      color: #FF4600;
-      margin-right: 2px;
-      &:last-child{
-        color: #FF9100;
+    .cur-time-img{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      width: 100%;
+      height: 40px;
+      img{
+        width:28px;
+        height: 26px;
       }
-      // background: linear-gradient(to bottom, #FF4600, #FF9100);
-      // -webkit-background-clip: text;
-      // color: transparent;
+      &:last-child{
+        img{
+          width:32px;
+          height: 29px;
+        }
 
+      }
+    }
+    .line{
+      width: 80%;
+      height: 1px;
+      background: #EAEAEA;
     }
   }
   .luru-model-wrapper{

@@ -56,7 +56,7 @@
           </div>
           <div class="tel-phone" v-if="mapobj.linkTelarr1!==undefined&query.orgType!==3">
             <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr1"
-                  :key="index"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr1==undefined?"":mapobj.linkPeoplearr1[index]}}  {{iteam}}</div></div>
+                  :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr1==undefined?"":mapobj.linkPeoplearr1[index]}}  {{iteam}}</div></div>
           </div>
           <!-- <span class="person">接受个人捐赠</span> -->
           <div v-if="mapobj.needsNamearr!==undefined" style="font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'所需疫情防控物资':'可提供的物资或者服务'}} <van-icon v-if="query.orgType==1" style="margin-left:10px" name="warning-o" color="#FF2727"  size="12" /> <span v-if="query.orgType==1" @click="specifications=true" style="color:#FF2727;font-size:12px">物资标准</span></div>
@@ -961,14 +961,11 @@ export default {
         style: style
         });
       this.mass.on("click", (e) => {
-        // alert(2)
-        console.log(e.data)
         this.isDetail=true
         if(e.data){
           let str=e.data
           this.mapobj=str
         }
-        
       })
         this.mass.setMap(this.myMap);
     },
@@ -1088,11 +1085,9 @@ export default {
             if(itam.hospitalName){
               itam.hospitalName=decodeURIComponent(encrypt.Decrypt(itam.hospitalName))
             }
-            // console.log(itam.linkPeople)
             if(itam.linkPeople!==undefined){
               itam.linkPeople=decodeURIComponent(encrypt.Decrypt(itam.linkPeople))
               itam.linkPeoplearr1=itam.linkPeople.split(",")
-              // console.log(itam.linkPeoplearr1)
             }
             if(itam.linkTel){
               itam.linkTel=decodeURIComponent(encrypt.Decrypt(itam.linkTel))
@@ -1106,7 +1101,6 @@ export default {
           })
           this.total=arrsa.length
           this.dataList=arrsa
-          console.log(arrsa)
           this.getmarkers(arrsa)
         }
        

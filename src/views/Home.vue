@@ -68,9 +68,9 @@
                   :key="index" class="remark">{{itrm}}</div>
           <div v-if="mapobj.orgDescr!==undefined" style="font-size:12px;color:#999999;text-align:left">备注：{{mapobj.orgDescr}}</div>
           <!-- <van-divider /> -->
-          <div>
-            <span class="btnSty" v-if="mapobj.linkTelarr1!==undefined&&query.orgType!==3"  style="margin-right:12px" @click="dialPhoneNumber()">我要联系</span>
-            <span class="btnSty" style="background:linear-gradient(90deg,rgba(255,102,0,1),rgba(255,123,16,1));" @click="shakeTime(mapobj.hospitalName)"><van-icon color="#ffffff" size="20" name="good-job" />点赞加油 {{mapobj.encourageNum}}次</span>
+          <div class="btnSty-wrapper">
+            <div class="btnSty" v-if="mapobj.linkTelarr1!==undefined&&query.orgType!==3"  style="margin-right:12px" @click="dialPhoneNumber()">我要联系</div>
+            <div class="btnSty" style="background:linear-gradient(90deg,rgba(255,102,0,1),rgba(255,123,16,1));" @click="shakeTime(mapobj.hospitalName)"><van-icon color="#ffffff" size="20" name="good-job" /><span>点赞加油 {{mapobj.encourageNum}}次</span></div>
           </div>
         </div>
       </div>
@@ -1635,15 +1635,26 @@ export default {
       box-sizing: border-box;
       border-radius:10px;
       position:relative;
-      .btnSty{
-        display:inline-block;
-        font-size:15px;
-        padding:8px 16px;
-        padding-top:6px;
-        color:#FFFFFF;
-        background:#216AFF;
-        border-radius:18px;
-        
+      .btnSty-wrapper{
+        display:flex;
+        justify-content:center;
+
+
+        .btnSty{
+          // display:inline-block;
+          font-size:15px;
+          padding:8px 16px;
+          padding-top:6px;
+          color:#FFFFFF;
+          background:#216AFF;
+          border-radius:18px;
+          &:last-child{
+            display:flex;
+            justify-content: center;
+            align-items:center;
+          }
+          
+        }
       }
       .closeimg{
         position:absolute;

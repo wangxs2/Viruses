@@ -150,8 +150,8 @@
             <p class="title">{{item.hospitalName}}</p>
             <p class="address" v-if="item.hospitalAddress!==undefined&&item.hospitalAddress!==''"><van-icon name="location-o" size="20" /><span>{{item.hospitalAddress}}</span></p>
             <p class="time" v-if="item.createTime!==undefined&&item.createTime!==''">发布日期：{{item.createTime!==undefined?item.createTime.substring(0,16).replace("+"," "):''}}</p>
-            <div class="phone" v-if="item.linkPeoplearr1!==undefined&&query.orgType!==3">
-              <p  v-for="(items,i) in item.linkPeoplearr1" :key="i"><van-icon name="phone-o" size="20" /><span>{{items}}</span><span @click="searchRightModelPhone(item.linkTelarr1[i])">{{item.linkTelarr1[i]}}</span></p>
+            <div class="phone" v-if="item.linkTelarr1!==undefined&&query.orgType!==3">
+              <p  v-for="(items,i) in item.linkTelarr1" :key="i"><van-icon name="phone-o" size="20" /><span>{{item.linkPeoplearr1[i]}}</span><span @click="searchRightModelPhone(items)">{{items}}</span></p>
             </div>
           </div>
           </div>
@@ -1059,6 +1059,8 @@ export default {
     },
     getDataList(){
       this.showmap=true
+      let phonearr=[]
+      let monarr=[]
       if(this.mass){
        this.mass.clear()
        this.mass=null
@@ -1086,12 +1088,25 @@ export default {
               itam.hospitalName=decodeURIComponent(encrypt.Decrypt(itam.hospitalName))
             }
             if(itam.linkPeople!==undefined){
-              itam.linkPeople=decodeURIComponent(encrypt.Decrypt(itam.linkPeople))
-              itam.linkPeoplearr1=itam.linkPeople.split(",")
+              monarr=itam.linkPeople.split(",")
+              itam.linkPeoplearr1=[]
+              if(monarr.length>0){
+                monarr.forEach(iteam=>{
+                  let str=decodeURIComponent(encrypt.Decrypt(iteam))
+                  console.log(str)
+                  if(str){
+                    itam.linkPeoplearr1.push(str)
+                  }
+                })
+              }
+              // console.log(itam.linkPeoplearr1.length)
             }
-            if(itam.linkTel){
-              itam.linkTel=decodeURIComponent(encrypt.Decrypt(itam.linkTel))
-              itam.linkTelarr1=itam.linkTel.split(",")
+            if(itam.linkTel!==undefined){
+              phonearr=itam.linkTel.split(",")
+              itam.linkTelarr1=[]
+              phonearr.forEach(itm=>{
+                itam.linkTelarr1.push(decodeURIComponent(encrypt.Decrypt(itm)))
+              })
             }
             if(itam.gaodeLat){
               itam.gaodeLat=decodeURIComponent(encrypt.Decrypt(itam.gaodeLat))

@@ -1090,15 +1090,9 @@ export default {
             if(itam.linkPeople!==undefined){
               monarr=itam.linkPeople.split(",")
               itam.linkPeoplearr1=[]
-              if(monarr.length>0){
-                monarr.forEach(iteam=>{
-                  let str=decodeURIComponent(encrypt.Decrypt(iteam))
-                  console.log(str)
-                  if(str){
-                    itam.linkPeoplearr1.push(str)
-                  }
-                })
-              }
+              monarr.forEach(iteam=>{
+                itam.linkPeoplearr1.push(decodeURIComponent(encrypt.Decrypt(iteam)))
+              })
               // console.log(itam.linkPeoplearr1.length)
             }
             if(itam.linkTel!==undefined){

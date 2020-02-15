@@ -1072,6 +1072,7 @@ export default {
             this.mass=null
             }
           this.total=0
+          this.dataList=res.content
           this.$toast('暂无数据！');
         }else{
           let arrsa=res.content

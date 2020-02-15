@@ -582,7 +582,7 @@
           </div>
           <div class="code">
             <img style="" src="../assets/image/gzh.jpg" alt="">
-            <span class="btn">上海产业技术研究院智能工程交通中心</span>
+            <span class="btn">新冠肺炎物资公益平台</span>
           </div>
         </div>
         <div class="close-luru-model" @click="contectSelect"><van-icon name="cross" size="16" color="#fff"/></div>

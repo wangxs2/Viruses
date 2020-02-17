@@ -592,13 +592,13 @@ export default {
       showimg:false,
       luruSelectData:[ //录入选择数据
         {
-          name: "我是需求方",
+          name: "我有需求",
           type:1
         },{
-          name: "我是提供方",
+          name: "我有物资",
           type:2
         },{
-          name: "我是民间组织",
+          name: "我要出力",
           type:3
         }
       ],

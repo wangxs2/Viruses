@@ -1,10 +1,9 @@
 <template>
   <div class="home">
     <div class="onebif" v-if="isone">
-      <div style="font-size:17px">共抗新冠肺炎</div>
-      <div style="font-size:16px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span></div>
+      <div style="font-size:12px">近1月数据</div>
+      <div style="font-size:12px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span></div>
     </div>
-    <div class="countbottom"><span style="color:#216AFF"><a href="http://www.acfic.org.cn">中华全国工商业联合会</a></span> <span style="color:#216AFF"><a href="http://www.scf.org.cn">上海市慈善基金会</a></span> <span style="color:#216AFF"><a href="https://www.siti.sh.cn">上海产业技术研究院</a></span>联合发布</div>
     <div class="twobif">{{zanz.encourage}}次</div>
     <div class="threebif" @click="dzanclick">
       <van-icon  name="good-job" :size="30" color="#ffffff" />
@@ -12,18 +11,35 @@
     <transition name="likeAddAnimate">
      <div class="dzan" v-if="isdzan">+1</div>
     </transition>
-    <div class="forew" v-if="seven">
+    <!-- <div class="forew" v-if="seven">
       近一个月数据
+    </div> -->
+    <div class="bottom-btn-write">
+      <div class="bottom-btn">
+        <div class="btn-list" v-for="(item,i) in bottomBtnList" :key="i" :style="item.backgroundImgStyle" @click="luruSelectBtn(item.type)">
+          <span>{{item.name}}</span>
+        </div>
+      </div>
+      <div class="write-wrapper">
+
+        <div class="write">
+          <p>更多物资跟踪：新冠肺炎物资捐赠对接记录 <span style="color:#1989fa" @click="agreement=true">用户协议</span></p>
+        </div>
+        <div class="countbottom"><span style="color:#216AFF"><a href="http://www.acfic.org.cn">中华全国工商业联合会</a></span> <span style="color:#216AFF"><a href="http://www.scf.org.cn">上海市慈善基金会</a></span> <span style="color:#216AFF"><a href="hforettps://www.siti.sh.cn">上海产业技术研究院</a></span>联合发布</div>
+      </div>
     </div>
-    <div class="write">
-      <p>更多物资跟踪：新冠肺炎物资捐赠对接记录 <span style="color:#1989fa" @click="agreement=true">用户协议</span></p></div>
+    <div class="search-position">
+      <img src="../assets/image/icon_search.png"   />
+      <input type="text" v-model="searchText" placeholder="查询医院、物资、区域"/>
+
+    </div>
     <!-- 民间组织 三类 -->
     <div class="peopleTeam">
       <div class="txtimg" v-for="(iteam,index) in menuList"
         :key="index"
         @click="toRouterIndex(iteam,index)">
-        <span class="imgsaone" :style="{'background-image':`url(${iteam.imgUrl[selectIndex==index?0:1]})`}" ></span>
-        <span  v-bind:style="{color:selectIndex==index?'#216AFF':'#666666','font-size':'12px','font-weight':'bold'}">{{iteam.name}}</span>
+        <!-- <img :src="iteam.imgUrl[selectIndex==index?0:1]" /> -->
+        <span :class="selectIndex==index?'txt-active':''">{{iteam.name}}</span>
       </div>
     </div>
     <!-- 防止过快的切换 -->
@@ -58,8 +74,9 @@
             <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr1"
                   :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr1==undefined?"":mapobj.linkPeoplearr1[index]}}  {{iteam}}</div></div>
           </div>
+          <div class="tel-desc" style="display:flex;justify-content:flex-start;align-items:center;font-size:12px;line-height:15px;color:#216AFF;text-align:left;margin-bottom:12px;"> <van-icon name="warning-o" color="#216AFF"  size="12" style="margin-right:2px;"/><span>真实电话号码已受保护，该虚拟号码将随时更新。</span></div>
           <!-- <span class="person">接受个人捐赠</span> -->
-          <div v-if="mapobj.needsNamearr!==undefined" style="font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'所需疫情防控物资':'可提供的物资或者服务'}} <van-icon v-if="query.orgType==1" style="margin-left:10px" name="warning-o" color="#FF2727"  size="12" /> <span v-if="query.orgType==1" @click="specifications=true" style="color:#FF2727;font-size:12px">物资标准</span></div>
+          <div v-if="mapobj.needsNamearr!==undefined" style="display:flex;justify-content:flex-start;align-items:center;font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'所需疫情防控物资':'可提供的物资或者服务'}} <van-icon v-if="query.orgType==1" style="margin-left:10px;margin-right:1px" name="warning-o" color="#FF2727"  size="12" /> <span v-if="query.orgType==1" @click="specifications=true" style="color:#FF2727;font-size:12px">物资标准</span></div>
           <div class="material" v-if="mapobj.needsNamearr!==undefined">
             <div v-for="(item,index) in mapobj.needsNamearr"
                   :key="index" class="boll-item"><span class="boll"></span>{{item}}</div>
@@ -123,9 +140,9 @@
     <!-- 搜索2部分 -->
     <div class="search-wrapper1" v-if="showSearch">
       <div class="input-wrapper">
-        <div class="go-back">
+        <!-- <div class="go-back">
           <van-icon name="arrow-left" @click="goback" size="16"/>
-        </div>
+        </div> -->
         <span style="font-size:16px">{{searchText}}</span>
         <div class="go-back" @click="rightModel" >
           <van-icon name="wap-nav" size="24" />
@@ -171,18 +188,21 @@
 
     <!-- 搜索录入图标 -->
     <div class="search-write">
-      <div class="img-icon" @click="searchBtn">
+      <!-- <div class="img-icon" @click="searchBtn">
         <img src="../assets/image/searchimg.png" />
         <span>搜索</span>
       </div>
       <div class="img-icon" @click="writeBtn">
         <img src="../assets/image/write.png" />
         <span>录入</span>
-      </div>
+      </div> -->
       <div class="img-icon" @click="contectBtn">
         <img src="../assets/image/contect.png" />
-        <span>联系</span>
+        <span>联系我们</span>
       </div>
+    </div>
+    <div class="icon-direction">
+      <img src="../assets/image/icon_direction.png" />
     </div>
 
     <!-- 录入缺省页 -->
@@ -581,7 +601,7 @@
           </div>
           <div class="code">
             <img style="" src="../assets/image/gzh.jpg" alt="">
-            <span class="btn">上海产业技术研究院智能工程交通中心</span>
+            <span class="btn">新冠肺炎物资公益平台</span>
           </div>
         </div>
         <div class="close-luru-model" @click="contectSelect"><van-icon name="cross" size="16" color="#fff"/></div>
@@ -721,6 +741,43 @@ export default {
           type:3
         }
       ],
+
+
+      bottomBtnList:[
+        {
+          backgroundImgStyle:{
+            backgroundImage:'url(' + require('../assets/image/image_1.png') + ')',
+            backgroundRepeat:'no-repeat',
+            backgroundSize:'100% 100%'
+          },
+          name: "我有需求",
+          type:1
+        },{
+          backgroundImgStyle:{
+            backgroundImage:'url(' + require('../assets/image/image_2.png') + ')',
+            backgroundRepeat:'no-repeat',
+            backgroundSize:'100% 100%'
+          },
+          name: "我有物资",
+          type:2
+        },{
+          backgroundImgStyle:{
+            backgroundImage:'url(' + require('../assets/image/image_3.png') + ')',
+            backgroundRepeat:'no-repeat',
+            backgroundSize:'100% 100%'
+          },
+          name: "我要捐赠",
+          type:4
+        },{
+          backgroundImgStyle:{
+            backgroundImage:'url(' + require('../assets/image/image_4.png') + ')',
+            backgroundRepeat:'no-repeat',
+            backgroundSize:'100% 100%'
+          },
+          name: "我要出力",
+          type:3
+        }
+      ]
     }
   },
   created() {
@@ -775,9 +832,12 @@ export default {
     },
     // 录入弹框选择
     luruSelectBtn(type) {
-      this.curTabIndex=type
-      this.luruSelectModel=false
-      this.reduceShow=true
+      if (type!=4){
+
+        this.curTabIndex=type
+        // this.luruSelectModel=false
+        this.reduceShow=true
+      }
     },
     getCurTimeContent(){
       this.$fetchGet("donateCount/findDonateCount").then(res=> {
@@ -1350,17 +1410,22 @@ export default {
   .peopleTeam{
     position:fixed;
     top:126px;
-    left:12px;
+    left:0;
     z-index:10;
-    // width:80px;
-    // height:120px;
-    background:rgba(255,255,255,1);
-    box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32);
-    border-radius:6px;
-    box-sizing:border-box;
-    padding:5px;
     display:flex;
     flex-direction:column;
+    justify-content: space-around;
+    align-items: center;
+    width:32px;
+    height:200px;
+    background:url("../assets/image/circle.png");
+    background-size:32px 200px;
+    padding: 10px 0;
+    // background:rgba(255,255,255,1);
+    // box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32);
+    // border-radius:6px;
+    box-sizing:border-box;
+    // padding:5px;
     .txtimg{
       display:flex;
       flex-direction:column;
@@ -1377,39 +1442,55 @@ export default {
       }
       .imgbox{
         width:16px;
-        height:16px;
-        
+        font-size:12px;
+        font-family:PingFang SC;
+        font-weight:500;
+        color:rgba(102,102,102,1);
+        padding:6px 0;
+        text-align:center;
+        border-radius: 7px;
+        // line-height:24px;
+        &.txt-active{
+          background:#216AFF;
+          color:#fff;
+
+        }
       }
+      // .imgbox{
+      //   width:16px;
+      //   height:16px;
+        
+      // }
     }
     .txtimg:last-child{
-      border-bottom:none;
-       padding-bottom:0px;
-      margin-bottom:0px;
+      // border-bottom:none;
+      //  padding-bottom:0px;
+      // margin-bottom:0px;
       }
   }
   .onebif{
     position:fixed;
-    top:6px;
-    left:12px;
+    top:0px;
+    left:0;
+    right: 0;
     z-index:10;
-    width:350px;
-    height:40px;
-    background:linear-gradient(-90deg,rgba(252,110,40,1) 0%,rgba(255,141,29,1) 100%);
-    opacity:0.8;
-    border-radius:8px;
+    height:22px;
+    background:rgba(0,0,0,1);
+    box-shadow:0px 1px 0px 0px rgba(238,238,238,1);
+    opacity:0.4;
     color:#ffffff;
     display:flex;
     justify-content:space-between;
     box-sizing:border-box;
-    padding:0 10px;
+    padding:0 13px;
     align-items:center;
   }
   .twobif{
     position:fixed;
-    top:80px;
-    right:60px;
+    top:47px;
+    right:48px;
     z-index:10;
-    width:100px;
+    width:80px;
     height:24px;
     line-height:25px;
     font-size:12px;
@@ -1473,8 +1554,8 @@ export default {
   }
   .threebif{
     position:fixed;
-    top:68px;
-    right:28px;
+    top:37px;
+    right:12px;
     z-index:10;
     width:44px;
     height:44px;
@@ -1565,19 +1646,94 @@ export default {
     color:#666666;
     font-size:12px;
   }
-  .write{
-    position:fixed;
-    bottom:19px;
-    left:0px;
+  .search-position{
+    position:absolute;
+    top:39px;
+    left:12px;
+    display:flex;
+    justify-content:flex-start;
+    align-items:center;
+    width:210px;
+    height:36px;
     z-index:10;
-    font-size:11px;
-    width:100%;
-    color:#999999;
-    background:rgba(242,245,255,0.4);
-    // line-height:12px;
-    p{
-      text-align:center;
-      margin:0
+    background:rgba(255,255,255,1);
+    box-shadow:0px 0px 8px 0px rgba(0, 0, 0, 0.16);
+    border-radius:26px;
+    img{
+      width:15px;
+      height:15px;
+      margin-left:15px;
+      margin-right:10px;
+    }
+    
+    input{
+      height:34px;
+      width:150px;
+      font-size:15px;
+      font-family:PingFang SC;
+      font-weight:500;
+      color:rgba(102,102,102,1);
+      // background:none;  
+      outline:none;  
+      border:none;
+    }
+  }
+  .bottom-btn-write{
+    position:absolute;
+    bottom:0;
+    left:0;
+    right: 0;
+    height: 126px;
+    background:#fff;
+    z-index:10;
+    .bottom-btn{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      height:82px;
+      padding:0 12px;
+      border-bottom:1px solid #DDDDDD;
+      // .btn-list-wrapper{
+        .btn-list{
+          display:flex;
+          flex-direction:column;
+          width:80px;
+          height: 60px;
+          // background:url("../assets/image/image_4.png");
+          
+          span{
+            font-size:13px;
+            font-family:PingFang SC;
+            font-weight:500;
+            color:rgba(255,255,255,1);
+            margin-top:36px;
+
+          }
+        }
+      // }
+    }
+    .write-wrapper{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      padding:5px 12px;
+
+      .write{
+        font-size:11px;
+        width:100%;
+        color:#999999;
+        p{
+          text-align:center;
+          margin:0
+        }
+      }
+      .countbottom{
+        margin-top:5px;
+        width:100%;
+        font-size:11px;
+        color:#999999;
+      }
     }
   }
   .left-font{
@@ -1613,18 +1769,6 @@ export default {
       box-shadow:0px 1px 0px 0px rgba(238,238,238,1);
 
     }
-  }
-  .countbottom{
-     position:fixed;
-    bottom:0.2px;
-    left:0px;
-    z-index:10;
-    width:100%;
-    // height:20px;
-    line-height:20px;
-    font-size:11px;
-    background:rgba(242,245,255,0.7);
-    color:#999999;
   }
   .hospatilBox{
     width:100%;
@@ -1700,7 +1844,7 @@ export default {
         background: #F2F5FF;
         padding: 12px;
         font-size:15px;
-          margin:14px 0;
+          margin:14px 0 5px;
       }
       .person{
         display: inline-block;
@@ -2021,30 +2165,48 @@ export default {
       }
     }
   }
+  .icon-direction{
+    position:absolute;
+    bottom:140px;
+    right:12px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#fff;
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    box-shadow:0px 0px 8px 0px rgba(0, 0, 0, 0.16);
+    img{
+      width:23px;
+      height: 23px;
+
+    }
+  }
   .search-write{
     position: fixed;
-    bottom: 80px;
-    right: 20px;
+    top: 190px;
+    right: 12px;
     z-index:10;
     .img-icon{
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
       background: #fff;
       box-shadow:0px 0px 8px 0px rgba(0, 0, 0, 0.32);
       // &:last-child{
-        margin-top:10px;
+        // margin-top:10px;
       // }
       img{
-        width: 18px;
-        height: 18px;
+        width: 16.5px;
+        height: 17px;
       }
       span{
-        font-size: 13px;
+        font-size: 9px;
         color: #216AFF;
         padding-top: 1px;
       }
@@ -2334,8 +2496,8 @@ export default {
   }
   .cur-time-btn{
     position: fixed;
-    top: 126px;
-    right: 28px;
+    top: 90px;
+    right: 12px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;

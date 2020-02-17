@@ -1441,10 +1441,10 @@ export default {
     flex-direction:column;
     justify-content: space-around;
     align-items: center;
-    width:40px;
+    width:38px;
     height:200px;
     background:url("../assets/image/circle.png") no-repeat;
-    background-size:40px 200px;
+    background-size:38px 200px;
     padding: 20px 0;
     box-sizing:border-box;
 

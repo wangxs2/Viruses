@@ -4,6 +4,16 @@
         v-model="showmaterial"
         position="right"
         :style="{ width: '100%',height:'100%' }">
+        <div class="material-content">
+          <div class="header-box">
+            <van-icon name="arrow-left" size="30" />
+            <van-search v-model="materialin" placeholder="请输入搜索关键词" />
+            <span class="searchfone">搜索</span>
+          </div>
+          <div class="content-box">
+
+          </div>
+        </div>
       </van-popup>
       <!-- 防止过快的切换 -->
     <van-overlay :z-index="30" :show="showimg">
@@ -430,6 +440,7 @@ export default {
     return {
       bannerback:"url("+require("../assets/image/banner.png")+")",
       showmaterial:true,
+      materialin:"",
       allCity:json,
       showPicker:false,
       startTimePop3:false,
@@ -1740,6 +1751,32 @@ linkTelBlur(type,tel,index){
 </style>
 <style lang="scss" scoped>
 .luru{
+  .material-content{
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction: column;
+    .header-box{
+      width:100%;
+      height:66px;
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+      box-sizing:border-box;
+      padding:0 16px;
+      .searchfone{
+        display:inline-block;
+        padding:4px 12px;
+        background:#07c160;
+        font-size:15px;
+        color:#fff;
+        border-radius:6px;
+      }
+    }
+    .content-box{
+      flex:1;
+    }
+  }
   .wrapperfast{
      display: flex;
     align-items: center;

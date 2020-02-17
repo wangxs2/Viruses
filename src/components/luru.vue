@@ -6,12 +6,14 @@
         :style="{ width: '100%',height:'100%' }">
         <div class="material-content">
           <div class="header-box">
-            <van-icon name="arrow-left" size="30" />
-            <van-search v-model="materialin" placeholder="请输入搜索关键词" />
-            <span class="searchfone">搜索</span>
+            <van-icon name="arrow-left" @click="showmaterial=false" size="28" />
+            <van-search :focus="focusa" v-model="materialin" @input="getRemark()" placeholder="请输入搜索关键词" />
+            <span class="searchfone" @click="submit(materialin)">确定</span>
           </div>
           <div class="content-box">
-
+            <div class="content-item" v-for="(item,index) in materialData" :key="index" v-html="item.name" @click="submit(item.name)"></div>
+            <div v-if='loadmaterial' class="conme" style="width:100%;height:100%;text-align:center"><van-loading type="spinner" color="#1989fa" /></div>
+            <div v-if='materialData.length==0' class="conme" style="width:100%;height:100%;font-size:18px;color:#666666;text-align:center">暂无数据~</div>
           </div>
         </div>
       </van-popup>
@@ -167,7 +169,7 @@
             <div class="form-wrapper" v-if="curTabIndex==2">
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">提供方名称</span>
-                <van-field v-model="form2.hispotalName" type="text" placeholder="请填写" :error-message="errorMessage2.hispotalName"/>
+                <van-field v-model="form2.hispotalName" @input="searchSaming(form2.hispotalName,2)" type="text" placeholder="请填写" :error-message="errorMessage2.hispotalName"/>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
@@ -299,7 +301,7 @@
             <div class="form-wrapper" v-if="curTabIndex==3">
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">机构名称</span>
-                <van-field v-model="form3.name" type="text" placeholder="请填写" :error-message="errorMessage3.hispotalName"/>
+                <van-field v-model="form3.name" type="text" @input="searchSaming(form3.name,3)" placeholder="请填写" :error-message="errorMessage3.hispotalName"/>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
@@ -439,13 +441,16 @@ export default {
   data() {
     return {
       bannerback:"url("+require("../assets/image/banner.png")+")",
-      showmaterial:true,
+      showmaterial:false,
+      focusa:false,
       materialin:"",
       allCity:json,
+      materialData:[],
       showPicker:false,
       startTimePop3:false,
       startTimePop4:false,
       showPicker1:false,
+      loadmaterial:false,
       testindex:0,
       testindex1:0,
       telindex:0,
@@ -503,6 +508,7 @@ export default {
         needOrgin:'',
         needImg:'',
       },
+      searchid:-1,
       showresult:false,
       form2:{ // 录入表单
         selectItem:'',
@@ -971,9 +977,71 @@ methods:{
   //物资的模糊搜做
   searchSaming(val,index){
     console.log(val.length)
-    if(val.length>2){
+    this.searchid=index
+    if(val.length>1){
       this.showmaterial=true
+      setTimeout(()=>{
+        this.focusa=true
+      },200)
+      this.materialin=val
+      this.getRemark()
     }
+  },
+  //模糊搜索的结果
+  getRemark(){
+    this.loadmaterial=true
+    this.materialData=[]
+     this.$fetchGet("material/getName",{
+       name:this.materialin
+     }).then(res=> {
+       this.loadmaterial=false
+        if(res.code=='success'){
+          this.contentSearch(this.materialin,res.content)
+        }
+    })
+
+  },
+  //匹配关键字的问题
+  contentSearch (value, array) {
+      let arrayContent = array
+      // 匹配关键字正则
+      let replaceReg = new RegExp(value, 'g')
+      // 高亮替换v-html值
+      let replaceString = '<span class="search-text">' + value + '</span>'
+      for (let i = 0; i < arrayContent.length; i++) {
+        let titleString = arrayContent[i]
+        if (!titleString.name) {
+          return ''
+          }
+        if (value && value.length > 0) {
+          // 开始替换
+            titleString.name = titleString.name.replace(replaceReg, replaceString)
+          }
+
+          this.materialData.push(titleString)
+      }
+      console.log(this.materialData)
+  },
+  submit(val){
+    if(val==''){
+      this.showmaterial=false
+    }else{
+      switch(this.searchid) {
+        case 1:
+          this.form1.hispotalName=val.replace('<span class="search-text">', "").replace('</span>', "")
+            break;
+        case 2:
+          this.form2.hispotalName=val
+            break;
+        case 3:
+            this.form3.name=val
+            break;
+        default:
+          
+      } 
+       this.showmaterial=false
+    }
+    
   },
   addTel2(){
     let x=this.form3.contectTelList.some(item =>{
@@ -1748,6 +1816,9 @@ linkTelBlur(type,tel,index){
 };
 </script>
 <style>
+.search-text{
+  color:#07c160;
+}
 </style>
 <style lang="scss" scoped>
 .luru{
@@ -1756,14 +1827,16 @@ linkTelBlur(type,tel,index){
     height:100%;
     display:flex;
     flex-direction: column;
+    
     .header-box{
       width:100%;
-      height:66px;
+      height:62px;
       display:flex;
       justify-content: space-between;
       align-items:center;
       box-sizing:border-box;
-      padding:0 16px;
+      padding:0 10px;
+      
       .searchfone{
         display:inline-block;
         padding:4px 12px;
@@ -1775,6 +1848,22 @@ linkTelBlur(type,tel,index){
     }
     .content-box{
       flex:1;
+      overflow:hidden;
+      overflow-y:scroll;
+      text-align:left;
+      .content-item{
+        font-size:14px;
+        box-sizing:border-box;
+        padding: 8px 14px;
+        border-bottom:1px solid #eeeeee;
+        color:#666666;
+      }
+      .conme{
+        display:flex;
+        justify-content: center;
+        align-items:center;
+        box-sizing:border-box;
+      }
     }
   }
   .wrapperfast{

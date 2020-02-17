@@ -118,7 +118,7 @@
       </div>
     </van-popup>
     <!-- 搜索部分 -->
-    <van-popup v-model="show" position="bottom" :style="{height: heightCur }" :overlay="false" round>
+    <van-popup v-model="show" position="bottom" :style="{height: heightCur }" :overlay="false" >
       <div class="search-wrapper">
         <div class="down-up-wrapper" @click="downUp">
           <img class="down-up" src="../assets/image/up.png" alt="" v-if="downUpImg">

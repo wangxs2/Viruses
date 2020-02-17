@@ -1440,11 +1440,16 @@ export default {
       flex-direction:column;
       justify-content:center;
       align-items:center;
-      margin-right:6px;
-      // border-bottom:1px solid #EAEAEA;
-      // padding-bottom:4px;
-      // margin-bottom:4px;
-      span{
+      border-bottom:1px solid #EAEAEA;
+      padding-bottom:4px;
+      margin-bottom:4px;
+      .imgsaone{
+        display:inline-block;
+        width:32px;
+        height:32px;
+        background-size:cover;
+      }
+      .imgbox{
         width:16px;
         font-size:12px;
         font-family:PingFang SC;

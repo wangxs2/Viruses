@@ -73,7 +73,7 @@
             <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr1"
                   :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr1==undefined?"":mapobj.linkPeoplearr1[index]}}  {{iteam}}</div></div>
           </div>
-          <div class="tel-desc" style="display:flex;justify-content:flex-start;align-items:center;font-size:12px;line-height:15px;color:#216AFF;text-align:left;margin-bottom:12px;"> <van-icon name="warning-o" color="#216AFF"  size="12" style="margin-right:2px;"/><span>真实电话号码已受保护，该虚拟号码将随时更新。</span></div>
+          <div class="tel-desc" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0" style="display:flex;justify-content:flex-start;align-items:center;font-size:12px;line-height:15px;color:#216AFF;text-align:left;margin-bottom:12px;"> <van-icon name="warning-o" color="#216AFF"  size="12" style="margin-right:2px;"/><span>真实电话号码已受保护，该虚拟号码将随时更新。</span></div>
           <!-- <span class="person">接受个人捐赠</span> -->
           <div v-if="mapobj.needsNamearr!==undefined" style="display:flex;justify-content:flex-start;align-items:center;font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'所需疫情防控物资':'可提供的物资或者服务'}} <van-icon v-if="query.orgType==1" style="margin-left:10px;margin-right:1px" name="warning-o" color="#FF2727"  size="12" /> <span v-if="query.orgType==1" @click="specifications=true" style="color:#FF2727;font-size:12px">物资标准</span></div>
           <div class="material" v-if="mapobj.needsNamearr!==undefined">
@@ -1445,7 +1445,7 @@ export default {
         font-weight:500;
         color:#666666;
         padding:6px 0;
-        padding-bottom:2px;
+        padding-bottom:4px;
         text-align:center;
         border-radius: 7px;
         line-height:14px;

@@ -1,5 +1,10 @@
 <template>
     <div class="luru">
+      <van-popup
+        v-model="showmaterial"
+        position="right"
+        :style="{ width: '100%',height:'100%' }">
+      </van-popup>
       <!-- 防止过快的切换 -->
     <van-overlay :z-index="30" :show="showimg">
       <div class="wrapperfast" >
@@ -20,7 +25,7 @@
             <div class="form-wrapper" v-if="curTabIndex==1">
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">名称</span>
-                <van-field v-model="form1.hispotalName" type="text" placeholder="请填写" :error-message="errorMessage1.hispotalName"/>
+                <van-field v-model="form1.hispotalName" type="text" @input="searchSaming(form1.hispotalName,1)" placeholder="请填写" :error-message="errorMessage1.hispotalName"/>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
@@ -424,6 +429,7 @@ export default {
   data() {
     return {
       bannerback:"url("+require("../assets/image/banner.png")+")",
+      showmaterial:true,
       allCity:json,
       showPicker:false,
       startTimePop3:false,
@@ -950,6 +956,13 @@ methods:{
         this.telindex2--
       }
 
+  },
+  //物资的模糊搜做
+  searchSaming(val,index){
+    console.log(val.length)
+    if(val.length>2){
+      this.showmaterial=true
+    }
   },
   addTel2(){
     let x=this.form3.contectTelList.some(item =>{

@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="onebif" v-if="isone">
+    <div class="onebif">
       <div style="font-size:12px">近1月数据</div>
       <div style="font-size:12px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span></div>
     </div>
@@ -14,6 +14,7 @@
     <!-- <div class="forew" v-if="seven">
       近一个月数据
     </div> -->
+    <!-- 底部按钮 -->
     <div class="bottom-btn-write">
       <div class="bottom-btn">
         <div class="btn-list" v-for="(item,i) in bottomBtnList" :key="i" :style="item.backgroundImgStyle" @click="luruSelectBtn(item.type)">
@@ -28,9 +29,26 @@
         <div class="countbottom"><span style="color:#216AFF"><a href="http://www.acfic.org.cn">中华全国工商业联合会</a></span> <span style="color:#216AFF"><a href="http://www.scf.org.cn">上海市慈善基金会</a></span> <span style="color:#216AFF"><a href="hforettps://www.siti.sh.cn">上海产业技术研究院</a></span>联合发布</div>
       </div>
     </div>
+    <!-- 搜索框 -->
     <div class="search-position">
-      <img src="../assets/image/icon_search.png"   />
-      <input type="text" v-model="searchText" placeholder="查询医院、物资、区域"/>
+      <div class="search-postion-content" @click="searchBtn">
+        <img src="../assets/image/icon_search.png"/>
+        <span v-if="searchText">{{searchText}}</span>
+        <span v-else>查询医院、物资、区域</span>
+      </div>
+      <van-icon name="cross" size="14" color="#FFC046" v-if="searchText" @click="clearSearchText"/>
+    </div>
+    <!-- 搜索框搜索数据 -->
+    <div class="search-list" v-if="searchText">
+      <span class="search-num">搜索到{{total || 0}}个查询结果</span>
+      <div class="search-num search-info">
+        <span style="padding-right:5px" @click="rightModel">查看明细</span>
+      </div>
+      <div class="arrow-up">
+        <div class="triangle_border_up">
+            <span></span>
+        </div>
+      </div>
 
     </div>
     <!-- 民间组织 三类 -->
@@ -136,26 +154,6 @@
       </div>
       
     </van-popup>
-    <!-- 搜索2部分 -->
-    <div class="search-wrapper1" v-if="showSearch">
-      <div class="input-wrapper">
-        <!-- <div class="go-back">
-          <van-icon name="arrow-left" @click="goback" size="16"/>
-        </div> -->
-        <span style="font-size:16px">{{searchText}}</span>
-        <div class="go-back" @click="rightModel" >
-          <van-icon name="wap-nav" size="24" />
-          <span v-if="showDataLengthPoint" >{{total || 0}}</span>
-        </div>
-        <div class="go-back">
-          <van-icon name="cross" @click="clearText" size="16" />
-        </div>
-      </div>
-      <!-- <div class="btn" @click="rightModel" >
-        <van-icon name="wap-nav" size="24"/>
-        <span v-if="showDataLengthPoint" >{{total || 0}}</span>
-      </div> -->
-    </div>
     <!-- 搜索2右边弹框 -->
     <van-popup v-model="showModel" :z-index="89" position="right" :style="{ height: '100%' }">
       <div class="list-content">
@@ -740,8 +738,6 @@ export default {
           type:3
         }
       ],
-
-
       bottomBtnList:[
         {
           backgroundImgStyle:{
@@ -818,6 +814,16 @@ export default {
     // })
   },
   methods:{
+    clearSearchText(){
+      this.total=''
+      this.searchText=''
+      this.query = {
+        content:'',
+        hour:'',
+        orgType:this.query.orgType,
+      }
+      this.getDataList()
+    },
     contectBtn(){
       this.contectModel=true
     },
@@ -1173,7 +1179,7 @@ export default {
     // 选择时间
     selectTimeItem(item) {
       this.show=false
-      this.showSearch=true
+      // this.showSearch=true
       this.styleUp=true
       this.isone=false
       this.searchText=item
@@ -1185,7 +1191,7 @@ export default {
     // 选择物资，城市
     selectItem(item) {
       this.show=false
-      this.showSearch=true
+      // this.showSearch=true
       this.styleUp=true
       this.isone=false
       this.searchText=item
@@ -1208,7 +1214,7 @@ export default {
     search(){
       if (this.searchText){
         this.show=false
-        this.showSearch=true
+        // this.showSearch=true
         this.styleUp=true
         this.isone=false
         this.query.content=this.searchText
@@ -1390,6 +1396,9 @@ export default {
 .van-popup__close-icon--top-right{
   top: 9px!important;
   right: 3px!important;
+}
+.amap-logo{
+  display:none !important;
 }
 
 
@@ -1641,23 +1650,83 @@ export default {
     background:rgba(255,255,255,1);
     box-shadow:0px 0px 8px 0px rgba(0, 0, 0, 0.16);
     border-radius:26px;
-    img{
-      width:15px;
-      height:15px;
-      margin-left:15px;
-      margin-right:10px;
+    .search-postion-content{
+      display:flex;
+      justify-content:flex-start;
+      align-items:center;
+
+      img{
+        width:15px;
+        height:15px;
+        margin-left:15px;
+        margin-right:10px;
+      }
+      
+      span{
+        height:34px;
+        line-height:34px;
+        width:150px;
+        font-size:15px;
+        font-family:PingFang SC;
+        font-weight:500;
+        color:rgba(102,102,102,1);
+        // background:none;  
+        outline:none;  
+        border:none;
+      }
+    }
+  }
+  .search-list{
+    position:absolute;
+    top:90px;
+    left:12px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    width:220px;
+    height:35px;
+    background:rgba(0,0,0,1);
+    opacity:0.4;
+    border-radius:8px;
+    z-index:10;
+    padding:0 10px;
+    .search-num{
+      font-size:13px;
+      color:#fff;
+      &.search-info{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        color:#FFC046;
+      }
+
     }
     
-    input{
-      height:34px;
-      width:150px;
-      font-size:15px;
-      font-family:PingFang SC;
-      font-weight:500;
-      color:rgba(102,102,102,1);
-      // background:none;  
-      outline:none;  
-      border:none;
+    .arrow-up{
+      position:absolute;
+      top:-45px;
+      left:20px;
+
+      .triangle_border_up{
+        width:0;
+        height:0;
+        border-width:0 8px 8px;
+        border-style:solid;
+        border-color:transparent transparent rgba(0,0,0,.5);/*透明 透明  灰*/
+        margin:40px auto;
+        position:relative;
+        span{
+          display:block;
+          width:0;
+          height:0;
+          border-width:0 8px 8px;
+          border-style:solid;
+          border-color:transparent transparent rgba(0,0,0,.5);/*透明 透明  黄*/
+          position:absolute;
+          top:0px;
+          left:-8px;
+        } 
+      }
     }
   }
   .bottom-btn-write{
@@ -1982,85 +2051,7 @@ export default {
       }
     }
     
-  }
-  .search-wrapper1{
-    position:absolute;
-    top:10px;
-    left:17px;
-    width:340px;
-    .input-wrapper{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      background:#fff;
-      height:44px;
-      background:rgba(255,255,255,1);
-      box-shadow:0px 1.5px 3.5px 0px rgba(0, 0, 0, 0.13);
-      border-radius:6px;
-      .go-back{
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        padding: 10px;
-        position:relative;
-        span{
-          position:absolute;
-          top:8px;
-          right:5px;
-          font-size:10px;
-          padding:1px;
-          height: 12px;
-          line-height: 12px;;
-          text-align: center;
-          background:#FF1717;
-          color:#fff;
-          border-radius:12px;
-
-        }
-      }
-      input{
-        width:250px;
-        font-size:16px;
-        font-family:PingFang SC;
-        font-weight:bold;
-        color:rgba(51,51,51,1);
-        border: 0;  // 去除未选中状态边框
-        outline: none; // 去除选中状态边框
-        background-color: rgba(0, 0, 0, 0);// 透明背景
-      }
-    }
-    .btn {
-      position:relative;
-      right:40px;
-      top:-62px;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      width:50px;
-      height:50px;
-      // background:#fff;
-      margin-left:292.5px;
-      margin-top:15px;
-      border-radius:50%;
-      .icon-btn{
-        width:15px;
-        height:15px;
-      }
-      span{
-        position:absolute;
-        top:8px;
-        right:5px;
-        font-size:10px;
-        padding:1px;
-        height: 12px;
-        line-height: 12px;;
-        text-align: center;
-        background:#FF1717;
-        color:#fff;
-        border-radius:12px;
-      }
-    }
-  }
+  } 
   .van-popup--right{
     width:80%;
   }

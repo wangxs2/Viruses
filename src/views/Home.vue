@@ -160,12 +160,29 @@
         <div v-if="dataList.length">
 
           <div class="list-wrapper" v-for="(item,i) in dataList" :key="i" @click="detailright(item)">
-            <p class="title">{{item.hospitalName}}</p>
-            <p class="address" v-if="item.hospitalAddress!==undefined&&item.hospitalAddress!==''"><van-icon name="location-o" size="20" /><span>{{item.hospitalAddress}}</span></p>
-            <p class="time" v-if="item.createTime!==undefined&&item.createTime!==''">发布日期：{{item.createTime!==undefined?item.createTime.substring(0,16).replace("+"," "):''}}</p>
-            <div class="phone" v-if="item.linkTelarr1!==undefined&&item.linkTelarr1.length > 0">
-              <p  v-for="(items,i) in item.linkTelarr1" :key="i"><van-icon name="phone-o" size="20" /><span>{{item.linkPeoplearr1==undefined?"":item.linkPeoplearr1[i]}}</span><span @click="searchRightModelPhone(items)">{{items}}</span></p>
+            <div class="title">{{item.hospitalName}}</div>
+            <div class="address-wrapper">
+
+              <div class="address" v-if="item.hospitalAddress!==undefined&&item.hospitalAddress!==''">
+                <van-icon name="location-o" size="14" />
+                <span>{{item.hospitalAddress}}</span>
+              </div>
+              
+              <div v-if="item.type==1" class="right-btn">定点医院</div>
+              <div v-if="item.type==2" class="right-btn right-btn1">发热门诊</div>
+              <div v-if="item.status&&item.status==1" class="right-btn right-btn2">正常经营</div>
+              <div v-if="item.status&&item.status==2" class="right-btn right-btn3">政府托管</div>
+              <div v-if="item.status&&item.status==3" class="right-btn right-btn4">尚未核实</div>
+
             </div>
+            <div class="wuzi-list" v-if="item.needsName"><span v-for="(items,i) in item.needsName.split(',')">{{items}}</span></div>
+
+            
+
+            <div class="time" v-if="item.createTime!==undefined&&item.createTime!==''">发布日期：{{item.createTime!==undefined?item.createTime.substring(0,16).replace("+"," "):''}}</div>
+            <!-- <div class="phone" v-if="item.linkTelarr1!==undefined&&item.linkTelarr1.length > 0">
+              <p  v-for="(items,i) in item.linkTelarr1" :key="i"><van-icon name="phone-o" size="20" /><span>{{item.linkPeoplearr1==undefined?"":item.linkPeoplearr1[i]}}</span><span @click="searchRightModelPhone(items)">{{items}}</span></p>
+            </div> -->
           </div>
           </div>
         <div v-else>
@@ -2056,9 +2073,9 @@ export default {
     width:80%;
   }
   .list-content{
-    padding:20px 10px;
+    padding:10px;
     .list-wrapper{
-      padding-bottom: 15px;
+      padding:11px 0;
       border-bottom:1px solid #dddddd;
       &.list-wrapper-no{
         
@@ -2085,30 +2102,63 @@ export default {
       &:last-child{
         border:0
       }
-      p{
-        margin:13px 0;;
-      }
       .title{
         text-align:left;
-        font-size:17px;
+        font-size:16px;
         font-family:PingFang SC;
         font-weight:bold;
         color:rgba(51,51,51,1);
+        margin-bottom:10px;
       }
-      .address{
+      .wuzi-list{
         display:flex;
-        align-items:center;
-        font-size:15px;
-        font-family:PingFang SC;
-        font-weight:500;
-        color:rgba(102,102,102,1);
-        img{
-          width:16px;
-          height:16px;
-          padding-right:8px;
-        }
+        flex-wrap:wrap;
+        justify-content:flex-start;
+        font-size:12px;
+        color:#333;
         span{
-          text-align:left;
+          padding-right:10px;
+        margin-bottom:5px;
+        }
+      }
+      .address-wrapper{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:10px;
+        .address{
+          display:flex;
+          justify-content:flex-start;
+          align-items:center;
+          font-size:12px;
+          font-family:PingFang SC;
+          font-weight:500;
+          color:rgba(102,102,102,1);
+          span{
+            text-align:left;
+          }
+        }
+        .right-btn{
+          width:64px;
+          height:18px;
+          background:#a485fd;
+          border-radius:10px;
+          font-size:12px;
+          color:#fff;
+          line-height:18px;
+          margin-left:10px;
+        }
+        .right-btn1{
+          background:#ff9d28;
+        }
+        .right-btn2{
+          background:#1bcc91;
+        }
+        .right-btn3{
+          background:#6196ff;
+        }
+        .right-btn4{
+          background:#ff7e69;
         }
       }
       .time{

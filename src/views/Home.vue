@@ -38,8 +38,7 @@
       <div class="txtimg" v-for="(iteam,index) in menuList"
         :key="index"
         @click="toRouterIndex(iteam,index)">
-        <!-- <img :src="iteam.imgUrl[selectIndex==index?0:1]" /> -->
-        <span :class="selectIndex==index?'txt-active':''">{{iteam.name}}</span>
+        <div :class="selectIndex==index?'imgbox txt-active':'imgbox'">{{iteam.name}}</div>
       </div>
     </div>
     <!-- 防止过快的切换 -->
@@ -1416,51 +1415,46 @@ export default {
     flex-direction:column;
     justify-content: space-around;
     align-items: center;
-    width:32px;
+    width:40px;
     height:200px;
-    background:url("../assets/image/circle.png");
-    background-size:32px 200px;
-    padding: 10px 0;
-    // background:rgba(255,255,255,1);
-    // box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32);
-    // border-radius:6px;
+    background:url("../assets/image/circle.png") no-repeat;
+    background-size:40px 200px;
+    padding: 20px 0;
     box-sizing:border-box;
-    // padding:5px;
+
+    // width:54px;
+    // height:374px;
+    // background:rgba(255,255,255,1);
+    // box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.16);
+    // border-radius:0px 10px 10px 0px;
+
+
+
     .txtimg{
       display:flex;
       flex-direction:column;
       justify-content:center;
       align-items:center;
-      border-bottom:1px solid #EAEAEA;
-      padding-bottom:4px;
-      margin-bottom:4px;
-      .imgsaone{
-        display:inline-block;
-        width:32px;
-        height:32px;
-        background-size:cover;
-      }
+      // border-bottom:1px solid #EAEAEA;
+      // padding-bottom:4px;
+      // margin-bottom:4px;
       .imgbox{
         width:16px;
         font-size:12px;
         font-family:PingFang SC;
         font-weight:500;
-        color:rgba(102,102,102,1);
+        color:#666666;
         padding:6px 0;
+        padding-bottom:2px;
         text-align:center;
         border-radius: 7px;
-        // line-height:24px;
+        line-height:14px;
         &.txt-active{
           background:#216AFF;
           color:#fff;
-
         }
       }
-      // .imgbox{
-      //   width:16px;
-      //   height:16px;
-        
-      // }
+      
     }
     .txtimg:last-child{
       // border-bottom:none;
@@ -1565,22 +1559,10 @@ export default {
     box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32), 0px 0px 16px 0px rgba(221,2,0,1);
     border-radius:50%;
     box-sizing:border-box;
-    // padding-top:3px;
-    &.threebif1{
-      position:fixed;
-      top:78px;
-      right:28px;
-
-    }
-    &.threebif2{
-      position:fixed;
-      top:27px;
-      right:24px;
-
-    }
+   
   }
   .threebif:active {
-    top: 70px; /**向下偏移2px **/
+    top: 40px; /**向下偏移2px **/
   }
   table{
     td{
@@ -1733,6 +1715,13 @@ export default {
         width:100%;
         font-size:11px;
         color:#999999;
+        a{
+          color:#216AFF;
+          -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+          -webkit-user-select: none;
+          -moz-user-focus: none;
+          -moz-user-select: none;
+        }
       }
     }
   }
@@ -2206,7 +2195,7 @@ export default {
         height: 17px;
       }
       span{
-        font-size: 9px;
+        font-size: 8px;
         color: #216AFF;
         padding-top: 1px;
       }

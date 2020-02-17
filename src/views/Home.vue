@@ -22,7 +22,7 @@
       <div class="txtimg" v-for="(iteam,index) in menuList"
         :key="index"
         @click="toRouterIndex(iteam,index)">
-        <img :src="iteam.imgUrl[selectIndex==index?0:1]" />
+        <span class="imgsaone" :style="{'background-image':`url(${iteam.imgUrl[selectIndex==index?0:1]})`}" ></span>
         <span  v-bind:style="{color:selectIndex==index?'#216AFF':'#666666','font-size':'12px','font-weight':'bold'}">{{iteam.name}}</span>
       </div>
     </div>
@@ -1369,6 +1369,12 @@ export default {
       border-bottom:1px solid #EAEAEA;
       padding-bottom:4px;
       margin-bottom:4px;
+      .imgsaone{
+        display:inline-block;
+        width:32px;
+        height:32px;
+        background-size:cover;
+      }
       .imgbox{
         width:16px;
         height:16px;

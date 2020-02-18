@@ -165,7 +165,7 @@
 
               <div class="address" v-if="item.hospitalAddress!==undefined&&item.hospitalAddress!==''">
                 <van-icon name="location-o" size="14" />
-                <span>{{item.hospitalAddress}}</span>
+                <div>{{item.hospitalAddress}}</div>
               </div>
               
               <div v-if="item.type==1" class="right-btn">定点医院</div>
@@ -1900,7 +1900,8 @@ export default {
           border-radius:10px;
           font-size:12px;
           color:#fff;
-          line-height:21px;
+          text-align:center;
+          line-height:20px;
         }
         .right-btn1{
           background:#ff9d28;
@@ -2130,11 +2131,12 @@ export default {
           display:flex;
           justify-content:flex-start;
           align-items:center;
+          flex:1;
           font-size:12px;
           font-family:PingFang SC;
           font-weight:500;
           color:rgba(102,102,102,1);
-          span{
+          div{
             text-align:left;
           }
         }

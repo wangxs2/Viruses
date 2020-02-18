@@ -2259,7 +2259,7 @@ export default {
   .search-write{
     position: fixed;
     top: 190px;
-    right: 10px;
+    right: 12px;
     z-index:10;
     .img-icon{
       display: flex;

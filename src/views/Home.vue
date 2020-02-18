@@ -212,7 +212,7 @@
     </div>
 
     <!-- 录入缺省页 -->
-    <van-popup v-model="reduceShow" closeable position="bottom" :style="{ height: '100%' }">
+    <van-popup v-model="reduceShow" position="bottom" :style="{ height: '100%' }">
       <luru @fatherMethod="fatherMethod" :curTabIndex="curTabIndex"></luru>
       
     </van-popup>
@@ -793,6 +793,7 @@ export default {
     // this.getProvinMark("#216AFF")
   },
  mounted () {
+   console.log(wx)
     this.getMap()
     var scrolltop = document.body.scrollTop;
     $('input').focus(function(){
@@ -909,6 +910,8 @@ export default {
         this.curTabIndex=type
         // this.luruSelectModel=false
         this.reduceShow=true
+      }else{
+        this.$toast("拼命开发中");
       }
     },
     getCurTimeContent(){
@@ -1797,14 +1800,11 @@ export default {
       height:82px;
       padding:0 12px;
       border-bottom:1px solid #DDDDDD;
-      // .btn-list-wrapper{
         .btn-list{
           display:flex;
           flex-direction:column;
           width:80px;
           height: 60px;
-          // background:url("../assets/image/image_4.png");
-          
           span{
             font-size:13px;
             font-family:PingFang SC;
@@ -1814,7 +1814,12 @@ export default {
 
           }
         }
-      // }
+        .btn-list:nth-child(3){
+          opacity:0.4;
+          span{
+            color:#dddddd;
+          }
+        }
     }
     .write-wrapper{
       display:flex;

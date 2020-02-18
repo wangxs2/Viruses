@@ -127,7 +127,7 @@
 
         </div>
         <div class="go-back-home" @click="goBackHome">
-            <van-icon name="arrow-left" size="20"/>
+            <van-icon name="arrow-left" color="#ffffff" size="26"/>
         </div>
 
     </div>
@@ -483,8 +483,8 @@ export default {
   }
   .go-back-home{
       position:absolute;
-      top:0px;
-      left:0px;
+      top:5px;
+      left:-4px;
       padding:0 10px 10px 0;
       z-index:10;
 

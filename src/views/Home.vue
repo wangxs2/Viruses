@@ -202,21 +202,13 @@
 
     <!-- 搜索录入图标 -->
     <div class="search-write">
-      <!-- <div class="img-icon" @click="searchBtn">
-        <img src="../assets/image/searchimg.png" />
-        <span>搜索</span>
-      </div>
-      <div class="img-icon" @click="writeBtn">
-        <img src="../assets/image/write.png" />
-        <span>录入</span>
-      </div> -->
       <div class="img-icon" @click="contectBtn">
         <img src="../assets/image/contect.png" />
-        <span>联系我们</span>
+        <span style="font-size:9px">联系我们</span>
       </div>
     </div>
-    <div class="icon-direction">
-      <img src="../assets/image/icon_direction.png" />
+    <div class="icon-direction" @click="getPosition">
+      <img  src="../assets/image/icon_direction.png" />
     </div>
 
     <!-- 录入缺省页 -->
@@ -672,6 +664,7 @@ export default {
       isone:true,
       myMap:null,
       mass:null,
+      markerSa:null,
       pointGroup: new AMap.OverlayGroup(), // 省集合
       isDetail:false,
       agreement:false,
@@ -801,6 +794,15 @@ export default {
   },
  mounted () {
     this.getMap()
+    var scrolltop = document.body.scrollTop;
+    $('input').focus(function(){
+    interval = setInterval(function(){
+    document.body.scrollTop = document.body.scrollHeight;
+    },100)
+    }).blur(function(){
+    clearInterval(interval);
+    document.body.scrollTop =scrolltop;
+    });
     //地图的放大缩小
     // this.myMap.on("zoomend", () => {
     //   let numberMap = this.myMap.getZoom();
@@ -831,6 +833,54 @@ export default {
     // })
   },
   methods:{
+    //获取当前位置
+    getPosition(){
+      if(this.markerSa){
+        this.markerSa.setMap(null);
+      }
+      let geolocation = new AMap.Geolocation({
+        enableHighAccuracy: true, //是否使用高精度定位，默认:true
+        timeout: 10000, //超过10秒后停止定位，默认：无穷大
+        maximumAge: 0, //定位结果缓存0毫秒，默认：0
+        convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+        showButton: true, //显示定位按钮，默认：true
+        buttonPosition: "RB", //定位按钮停靠位置，默认：'LB'，左下角
+        buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+        showMarker: false, //定位成功后在定位到的位置显示点标记，默认：true
+        showCircle: true, //定位成功后用圆圈表示定位精度范围，默认：true
+        panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
+        useNative: true,
+        zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+      });
+      geolocation.getCurrentPosition((status, result) => {
+        if(status=='complete'){
+          this.addMarker (result.position)
+        }else{
+          this.$toast("获取当前位置失败");
+        }
+      });
+    },
+    // 实例化当前点点标记
+    addMarker (val) {
+      var startIcon = new AMap.Icon({
+        // 图标尺寸
+          size: new AMap.Size(33, 33),
+          // 图标的取图地址
+          image: require('../assets/image/iconpr.png'),
+          // 图标所用图片大小
+          imageSize: new AMap.Size(33, 33),
+          // 图标取图偏移量
+          // imageOffset: new AMap.Pixel(-9, -3)
+      });
+      this.markerSa = new AMap.Marker({
+        map: this.myMap,
+        icon: startIcon,
+        position: val,
+        // offset: new AMap.Pixel(-10, -10)
+      });
+      this.myMap.setZoomAndCenter(14, val);
+      this.markerSa.setMap(this.myMap);
+    },
     clearSearchText(){
       this.total=''
       this.searchText=''
@@ -1317,14 +1367,6 @@ export default {
         zoom:4,
         mapStyle:'amap://styles/9fb204085bdb47adb66e074fca3376be',
       });
-    //    AMap.plugin([
-    //     'AMap.ToolBar',
-    // ], ()=>{
-    //     this.myMap.addControl(new AMap.ToolBar({
-    //         liteStyle: true,
-    //         position:'LT'
-    //     }));
-    // });
       this.initMap()
 
     },
@@ -1447,15 +1489,7 @@ export default {
     background-size:38px 200px;
     padding: 20px 0;
     box-sizing:border-box;
-
-    // width:54px;
-    // height:374px;
-    // background:rgba(255,255,255,1);
-    // box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.16);
-    // border-radius:0px 10px 10px 0px;
-
-
-
+    padding-right:8px;
     .txtimg{
       display:flex;
       flex-direction:column;
@@ -1466,15 +1500,15 @@ export default {
       // margin-bottom:4px;
       .imgbox{
         width:16px;
-        font-size:12px;
+        font-size:15px;
         font-family:PingFang SC;
         font-weight:500;
         color:#666666;
         padding:6px 0;
         padding-bottom:4px;
         text-align:center;
-        border-radius: 7px;
-        line-height:14px;
+        border-radius: 8px;
+        line-height:16px;
         &.txt-active{
           background:#216AFF;
           color:#fff;
@@ -1661,9 +1695,10 @@ export default {
     display:flex;
     justify-content:flex-start;
     align-items:center;
-    width:210px;
-    height:36px;
+    // width:210px;
+    // height:36px;
     z-index:10;
+    padding:3px 15px;
     background:rgba(255,255,255,1);
     box-shadow:0px 0px 8px 0px rgba(0, 0, 0, 0.16);
     border-radius:26px;
@@ -1675,7 +1710,7 @@ export default {
       img{
         width:15px;
         height:15px;
-        margin-left:15px;
+        // margin-left:15px;
         margin-right:10px;
       }
       
@@ -2210,21 +2245,28 @@ export default {
     img{
       width:23px;
       height: 23px;
-
+    }
+    img:active{
+      width:13px;
+      height:13px;
     }
   }
+//   .icon-direction:active {
+//     bottom:12px;
+//   }
   .search-write{
     position: fixed;
     top: 190px;
-    right: 12px;
+    right: 10px;
     z-index:10;
     .img-icon{
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      width: 40px;
-      height: 40px;
+      // width: 40px;
+      // height: 40px;
+      padding:8px 4px ;
       border-radius: 6px;
       background: #fff;
       box-shadow:0px 0px 8px 0px rgba(0, 0, 0, 0.32);

@@ -60,7 +60,7 @@
       </div>
     </div>
     <!-- 防止过快的切换 -->
-    <van-overlay :z-index="40" :show="showmap">
+    <van-overlay :z-index="2002" :show="showmap">
       <div class="wrapperfast" >
         <van-loading size="64px" color="#1989fa"></van-loading>
       </div>

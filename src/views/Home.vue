@@ -1468,6 +1468,7 @@ export default {
   height: 100%;
   background: #f1f1f1;
   display:flex;
+  position:relative;
   .wrapperfast{
      display: flex;
     align-items: center;
@@ -1475,7 +1476,7 @@ export default {
     height: 100%;
   }
   .peopleTeam{
-    position:fixed;
+    position:absolute;
     top:126px;
     left:0;
     z-index:10;
@@ -1523,7 +1524,7 @@ export default {
       }
   }
   .onebif{
-    position:fixed;
+    position:absolute;
     top:0px;
     left:0;
     right: 0;
@@ -1540,7 +1541,7 @@ export default {
     align-items:center;
   }
   .twobif{
-    position:fixed;
+    position:absolute;
     top:47px;
     right:48px;
     z-index:10;
@@ -1555,20 +1556,20 @@ export default {
     text-align:center;
     padding-left:6px;
     &.twobif1{
-      position:fixed;
+      position:absolute;
       top:90px;
       right:60px;
 
     }
     &.twobif2{
-      position:fixed;
+      position:absolute;
       top:40px;
       right:60px;
 
     }
   }
   .forew{
-    position:fixed;
+    position:absolute;
     top:80px;
     left:12px;
     z-index:10;
@@ -1581,20 +1582,20 @@ export default {
     box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32);
     border-radius:6px;
     &.forew1{
-      position:fixed;
+      position:absolute;
       top:90px;
       left:20px;
 
     }
     &.forew2{
-      position:fixed;
+      position:absolute;
       top:40px;
       left:20px;
 
     }
   }
   .dzan{
-    position:fixed;
+    position:absolute;
     top:62px;
     right:28px;
     z-index:11;
@@ -1607,7 +1608,7 @@ export default {
     border-radius:50%;
   }
   .threebif{
-    position:fixed;
+    position:absolute;
     top:37px;
     right:12px;
     z-index:10;
@@ -1681,7 +1682,7 @@ export default {
     }
   }
   .writefont{
-    position:fixed;
+    position:absolute;
     bottom:4px;
     right:10px;
     z-index:10;

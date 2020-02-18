@@ -815,14 +815,14 @@ export default {
   //     document.body.scrollTop =scrolltop;
   //   });
     let pos = 0;
-    if ( $('input').selectionStart ==  $('input').selectionEnd) {
-        pos = isNaN(temp) || 
-           $('input').selectionStart % 5 != 0 || 
-          val.length < old.length ?
-           $('input').selectionStart :  $('input').selectionStart + 1;
-      } else {
-        pos = -1;
-      }
+    // if ( $('input').selectionStart ==  $('input').selectionEnd) {
+    //     pos = isNaN(temp) || 
+    //        $('input').selectionStart % 5 != 0 || 
+    //       val.length < old.length ?
+    //        $('input').selectionStart :  $('input').selectionStart + 1;
+    //   } else {
+    //     pos = -1;
+    //   }
     this.$nextTick(() => {
       if (pos != -1) {
         this.$refs.focusa.setSelectionRange(pos, pos);
@@ -1010,15 +1010,15 @@ methods:{
   },
   //物资的模糊搜做
   searchSaming(val,index){
-    console.log(val.length)
     this.searchid=index
     if(val.length>1){
       this.showmaterial=true
+      this.materialin=val
+      this.getRemark()
       setTimeout(()=>{
         this.$refs.focusa.focus();
       },200)
-      this.materialin=val
-      this.getRemark()
+      
     }
   },
   //模糊搜索的结果
@@ -1054,7 +1054,6 @@ methods:{
 
           this.materialData.push(titleString)
       }
-      console.log(this.materialData)
   },
   submit(val){
     if(val==''){
@@ -1524,7 +1523,6 @@ linkTelBlur(type,tel,index){
         })
     },
     xuRead(val){
-      console.log(val)
       // if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
       //   this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
       // }else {
@@ -1665,7 +1663,6 @@ linkTelBlur(type,tel,index){
               latitude:'',
       
           }
-          // console.log(this.params1)
             this.addresschange1(this.params1.province+this.params1.city+this.params1.address,1)
         }
          
@@ -1706,7 +1703,6 @@ linkTelBlur(type,tel,index){
               latitude:'',
         
             }
-            // console.log(this.params2)
             this.addresschange1(this.params2.province+this.params2.city+this.params2.address,2)
       }
           
@@ -1757,7 +1753,6 @@ linkTelBlur(type,tel,index){
         MM +
         "-" +
         dd
-        // console.log(this.form1.startTime)
     },
     // 点击取消
     cancelTime() {
@@ -1776,7 +1771,6 @@ linkTelBlur(type,tel,index){
         MM +
         "-" +
         dd
-        // console.log(this.form2.startTime)
     },
     // 点击取消
     cancelTimeNeed() {
@@ -1852,6 +1846,9 @@ linkTelBlur(type,tel,index){
 <style>
 .search-text{
   color:#07c160;
+}
+.header-box .van-field__body{
+  justify-content:flex-start;
 }
 </style>
 <style lang="scss" scoped>

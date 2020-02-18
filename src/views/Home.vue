@@ -56,7 +56,7 @@
       <div class="txtimg" v-for="(iteam,index) in menuList"
         :key="index"
         @click="toRouterIndex(iteam,index)">
-        <div :class="selectIndex1==index?'imgbox txt-active':'imgbox'">{{iteam.name}}</div>
+        <div :class="selectIndex==index?'imgbox txt-active':'imgbox'">{{iteam.name}}</div>
       </div>
     </div>
     <!-- 防止过快的切换 -->
@@ -959,7 +959,7 @@ export default {
     },
     //三类民间组织
     toRouterIndex(iteam,index){
-      this.selectIndex1=index
+      this.selectIndex=index
       this.query.orgType=index+1
       // if(this.mass){
       //   this.mass.clear()
@@ -1019,7 +1019,7 @@ export default {
       this.show=true
       this.reduceShow=false
       this.downUpImg=false
-      this.selectIndex=this.selectIndex1
+      // this.selectIndex=this.selectIndex1
       this.heightCur="100%"
 
     },

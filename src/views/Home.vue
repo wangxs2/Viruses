@@ -118,11 +118,13 @@
       </div>
     </van-popup>
     <!-- 搜索部分 -->
-    <van-popup v-model="show" position="bottom" :style="{height: heightCur }" :overlay="false" >
+    <van-popup v-model="show" position="bottom" :style="{height: heightCur }" :overlay="false" round >
       <div class="search-wrapper">
-        <div class="down-up-wrapper" @click="downUp">
-          <img class="down-up" src="../assets/image/up.png" alt="" v-if="downUpImg">
-          <img class="down-up" src="../assets/image/down.png" alt="" v-else>
+        <div class="tab-item-list">
+          <div v-for="(item,i) in menuList" :key="i" @click="searchTabItem(i)" :class="selectIndex==i?'tab-item tab-item-span-active':'tab-item'">
+          {{item.name}}
+            
+          </div>
         </div>
         <div class="input-wrapper">
           <img src="../assets/image/search.png" alt="" @click="search">
@@ -148,6 +150,17 @@
           <p class="title">发布时间查询</p>
           <div class="list list3">
             <span v-for="(item,i) in timeList" :key="i" @click="selectTimeItem(item)"><img src="../assets/image/time.png" alt="">{{item}}</span>
+          </div>
+        </div>
+        <div class="down-up-wrapper" @click="downUp">
+          <div class="img-write" v-if="downUpImg">
+
+            <img class="down-up" src="../assets/image/down.png" alt="">  
+            <span>收起</span>
+          </div>
+          <div class="img-write" v-else>
+            <img class="down-up" src="../assets/image/up.png" alt="">
+            <span>收起</span>
           </div>
         </div>
         
@@ -789,7 +802,8 @@ export default {
           name: "我要出力",
           type:3
         }
-      ]
+      ],
+      curSearchTabItem:0, //搜索当前选择组织
     }
   },
   created() {
@@ -831,6 +845,13 @@ export default {
     // })
   },
   methods:{
+    searchTabItem(index){
+      this.selectIndex=index
+      this.query.orgType=index+1
+      this.getWuziList()
+      this.getCityList()
+
+    },
     clearSearchText(){
       this.total=''
       this.searchText=''
@@ -1202,6 +1223,7 @@ export default {
       this.searchText=item
       this.seven=false
       this.query.hour=item.substring(2,4)
+      this.query.content=''
       this.getDataList()
 
     },
@@ -1213,6 +1235,7 @@ export default {
       this.isone=false
       this.searchText=item
       this.query.content=item
+      this.query.hour=''
       this.getDataList()
     },
     // 右边弹框显示
@@ -1970,17 +1993,55 @@ export default {
     // left:0;
     // bottom:0;
     // right:0;
-    padding:0 17px;
     // background:#fff;
     // z-index:20;
-    .down-up{
-      width:30px;
-      height: 12px;
-      padding:10px 20px;
+    .img-write{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+
+      .down-up{
+        width:30px;
+        height: 12px;
+        padding:5px 20px;
+      }
+      span{
+        font-size:12px;
+        font-family:PingFang SC;
+        font-weight:500;
+        color:rgba(170,170,170,1);
+      }
+
+    }
+    .tab-item-list{
+
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      height:44px;
+      background:rgba(242,242,242,1);
+      margin-bottom:12px;
+      .tab-item{
+        width:33.3%;
+        height:44px;
+        line-height:44px;
+        text-align:center;
+        font-size:16px;
+        font-family:PingFang SC;
+        font-weight:500;
+        color:rgba(102,102,102,1);
+        &.tab-item-span-active{
+          color:#fff;
+        background:#216AFF;
+
+        }
+      }
     }
     .tab-list-wrapper{
       font-size:16px;
-      margin-bottom: 80px;
+      margin-bottom: 60px;
+      padding:0 17px;
       .title{
         text-align:left;
         font-family:PingFang SC;
@@ -2047,6 +2108,7 @@ export default {
       background:rgba(242,245,255,1);
       border:1px solid rgba(224,224,224,1);
       border-radius:12px;
+      margin:0 17px;
       img{
         width: 18px;
         height: 18px;

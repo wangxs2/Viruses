@@ -1017,6 +1017,7 @@ export default {
       this.show=true
       this.reduceShow=false
       this.downUpImg=false
+      this.selectIndex=this.selectIndex1
       this.heightCur="100%"
 
     },

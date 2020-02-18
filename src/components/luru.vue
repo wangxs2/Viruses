@@ -1,5 +1,6 @@
 <template>
     <div class="luru">
+      <van-icon style="position:absolute;top:4px;right:4px;" color="#ffffff" name="close" size="28px" @click="closebig" />
       <van-popup
         v-model="showmaterial"
         position="right"
@@ -1853,6 +1854,7 @@ linkTelBlur(type,tel,index){
 </style>
 <style lang="scss" scoped>
 .luru{
+  position:relative;
   .material-content{
     width:100%;
     height:100%;

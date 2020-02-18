@@ -25,7 +25,7 @@ function alywx(type,params,callback){
         callback = callback ? callback : function(){};
         var u  = encodeURIComponent(window.location.href.split('#')[0]);
         $.get(url,{
-            url:u
+            url:url
         },function(redata){
             //redata.data.debug = true;
             wx.config(redata.data);
@@ -129,13 +129,13 @@ var loadjs = function(callback){
     }
 };
 
-// var params = {
-//     img:'http://special.anlaiye.com/theme/v1/h5/new_users/styles/images/share.png',
-//     link: "http://192.168.2.116:8086/",
-//     desc: '俺来也新用户福利来袭，百分百中奖！好礼等你拿！更多惊喜尽在俺来也APP，优惠福利快人一步！',
-//     title: '今夏，俺来也为你准备了一份厚礼…'
-// }
-// alywx(1,params,function(){});
+var params = {
+    img:'http://special.anlaiye.com/theme/v1/h5/new_users/styles/images/share.png',
+    link: "http://192.168.2.116:8086/",
+    desc: '俺来也新用户福利来袭，百分百中奖！好礼等你拿！更多惊喜尽在俺来也APP，优惠福利快人一步！',
+    title: '今夏，俺来也为你准备了一份厚礼…'
+}
+alywx(1,params,function(){});
 
 
 

@@ -13,7 +13,7 @@
           <div class="content-box">
             <div class="content-item" v-for="(item,index) in materialData" :key="index" v-html="item.name" @click="submit(item.name)"></div>
             <div v-if='loadmaterial' class="conme" style="width:100%;height:100%;text-align:center"><van-loading type="spinner" color="#1989fa" /></div>
-            <div v-if='materialData.length==0' class="conme" style="width:100%;height:100%;font-size:18px;color:#666666;text-align:center">暂无数据~</div>
+            <!-- <div v-if='materialData.length==0' class="conme" style="width:100%;height:100%;font-size:18px;color:#666666;text-align:center">暂无数据~</div> -->
           </div>
         </div>
       </van-popup>

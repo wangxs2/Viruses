@@ -852,6 +852,8 @@ export default {
     searchTabItem(index){
       this.selectIndex=index
       this.query.orgType=index+1
+      this.dataList=[]
+      this.getDataList()
       this.getWuziList()
       this.getCityList()
     },
@@ -2083,7 +2085,7 @@ export default {
     }
     .tab-list-wrapper{
       font-size:16px;
-      margin-bottom: 60px;
+      margin-bottom: 30px;
       padding:0 17px;
       .title{
         text-align:left;

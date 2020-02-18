@@ -7,7 +7,7 @@
         <div class="material-content">
           <div class="header-box">
             <van-icon name="arrow-left" @click="showmaterial=false" size="28" />
-            <van-search :focus="focusa" v-model="materialin" @input="getRemark()" placeholder="请输入搜索关键词" />
+            <van-field ref="focusa" style="flex:1;padding:4px 10px;margin:0 6px"  left-icon="search" clearable v-model="materialin" @input="getRemark()" placeholder="请输入搜索关键词" />
             <span class="searchfone" @click="submit(materialin)">确定</span>
           </div>
           <div class="content-box">
@@ -152,6 +152,10 @@
                 </div>
               </div>
               <div class="form-input">
+                <span>其他说明</span>
+                <van-field v-model="form1.needsDescr" type="textarea" placeholder="备注"/>
+              </div>
+              <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">需求证明</span>
                 <div class="need-img-wrapper">
                   <van-uploader
@@ -284,6 +288,10 @@
                 </van-popup>
               </div>
               <div class="form-input">
+                <span>其他说明</span>
+                <van-field v-model="form2.needsDescr" type="textarea" placeholder="备注"/>
+              </div>
+              <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">身份证明</span>
                 <div class="need-img-wrapper">
                   <van-uploader
@@ -409,7 +417,7 @@
               </div>
               <div class="form-input">
                 <span>其他说明</span>
-                <van-field v-model="form3.descr" type="textarea" placeholder="请填写" :error-message="errorMessage3.authorWrite"/>
+                <van-field v-model="form3.descr" type="textarea" placeholder="请填写" />
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">身份证明</span>
@@ -485,6 +493,7 @@ export default {
         ],
         longitude:'',
         latitude:'',
+        descr:'',
         fileList:[],
         startTime:'',
         needOrgin:1,
@@ -521,6 +530,7 @@ export default {
         type:3,
         sup:4,
         sup1:1,
+        descr:'',
         materialDetails:[
           {
             needsName:'',
@@ -577,6 +587,7 @@ export default {
         linkUrl:'',
         longitude:'',
         latitude:'',
+        needsDescr:'',
         descr:'',//备注
        contectTelList:[
             {
@@ -794,6 +805,29 @@ export default {
   
  },
  mounted () {
+  //  let interval
+  //   $('input').focus(function(){
+  //     interval = setInterval(function(){
+  //     document.body.scrollTop = document.body.scrollHeight;
+  //   },100)
+  //   }).blur(function(){
+  //     clearInterval(interval);
+  //     document.body.scrollTop =scrolltop;
+  //   });
+    let pos = 0;
+    // if ( $('input').selectionStart ==  $('input').selectionEnd) {
+    //     pos = isNaN(temp) || 
+    //        $('input').selectionStart % 5 != 0 || 
+    //       val.length < old.length ?
+    //        $('input').selectionStart :  $('input').selectionStart + 1;
+    //   } else {
+    //     pos = -1;
+    //   }
+    this.$nextTick(() => {
+      if (pos != -1) {
+        this.$refs.focusa.setSelectionRange(pos, pos);
+      }
+    });
      this.columns[0].values = Object.values(this.allCity).map(function(e){
         return {text:e.name}
     })
@@ -976,15 +1010,15 @@ methods:{
   },
   //物资的模糊搜做
   searchSaming(val,index){
-    console.log(val.length)
     this.searchid=index
     if(val.length>1){
       this.showmaterial=true
-      setTimeout(()=>{
-        this.focusa=true
-      },200)
       this.materialin=val
       this.getRemark()
+      setTimeout(()=>{
+        this.$refs.focusa.focus();
+      },200)
+      
     }
   },
   //模糊搜索的结果
@@ -1020,7 +1054,6 @@ methods:{
 
           this.materialData.push(titleString)
       }
-      console.log(this.materialData)
   },
   submit(val){
     if(val==''){
@@ -1031,10 +1064,10 @@ methods:{
           this.form1.hispotalName=val.replace('<span class="search-text">', "").replace('</span>', "")
             break;
         case 2:
-          this.form2.hispotalName=val
+          this.form2.hispotalName=val.replace('<span class="search-text">', "").replace('</span>', "")
             break;
         case 3:
-            this.form3.name=val
+            this.form3.name=val.replace('<span class="search-text">', "").replace('</span>', "")
             break;
         default:
           
@@ -1490,7 +1523,6 @@ linkTelBlur(type,tel,index){
         })
     },
     xuRead(val){
-      console.log(val)
       // if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
       //   this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
       // }else {
@@ -1631,7 +1663,6 @@ linkTelBlur(type,tel,index){
               latitude:'',
       
           }
-          // console.log(this.params1)
             this.addresschange1(this.params1.province+this.params1.city+this.params1.address,1)
         }
          
@@ -1672,7 +1703,6 @@ linkTelBlur(type,tel,index){
               latitude:'',
         
             }
-            // console.log(this.params2)
             this.addresschange1(this.params2.province+this.params2.city+this.params2.address,2)
       }
           
@@ -1723,7 +1753,6 @@ linkTelBlur(type,tel,index){
         MM +
         "-" +
         dd
-        // console.log(this.form1.startTime)
     },
     // 点击取消
     cancelTime() {
@@ -1742,7 +1771,6 @@ linkTelBlur(type,tel,index){
         MM +
         "-" +
         dd
-        // console.log(this.form2.startTime)
     },
     // 点击取消
     cancelTimeNeed() {
@@ -1818,6 +1846,9 @@ linkTelBlur(type,tel,index){
 <style>
 .search-text{
   color:#07c160;
+}
+.header-box .van-field__body{
+  justify-content:flex-start;
 }
 </style>
 <style lang="scss" scoped>

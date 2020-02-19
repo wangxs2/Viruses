@@ -33,11 +33,11 @@
     <div class="search-position">
       <div class="search-postion-content" @click="searchBtn">
         <img src="../assets/image/icon_search.png"/>
-        <!-- <div class="search-position-input">
+        <div class="search-position-input">
           <van-field v-model="searchText" placeholder="医院/物资/区域" readonly />
-        </div> -->
-        <span v-if="searchText">{{searchText}}</span>
-        <span v-else>医院/物资/区域</span>
+        </div>
+        <!-- <span v-if="searchText">{{searchText}}</span>
+        <span v-else>医院/物资/区域</span> -->
       </div>
       <van-icon name="cross" size="14" color="#FFC046" v-if="searchText" @click="clearSearchText"/>
     </div>

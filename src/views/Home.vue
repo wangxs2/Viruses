@@ -652,7 +652,7 @@ export default {
       showmap:false,
       fenxi_img:'https://medicalsupplies.sitiits.com/visur/img/share.png',
       fenxi_title:'云逆行·新冠肺炎物资公益平台',
-      fenxi_desc:'云逆行·新冠肺炎物资公益平台由中华全国工商业联合会、上海市慈善基金会、上海产业技术研究院联合发布，通过收集全国范围新冠肺炎医疗机构医疗物资需求信息，汇集医疗物资生产厂商医疗原材料需求信息，构建物资需求“一张图”，支持物资类型、城市区域、发布时间等多维度查询，帮助物资需求方与物资提供方之间直接、快速、准确对接。',
+      fenxi_desc:'由中华全国工商业联合会、上海市慈善基金会、上海产业技术研究院联合发布',
       menuList: [
         {
           id:1,

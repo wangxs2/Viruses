@@ -167,7 +167,7 @@
                     :max-count="5"
                   />
                 </div>
-                  <span class="desc">最多可上传5张图片</span>
+                  <span class="desc">请上传需求公函照片或官网文件截图，最多可上传5张。</span>
               </div>
               <div class="confirm-btn" @click="confirmone">提交</div>
             </div>
@@ -824,11 +824,11 @@ export default {
     //   } else {
     //     pos = -1;
     //   }
-    this.$nextTick(() => {
-      if (pos != -1) {
-        this.$refs.focusa.setSelectionRange(pos, pos);
-      }
-    });
+    // this.$nextTick(() => {
+    //   if (pos != -1) {
+    //     this.$refs.focusa.setSelectionRange(pos, pos);
+    //   }
+    // });
      this.columns[0].values = Object.values(this.allCity).map(function(e){
         return {text:e.name}
     })

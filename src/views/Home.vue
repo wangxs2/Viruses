@@ -33,8 +33,11 @@
     <div class="search-position">
       <div class="search-postion-content" @click="searchBtn">
         <img src="../assets/image/icon_search.png"/>
+        <!-- <div class="search-position-input">
+          <van-field v-model="searchText" placeholder="医院/物资/区域" readonly />
+        </div> -->
         <span v-if="searchText">{{searchText}}</span>
-        <span v-else>查询医院、物资、区域</span>
+        <span v-else>医院/物资/区域</span>
       </div>
       <van-icon name="cross" size="14" color="#FFC046" v-if="searchText" @click="clearSearchText"/>
     </div>
@@ -91,7 +94,7 @@
             <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr1"
                   :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr1==undefined?"":mapobj.linkPeoplearr1[index]}}  {{iteam}}</div></div>
           </div>
-          <div class="tel-desc" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0" style="display:flex;justify-content:flex-start;align-items:center;font-size:12px;line-height:15px;color:#216AFF;text-align:left;margin-bottom:12px;"> <van-icon name="warning-o" color="#216AFF"  size="12" style="margin-right:2px;"/><span>真实电话号码已受保护，该虚拟号码将随时更新。</span></div>
+          <div class="tel-desc" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0" style="display:flex;justify-content:flex-start;align-items:center;font-size:12px;line-height:15px;color:#216AFF;text-align:left;margin-bottom:12px;"> <van-icon name="warning-o" color="#216AFF"  size="12" style="margin-right:2px;"/><span>以上为虚拟号码，真实号码受保护随时更新！</span></div>
           <!-- <span class="person">接受个人捐赠</span> -->
           <div v-if="mapobj.needsNamearr!==undefined" style="display:flex;justify-content:flex-start;align-items:center;font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'所需疫情防控物资':'可提供的物资或者服务'}} <van-icon v-if="query.orgType==1" style="margin-left:10px;margin-right:1px" name="warning-o" color="#FF2727"  size="12" /> <span v-if="query.orgType==1" @click="specifications=true" style="color:#FF2727;font-size:12px">物资标准</span></div>
           <div class="material" v-if="mapobj.needsNamearr!==undefined">
@@ -118,7 +121,7 @@
       </div>
     </van-popup>
     <!-- 搜索部分 -->
-    <van-popup v-model="show" position="bottom" :style="{height: heightCur }" :overlay="false" round >
+    <van-popup v-model="show" position="bottom" :style="{height: heightCur }" :overlay="false" >
       <div class="search-wrapper">
         <div class="tab-item-list">
           <div v-for="(item,i) in menuList" :key="i" @click="searchTabItem(i)" :class="selectIndex==i?'tab-item tab-item-span-active':'tab-item'">
@@ -130,7 +133,9 @@
           <img src="../assets/image/search.png" alt="" @click="search">
 
           <form action="javascript:return true"> 
-            <input type="search" placeholder="查询继续支援医院、物资、区域" v-model="searchText" @focus="inputFocus" @keyup.13="search">
+            <input type="search" placeholder="查询继续支援医院、物资、区域" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==0"> 
+            <input type="search" placeholder="查询继续支援企业、物资、区域" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==1"> 
+            <input type="search" placeholder="查询继续支援组织、物资、区域" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==2">
           </form>
 
 
@@ -1489,6 +1494,13 @@ export default {
 .amap-logo{
   display:none !important;
 }
+.search-position-input .van-cell{
+  height:34px;
+  padding:0;
+}
+.search-position-input .van-field__body{
+  height: 34px;
+}
 
 
 </style>
@@ -1575,7 +1587,7 @@ export default {
     top:47px;
     right:48px;
     z-index:10;
-    width:80px;
+    width:100px;
     height:24px;
     line-height:25px;
     font-size:12px;
@@ -1745,14 +1757,24 @@ export default {
         margin-right:10px;
       }
       
-      span{
+      .search-position-input{
         height:34px;
-        line-height:34px;
-        width:150px;
+        // line-height:34px;
+        width:120px;
         font-size:15px;
         font-family:PingFang SC;
         font-weight:500;
         color:rgba(102,102,102,1);
+      }
+      span{
+        height:34px;
+        line-height:34px;
+        text-align:left;
+        width:130px;
+        font-size:14px;
+        font-family:PingFang SC;
+        font-weight:500;
+        color:#999;
         // background:none;  
         outline:none;  
         border:none;

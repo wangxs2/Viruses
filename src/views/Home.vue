@@ -908,7 +908,7 @@ export default {
         position: val,
         // offset: new AMap.Pixel(-10, -10)
       });
-      this.myMap.setZoomAndCenter(12, val);
+      this.myMap.setZoomAndCenter(8, val);
       this.markerSa.setMap(this.myMap);
     },
     clearSearchText(){

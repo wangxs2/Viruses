@@ -241,7 +241,7 @@
       <div class="agreement-content">
         <div class="bigfont">用户使用协议</div>
         <div class="leftfont">第一条 协议订立</div>
-        <div class="contentfont">1.1 用户在同意本网站：新冠肺炎物资公益平台(http://rescue.sisiits.com:9966/visur)的《用户使用协议》（以下简称“本协议”）后，方可使用本网络服务平台（以下简称“平台”)提供的物资需求与供应信息来源等相关服务（以下简称“服务”）。</div>
+        <div class="contentfont">1.1 用户在同意本网站：云逆行·新冠肺炎物资公益平台(http://rescue.sisiits.com:9966/visur)的《用户使用协议》（以下简称“本协议”）后，方可使用本网络服务平台（以下简称“平台”)提供的物资需求与供应信息来源等相关服务（以下简称“服务”）。</div>
         <div class="contentfont">1.2 用户在使用本平台提供的服务前务必认真阅读本协议，一旦用户打开并浏览本平台提供的信息即表示用户同意与本平台签订本协议且同意受本协议之约束。</div>
         <div class="leftfont">第二条 服务说明</div>
         <div class="leftfont">本平台为公益性信息平台，仅提供如下服务：</div>

@@ -808,7 +808,7 @@ export default {
     // this.getProvinMark("#216AFF")
   },
  mounted () {
-   console.log(wx)
+  //  console.log(wx)
     this.getMap()
     var scrolltop = document.body.scrollTop;
     $('input').focus(function(){

@@ -625,7 +625,9 @@
           </div>
           <div class="code">
             <img style="" src="../assets/image/gzh.jpg" alt="">
+            <div class="btn">长按识别公众号</div>
             <span class="btn">云逆行·新冠肺炎物资公益平台</span>
+            <!-- <div>长按识别公众号</div> -->
           </div>
         </div>
         <div class="close-luru-model" @click="contectSelect"><van-icon name="cross" size="16" color="#fff"/></div>
@@ -958,7 +960,10 @@ export default {
       this.getWuziList()
       this.getCityList()
     },
-
+    //一键关注
+    yjgz(){
+      window.open('https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzAwMTUzNDg3OA==&scene=110#wechat_redirect')
+    },
     //获取当前位置
     getPosition(){
       if(this.markerSa){

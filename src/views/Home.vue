@@ -625,7 +625,7 @@
           </div>
           <div class="code">
             <img style="" src="../assets/image/gzh.jpg" alt="">
-            <span class="btn">新冠肺炎物资公益平台</span>
+            <span class="btn">云逆行·新冠肺炎物资公益平台</span>
           </div>
         </div>
         <div class="close-luru-model" @click="contectSelect"><van-icon name="cross" size="16" color="#fff"/></div>
@@ -641,6 +641,7 @@
 <script>
  import encrypt from '@/libs/encrypt'
  import luru from '@/components/luru'
+ import wx from 'weixin-js-sdk'
 export default {
   name: "home",
   components:{
@@ -649,6 +650,9 @@ export default {
   data() {
     return {
       showmap:false,
+      fenxi_img:'https://medicalsupplies.sitiits.com/visur/img/share.png',
+      fenxi_title:'云逆行·新冠肺炎物资公益平台',
+      fenxi_desc:'云逆行·新冠肺炎物资公益平台由中华全国工商业联合会、上海市慈善基金会、上海产业技术研究院联合发布，通过收集全国范围新冠肺炎医疗机构医疗物资需求信息，汇集医疗物资生产厂商医疗原材料需求信息，构建物资需求“一张图”，支持物资类型、城市区域、发布时间等多维度查询，帮助物资需求方与物资提供方之间直接、快速、准确对接。',
       menuList: [
         {
           id:1,
@@ -824,6 +828,7 @@ export default {
     clearInterval(interval);
     document.body.scrollTop =scrolltop;
     });
+    this.WeChatshare()
     //地图的放大缩小
     // this.myMap.on("zoomend", () => {
     //   let numberMap = this.myMap.getZoom();
@@ -854,6 +859,97 @@ export default {
     // })
   },
   methods:{
+    //微信分享
+      WeChatshare(){
+        let that=this;
+        let data={url:window.location.href.split('#')[0]};
+        this.$fetchGet('signature/getSignature',data)
+        .then((res)=>{
+          console.log(res)
+          wx.config({
+            debug: false, //开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: 'wxc941dba7ff69275c', //必填，公众号的唯一标识
+            timestamp: res.content.timestamp, // 必填，生成签名的时间戳
+            nonceStr: res.content.noncestr, // 必填，生成签名的随机串
+            signature: res.content.signature, // 必填，签名
+            jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage',"onMenuShareQQ",'onMenuShareWeibo','onMenuShareQZone'] // 必填，需要使用的JS接口列表
+          });
+
+          //拼接当前地址 
+          let shareUrl=window.location.href.split('#')[0]+'#'+window.location.href.split('#')[1];
+          // shareUrl = shareUrl.split('#')[0] + 'static/html/redirect.html?app3Redirect=' + encodeURIComponent(shareUrl);
+
+          wx.ready(function () {
+            //分享给朋友
+            wx.onMenuShareAppMessage({
+              title: that.fenxi_title,
+              desc: that.fenxi_desc,
+              link: shareUrl,
+              imgUrl: that.fenxi_img,
+              success: function (res) {
+                that.$toast("分享成功！");
+              },
+              cancel:function(res){
+                that.$toast("分享失败！");
+              }
+            })
+            //分享到朋友圈
+            wx.onMenuShareTimeline({
+              title: that.fenxi_title,
+              link: shareUrl,
+              imgUrl: that.fenxi_img,
+              success: function (res) {
+                that.$toast("分享成功！");
+              },
+              cancel:function(res){
+                that.$toast("分享失败！");
+              }
+            })
+            //“分享到QQ
+            wx.onMenuShareQQ({
+              title: that.fenxi_title, // 分享标题
+              desc: that.fenxi_desc, // 分享描述
+              link: shareUrl, // 分享链接
+              imgUrl: that.fenxi_img, // 分享图标
+              success: function () {
+              // 用户确认分享后执行的回调函数
+              },
+              cancel: function () {
+              // 用户取消分享后执行的回调函数
+              }
+            });
+            //“分享到分享到腾讯微博
+            wx.onMenuShareWeibo({
+              title: that.fenxi_title, // 分享标题
+              desc: that.fenxi_desc, // 分享描述
+              link: shareUrl, // 分享链接
+              imgUrl: that.fenxi_img, // 分享图标
+              success: function () {
+              // 用户确认分享后执行的回调函数
+              },
+              cancel: function () {
+              // 用户取消分享后执行的回调函数
+              }
+            });
+            //“分享到QQ空间
+            wx.onMenuShareQZone({
+              title: that.fenxi_title, // 分享标题
+              desc: that.fenxi_desc, // 分享描述
+              link: shareUrl, // 分享链接
+              imgUrl: that.fenxi_img, // 分享图标
+              success: function () {
+              // 用户确认分享后执行的回调函数
+              },
+              cancel: function () {
+              // 用户取消分享后执行的回调函数
+              }
+            });
+          });
+        })
+        .catch((res)=>{
+          // console.log(res);
+        })
+      },
     searchTabItem(index){
       this.selectIndex=index
       this.query.orgType=index+1

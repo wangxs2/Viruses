@@ -241,7 +241,7 @@
       <div class="agreement-content">
         <div class="bigfont">用户使用协议</div>
         <div class="leftfont">第一条 协议订立</div>
-        <div class="contentfont">1.1 用户在同意本网站：新冠肺炎物资公益平台(http://rescue.sisiits.com:9966/visur)的《用户使用协议》（以下简称“本协议”）后，方可使用本网络服务平台（以下简称“平台”)提供的物资需求与供应信息来源等相关服务（以下简称“服务”）。</div>
+        <div class="contentfont">1.1 用户在同意本网站：云逆行·新冠肺炎物资公益平台(http://rescue.sisiits.com:9966/visur)的《用户使用协议》（以下简称“本协议”）后，方可使用本网络服务平台（以下简称“平台”)提供的物资需求与供应信息来源等相关服务（以下简称“服务”）。</div>
         <div class="contentfont">1.2 用户在使用本平台提供的服务前务必认真阅读本协议，一旦用户打开并浏览本平台提供的信息即表示用户同意与本平台签订本协议且同意受本协议之约束。</div>
         <div class="leftfont">第二条 服务说明</div>
         <div class="leftfont">本平台为公益性信息平台，仅提供如下服务：</div>
@@ -625,7 +625,9 @@
           </div>
           <div class="code">
             <img style="" src="../assets/image/gzh.jpg" alt="">
+            <div class="btn">长按识别公众号</div>
             <span class="btn">云逆行·新冠肺炎物资公益平台</span>
+            <!-- <div>长按识别公众号</div> -->
           </div>
         </div>
         <div class="close-luru-model" @click="contectSelect"><van-icon name="cross" size="16" color="#fff"/></div>
@@ -652,7 +654,7 @@ export default {
       showmap:false,
       fenxi_img:'https://medicalsupplies.sitiits.com/visur/img/share.png',
       fenxi_title:'云逆行·新冠肺炎物资公益平台',
-      fenxi_desc:'云逆行·新冠肺炎物资公益平台由中华全国工商业联合会、上海市慈善基金会、上海产业技术研究院联合发布，通过收集全国范围新冠肺炎医疗机构医疗物资需求信息，汇集医疗物资生产厂商医疗原材料需求信息，构建物资需求“一张图”，支持物资类型、城市区域、发布时间等多维度查询，帮助物资需求方与物资提供方之间直接、快速、准确对接。',
+      fenxi_desc:'由中华全国工商业联合会、上海市慈善基金会、上海产业技术研究院联合发布',
       menuList: [
         {
           id:1,
@@ -958,7 +960,10 @@ export default {
       this.getWuziList()
       this.getCityList()
     },
-
+    //一键关注
+    yjgz(){
+      window.open('https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzAwMTUzNDg3OA==&scene=110#wechat_redirect')
+    },
     //获取当前位置
     getPosition(){
       if(this.markerSa){

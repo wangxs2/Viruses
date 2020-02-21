@@ -96,7 +96,10 @@
           </div>
           <div class="tel-desc" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0" style="display:flex;justify-content:flex-start;align-items:center;font-size:12px;line-height:15px;color:#216AFF;text-align:left;margin-bottom:12px;"> <van-icon name="warning-o" color="#216AFF"  size="12" style="margin-right:2px;"/><span>以上为虚拟号码，随时更新，真实号码已受保护！</span></div>
           <div class="service-title-time" v-if="query.orgType==3">
-            <div class="service-title">
+            <div class="service-title" style="color:#666" v-if="!mapobj.startTime&&!mapobj.endTime">
+              暂未提供服务时间
+            </div>
+            <div class="service-title" v-else>
               服务时间段
               <span v-if="mapobj.timeStatus==1" style="color:#ff388c">(未来将提供服务)</span>
               <span v-else-if="mapobj.timeStatus==2" style="color:#999999">(过期)</span>

@@ -161,7 +161,7 @@
                 <div class="need-img-wrapper">
                   <van-uploader
                     v-model="form1.fileList"
-                    multiple accept="image/*"
+                    multiple
                     :after-read="xuRead" 
                     @delete="xudelete"
                     :max-count="5"
@@ -297,13 +297,13 @@
                 <div class="need-img-wrapper">
                   <van-uploader
                     v-model="form2.fileList"
-                    multiple accept="image/*"
+                    multiple
                     :after-read="tiRead" 
                     @delete="tidelete"
                     :max-count="2"
                   />
                 </div>
-                  <span class="desc">企业提供方请上传营业执照照片，个人提供方请上传身份证正反面照片</span>
+                  <span class="desc">企业提供方请上传营业执照照片，个人提供方请上传身份证正反面照片，最多可上传2张照片</span>
               </div>
               <div class="confirm-btn" @click="confirmtwo">提交</div>
             </div>
@@ -425,13 +425,14 @@
                 <div class="need-img-wrapper">
                   <van-uploader
                     v-model="filst"
+                    multiple
                     :after-read="saRead" 
                     @delete="sadelete"
                     :max-count="2"
                   />
                   
                 </div>
-                <span class="desc">企业提供方请上传营业执照照片，个人提供方请上传身份证正反面照片</span>
+                <span class="desc">企业提供方请上传营业执照照片，个人提供方请上传身份证正反面照片，最多可上传2张照片</span>
               </div>
               <div class="confirm-btn" @click="confirmthree">提交</div>
             </div>
@@ -1383,10 +1384,19 @@ linkTelBlur(type,tel,index){
     uploadImgsa (file) {
         let formdata1 = new FormData();
         formdata1.append('files', file);
-        this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
+        this.$fetchPost("material/uploadPicFiles",{
+          ImgBytes:file
+        },"json").then(res=> {
             this.$toast("图片上传成功");
             if(res.code=='success'){
               this.meedUrlArr.push(res.content)
+              this.meedUrlArr.forEach(item => {
+
+                item=item.split(',')
+              })
+              this.meedUrlArr = (this.meedUrlArr + '').split(',');
+              this.meedUrlArr = this.meedUrlArr.toString().split(',');
+              this.meedUrlArr = this.meedUrlArr.join().split(',');
               
             }
             this.showimg=false
@@ -1397,57 +1407,69 @@ linkTelBlur(type,tel,index){
       // if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
       //   this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
       // } else {
+        let selectImg=[]
         this.showimg=true
-        let name=val.file.name
-        let type=val.file.type
-        lrz(val.file, {
+        if (val&&!Array.isArray(val)){   
+          val=[val]
+
+        }
+        
+        val.forEach(item => {
+          let obj={}
+          lrz(item.file, {
             quality: 0.2    //自定义使用压缩方式
-        })  
+          })  
           .then(rst=> {
               //成功时执行
-            let file = new window.File([rst.file], val.file.name, {
-                type: val.file.type
-                }) //把blob转化成file
-            this.uploadImgsa(file)
+            let file = new window.File([rst.file], item.file.name, {
+                type: item.file.type
+            }) //把blob转化成file
+            let reader = new FileReader();    //html5读文件
+
+            reader.readAsDataURL(file); //转BASE64 
+            let that=this
+            reader.onload = function (e) {        //读取完毕后调用接口
+
+              obj={
+                ImgByte: e.target.result
+              }
+              selectImg.push(obj)
+              if(val.length>0&&val.length==selectImg.length){
+                  that.uploadImgsa(selectImg)
+                }
+            }
+
+              
           }).catch(error=> {
               //失败时执行
           }).always(()=> {
+        
               //不管成功或失败，都会执行
           })
+        })
+     
       // }
       
     },
     //删除图片的回调
-    sadelete(val){
-      this.showimg=true
-      let name=val.file.name
-      let type=val.file.type
-      lrz(val.file, {
-          quality: 0.2    //自定义使用压缩方式
-      })  
-        .then(rst=> {
-            //成功时执行
-           let file = new window.File([rst.file], val.file.name, {
-              type: val.file.type
-              }) //把blob转化成file
-          let formdata1 = new FormData();
-          formdata1.append('files', file);
-          this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
-              if(res.code=='success'){
-                this.$toast("图片删除成功");
-                this.meedUrlArr.splice(this.meedUrlArr.findIndex(item => item === res.content), 1)
-              }
-              this.showimg=false
-            
-          })
-        }).catch(error=> {
-            //失败时执行
-        }).always(()=> {
-            //不管成功或失败，都会执行
+    sadelete(val,detail){
+      if (this.meedUrlArr&&this.meedUrlArr.length){
+        this.meedUrlArr.forEach(item => {
+
+          item=item.split(',')
         })
+        this.meedUrlArr = (this.meedUrlArr + '').split(',');
+        this.meedUrlArr = this.meedUrlArr.toString().split(',');
+        this.meedUrlArr = this.meedUrlArr.join().split(',');
+        
+        this.$toast("图片删除成功");
+        this.meedUrlArr.splice(detail.index, 1)
       
+      }
+
     },
     confirmthree(){
+
       let arr=[]
       let y=this.form3.contectTelList.some(item =>{
           return item.tel == ""||item.name=='' //返回true
@@ -1488,7 +1510,7 @@ linkTelBlur(type,tel,index){
     uploadImg (file) {
         let formdata1 = new FormData();
         formdata1.append('files', file);
-        this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
+        this.$fetchPostFile("material/uploadPicFiles",formdata1).then(res=> {
             this.$toast(res.message);
             if(res.code=='success'){
               this.meedUrlArr.push(res.content)
@@ -1501,23 +1523,44 @@ linkTelBlur(type,tel,index){
     uploadImg1 (file) {
         let formdata1 = new FormData();
         formdata1.append('files', file);
-        this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
+        this.$fetchPost("material/uploadPicFiles",{
+          ImgBytes:file
+        },"json").then(res=> {
             this.$toast(res.message);
             if(res.code=='success'){
               this.meedUrlArr1.push(res.content)
               
+              this.meedUrlArr1.forEach(item => {
+
+                item=item.split(',')
+              })
+              this.meedUrlArr1 = (this.meedUrlArr1 + '').split(',');
+              this.meedUrlArr1 = this.meedUrlArr1.toString().split(',');
+              this.meedUrlArr1 = this.meedUrlArr1.join().split(',');
+              
             }
             this.showimg=false
         })
+
     },
     //提供方录入身份证明
     uploadImg2 (file) {
         let formdata1 = new FormData();
         formdata1.append('files', file);
-        this.$fetchPostFile("material/saveFiles",formdata1).then(res=> {
+        this.$fetchPost("material/uploadPicFiles",{
+          ImgBytes:file
+        },"json").then(res=> {
             this.$toast(res.message);
             if(res.code=='success'){
               this.meedUrlArr2.push(res.content)
+              this.meedUrlArr2.forEach(item => {
+
+                item=item.split(',')
+              })
+              this.meedUrlArr2 = (this.meedUrlArr2 + '').split(',');
+              this.meedUrlArr2 = this.meedUrlArr2.toString().split(',');
+              this.meedUrlArr2 = this.meedUrlArr2.join().split(',');
+
               
             }
             this.showimg=false
@@ -1527,106 +1570,129 @@ linkTelBlur(type,tel,index){
       // if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
       //   this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
       // }else {
+
+        let selectImg=[]
         this.showimg=true
-        let name=val.file.name
-        let type=val.file.type
-        lrz(val.file, {
+        if (val&&!Array.isArray(val)){   
+          val=[val]
+
+        }
+        
+        val.forEach(item => {
+          let obj={}
+          lrz(item.file, {
             quality: 0.2    //自定义使用压缩方式
-        })  
+          })  
           .then(rst=> {
               //成功时执行
-             let file = new window.File([rst.file], val.file.name, {
-                type: val.file.type
-                }) //把blob转化成file
-            this.uploadImg1(file)
+            let file = new window.File([rst.file], item.file.name, {
+                type: item.file.type
+            }) //把blob转化成file
+            let reader = new FileReader();    //html5读文件
+
+            reader.readAsDataURL(file); //转BASE64 
+            let that=this
+            reader.onload = function (e) {        //读取完毕后调用接口
+
+              obj={
+                ImgByte: e.target.result
+              }
+              selectImg.push(obj)
+              if(val.length>0&&val.length==selectImg.length){
+                  that.uploadImg1(selectImg)
+                }
+            }
+
+              
           }).catch(error=> {
               //失败时执行
           }).always(()=> {
+        
               //不管成功或失败，都会执行
           })
+        })
       // }
     },
     tiRead(val){
       // if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
       //   this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
       // }else {
+        
+        let selectImg=[]
         this.showimg=true
-        let name=val.file.name
-        let type=val.file.type
-        lrz(val.file, {
+        if (val&&!Array.isArray(val)){   
+          val=[val]
+
+        }
+        
+        val.forEach(item => {
+          let obj={}
+          lrz(item.file, {
             quality: 0.2    //自定义使用压缩方式
-        })  
+          })  
           .then(rst=> {
               //成功时执行
-            let file = new window.File([rst.file], val.file.name, {
-                type: val.file.type
-                }) //把blob转化成file
-            this.uploadImg2(file)
+            let file = new window.File([rst.file], item.file.name, {
+                type: item.file.type
+            }) //把blob转化成file
+            let reader = new FileReader();    //html5读文件
+
+            reader.readAsDataURL(file); //转BASE64 
+            let that=this
+            reader.onload = function (e) {        //读取完毕后调用接口
+
+              obj={
+                ImgByte: e.target.result
+              }
+              selectImg.push(obj)
+              if(val.length>0&&val.length==selectImg.length){
+                  that.uploadImg2(selectImg)
+                }
+            }
+
+              
           }).catch(error=> {
               //失败时执行
           }).always(()=> {
+        
               //不管成功或失败，都会执行
           })
+        })
+
       // }
     },
     //删除图片的回调
-    xudelete(val){
-      this.showimg=true
-      let name=val.file.name
-      let type=val.file.type
-      lrz(val.file, {
-          quality: 0.2    //自定义使用压缩方式
-      })  
-        .then(rst=> {
-            //成功时执行
-           let file = new window.File([rst.file], val.file.name, {
-              type: val.file.type
-              }) //把blob转化成file
-        let formdata1 = new FormData();
-        formdata1.append('files', file);
-        this.deleteImg(formdata1,1)
-        }).catch(error=> {
-            //失败时执行
-        }).always(()=> {
-            //不管成功或失败，都会执行
+    xudelete(val,detail){
+      if (this.meedUrlArr1&&this.meedUrlArr1.length){
+        this.meedUrlArr1.forEach(item => {
+
+          item=item.split(',')
         })
+        this.meedUrlArr1 = (this.meedUrlArr1 + '').split(',');
+        this.meedUrlArr1 = this.meedUrlArr1.toString().split(',');
+        this.meedUrlArr1 = this.meedUrlArr1.join().split(',');
+        
+        this.$toast("图片删除成功");
+        this.meedUrlArr1.splice(detail.index, 1)
+      
+      }
       
     },
     //删除图片的回调
-    tidelete(val){
-      this.showimg=true
-      let name=val.file.name
-      let type=val.file.type
-      lrz(val.file, {
-          quality: 0.2    //自定义使用压缩方式
-      })  
-        .then(rst=> {
-            //成功时执行
-           let file = new window.File([rst.file], val.file.name, {
-              type: val.file.type
-              }) //把blob转化成file
-        let formdata1 = new FormData();
-      formdata1.append('files', file);
-      this.deleteImg(formdata1,2)
-        }).catch(error=> {
-            //失败时执行
-        }).always(()=> {
-            //不管成功或失败，都会执行
+    tidelete(val,detail){
+      if (this.meedUrlArr2&&this.meedUrlArr2.length){
+        this.meedUrlArr2.forEach(item => {
+
+          item=item.split(',')
         })
-    },
-    deleteImg(params,type) {
-      this.$fetchPostFile("material/saveFiles",params).then(res=> {
-          if(res.code=='success'){
-            this.$toast("删除成功");
-            if (type==1){
-              this.meedUrlArr1.splice(this.meedUrlArr1.findIndex(item => item === res.content), 1)
-            }else if (type==2){
-              this.meedUrlArr2.splice(this.meedUrlArr2.findIndex(item => item === res.content), 1)
-            }
-            
-          }
-          this.showimg=false
-      })
+        this.meedUrlArr2 = (this.meedUrlArr2 + '').split(',');
+        this.meedUrlArr2 = this.meedUrlArr2.toString().split(',');
+        this.meedUrlArr2 = this.meedUrlArr2.join().split(',');
+        
+        this.$toast("图片删除成功");
+        this.meedUrlArr2.splice(detail.index, 1)
+      
+      }
     },
     confirmone(){
       let linkPeopleArr=[],fileImgArr=[]

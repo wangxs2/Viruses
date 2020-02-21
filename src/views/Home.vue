@@ -95,6 +95,33 @@
                   :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr1==undefined?"":mapobj.linkPeoplearr1[index]}}  {{iteam}}</div></div>
           </div>
           <div class="tel-desc" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0" style="display:flex;justify-content:flex-start;align-items:center;font-size:12px;line-height:15px;color:#216AFF;text-align:left;margin-bottom:12px;"> <van-icon name="warning-o" color="#216AFF"  size="12" style="margin-right:2px;"/><span>以上为虚拟号码，随时更新，真实号码已受保护！</span></div>
+          <div class="service-title-time" v-if="query.orgType==3">
+            <div class="service-title" style="color:#666" v-if="!mapobj.startTime&&!mapobj.endTime">
+              暂未提供服务时间
+            </div>
+            <div class="service-title" v-else>
+              服务时间段
+              <span v-if="mapobj.timeStatus==1" style="color:#ff388c">(未来将提供服务)</span>
+              <span v-else-if="mapobj.timeStatus==2" style="color:#999999">(过期)</span>
+              <span v-else-if="mapobj.timeStatus==3" style="color:#D247FF">(正在提供服务)</span>
+            </div>
+            <div class="service-time">
+              <div v-if="(mapobj.startTime&&!mapobj.endTime)||(!mapobj.startTime&&mapobj.endTime)">
+                <span class="start-end-time" v-if="mapobj.startTime">{{mapobj.startTime}}</span>
+                <span class="start-end-time" v-else-if="mapobj.endTime">{{mapobj.endTime}}</span>
+                <span class="line">——</span>
+                <span class="start-end-time"></span>
+              </div>
+              <div v-else-if="mapobj.startTime&&mapobj.endTime">
+                <span class="start-end-time">{{mapobj.startTime}}</span>
+                <span class="line">——</span>
+                <span class="start-end-time">{{mapobj.endTime}}</span>
+              </div>
+              <div v-else-if="!mapobj.startTime&&!mapobj.endTime">
+                <span class="start-end-time">暂无</span>
+              </div>
+            </div>
+          </div>
           <!-- <span class="person">接受个人捐赠</span> -->
           <div v-if="mapobj.needsNamearr!==undefined" style="display:flex;justify-content:flex-start;align-items:center;font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'所需疫情防控物资':'可提供的物资或者服务'}} <van-icon v-if="query.orgType==1" style="margin-left:10px;margin-right:1px" name="warning-o" color="#FF2727"  size="12" /> <span v-if="query.orgType==1" @click="specifications=true" style="color:#FF2727;font-size:12px">物资标准</span></div>
           <div class="material" v-if="mapobj.needsNamearr!==undefined">
@@ -2125,6 +2152,35 @@ export default {
           text-align:center;
           line-height:22px;
           margin-left:6px;
+      }
+      .service-title-time{
+        margin-bottom:19px;
+        .service-title{
+          display:flex;
+          justify-content:flex-start;
+          align-items:center;
+          font-size:16px;
+          font-family:PingFang SC;
+          font-weight:bold;
+          color:rgba(51,51,51,1);
+          span{
+            font-size:15px;
+            font-family:PingFang SC;
+            font-weight:500;
+          }
+        }
+        .service-time{
+          display:flex;
+          justify-content:flex-start;
+          align-items:center;
+          font-size:15px;
+          font-family:PingFang SC;
+          font-weight:500;
+          color:rgba(102,102,102,1);
+          margin-top:11px;
+          .start-end-time{}
+          .line{}
+        }
       }
       .material{
         display: flex;

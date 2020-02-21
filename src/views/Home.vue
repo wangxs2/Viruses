@@ -103,7 +103,7 @@
               <span v-else-if="mapobj.timeStatus==3" style="color:#D247FF">(正在提供服务)</span>
             </div>
             <div class="service-time">
-              <div v-if="mapobj.startTime||mapobj.endTime">
+              <div v-if="(mapobj.startTime&&!mapobj.endTime)||(!mapobj.startTime&&mapobj.endTime)">
                 <span class="start-end-time" v-if="mapobj.startTime">{{mapobj.startTime}}</span>
                 <span class="start-end-time" v-else-if="mapobj.endTime">{{mapobj.endTime}}</span>
                 <span class="line">——</span>

@@ -625,7 +625,7 @@
           </div>
           <div class="code">
             <img style="" src="../assets/image/gzh.jpg" alt="">
-            <div class="btn">长按识别公众号</div>
+            <!-- <div class="btn">长按识别公众号</div> -->
             <span class="btn">云逆行·新冠肺炎物资公益平台</span>
             <!-- <div>长按识别公众号</div> -->
           </div>

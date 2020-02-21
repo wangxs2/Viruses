@@ -303,7 +303,7 @@
                     :max-count="2"
                   />
                 </div>
-                  <span class="desc">企业提供方请上传营业执照照片，个人提供方请上传身份证正反面照片</span>
+                  <span class="desc">企业提供方请上传营业执照照片，个人提供方请上传身份证正反面照片，最多可上传2张照片</span>
               </div>
               <div class="confirm-btn" @click="confirmtwo">提交</div>
             </div>
@@ -432,7 +432,7 @@
                   />
                   
                 </div>
-                <span class="desc">企业提供方请上传营业执照照片，个人提供方请上传身份证正反面照片</span>
+                <span class="desc">企业提供方请上传营业执照照片，个人提供方请上传身份证正反面照片，最多可上传2张照片</span>
               </div>
               <div class="confirm-btn" @click="confirmthree">提交</div>
             </div>

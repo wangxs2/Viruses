@@ -96,7 +96,7 @@
           <div style="font-size:18px;text-align:left">{{mapobj.hospitalName}}</div>
           <div class="address"> 
             <div class="left-font" v-if="mapobj.hospitalAddress!==undefined&&mapobj.hospitalAddress!==''" style="color:#666666;width:75%;word-wrap:break-word;text-align:left"><van-icon name="location-o" size="20" /> <div class="van-van-multi-ellipsis--l2" style="margin-left:2px;font-size:15px">{{mapobj.hospitalAddress}}</div></div>
-            <div v-if="mapobj.type" class="right-btn">mapobj.type</div>
+            <div v-if="mapobj.type" class="right-btn">{{mapobj.type}}</div>
             <!-- <div v-if="mapobj.type" class="right-btn right-btn1">发热门诊</div> -->
             <!-- <div v-if="mapobj.status&&mapobj.status==1" class="right-btn right-btn2">正常经营</div>
             <div v-if="mapobj.status&&mapobj.status==2" class="right-btn right-btn3">政府托管</div>

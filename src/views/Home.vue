@@ -661,12 +661,12 @@
               <span class="btn" @click="commitTel(item.tel)">立即拨打</span>
             </div>
           </div>
-          <!-- <div class="code"> -->
-            <!-- <img style="" src="../assets/image/gzh.jpg" alt=""> -->
-            <!-- <div class="btn">长按识别公众号</div> -->
-            <!-- <span class="btn">云逆行·新冠肺炎物资公益平台</span> -->
+          <div class="code">
+            <img style="" src="../assets/image/gzh2.jpg" alt="">
+            <div class="btn">长按识别公众号</div>
+            <span class="btn">全联人才</span>
             <!-- <div>长按识别公众号</div> -->
-          <!-- </div> -->
+          </div>
         </div>
         <div class="close-luru-model" @click="contectSelect"><van-icon name="cross" size="16" color="#fff"/></div>
       </div>
@@ -691,8 +691,8 @@ export default {
     return {
       showmap:false,
       fenxi_img:'https://medicalsupplies.sitiits.com/share.png',
-      fenxi_title:'云逆行·新冠肺炎物资公益平台',
-      fenxi_desc:'由中华全国工商业联合会联合发布',
+      fenxi_title:'企业复工复产人才对接平台',
+      fenxi_desc:'由中华全国工商业联合会发布',
       menuList: [
         {
           id:1,
@@ -772,25 +772,25 @@ export default {
       clickTabPoint:0, // 录入提交是否选择tab按钮指针
       conUs:[ // 录入联系人
         {
-          job:"平台联系人",
-          name: "柴先生",
-          tel: "13120921190",
+          job:"全国工商联人才交流服务中心",
+          name: "企业服务处",
+          tel: "010-62350535",
         },{
-          job:"工商联系统及慈善机构联系人",
-          name: "赵博",
-          tel: "13788926819",
+          job:"全国工商联人才交流服务中心",
+          name: "刘  帅",
+          tel: "17310189770",
         },{
-          job:"民间组织联系人",
-          name: "俞勤奋",
-          tel: "13916129028",
+          job:"全国工商联人才交流服务中心",
+          name: "王晓勃",
+          tel: "13811968222",
         },{
-          job:"海外联系人",
-          name: "王雯",
-          tel: "00447779850819",
+          job:"平台运维技术支持",
+          name: "办公室",
+          tel: "010-65232877",
         },{
-          job:"志愿者联系人",
-          name: "墨竹",
-          tel: "18817582880",
+          job:"平台运维技术支持",
+          name: "夏存宏",
+          tel: "13366016658",
         },
       ],
       isdzan:false,
@@ -3065,7 +3065,7 @@ export default {
           border-radius: 5px;
           background: #3A6FE5;
           padding: 0 10px;
-          margin: 0 24px;
+          margin: 0 20px;
           .message{
             display:flex;
             justify-content: space-between;

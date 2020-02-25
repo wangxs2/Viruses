@@ -453,7 +453,7 @@ import json from "@/libs/city_code.json"
 export default {
   data() {
     return {
-      bannerback:"url("+require("../assets/image/banner.png")+")",
+      bannerback:"url("+require("../assets/image/banner@2x.png")+")",
       showmaterial:false,
       focusa:false,
       materialin:"",
@@ -1724,16 +1724,16 @@ linkTelBlur(type,tel,index){
             province:this.form1.province,
             city:this.form1.city,
             address:this.form1.addressDetail,
-            materialDetails:this.form1.materialDetails,//需求表
-            type:this.form1.type,
-            status:this.form1.sup.join(","),
+            // materialDetails:this.form1.materialDetails,//需求表
+            // type:this.form1.type,
+            // status:this.form1.sup.join(","),
             linkPeople:linkPeopleArr.join(','),
             createTime:this.form1.startTime,
             source:this.form1.needOrgin,
             picUrl:this.meedUrlArr1.join(','),
-              longitude:'',
-              latitude:'',
-              needsDescr:this.form1.needsDescr
+            longitude:'',
+            latitude:'',
+            needsDescr:this.form1.needsDescr
       
           }
             this.addresschange1(this.params1.province+this.params1.city+this.params1.address,1)

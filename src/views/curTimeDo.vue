@@ -42,7 +42,7 @@
                         </van-list>
 
                     </van-tab>
-                    <van-tab title="资助信息">
+                    <van-tab title="出力进展">
                         <van-list v-model="loading1" :finished="finished1" finished-text="没有更多了" @load="onLoad1" :error.sync="error1" error-text="请求失败，点击重新加载">
                             <van-cell v-for="(item, i) in curTimeDataList" :key="i">
                                 <div class="donate-list1">
@@ -65,7 +65,7 @@
                         </van-list>
 
                     </van-tab>
-                    <van-tab title="求购详情">
+                    <van-tab title="需求详情">
                         <van-list v-model="loading2" :finished="finished2" finished-text="没有更多了" @load="onLoad2" :error.sync="error2" error-text="请求失败，点击重新加载">
                             <van-cell v-for="(item, i) in curTimeDataList" :key="i">
                                 <div class="donate-list1">

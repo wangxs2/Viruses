@@ -96,11 +96,11 @@
           <div style="font-size:18px;text-align:left">{{mapobj.hospitalName}}</div>
           <div class="address"> 
             <div class="left-font" v-if="mapobj.hospitalAddress!==undefined&&mapobj.hospitalAddress!==''" style="color:#666666;width:75%;word-wrap:break-word;text-align:left"><van-icon name="location-o" size="20" /> <div class="van-van-multi-ellipsis--l2" style="margin-left:2px;font-size:15px">{{mapobj.hospitalAddress}}</div></div>
-            <div v-if="mapobj.type==1" class="right-btn">定点医院</div>
-            <div v-if="mapobj.type==2" class="right-btn right-btn1">发热门诊</div>
-            <div v-if="mapobj.status&&mapobj.status==1" class="right-btn right-btn2">正常经营</div>
+            <div v-if="mapobj.type" class="right-btn">mapobj.type</div>
+            <!-- <div v-if="mapobj.type" class="right-btn right-btn1">发热门诊</div> -->
+            <!-- <div v-if="mapobj.status&&mapobj.status==1" class="right-btn right-btn2">正常经营</div>
             <div v-if="mapobj.status&&mapobj.status==2" class="right-btn right-btn3">政府托管</div>
-            <div v-if="mapobj.status&&mapobj.status==3" class="right-btn right-btn4">尚未核实</div>
+            <div v-if="mapobj.status&&mapobj.status==3" class="right-btn right-btn4">尚未核实</div> -->
           </div>
           <div class="address" style="font-size:12px"> 
             <div v-if="mapobj.source!==undefined&&mapobj.source!==''" style="color:#666666">信息来源：{{mapobj.source}}  <span style="color:#216AFF;cursor:pointer"> </span></div>
@@ -139,7 +139,7 @@
             </div>
           </div>
           <!-- <span class="person">接受个人捐赠</span> -->
-          <div v-if="mapobj.needsNamearr!==undefined" style="display:flex;justify-content:flex-start;align-items:center;font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'所需疫情防控物资':'可提供的物资或者服务'}} <van-icon v-if="query.orgType==1" style="margin-left:10px;margin-right:1px" name="warning-o" color="#FF2727"  size="12" /> <span v-if="query.orgType==1" @click="specifications=true" style="color:#FF2727;font-size:12px">物资标准</span></div>
+          <div v-if="mapobj.needsNamearr!==undefined" style="display:flex;justify-content:flex-start;align-items:center;font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'所需岗位':'提供的岗位和服务'}} <van-icon v-if="query.orgType==1" style="margin-left:10px;margin-right:1px" name="warning-o" color="#FF2727"  size="12" /></div>
           <div class="material" v-if="mapobj.needsNamearr!==undefined">
             <div v-for="(item,index) in mapobj.needsNamearr"
                   :key="index" class="boll-item"><span class="boll"></span>{{item}}</div>

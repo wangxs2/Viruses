@@ -52,6 +52,10 @@
                 <van-field v-model="form1.addressDetail" type="text" placeholder="街道、门牌号等" :error-message="errorMessage1.addressDetail"/>
               </div>
               <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">需求表</span>
+                <van-field v-model="form1.needsDescr" type="textarea" placeholder="请输入需求" :error-message="errorMessage1.addressDetail"/>
+              </div>
+              <!-- <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">类型</span>
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form1.type" class="radio-group">
@@ -61,8 +65,8 @@
                     </div>
                   </van-radio-group>
                 </div>
-              </div>
-              <div class="form-input">
+              </div> -->
+              <!-- <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">物资对接情况</span>
                 <div class="comfirm-radio">
                   <van-checkbox-group v-model="form1.sup" class="radio-group">
@@ -71,8 +75,8 @@
                     </div>
                   </van-checkbox-group>
                 </div>
-              </div>
-              <div class="form-input">
+              </div> -->
+              <!-- <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">需求表</span>
                 <div class="comfirm-need-input-wrapper">
                   <div class="comfirm-need-top">
@@ -83,7 +87,6 @@
                     </div>
                     <div class="comfirm-need-body" v-for="(iteam,index) in form1.materialDetails" :key="index">
                       <div class="name">
-                        <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
 
                         <van-field class="sup-name" :readonly="readonly1" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center" @focus="needFocus(index)" @blur="needBlur(index)"/>
                         <van-popup v-model="startTimePopNeedName" position="bottom">
@@ -96,7 +99,7 @@
                   <div class="comfirm-need-bottom" @click="addDemand"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
                 </div>
                 <span class="desc need-table-desc">数量填写可便于物资调配，如不确定数量可不填写</span>
-              </div>
+              </div> -->
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-need-input-wrapper">
@@ -152,10 +155,10 @@
                   </van-radio-group>
                 </div>
               </div>
-              <div class="form-input">
+              <!-- <div class="form-input">
                 <span>其他说明</span>
                 <van-field v-model="form1.needsDescr" type="textarea" placeholder="备注"/>
-              </div>
+              </div> -->
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">需求证明</span>
                 <div class="need-img-wrapper">
@@ -518,6 +521,7 @@ export default {
         startTime:'',
         needOrgin:'',
         needImg:'',
+        needsDescr:''
       },
       searchid:-1,
       showresult:false,
@@ -628,10 +632,10 @@ export default {
       showimg:false,
       luruSelectData:[ //录入选择数据
         {
-          name: "我有需求",
+          name: "我要用工",
           type:1
         },{
-          name: "我有物资",
+          name: "我有工人",
           type:2
         },{
           name: "我要出力",
@@ -1696,14 +1700,14 @@ linkTelBlur(type,tel,index){
     },
     confirmone(){
       let linkPeopleArr=[],fileImgArr=[]
-      let x=this.form1.materialDetails.some(item =>{
-          // return item.needsName == ""||item.needsNum == "" //返回true
-          return item.needsName == "" //返回true
-      })
+      // let x=this.form1.materialDetails.some(item =>{
+      //     // return item.needsName == ""||item.needsNum == "" //返回true
+      //     return item.needsName == "" //返回true
+      // })
       let y=this.form1.contectTelList.some(item =>{
           return item.tel == ""||item.name=='' //返回true
       })
-        if (this.form1.hispotalName==""||this.form1.province==""||this.form1.city==""|| this.form1.addressDetail==""||this.form1.sup.length==0||x||this.form1.startTime==""||this.meedUrlArr1.length==0){
+        if (this.form1.hispotalName==""||this.form1.province==""||this.form1.city==""|| this.form1.addressDetail==""||this.form1.needsDescr==''||this.form1.startTime==""||this.meedUrlArr1.length==0){
             this.$toast('请完善信息');
         }else if (y){
         this.$toast('请输入联系人、联系电话且相互对应');
@@ -1728,6 +1732,7 @@ linkTelBlur(type,tel,index){
             picUrl:this.meedUrlArr1.join(','),
               longitude:'',
               latitude:'',
+              needsDescr:this.form1.needsDescr
       
           }
             this.addresschange1(this.params1.province+this.params1.city+this.params1.address,1)

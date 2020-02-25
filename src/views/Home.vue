@@ -814,7 +814,7 @@ export default {
       bottomBtnList:[
         {
           backgroundImgStyle:{
-            backgroundImage:'url(' + require('../assets/image/image_1.png') + ')',
+            backgroundImage:'url(' + require('../assets/image/image_1_1.png') + ')',
             backgroundRepeat:'no-repeat',
             backgroundSize:'100% 100%'
           },
@@ -822,7 +822,7 @@ export default {
           type:1
         },{
           backgroundImgStyle:{
-            backgroundImage:'url(' + require('../assets/image/image_2.png') + ')',
+            backgroundImage:'url(' + require('../assets/image/image_2_1.png') + ')',
             backgroundRepeat:'no-repeat',
             backgroundSize:'100% 100%'
           },
@@ -830,7 +830,7 @@ export default {
           type:2
         },{
           backgroundImgStyle:{
-            backgroundImage:'url(' + require('../assets/image/image_3.png') + ')',
+            backgroundImage:'url(' + require('../assets/image/image_3_1.png') + ')',
             backgroundRepeat:'no-repeat',
             backgroundSize:'100% 100%'
           },
@@ -838,7 +838,7 @@ export default {
           type:4
         },{
           backgroundImgStyle:{
-            backgroundImage:'url(' + require('../assets/image/image_4.png') + ')',
+            backgroundImage:'url(' + require('../assets/image/image_4_1.png') + ')',
             backgroundRepeat:'no-repeat',
             backgroundSize:'100% 100%'
           },
@@ -2060,12 +2060,12 @@ export default {
 
           }
         }
-        .btn-list:nth-child(3){
-          opacity:0.4;
-          span{
-            color:#dddddd;
-          }
-        }
+        // .btn-list:nth-child(3){
+        //   opacity:0.4;
+        //   span{
+        //     color:#dddddd;
+        //   }
+        // }
     }
     .write-wrapper{
       display:flex;

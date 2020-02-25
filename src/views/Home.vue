@@ -31,6 +31,7 @@
     </div>
     <!-- 搜索框 -->
     <div class="search-position">
+      
       <div class="search-postion-content" @click="searchBtn">
         <img src="../assets/image/icon_search.png"/>
         <div class="search-position-input">

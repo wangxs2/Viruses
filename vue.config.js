@@ -13,8 +13,8 @@ module.exports = {
     open: false, //配置自动启动浏览器
     proxy: {
       '/kindnessplatform': {
-        // target: 'http://47.100.200.255:9966/kindnessplatform', // 线上
-        target: 'http://47.100.200.255:19966/kindnessplatform',  // 测试
+        target: 'http://47.100.200.255:9966/kindnessplatform', // 线上
+        // target: 'http://47.100.200.255:19966/kindnessplatform',  // 测试
         // target: 'https://medicalsupplies.sitiits.com/kindnessplatform',  // 测试
         changeOrigin: true,
         pathRewrite: {

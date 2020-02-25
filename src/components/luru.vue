@@ -1748,7 +1748,7 @@ linkTelBlur(type,tel,index){
       let y=this.form2.contectTelList.some(item =>{
           return item.tel == ""||item.name=='' //返回true
       })
-      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||this.form2.needsDescr==''||x||this.form2.startTime==""){
+      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||x||this.form2.startTime==""){
           this.$toast('请完善信息');
       }else if (y){
         this.$toast('请输入联系人、联系电话且相互对应');

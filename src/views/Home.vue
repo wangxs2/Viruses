@@ -858,7 +858,6 @@ export default {
     this.getWuziList()
     this.getCityList()
     this.getCurTimeContent()
-    // this.getProvinMark("#216AFF")
   },
  mounted () {
   //  console.log(wx)

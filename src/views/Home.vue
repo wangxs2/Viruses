@@ -1397,6 +1397,7 @@ export default {
             }
             
           })
+          console.log(arrsa)
           this.total=arrsa.length
           this.dataList=arrsa
           this.getmarkers(arrsa)

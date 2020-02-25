@@ -3065,7 +3065,7 @@ export default {
           border-radius: 5px;
           background: #3A6FE5;
           padding: 0 10px;
-          margin: 0 20px;
+          margin: 0 10px;
           .message{
             display:flex;
             justify-content: space-between;
@@ -3076,6 +3076,10 @@ export default {
             font-weight:500;
             color:rgba(232,245,255,1);
             border-bottom: 1px solid #174FCE;
+            &:last-child{
+              
+              border-bottom: 0;
+            }
             .message-content{
               display:flex;
               flex-direction: column;

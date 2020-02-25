@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="onebif">
-      <div style="font-size:12px">近1月数据</div>
+      <div style="font-size:12px">企业复工复产人才对接平台</div>
       <div style="font-size:12px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span></div>
     </div>
     <div class="twobif">{{zanz.encourage}}次</div>
@@ -38,9 +38,11 @@
       </div>
       <div class="write-wrapper">
         <div class="write">
-          <p>更多物资跟踪：新冠肺炎物资捐赠对接记录 <span style="color:#1989fa" @click="agreement=true">用户协议</span></p>
+          <p>更多用工信息：企业复工复产人才对接记录 <span style="color:#1989fa" @click="agreement=true">用户协议</span></p>
         </div>
-        <div class="countbottom"><span style="color:#216AFF"><a href="http://www.acfic.org.cn">中华全国工商业联合会</a></span> <span style="color:#216AFF"><a href="http://www.scf.org.cn">上海市慈善基金会</a></span> <span style="color:#216AFF"><a href="hforettps://www.siti.sh.cn">上海产业技术研究院</a></span>联合发布</div>
+        <div class="countbottom"><span style="color:#216AFF"><a href="http://www.acfic.org.cn">中华全国工商业联合会</a></span>
+         <!-- <span style="color:#216AFF"><a href="http://www.scf.org.cn">上海市慈善基金会</a></span> <span style="color:#216AFF"><a href="hforettps://www.siti.sh.cn">上海产业技术研究院</a></span>  -->
+         发布</div>
       </div>
     </div>
     <!-- 搜索框 -->
@@ -282,30 +284,25 @@
       <div class="agreement-content">
         <div class="bigfont">用户使用协议</div>
         <div class="leftfont">第一条 协议订立</div>
-        <div class="contentfont">1.1 用户在同意本网站：云逆行·新冠肺炎物资公益平台(http://rescue.sisiits.com:9966/visur)的《用户使用协议》（以下简称“本协议”）后，方可使用本网络服务平台（以下简称“平台”)提供的物资需求与供应信息来源等相关服务（以下简称“服务”）。</div>
+        <div class="contentfont">1.1 用户在同意本网站：企业复工复产人才对接平台(http://rc.rczxjob.com)的《用户使用协议》（以下简称“本协议”）后，方可使用本网络服务平台（以下简称“平台”)提供的人才需求与供应信息来源等相关服务（以下简称“服务”）。</div>
         <div class="contentfont">1.2 用户在使用本平台提供的服务前务必认真阅读本协议，一旦用户打开并浏览本平台提供的信息即表示用户同意与本平台签订本协议且同意受本协议之约束。</div>
         <div class="leftfont">第二条 服务说明</div>
         <div class="leftfont">本平台为公益性信息平台，仅提供如下服务：</div>
-        <div class="contentfont">2.1 收集展示疫区医院在各大官方平台发布的物资需求信息，提供物资需求信息的来源或获取该等信息的途径渠道，以便用户捐赠相关物资或志愿提供服务。
-          本平台展示的需求信息均来自疫区医院在各大官方平台发布的信息（包括官方微信公众号、医院盖章文件等），
-          具体需求信息以疫区医院在各大官方平台发布信息为准。本平台与需求信息的提供方不存在委托、赠与等法律关系，
-          本平台亦不保证需求信息本身的真实性、合法性和有效性，用户如需捐赠相关物资或志愿提供服务的，请与疫区医院自行联系并核实相关信息的真实性、有效性。</div>
-        <div class="contentfont">2.2 收集展示相关用户在本平台自行填写志愿提供物资或服务的用户供应信息，提供物资供应信息的来源或获取该等信息的途径渠道，以便用户与疫区医院配合完成捐赠相关物资或志愿提供服务的活动。本平台与供应信息的提供方不存在委托、赠与等法律关系，本平台展示的供应信息均为用户自行填写，
-          本平台亦不保证供应信息本身的真实性、合法性和有效性，疫区医院如接受捐赠相关物资或志愿服务的，
-          请与用户自行联系并核实相关信息的真实性、有效性。</div>
+        <div class="contentfont">2.1 收集展示企业、地方政府、商协会等在各大官方平台发布的人才需求信息，提供人才需求信息的来源或获取该等信息的途径渠道，以便用户提出相关人才提供服务。本平台展示的需求信息均来自企业、地方政府、商协会等在各大官方平台发布的信息， 具体需求信息以用工方在各大官方平台发布信息为准。本平台与需求信息的提供方不存在委托、赠与等法律关系， 本平台亦不保证需求信息本身的真实性、合法性和有效性，用户如需提供相关人才供需服务的，请双方自行联系并核实相关信息的真实性、有效性。</div>
+        <div class="contentfont">2.2 收集展示相关用户在本平台自行填写的提供人才或服务的用户供应信息，提供人才供应信息的来源或获取该等信息的途径渠道，以便用户与用工方完成人才供需服务的活动。本平台与供应信息的提供方不存在委托、赠与等法律关系，本平台展示的供应信息均为用户自行填写， 本平台亦不保证供应信息本身的真实性、合法性和有效性，请与人才供需双方自行联系并核实相关信息的真实性、有效性</div>
         <div class="leftfont">第三条 用户的权利和义务</div>
-        <div class="contentfont">3.1 用户在进行捐赠前，应仔细阅读并接受疫区医院所公示的内容。本协议不涉及疫区医院与用户捐赠方之间权利义务的内容。</div>
-        <div class="contentfont">3.2 如用户需取得相应凭证，应与疫区医院联系取得。用户因捐赠物资事宜产生争议由用户与疫区医院协商解决。</div>
-        <div class="contentfont">3.3 用户应自行与疫区医院签订捐赠等相关协议，本平台不接受或代收代付任何捐赠物资或钱款，不提供任何担保。</div>
+        <div class="contentfont">3.1 用户在进行人才服务前，应仔细阅读并接受双方所公示的内容。本协议不涉及人才供需双方之间权利义务的内容。</div>
+        <div class="contentfont">3.2 用户因人才供需事宜产生争议，应自行协商解决。</div>
+        <div class="contentfont">3.3 用户应自行与人才供应或需求方签订人才供需等相关服务协议，本平台不收取任何服务费用，亦不提供任何担保。</div>
         <div class="contentfont">3.4 用户保证向本平台提供的身份资料、资质证书等所有材料或信息的真实性、准确性、及时性和完整性。</div>
         <div class="contentfont">3.5 用户应特别注意平台发布信息的来源、时间及更新情况等，自行与相关主体核实信息的真实性、准确性、有效性等。</div>
         <div class="contentfont">3.6 未经本平台书面同意不得擅自使用本平台收集、编辑、汇编、整理的所有信息，不得利用网站平台信息从事任何商业或违法活动。</div>
         <div class="leftfont">第四条 免责说明</div>
-        <div class="contentfont">4.1 因疫情变化，本平台显示的信息仅供参考，最终以疫区医院实际需求和实时更新的供应信息为准。</div>
+        <div class="contentfont">4.1 本平台显示的信息仅供参考，最终以人才供需双方实际需求和实时更新的供应信息为准。</div>
         <div class="contentfont">4.2 本平台为公益性信息平台，供需双方产生任何纠纷与本平台无关。</div>
         <div class="contentfont">4.3 本平台会尽力维护平台信息的安全，但由于存在不可抗力因素，以及因为黑客入侵、计算机病毒、国家相关行业主管部门及电信运营商的调整、系统不稳定、用户所在位置、用户关机以及其他任何技术、互联网络、通信线路等原因造成用户资料泄露、丢失、被盗用、被篡改的，或者造成服务中断及不能满足用户要求的风险，本平台不承担任何责任。</div>
-        <div class="contentfont">4.4 本平台仅提供技术服务，不是赠与法律关系的权利义务主体，不介入用户与疫区医院之间的纠纷，但本平台将提供一切协助，保护用户的合法权益。</div>
-        <div class="contentfont">4.5 本平台唯一官方网址：http://rescue.sisiits.com:9966/visur（云逆行·新冠肺炎物资公益平台），如被第三方恶意篡改或假借名义进行不正当行为，与本平台无关，本平台不对用户或任何第三方受到的损害负责，但本平台保留对恶意第三方追究法律责任的权利。</div>
+        <div class="contentfont">4.4 本平台仅提供技术服务，不是赠与法律关系的权利义务主体，不介入用户与相关方面之间的纠纷，但本平台将提供一切协助，保护用户的合法权益。</div>
+        <div class="contentfont">4.5 本平台唯一官方网址：http://rc.rczxjob.com（企业复工复产人才对接平台），如被第三方恶意篡改或假借名义进行不正当行为，与本平台无关，本平台不对用户或任何第三方受到的损害负责，但本平台保留对恶意第三方追究法律责任的权利。</div>
         <div class="leftfont">第五条 知识产权保护 </div>
         <div class="contentfont">5.1本平台上所有内容，包括但不限于著作、图片、网站架构、网站画面的安排、网页设计、数据（包含数据的分析、汇总等）及汇编后的信息（信息显示途径、方式等）均由本平台依法拥有其知识产权，包括但不限于商标权、专利权、著作权、商业秘密等。</div>
         <div class="contentfont">5.2 非经本平台书面同意，任何人不得擅自使用、修改、复制、反向编译、公开本平台的程序，亦不得擅自使用或篡改本平台公布的内容。</div>
@@ -664,12 +661,12 @@
               <span class="btn" @click="commitTel(item.tel)">立即拨打</span>
             </div>
           </div>
-          <div class="code">
-            <img style="" src="../assets/image/gzh.jpg" alt="">
+          <!-- <div class="code"> -->
+            <!-- <img style="" src="../assets/image/gzh.jpg" alt=""> -->
             <!-- <div class="btn">长按识别公众号</div> -->
-            <span class="btn">云逆行·新冠肺炎物资公益平台</span>
+            <!-- <span class="btn">云逆行·新冠肺炎物资公益平台</span> -->
             <!-- <div>长按识别公众号</div> -->
-          </div>
+          <!-- </div> -->
         </div>
         <div class="close-luru-model" @click="contectSelect"><van-icon name="cross" size="16" color="#fff"/></div>
       </div>
@@ -695,11 +692,11 @@ export default {
       showmap:false,
       fenxi_img:'https://medicalsupplies.sitiits.com/share.png',
       fenxi_title:'云逆行·新冠肺炎物资公益平台',
-      fenxi_desc:'由中华全国工商业联合会、上海市慈善基金会、上海产业技术研究院联合发布',
+      fenxi_desc:'由中华全国工商业联合会联合发布',
       menuList: [
         {
           id:1,
-          name: "用工",
+          name: "需方",
           imgUrl: [
             require("../assets/image/icon7.png"),
             require("../assets/image/list1.png")
@@ -707,20 +704,20 @@ export default {
         },
         {
           id:2,
-          name: "有工人",
+          name: "供方",
           imgUrl: [
             require("../assets/image/list4.png"),
             require("../assets/image/list3.png")
           ],
         },
-        // {
-        //   id:3,
-        //   name: "民间组织",
-        //   imgUrl: [
-        //     require("../assets/image/list6.png"),
-        //     require("../assets/image/list5.png")
-        //   ],
-        // },
+        {
+          id:3,
+          name: "出力方",
+          imgUrl: [
+            require("../assets/image/list6.png"),
+            require("../assets/image/list5.png")
+          ],
+        },
       ],
       selectIndex:"",
       selectIndex1:"",
@@ -829,7 +826,7 @@ export default {
             backgroundRepeat:'no-repeat',
             backgroundSize:'100% 100%'
           },
-          name: "我有人才",
+          name: "我有工人",
           type:2
         },{
           backgroundImgStyle:{
@@ -837,7 +834,7 @@ export default {
             backgroundRepeat:'no-repeat',
             backgroundSize:'100% 100%'
           },
-          name: "我要捐赠",
+          name: "实时资讯",
           type:4
         },{
           backgroundImgStyle:{
@@ -1083,7 +1080,7 @@ export default {
         // this.luruSelectModel=false
         this.reduceShow=true
       }else{
-        this.$toast("拼命开发中");
+        this.curTimeBtn(0)
       }
     },
     getCurTimeContent(){

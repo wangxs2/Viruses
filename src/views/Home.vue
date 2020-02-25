@@ -1581,7 +1581,10 @@ export default {
   initMap(){
     
     this.$fetchGet("view/viewCount").then(res => {
-      this.zanz=res.content
+      if(res.code=="success"){
+        this.zanz=res.content
+      }
+      
     });
   },
   

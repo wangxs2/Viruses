@@ -635,7 +635,7 @@ export default {
           name: "我要用工",
           type:1
         },{
-          name: "我有工人",
+          name: "我有人才",
           type:2
         },{
           name: "我要出力",
@@ -877,6 +877,7 @@ methods:{
         this.form1.startTime=''
         this.form1.needOrgin=1
         this.form1.needImg=''
+        this.form1.needsDescr=''
         this.curNeed1=0
         this.testindex=0
         this.telindex=0

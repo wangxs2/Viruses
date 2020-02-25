@@ -6,9 +6,6 @@
         <!-- <div class="top"><span>{{curTimeTopContent}}</span><van-icon name="cross" size="20" @click="closeCurTime"/></div> -->
         <div class="top" id="top-content"><img src="../assets/image/curtimewrite.png" alt=""><span class="top-content-write">{{curTimeTopContent||'撒旦解放了事件发生解放拉萨连锁咖啡店记录数据分类数据分类是基辅罗斯拉萨扩大解放了首府拉萨解放了手机发了多少顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶'}}</span><van-icon name="cross" size="20" @click="closeCurTime"/></div>
         <div class="donate-content" v-if="curTimeNoDataShow">
-
-
-
           <van-pull-refresh v-model="isDownLoading" @refresh="onDownRefresh">
             <van-list
               v-model="isUpLoading"

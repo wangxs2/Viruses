@@ -16,7 +16,7 @@
     </div> -->
     <!-- 企业复工招聘 -->
     <div class="fugong-wrapper" v-if="fugongModel">
-      
+
       <div class="fugong">
         <span class="title">企业复工招聘 全面启动</span>
         <div class="sub-title-btn">
@@ -824,7 +824,7 @@ export default {
             backgroundRepeat:'no-repeat',
             backgroundSize:'100% 100%'
           },
-          name: "我有需求",
+          name: "我有需求洒",
           type:1
         },{
           backgroundImgStyle:{

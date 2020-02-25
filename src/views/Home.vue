@@ -14,6 +14,21 @@
     <!-- <div class="forew" v-if="seven">
       近一个月数据
     </div> -->
+    <!-- 企业复工招聘 -->
+    <div class="fugong-wrapper" v-if="fugongModel">
+      <div class="fugong">
+        <span class="title">企业复工招聘 全面启动</span>
+        <div class="sub-title-btn">
+          <span class="sub-title">企业用工专场招聘</span>
+          <a class="btn" href="" target="_blank">立即查看></a>
+        </div>
+        <div class="close-btn" @click="fugongModel=false">
+          <van-icon name="cross" size="12" color="#ffffff"/>
+        </div>
+      </div>
+
+    </div>
+
     <!-- 底部按钮 -->
     <div class="bottom-btn-write">
       <div class="bottom-btn">
@@ -253,7 +268,7 @@
         <span style="font-size:9px">联系我们</span>
       </div>
     </div>
-    <div class="icon-direction" @click="getPosition">
+    <div :class="[fugongModel?'icon-direction1':'icon-direction']" @click="getPosition" >
       <img  src="../assets/image/icon_direction.png" />
     </div>
 
@@ -837,6 +852,7 @@ export default {
         }
       ],
       curSearchTabItem:0, //搜索当前选择组织
+      fugongModel:true, // 复工
     }
   },
   created() {
@@ -1963,6 +1979,62 @@ export default {
       }
     }
   }
+  .fugong-wrapper{
+    position:absolute;
+    bottom:140px;
+    left:0;
+    right: 0;
+    z-index:10;
+    .fugong{
+      position:relative;
+      display:flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      width:100%;
+      height:110px;
+      background:url("../assets/image/fugong.png") no-repeat;
+      background-size: 100% 110px;
+      .title{
+        font-size:19px;
+        font-family:PingFang SC;
+        font-weight:800;
+        color:rgba(255,255,255,1);
+        margin-left: 25px;
+      }
+      .sub-title-btn{
+        display:flex;
+        justify-content: flex-start;
+        align-items:center;
+        font-size:12px;
+        font-family:PingFang SC;
+        font-weight:bold;
+        color:rgba(255,255,255,1);
+        margin-bottom: 11px;
+        margin-left: 25px;
+        .sub-title{
+
+        }
+        .btn{
+          margin-left:10px;
+          padding:2px 5px;
+          font-size:9px;
+          font-family:PingFang SC;
+          font-weight:bold;
+          color:rgba(254,157,77,1);
+          background:#fff;
+          border-radius: 8px;
+        }
+
+      }
+      .close-btn{
+        position:absolute;
+        top:0px;
+        right:8px;
+        padding:10px;
+      }
+    }
+  }
   .bottom-btn-write{
     position:absolute;
     bottom:0;
@@ -2487,6 +2559,27 @@ export default {
   .icon-direction{
     position:absolute;
     bottom:140px;
+    right:12px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#fff;
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    box-shadow:0px 0px 8px 0px rgba(0, 0, 0, 0.16);
+    img{
+      width:23px;
+      height: 23px;
+    }
+    img:active{
+      width:13px;
+      height:13px;
+    }
+  }
+  .icon-direction1{
+    position:absolute;
+    bottom:270px;
     right:12px;
     display:flex;
     justify-content:center;

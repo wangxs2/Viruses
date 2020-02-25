@@ -1172,31 +1172,18 @@ export default {
     getmarkers(citys){
       const markerslist=[]
       citys.forEach(item => {
-        // if(item.linkTel!==undefined){
-        //   item.linkTelarr=item.linkTel.split(",")
-        // }
-        // if(item.linkPeople!==undefined){
-        //   item.linkPeoplearr=item.linkPeople.split(",")
-        // }
-        if(item.needsName!==undefined){
-          item.needsNamearr=item.needsName.split(",")
-        }
-        if(item.needsDescr!==undefined){
-          item.needsDescrarr=item.needsDescr.split(",")
-        }
+       
         if(item.gaodeLon){
           item.lnglat=[item.gaodeLon, item.gaodeLat]
           item.style= this.query.orgType==2?7:this.query.orgType==3?8:item.orgStatus
           if(this.query.orgType==2){
-            if(item.status){
-             item.style=item.status==1?9:item.status==2?10:item.status==3?11:11
-            }else{
-              item.style=11
-            }
+            item.style=2
           }else if(this.query.orgType==3){
-            item.style=8
+            item.style=3
+            console.log(this.query.orgType)
           }else{
-            item.style=item.orgStatus
+            console.log(this.query.orgType)
+            item.style=1
           }
 
           markerslist.push(item)
@@ -1214,17 +1201,17 @@ export default {
             anchor: new AMap.Pixel(9, 9),
             size: new AMap.Size(18, 18)
         }, {
-            url: require('../assets/image/icon5.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
+            url: require('../assets/image/xf1.svg'),
+            anchor: new AMap.Pixel(12, 12),
+            size: new AMap.Size(24, 24)
         }, {
-            url: require('../assets/image/icon4.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
+            url: require('../assets/image/gf2.svg'),
+            anchor: new AMap.Pixel(12, 12),
+            size: new AMap.Size(24, 24)
         }, {
-            url: require('../assets/image/icon2.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
+            url: require('../assets/image/cl3.svg'),
+            anchor: new AMap.Pixel(12, 12),
+            size: new AMap.Size(24, 24)
         }, {
             url: require('../assets/image/icon51.png'),
             anchor: new AMap.Pixel(9, 9),

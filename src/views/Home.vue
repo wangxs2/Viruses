@@ -699,7 +699,7 @@ export default {
       menuList: [
         {
           id:1,
-          name: "需方",
+          name: "用工",
           imgUrl: [
             require("../assets/image/icon7.png"),
             require("../assets/image/list1.png")
@@ -707,7 +707,7 @@ export default {
         },
         {
           id:2,
-          name: "供方",
+          name: "有工人",
           imgUrl: [
             require("../assets/image/list4.png"),
             require("../assets/image/list3.png")
@@ -821,7 +821,7 @@ export default {
             backgroundRepeat:'no-repeat',
             backgroundSize:'100% 100%'
           },
-          name: "我有需求",
+          name: "我要用工",
           type:1
         },{
           backgroundImgStyle:{
@@ -829,7 +829,7 @@ export default {
             backgroundRepeat:'no-repeat',
             backgroundSize:'100% 100%'
           },
-          name: "我有物资",
+          name: "我有人才",
           type:2
         },{
           backgroundImgStyle:{

@@ -34,7 +34,7 @@
       <div class="search-postion-content" @click="searchBtn">
         <img src="../assets/image/icon_search.png"/>
         <div class="search-position-input">
-          <van-field v-model="searchText" placeholder="医院/物资/区域" readonly />
+          <van-field v-model="searchText" placeholder="用工/工人/地区" readonly />
         </div>
         <!-- <span v-if="searchText">{{searchText}}</span>
         <span v-else>医院/物资/区域</span> -->
@@ -685,7 +685,7 @@ export default {
       menuList: [
         {
           id:1,
-          name: "需方",
+          name: "用工",
           imgUrl: [
             require("../assets/image/icon7.png"),
             require("../assets/image/list1.png")
@@ -693,20 +693,20 @@ export default {
         },
         {
           id:2,
-          name: "供方",
+          name: "有工人",
           imgUrl: [
             require("../assets/image/list4.png"),
             require("../assets/image/list3.png")
           ],
         },
-        {
-          id:3,
-          name: "民间组织",
-          imgUrl: [
-            require("../assets/image/list6.png"),
-            require("../assets/image/list5.png")
-          ],
-        },
+        // {
+        //   id:3,
+        //   name: "民间组织",
+        //   imgUrl: [
+        //     require("../assets/image/list6.png"),
+        //     require("../assets/image/list5.png")
+        //   ],
+        // },
       ],
       selectIndex:"",
       selectIndex1:"",
@@ -807,7 +807,7 @@ export default {
             backgroundRepeat:'no-repeat',
             backgroundSize:'100% 100%'
           },
-          name: "我有需求",
+          name: "我要用工",
           type:1
         },{
           backgroundImgStyle:{
@@ -815,7 +815,7 @@ export default {
             backgroundRepeat:'no-repeat',
             backgroundSize:'100% 100%'
           },
-          name: "我有物资",
+          name: "我有工人",
           type:2
         },{
           backgroundImgStyle:{

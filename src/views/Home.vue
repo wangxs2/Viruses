@@ -110,7 +110,7 @@
             <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr1"
                   :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr1==undefined?"":mapobj.linkPeoplearr1[index]}}  {{iteam}}</div></div>
           </div>
-          <div class="tel-desc" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0" style="display:flex;justify-content:flex-start;align-items:center;font-size:12px;line-height:15px;color:#216AFF;text-align:left;margin-bottom:12px;"> <van-icon name="warning-o" color="#216AFF"  size="12" style="margin-right:2px;"/><span>以上为虚拟号码，随时更新，真实号码已受保护！</span></div>
+          <!-- <div class="tel-desc" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0" style="display:flex;justify-content:flex-start;align-items:center;font-size:12px;line-height:15px;color:#216AFF;text-align:left;margin-bottom:12px;"> <van-icon name="warning-o" color="#216AFF"  size="12" style="margin-right:2px;"/><span>以上为虚拟号码，随时更新，真实号码已受保护！</span></div> -->
           <div class="service-title-time" v-if="query.orgType==3">
             <div class="service-title" style="color:#666" v-if="!mapobj.startTime&&!mapobj.endTime">
               暂未提供服务时间
@@ -1256,6 +1256,9 @@ export default {
         if(e.data){
           let str=e.data
           this.mapobj=str
+          if (str.needsName){
+            this.mapobj.needsNamearr=str.needsName.split(",")
+          }
         }
       })
         this.mass.setMap(this.myMap);

@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="onebif">
-      <div style="font-size:12px">企业复工复产人才对接平台</div>
+      <div style="font-size:12px">全国工商联复工复产人才对接平台</div>
       <div style="font-size:12px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span></div>
     </div>
     <div class="twobif">{{zanz.encourage}}次</div>
@@ -176,9 +176,9 @@
           <img src="../assets/image/search.png" alt="" @click="search">
 
           <form action="javascript:return true"> 
-            <input type="search" placeholder="查询继续支援医院、物资、区域" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==0"> 
-            <input type="search" placeholder="查询继续支援企业、物资、区域" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==1"> 
-            <input type="search" placeholder="查询继续支援组织、物资、区域" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==2">
+            <input type="search" placeholder="查询继续支援用工、工人、地区" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==0"> 
+            <input type="search" placeholder="查询继续支援用工、工人、地区" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==1"> 
+            <input type="search" placeholder="查询继续支援用工、工人、地区" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==2">
           </form>
 
 
@@ -186,11 +186,11 @@
         </div>
         <div class="tab-list-wrapper" v-if="!downUpImg">
 
-            <p class="title">疫情防控物资</p>
+            <p class="title">用工</p>
           <div class="list list1">
             <span v-for="(item,i) in wuziList" :key="i" @click="selectItem(item)">{{item}}</span>
           </div>
-          <p class="title">疫情城市查询</p>
+          <p class="title">地区</p>
           <div class="list list2">
             <span v-for="(item,i) in cityList" :key="i" @click="selectItem(item)">{{item}}</span>
           </div>

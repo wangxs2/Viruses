@@ -20,7 +20,7 @@
         <span class="title">企业复工招聘 全面启动</span>
         <div class="sub-title-btn">
           <span class="sub-title">企业用工专场招聘</span>
-          <a class="btn" href="" target="_blank">立即查看></a>
+          <a class="btn" href="http://rescu" target="_blank">立即查看></a>
         </div>
         <div class="close-btn" @click="fugongModel=false">
           <van-icon name="cross" size="12" color="#ffffff"/>
@@ -94,14 +94,18 @@
       <div class="hospatilBox">
         <div class="contentDetail">
           <van-icon class="closeimg" @click="isDetail=false" :size="24" name="cross" />
-          <div style="font-size:18px;text-align:left">{{mapobj.hospitalName}}</div>
+          <div style="font-size:17px;text-align:left">{{mapobj.hospitalName}}</div>
           <div class="address"> 
-            <div class="left-font" v-if="mapobj.hospitalAddress!==undefined&&mapobj.hospitalAddress!==''" style="color:#666666;width:75%;word-wrap:break-word;text-align:left"><van-icon name="location-o" size="20" /> <div class="van-van-multi-ellipsis--l2" style="margin-left:2px;font-size:15px">{{mapobj.hospitalAddress}}</div></div>
+            <div class="left-font" v-if="mapobj.hospitalAddress!==undefined&&mapobj.hospitalAddress!==''" style="color:#666666;width:75%;word-wrap:break-word;text-align:left"><van-icon name="location-o" size="15" /> <div class="van-van-multi-ellipsis--l2" style="margin-left:2px;font-size:14px">{{mapobj.hospitalAddress}}</div></div>
             <div v-if="mapobj.type&&mapobj.type.length<=4" class="right-btn">{{mapobj.type}}</div>
             <!-- <div v-if="mapobj.type" class="right-btn right-btn1">发热门诊</div> -->
             <!-- <div v-if="mapobj.status&&mapobj.status==1" class="right-btn right-btn2">正常经营</div>
             <div v-if="mapobj.status&&mapobj.status==2" class="right-btn right-btn3">政府托管</div>
             <div v-if="mapobj.status&&mapobj.status==3" class="right-btn right-btn4">尚未核实</div> -->
+          </div>
+          <div class="link-go" v-if="mapobj.sourceLink" @click="goHref(mapobj.sourceLink)">
+            <img src="../assets/image/link-icon.png"/>
+            <span>点击查看企业</span>
           </div>
           <div class="address" style="font-size:12px"> 
             <div v-if="mapobj.source!==undefined&&mapobj.source!==''" style="color:#666666">信息来源：{{mapobj.source}}  <span style="color:#216AFF;cursor:pointer"> </span></div>
@@ -140,13 +144,30 @@
             </div>
           </div>
           <!-- <span class="person">接受个人捐赠</span> -->
-          <div v-if="mapobj.needsNamearr!==undefined" style="display:flex;justify-content:flex-start;align-items:center;font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'招聘岗位':'提供的岗位和服务'}} 
+          <div v-if="mapobj.needsName!==undefined" style="display:flex;justify-content:flex-start;align-items:center;font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'招聘岗位':'提供的岗位和服务'}} 
             <!-- <van-icon v-if="query.orgType==1" style="margin-left:10px;margin-right:1px" name="warning-o" color="#FF2727"  size="12" /> -->
             </div>
-          <div class="material" v-if="mapobj.needsNamearr!==undefined">
+
+          <div class="table-wrapper-needs" v-if="mapobj.needsName!==undefined">
+              <div class="table-wrapper">
+                <div class="tab-head">
+                  <div class="tab-items-name">岗位名称</div>
+                  <div class="tab-items-num">需求数量</div>
+                </div>
+                <div class="tab-body">
+                  <div class="tab-items" v-for="(item,i) in mapobj.needsDescrList" :key="i">
+                    <div class="tab-items-name">{{item.name}}</div>
+                    <div class="tab-items-num">{{item.num}}</div>
+                  </div>
+                </div>
+              </div>
+
+          </div>
+          <div class="need-descr" v-if="mapobj.descr">需求说明：{{mapobj.descr}}</div>
+          <!-- <div class="material" v-if="mapobj.needsNamearr!==undefined">
             <div v-for="(item,index) in mapobj.needsNamearr"
                   :key="index" class="boll-item"><span class="boll"></span>{{item}}</div>
-          </div>
+          </div> -->
           <!-- <div v-if="mapobj.needsDescrarr!==undefined&&mapobj.needsDescrarr!==''" v-for="(itrm,index) in mapobj.needsDescrarr"
                   :key="index" class="remark">{{itrm}}</div> -->
           <div v-if="mapobj.orgDescr!==undefined" style="font-size:12px;color:#999999;text-align:left">备注：{{mapobj.orgDescr}}</div>
@@ -903,6 +924,9 @@ export default {
     // })
   },
   methods:{
+    goHref(url){
+       window.open(url);
+    },
     //微信分享
       WeChatshare(){
         let that=this;
@@ -1262,6 +1286,20 @@ export default {
           if (str.needsName){
             this.mapobj.needsNamearr=str.needsName.split(",")
           }
+          if (str.needsDescr){
+            this.mapobj.needsDescrList=str.needsDescr.split(",")
+            let obj={}
+            this.mapobj.needsDescrList.forEach(v=> {
+              this.mapobj.needsDescrList=[]
+              v=v.split(":")
+              obj={
+                name:v[0],
+                num:v[1],
+              }
+              this.mapobj.needsDescrList.push(obj)
+            })
+          }
+          console.log(this.mapobj)
         }
       })
         this.mass.setMap(this.myMap);
@@ -2169,6 +2207,21 @@ export default {
         top:10px;
         right:10px;
       }
+      .link-go{
+        display:flex;
+        justify-content:flex-start;
+        align-items:center;
+        img{
+          width:13px;
+          height:13px;
+        }
+        span{
+          font-size:12px;
+          padding-left:8px;
+          color: #216AFF
+        }
+
+      }
       .address{
         margin-top:14px;
         font-size:15px;
@@ -2248,6 +2301,70 @@ export default {
           .line{}
         }
       }
+      .table-wrapper-needs{
+        // width:306px;
+        height:150px;
+        margin: 10px auto;
+        // background:blue;
+        border:1px solid #EEEEEE;
+        .table-wrapper{
+          .tab-head{
+            display:flex;
+            justify-content:flex-start;
+            align-items:center;
+            height:27px;
+            background:#F2F5FF;
+            font-size:12px;
+            font-family:PingFang SC;
+            font-weight:500;
+            color:rgba(51,51,51,1);
+
+          }
+          .tab-body{
+            height:123px;
+            overflow-y:scroll;
+          }
+          .tab-items{
+            display:flex;
+            justify-content:flex-start;
+            align-items:center;
+            height:27px;
+            font-size:13px;
+            font-family:PingFang SC;
+            font-weight:500;
+            color:rgba(51,51,51,1);
+
+          }
+          .tab-items-name{
+            height:27px;
+            line-height:27px;
+            width:213px;
+            border-right:1px solid #EEEEEE;
+            border-bottom:1px solid #EEEEEE;
+
+          }
+          .tab-items-num{
+            height:27px;
+            line-height:27px;
+            flex:1;
+            border-bottom:1px solid #EEEEEE;
+            
+          }
+
+        }
+
+      }
+      .need-descr{
+        font-size:12px;
+        font-family:PingFang SC;
+        font-weight:500;
+        color:rgba(153,153,153,1);
+        margin-top:5px;
+        text-align:left;
+        margin-bottom:15px;
+      }
+
+
       .material{
         display: flex;
         flex-wrap: wrap;

@@ -4,7 +4,8 @@ import qs from 'qs'
 
 // 创建axios实例
 export const Axios = axios.create({
-  baseURL: "/kindnessplatform/",
+  // baseURL: "/kindnessplatform/",
+  baseURL: "/recruitplatform/",
   timeout: 60000,
   withCredentials: true // 是否允许带cookie这些
 });

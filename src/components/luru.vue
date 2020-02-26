@@ -38,7 +38,7 @@
             <div class="form-wrapper" v-if="curTabIndex==1">
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">机构名称</span>
-                <van-field v-model="form1.hispotalName" type="text" @input="searchSaming(form1.hispotalName,1)" placeholder="请填写" :error-message="errorMessage1.hispotalName"/>
+                <van-field v-model="form1.hispotalName" type="text" placeholder="请填写" :error-message="errorMessage1.hispotalName"/>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
@@ -52,7 +52,7 @@
                 <van-field v-model="form1.addressDetail" type="text" placeholder="街道、门牌号等" :error-message="errorMessage1.addressDetail"/>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">所属行业领域</span>
+                <span>所属行业领域</span>
                 <van-field v-model="form1.type" type="text" placeholder="所属行业领域" :error-message="errorMessage1.addressDetail"/>
               </div>
               <!-- <div class="form-input">
@@ -90,7 +90,11 @@
                   </div>
                   <div class="comfirm-need-bottom" @click="addDemand"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
                 </div>
-                <span class="desc need-table-desc">数量填写可便于物资调配，如不确定数量可不填写</span>
+                <!-- <span class="desc need-table-desc">数量填写可便于物资调配，如不确定数量可不填写</span> -->
+              </div>
+              <div class="form-input">
+                <span>需求说明</span>
+                <van-field v-model="form1.descr" type="textarea" maxlength="1000" placeholder="请输入需求" show-word-limit :error-message="errorMessage1.addressDetail"/>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
@@ -124,7 +128,7 @@
                 </div>
               </div> -->
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">发布时间</span>
+                <span>发布时间</span>
                 <van-field v-model="form1.startTime" placeholder="选择时间" readonly @click="startTimePop = true"/>
                 <van-popup v-model="startTimePop" position="bottom">
                   <van-datetime-picker
@@ -148,15 +152,15 @@
                 </div>
               </div> -->
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">需求说明</span>
-                <van-field v-model="form1.needsDescr" type="textarea" placeholder="请输入需求" :error-message="errorMessage1.addressDetail"/>
+                <span>链接</span>
+                <van-field v-model="form1.sourceLink" type="textarea" placeholder="请填写" :error-message="errorMessage1.sourceLink"/>
               </div>
               <!-- <div class="form-input">
                 <span>其他说明</span>
                 <van-field v-model="form1.needsDescr" type="textarea" placeholder="备注"/>
               </div> -->
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">需求证明</span>
+                <span>需求证明</span>
                 <div class="need-img-wrapper">
                   <van-uploader
                     v-model="form1.fileList"
@@ -173,7 +177,7 @@
             <div class="form-wrapper" v-if="curTabIndex==2">
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">提供方名称</span>
-                <van-field v-model="form2.hispotalName" @input="searchSaming(form2.hispotalName,2)" type="text" placeholder="请填写" :error-message="errorMessage2.hispotalName"/>
+                <van-field v-model="form2.hispotalName" type="text" placeholder="请填写" :error-message="errorMessage2.hispotalName"/>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
@@ -187,7 +191,7 @@
                 <van-field v-model="form2.addressDetail" type="text" placeholder="街道、门牌号等" :error-message="errorMessage2.addressDetail"/>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">类型</span>
+                <span>类型</span>
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form2.type" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruTypeRadio1" :key="i+item.name">
@@ -274,7 +278,7 @@
                 </div>
               </div> -->
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">工人上岗时间</span>
+                <span>工人上岗时间</span>
                 <van-field v-model="form2.startTime" placeholder="选择时间" readonly @click="startTimePopNeed = true"/>
                 <van-popup v-model="startTimePopNeed" position="bottom">
                   <van-datetime-picker
@@ -288,8 +292,12 @@
                 </van-popup>
               </div>
               <div class="form-input">
+                <span>链接</span>
+                <van-field v-model="form2.sourceLink" type="textarea" placeholder="请填写" :error-message="errorMessage2.sourceLink"/>
+              </div>
+              <div class="form-input">
                 <span>其他说明</span>
-                <van-field v-model="form2.needsDescr" type="textarea" placeholder="备注"/>
+                <van-field v-model="form2.descr" type="textarea" maxlength="1000" placeholder="备注" show-word-limit/>
               </div>
               <div class="form-input">
                 <span>证明材料</span>
@@ -309,7 +317,7 @@
             <div class="form-wrapper" v-if="curTabIndex==3">
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">机构名称</span>
-                <van-field v-model="form3.name" type="text" @input="searchSaming(form3.name,3)" placeholder="请填写" :error-message="errorMessage3.hispotalName"/>
+                <van-field v-model="form3.name" type="text" placeholder="请填写" :error-message="errorMessage3.hispotalName"/>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
@@ -323,11 +331,11 @@
                 <van-field v-model="form3.address" type="text" placeholder="街道、门牌号等" :error-message="errorMessage3.address"/>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">服务覆盖范围</span>
+                <span>服务覆盖范围</span>
                 <van-field v-model="form3.serviceRange" type="text" placeholder="输入例如：山东全省16个地市" :error-message="errorMessage3.serviceRange"/>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">请选择可提供服务的起始日期</span>
+                <span>请选择可提供服务的起始日期</span>
                 <van-field v-model="form3.startTime" placeholder="选择时间" readonly @click="startTimePop3 = true"/>
                 <van-popup v-model="startTimePop3" position="bottom">
                   <van-datetime-picker
@@ -342,7 +350,7 @@
                 </van-popup>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">请选择可提供服务的结束日期</span>
+                <span>请选择可提供服务的结束日期</span>
                 <van-field v-model="form3.endTime" placeholder="选择时间" readonly @click="startTimePop4 = true"/>
                 <van-popup v-model="startTimePop4" position="bottom">
                   <van-datetime-picker
@@ -356,7 +364,7 @@
                 </van-popup>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">机构类型</span>
+                <span>机构类型</span>
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form3.type" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruOriginizeTypeRadio" :key="i+item.name">
@@ -370,6 +378,10 @@
                 <span>链接</span>
                 <van-field v-model="form3.linkUrl" type="textarea" placeholder="请填写" :error-message="errorMessage3.linkUrl"/>
               </div> -->
+              <div class="form-input">
+                <span>链接</span>
+                <van-field v-model="form3.sourceLink" type="textarea" placeholder="请填写" :error-message="errorMessage3.sourceLink"/>
+              </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-need-input-wrapper">
@@ -417,7 +429,7 @@
               </div> -->
               <div class="form-input">
                 <span>其他说明</span>
-                <van-field v-model="form3.descr" type="textarea" placeholder="请填写" />
+                <van-field v-model="form3.descr" type="textarea" maxlength="1000" placeholder="请填写" show-word-limit />
               </div>
               <div class="form-input">
                 <span>身份证明</span>
@@ -500,7 +512,8 @@ export default {
         startTime:'',
         needOrgin:1,
         needImg:'',
-        needsDescr:''
+        descr:'',
+        sourceLink:''
       },
       errorMessage1:{
         hispotalName:'',
@@ -519,7 +532,8 @@ export default {
         startTime:'',
         needOrgin:'',
         needImg:'',
-        needsDescr:''
+        descr:'',
+        sourceLink:''
       },
       searchid:-1,
       showresult:false,
@@ -557,7 +571,8 @@ export default {
         startTime:'',
         needOrgin:'',
         needImg:'',
-        needsDescr:''
+        descr:'',
+        sourceLink:''
       },
       errorMessage2:{
         hispotalName:'',
@@ -575,6 +590,7 @@ export default {
         },
         startTime:'',
         needImg:'',
+        sourceLink:''
       },
       filst:[],
       form3:{ // 录入表单
@@ -592,7 +608,6 @@ export default {
         // linkUrl:'',
         longitude:'',
         latitude:'',
-        needsDescr:'',
         descr:'',//备注
        contectTelList:[
             {
@@ -601,6 +616,7 @@ export default {
             }
         ],
         linkPeople:'',
+        sourceLink:''
         // materialDetails:[],
         // materialDetails1:[],
       },
@@ -627,6 +643,7 @@ export default {
         supContect:[],
         author:'',
         authorWrite:'',
+        sourceLink:""
       },
       showimg:false,
       luruSelectData:[ //录入选择数据
@@ -861,7 +878,6 @@ methods:{
             needsNum:'',
           }
         ]
-        this.form1.type=4
         this.form1.sup=[]
         this.form1.needList={
             name:'',
@@ -880,7 +896,8 @@ methods:{
         this.form1.startTime=''
         this.form1.needOrgin=1
         this.form1.needImg=''
-        this.form1.needsDescr=''
+        this.form1.descr=''
+        this.form1.sourceLink=''
         this.curNeed1=0
         this.testindex=0
         this.telindex=0
@@ -920,7 +937,8 @@ methods:{
         this.form2.startTime=''
         this.form2.needOrgin=''
         this.form2.needImg=''
-        this.form2.needsDescr=''
+        this.form2.descr=''
+        this.form2.sourceLink=''
         
         this.curNeed2=0
         this.testindex1=0
@@ -952,7 +970,8 @@ methods:{
         this.form3.linkPeople=''
         this.form3.materialDetails=[]
         this.form3.materialDetails1=[]
-        this.form3.needsDescr=''
+        this.form3.descr=''
+        this.form3.sourceLink=''
         this.filst=[]
         this.telindex2=0
   },
@@ -1485,8 +1504,7 @@ linkTelBlur(type,tel,index){
           return item.tel == ""||item.name=='' //返回true
       })
       if(this.form3.name==""||this.form3.province==""||this.form3.city==""
-      ||this.form3.address==""||this.form3.serviceRange==""||
-      this.form3.startTime==""||this.form3.endTime==""){
+      ||this.form3.address==""){
         this.$toast('请完善信息');
       }else if (y){
         this.$toast('请输入联系人、联系电话且相互对应');
@@ -1716,7 +1734,7 @@ linkTelBlur(type,tel,index){
       let y=this.form1.contectTelList.some(item =>{
           return item.tel == ""||item.name=='' //返回true
       })
-        if (this.form1.hispotalName==""||this.form1.province==""|x||this.form1.city==""|| this.form1.addressDetail==""||this.form1.type==''||this.form1.needsDescr==''||this.form1.startTime==""||this.meedUrlArr1.length==0){
+        if (this.form1.hispotalName==""||this.form1.province==""|x||this.form1.city==""|| this.form1.addressDetail==""){
             this.$toast('请完善信息');
         }else if (y){
         this.$toast('请输入联系人、联系电话且相互对应');
@@ -1748,7 +1766,8 @@ linkTelBlur(type,tel,index){
             picUrl:this.meedUrlArr1.join(','),
             longitude:'',
             latitude:'',
-            needsDescr:this.form1.needsDescr
+            descr:this.form1.descr,
+            sourceLink:this.form1.sourceLink
       
           }
             this.addresschange1(this.params1.province+this.params1.city+this.params1.address,1)
@@ -1764,7 +1783,7 @@ linkTelBlur(type,tel,index){
       let y=this.form2.contectTelList.some(item =>{
           return item.tel == ""||item.name=='' //返回true
       })
-      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||x||this.form2.startTime==""){
+      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||x){
           this.$toast('请完善信息');
       }else if (y){
         this.$toast('请输入联系人、联系电话且相互对应');
@@ -1789,7 +1808,8 @@ linkTelBlur(type,tel,index){
               picUrl:this.meedUrlArr2.join(","),
               longitude:'',
               latitude:'',
-              needsDescr:this.form2.needsDescr
+              descr:this.form2.descr,
+              sourceLink:this.form2.sourceLink
         
             }
             this.addresschange1(this.params2.province+this.params2.city+this.params2.address,2)

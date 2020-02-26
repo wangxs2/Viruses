@@ -6,19 +6,22 @@ const webpack = require('webpack')
 // }
 
 module.exports = {
-  lintOnSave: false,
+  lintOnSave: true,
   publicPath: './', // 部署项目路径
   devServer: {
     port: 8086, // 端口号
     open: false, //配置自动启动浏览器
     proxy: {
-      '/kindnessplatform': {
-        target: 'http://47.100.200.255:9966/kindnessplatform', // 线上
+      // '/kindnessplatform': {
+        '/recruitplatform': {
+        target: 'http://47.100.200.255:9966/recruitplatform', // 线上
         // target: 'http://47.100.200.255:19966/kindnessplatform',  // 测试
         // target: 'https://medicalsupplies.sitiits.com/kindnessplatform',  // 测试
+        // target: 'http://47.100.200.255:9955/recruitplatform',  // 测试
         changeOrigin: true,
         pathRewrite: {
-          '^/kindnessplatform': '/'
+          // '^/kindnessplatform': '/'
+          '^/recruitplatform': '/'
         }
       }
     }

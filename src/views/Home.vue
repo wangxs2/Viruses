@@ -1579,6 +1579,22 @@ export default {
     detailright(row){
       this.isDetail=true
       this.mapobj=row
+      if (row.needsName){
+        this.mapobj.needsNamearr=row.needsName.split(",")
+      }
+      if (row.needsDescr){
+        this.mapobj.needsDescrList=row.needsDescr.split(",")
+        let obj={}
+        this.mapobj.needsDescrList.forEach(v=> {
+          this.mapobj.needsDescrList=[]
+          v=v.split(":")
+          obj={
+            name:v[0],
+            num:v[1],
+          } 
+          this.mapobj.needsDescrList.push(obj)
+        })
+      }
 
     },
     mapinit(res){
@@ -1642,6 +1658,22 @@ export default {
       this.isDetail=true
       let str=e.target.B.extData.row
       this.mapobj=str
+      if (str.needsName){
+        this.mapobj.needsNamearr=str.needsName.split(",")
+      }
+      if (str.needsDescr){
+        this.mapobj.needsDescrList=str.needsDescr.split(",")
+        let obj={}
+        this.mapobj.needsDescrList.forEach(v=> {
+          this.mapobj.needsDescrList=[]
+          v=v.split(":")
+          obj={
+            name:v[0],
+            num:v[1],
+          } 
+          this.mapobj.needsDescrList.push(obj)
+        })
+      }
     })
      return marker
   }

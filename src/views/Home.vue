@@ -140,7 +140,9 @@
             </div>
           </div>
           <!-- <span class="person">接受个人捐赠</span> -->
-          <div v-if="mapobj.needsNamearr!==undefined" style="display:flex;justify-content:flex-start;align-items:center;font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'招聘岗位':'提供的岗位和服务'}} <van-icon v-if="query.orgType==1" style="margin-left:10px;margin-right:1px" name="warning-o" color="#FF2727"  size="12" /></div>
+          <div v-if="mapobj.needsNamearr!==undefined" style="display:flex;justify-content:flex-start;align-items:center;font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'招聘岗位':'提供的岗位和服务'}} 
+            <!-- <van-icon v-if="query.orgType==1" style="margin-left:10px;margin-right:1px" name="warning-o" color="#FF2727"  size="12" /> -->
+            </div>
           <div class="material" v-if="mapobj.needsNamearr!==undefined">
             <div v-for="(item,index) in mapobj.needsNamearr"
                   :key="index" class="boll-item"><span class="boll"></span>{{item}}</div>

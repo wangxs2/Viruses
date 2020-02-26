@@ -16,6 +16,7 @@
     </div> -->
     <!-- 企业复工招聘 -->
     <div class="fugong-wrapper" v-if="fugongModel">
+
       <div class="fugong">
         <span class="title">企业用工复工招聘 全面启动</span>
         <div class="sub-title-btn">
@@ -46,6 +47,7 @@
     </div>
     <!-- 搜索框 -->
     <div class="search-position">
+      
       <div class="search-postion-content" @click="searchBtn">
         <img src="../assets/image/icon_search.png"/>
         <div class="search-position-input">
@@ -822,7 +824,7 @@ export default {
             backgroundRepeat:'no-repeat',
             backgroundSize:'100% 100%'
           },
-          name: "我有需求",
+          name: "我有需求洒",
           type:1
         },{
           backgroundImgStyle:{

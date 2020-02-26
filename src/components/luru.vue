@@ -65,22 +65,25 @@
                   </van-checkbox-group>
                 </div>
               </div> -->
-              <!-- <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">需求表</span>
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">用工数量</span>
                 <div class="comfirm-need-input-wrapper">
                   <div class="comfirm-need-top">
 
                     <div class="comfirm-need-head">
-                      <div class="name">物资名称</div>
+                      <div class="name">主要工种</div>
                       <div class="num">需求数量</div>
                     </div>
                     <div class="comfirm-need-body" v-for="(iteam,index) in form1.materialDetails" :key="index">
                       <div class="name">
 
-                        <van-field class="sup-name" :readonly="readonly1" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center" @focus="needFocus(index)" @blur="needBlur(index)"/>
-                        <van-popup v-model="startTimePopNeedName" position="bottom">
+                        <!-- <van-field class="sup-name" :readonly="readonly1" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center" @focus="needFocus(index)" @blur="needBlur(index)"/> -->
+
+                        
+                        <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入工人工种"   input-align="center"/>
+                        <!-- <van-popup v-model="startTimePopNeedName" position="bottom">
                         <van-picker show-toolbar :columns="needList" @confirm="confirmNeedName" @cancel="cancleNeedName" @change="changeNeedName" />
-                        </van-popup>
+                        </van-popup> -->
                       </div>
                       <div class="num"><van-field class="sup-num" v-model="iteam.needsNum" type="number" placeholder="请输入数字" testnum input-align="center" /><img @click="deleteDemand(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
                     </div>
@@ -88,7 +91,7 @@
                   <div class="comfirm-need-bottom" @click="addDemand"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
                 </div>
                 <span class="desc need-table-desc">数量填写可便于物资调配，如不确定数量可不填写</span>
-              </div> -->
+              </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-need-input-wrapper">
@@ -134,7 +137,7 @@
                   />
                 </van-popup>
               </div>
-              <div class="form-input">
+              <!-- <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">需求来源</span>
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form1.needOrgin" class="radio-group">
@@ -143,7 +146,7 @@
                     </div>
                   </van-radio-group>
                 </div>
-              </div>
+              </div> -->
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">需求说明</span>
                 <van-field v-model="form1.needsDescr" type="textarea" placeholder="请输入需求" :error-message="errorMessage1.addressDetail"/>
@@ -471,7 +474,13 @@ export default {
         address:'',
         addressArr:[],
         addressDetail:"",
-        materialDetails:[],//需求表
+        materialDetails:[
+          {
+            needsName:'',
+            needsNum:'',
+          }
+
+        ],//需求表
         type:'',
         sup:[],
         needList:{
@@ -1228,12 +1237,13 @@ linkTelBlur(type,tel,index){
     addDemand(){
       
       this.curNeed1=0
+      
       let x=this.form1.materialDetails.some(item =>{
-          // return item.needsName == ""||item.needsNum == ""
-          return item.needsName == ""
+          return item.needsName == ""||item.needsNum == ""
+          // return item.needsName == ""
       })
       if(x||this.form1.materialDetails[this.testindex].needsName==''){
-        this.$toast('请完善信息(至少输入物资名称)');
+        this.$toast('请完善信息');
       }else{
         this.testindex++
         this.form1.materialDetails.push({
@@ -1700,10 +1710,13 @@ linkTelBlur(type,tel,index){
       //     // return item.needsName == ""||item.needsNum == "" //返回true
       //     return item.needsName == "" //返回true
       // })
+      let x=this.form1.materialDetails.some(item =>{
+          return item.needsName == ""||item.needsNum == "" //返回true
+      })
       let y=this.form1.contectTelList.some(item =>{
           return item.tel == ""||item.name=='' //返回true
       })
-        if (this.form1.hispotalName==""||this.form1.province==""||this.form1.type==''||this.form1.city==""|| this.form1.addressDetail==""||this.form1.type==''||this.form1.needsDescr==''||this.form1.startTime==""||this.meedUrlArr1.length==0){
+        if (this.form1.hispotalName==""||this.form1.province==""|x||this.form1.city==""|| this.form1.addressDetail==""||this.form1.type==''||this.form1.needsDescr==''||this.form1.startTime==""||this.meedUrlArr1.length==0){
             this.$toast('请完善信息');
         }else if (y){
         this.$toast('请输入联系人、联系电话且相互对应');
@@ -1715,11 +1728,11 @@ linkTelBlur(type,tel,index){
          })
 
          
-      this.form1.materialDetails=[
-          {
-            needsName:this.form1.needsDescr,
-            needsNum:'',
-          }]
+      // this.form1.materialDetails=[
+      //     {
+      //       needsName:this.form1.needsDescr,
+      //       needsNum:'',
+      //     }]
           this.params1= { 
             materialType:1,
             name:this.form1.hispotalName,
@@ -1731,11 +1744,11 @@ linkTelBlur(type,tel,index){
             // status:this.form1.sup.join(","),
             linkPeople:linkPeopleArr.join(','),
             createTime:this.form1.startTime,
-            source:this.form1.needOrgin,
+            // source:this.form1.needOrgin,
             picUrl:this.meedUrlArr1.join(','),
             longitude:'',
             latitude:'',
-            // needsDescr:this.form1.needsDescr
+            needsDescr:this.form1.needsDescr
       
           }
             this.addresschange1(this.params1.province+this.params1.city+this.params1.address,1)

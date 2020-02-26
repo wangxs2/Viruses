@@ -292,9 +292,9 @@
         <span style="font-size:9px">联系我们</span>
       </div>
     </div>
-    <div :class="[fugongModel?'icon-direction1':'icon-direction']" @click="getPosition" >
+    <!-- <div :class="[fugongModel?'icon-direction1':'icon-direction']" @click="getPosition" >
       <img  src="../assets/image/icon_direction.png" />
-    </div>
+    </div> -->
 
     <!-- 录入缺省页 -->
     <van-popup v-model="reduceShow" position="bottom" :style="{ height: '100%' }">

@@ -40,9 +40,10 @@
         <div class="write">
           <p>更多用工信息：全国工商联复工复产人才对接记录 <span style="color:#1989fa" @click="agreement=true">用户协议</span></p>
         </div>
-        <div class="countbottom"><span style="color:#216AFF"><a href="http://www.acfic.org.cn">中华全国工商业联合会</a></span>
-         <!-- <span style="color:#216AFF"><a href="http://www.scf.org.cn">上海市慈善基金会</a></span> <span style="color:#216AFF"><a href="hforettps://www.siti.sh.cn">上海产业技术研究院</a></span>  -->
-         发布</div>
+        <div class="countbottom"><span style="color:#216AFF"><a href="http://www.acfic.org.cn">中华全国工商业联合会 </a></span>
+         <!-- <span style="color:#216AFF"><a href="http://www.scf.org.cn">上海市慈善基金会</a></span> -->
+          <span style="color:#216AFF"><a href="https://www.siti.sh.cn"> 上海产业技术研究院</a></span> 
+         联合发布</div>
       </div>
     </div>
     <!-- 搜索框 -->

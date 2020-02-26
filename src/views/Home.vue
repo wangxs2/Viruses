@@ -154,7 +154,7 @@
                   <div class="tab-items-name">岗位名称</div>
                   <div class="tab-items-num">需求数量</div>
                 </div>
-                <div class="tab-body">
+                <div :class="[mapobj.needsDescrList.length<=4?'tab-body-noheight':'tab-body']">
                   <div class="tab-items" v-for="(item,i) in mapobj.needsDescrList" :key="i">
                     <div class="tab-items-name">{{item.name}}</div>
                     <div class="tab-items-num">{{item.num}}</div>
@@ -1295,11 +1295,10 @@ export default {
               obj={
                 name:v[0],
                 num:v[1],
-              }
+              } 
               this.mapobj.needsDescrList.push(obj)
             })
           }
-          console.log(this.mapobj)
         }
       })
         this.mass.setMap(this.myMap);
@@ -2299,11 +2298,12 @@ export default {
           margin-top:11px;
           .start-end-time{}
           .line{}
+
         }
       }
       .table-wrapper-needs{
         // width:306px;
-        height:150px;
+        // height:150px;
         margin: 10px auto;
         // background:blue;
         border:1px solid #EEEEEE;
@@ -2328,26 +2328,27 @@ export default {
             display:flex;
             justify-content:flex-start;
             align-items:center;
-            height:27px;
+            // height:27px;
             font-size:13px;
             font-family:PingFang SC;
             font-weight:500;
             color:rgba(51,51,51,1);
+            border-bottom:1px solid #EEEEEE;
 
           }
           .tab-items-name{
-            height:27px;
-            line-height:27px;
+            // height:27px;
+            // line-height:27px;
+            padding:5px 0;
             width:213px;
             border-right:1px solid #EEEEEE;
-            border-bottom:1px solid #EEEEEE;
 
           }
           .tab-items-num{
-            height:27px;
-            line-height:27px;
+            // height:27px;
+            // line-height:27px;
             flex:1;
-            border-bottom:1px solid #EEEEEE;
+            padding:5px 0;
             
           }
 

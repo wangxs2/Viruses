@@ -284,7 +284,11 @@ export default {
 
           }
           
-        }
+        }else {
+            this.loading = false;
+            this.finished = true;
+
+          }
 
       }).catch(error => {
         this.error = true;
@@ -319,7 +323,11 @@ export default {
 
           }
           
-        }
+        }else {
+            this.loading1 = false;
+            this.finished1 = true;
+
+          }
 
       }).catch(error => {
         this.error1 = true;
@@ -354,7 +362,11 @@ export default {
 
           }
           
-        }
+        }else {
+            this.loading2 = false;
+            this.finished2 = true;
+
+          }
 
       }).catch(error => {
         this.error2 = true;
@@ -389,7 +401,11 @@ export default {
 
           }
           
-        } 
+        } else {
+            this.loading3 = false;
+            this.finished3 = true;
+
+          }
 
       }).catch(error => {
         this.error3 = true;

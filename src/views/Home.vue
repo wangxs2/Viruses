@@ -17,10 +17,10 @@
     <!-- 企业复工招聘 -->
     <div class="fugong-wrapper" v-if="fugongModel">
       <div class="fugong">
-        <span class="title">企业复工招聘 全面启动</span>
+        <span class="title">企业用工复工招聘 全面启动</span>
         <div class="sub-title-btn">
-          <span class="sub-title">企业用工专场招聘</span>
-          <a class="btn" href="" target="_blank">立即查看></a>
+          <span class="sub-title">人力需求对接专场</span>
+          <a class="btn" href="http://mrcez.acfic.org.cn:9966/visur/#/" target="_blank">立即查看></a>
         </div>
         <div class="close-btn" @click="fugongModel=false">
           <van-icon name="cross" size="12" color="#ffffff"/>
@@ -1981,8 +1981,8 @@ export default {
   .fugong-wrapper{
     position:absolute;
     bottom:140px;
-    left:0;
-    right: 0;
+    left:12px;
+    right: 12px;
     z-index:10;
     .fugong{
       position:relative;
@@ -1990,16 +1990,16 @@ export default {
       flex-direction: column;
       justify-content: center;
       align-items: flex-start;
-      width:100%;
-      height:110px;
-      background:url("../assets/image/fugong.png") no-repeat;
-      background-size: 100% 110px;
+      width:351px;
+      height:80px;
+      background:url("../assets/image/fugong.jpg") no-repeat;
+      background-size: 351px 80px;
       .title{
-        font-size:19px;
+        font-size:17px;
         font-family:PingFang SC;
         font-weight:800;
         color:rgba(255,255,255,1);
-        margin-left: 25px;
+        margin-left: 18px;
       }
       .sub-title-btn{
         display:flex;
@@ -2009,8 +2009,8 @@ export default {
         font-family:PingFang SC;
         font-weight:bold;
         color:rgba(255,255,255,1);
-        margin-bottom: 11px;
-        margin-left: 25px;
+        margin-top: 10px;
+        margin-left: 18px;
         .sub-title{
 
         }
@@ -2029,8 +2029,9 @@ export default {
       .close-btn{
         position:absolute;
         top:0px;
-        right:8px;
-        padding:10px;
+        right:0px;
+        padding:7px;
+        font-size: 12px;
       }
     }
   }

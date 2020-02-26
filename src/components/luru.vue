@@ -289,7 +289,7 @@
                 <van-field v-model="form2.needsDescr" type="textarea" placeholder="备注"/>
               </div>
               <div class="form-input">
-                <span>身份证明</span>
+                <span>证明材料</span>
                 <div class="need-img-wrapper">
                   <van-uploader
                     v-model="form2.fileList"
@@ -358,15 +358,15 @@
                   <van-radio-group v-model="form3.type" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruOriginizeTypeRadio" :key="i+item.name">
 
-                    <van-radio :name="item.id" checked-color="#2D65E3">{{item.name}}</van-radio>
+                    <van-radio :name="item.name" checked-color="#2D65E3">{{item.name}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
               </div>
-              <div class="form-input">
+              <!-- <div class="form-input">
                 <span>链接</span>
                 <van-field v-model="form3.linkUrl" type="textarea" placeholder="请填写" :error-message="errorMessage3.linkUrl"/>
-              </div>
+              </div> -->
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-need-input-wrapper">
@@ -417,7 +417,7 @@
                 <van-field v-model="form3.descr" type="textarea" placeholder="请填写" />
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">身份证明</span>
+                <span>身份证明</span>
                 <div class="need-img-wrapper">
                   <van-uploader
                     v-model="filst"
@@ -579,8 +579,8 @@ export default {
         picUrl:'',
         startTime:'',
         endTime:'',
-        type:1,
-        linkUrl:'',
+        type:"民间组织",
+        // linkUrl:'',
         longitude:'',
         latitude:'',
         needsDescr:'',
@@ -736,6 +736,9 @@ export default {
         },{
           id:3,
           name:"企业"
+        },{
+          id:10,
+          name:"其他"
         },
       ],
       luruOriginizeSupRadio:[ // 录入机构类型单选数据
@@ -883,7 +886,7 @@ methods:{
         this.form2.city=''
         this.form2.address=''
         this.form2.addressDetail=''
-        this.form2.type=3
+        this.form2.type="地方政府"
         this.form2.sup=4
         this.form2.sup1=1
         this.form2.materialDetails=[
@@ -926,7 +929,7 @@ methods:{
         this.form3.picUrl=''
         this.form3.startTime=''
         this.form3.endTime=''
-        this.form3.type=1
+        this.form3.type='民间组织'
         this.form3.linkUrl=''
         this.form3.longitude=''
         this.form3.latitude=''
@@ -1473,7 +1476,7 @@ linkTelBlur(type,tel,index){
       })
       if(this.form3.name==""||this.form3.province==""||this.form3.city==""
       ||this.form3.address==""||this.form3.serviceRange==""||
-      this.form3.startTime==""||this.form3.endTime==""||this.meedUrlArr.length==0){
+      this.form3.startTime==""||this.form3.endTime==""){
         this.$toast('请完善信息');
       }else if (y){
         this.$toast('请输入联系人、联系电话且相互对应');

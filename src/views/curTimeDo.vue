@@ -450,11 +450,7 @@ export default {
     width: 100%;
     height:100%;
     }
-    .cur-time-do .van-cell{
-        padding:0;
-        background: #f1f1f1;
-    }
-    .cur-time-do .van-cell:not(:last-child)::after{
+    .van-cell:not(:last-child)::after{
         border:0;
     }
     .van-tabs{
@@ -491,6 +487,11 @@ export default {
       position:absolute;
       left:-35px;
       right:0;
+    }
+    .van-cell{
+      background:#f1f1f1;
+      padding-top:0;
+      padding-bottom:0;
     }
     // .van-popup__close-icon--top-right{
     // top: 9px!important;
@@ -576,7 +577,6 @@ export default {
       .donate-list{
         display: flex;
         justify-content: space-between;
-        padding: 0 15px 0 15px;
         .time-wrapper{
           display: flex;
           flex-direction: column;

@@ -408,37 +408,24 @@
         <div class="close-luru-model" @click="contectSelect"><van-icon name="cross" size="16" color="#fff"/></div>
       </div>
     </div>
+    <!-- 使用说明 -->
     <div class="show-help">
 
       <van-popup v-model="helpInfoShow" position="bottom" :style="{ height: '100%' }">
         <div class="help-wrapper">
           <div class="help-top">
             <div class="go-back" @click="helpInfoShow=false">
-              <van-icon name="arrow-left" color="#333333" size="18"/>
+              <van-icon name="arrow-left" color="#fff" size="18"/>
             </div>
-            <span>全国工商联复工复产人才对接平台</span>
-
+            <span>使用说明</span>
           </div>
           <div class="help-body">
-            <div class="help-item">
+            <div class="help-item" v-for="(item,i) in usedHelpInfo" :key="i">
               <div class="help-q">
-                <span>Q</span>
-                平台性质是什么？
+                <span>Q</span>{{item.q}}
               </div>
               <div class="help-a">
-                <span>A</span>
-                本平台系全国工商联联合上海产业技术研究院创建的服务 于全国广大企业复工复产人力资源供需对接的公益性平台。
-              </div>
-            </div>
-            
-            <div class="help-item">
-              <div class="help-q">
-                <span>Q</span>
-                平台性质是什么？
-              </div>
-              <div class="help-a">
-                <span>A</span>
-                本平台系全国工商联联合上海产业技术研究院创建的服务 于全国广大企业复工复产人力资源供需对接的公益性平台。
+                <span>A</span>{{item.a}}
               </div>
             </div>
           </div>
@@ -625,6 +612,48 @@ export default {
       ],
       curSearchTabItem:0, //搜索当前选择组织
       fugongModel:false, // 复工
+      usedHelpInfo:[
+        {
+          q:"平台的运行主体是什么？",
+          a:"本平台系中华全国工商业联合会委托上海产业技术研究院联合开发的，具体由全国工商联人才交流服务中心运营管理。在使用过程中，如有疑问，可与运营方联系。",
+        },
+        {
+          q:"平台的性质和作用是什么？",
+          a:"本平台基于B2B运作模式的公益性共享服务平台，供地方政府、用工企业、人力资源机构等免费发布人才供求信息，为广大企业复工复产提供人力资源供需对接，促进国家“稳就业”工作和民营经济发展。",
+        },
+        {
+          q:"机构名称怎么填？",
+          a:"填写信息发布单位（用工企业、商协会或政府部门）的机构全称，与法人执照一致。",
+        },
+        {
+          q:"为什么要填详细地址？",
+          a:"用于在地图上精准定位、展示，便于用户搜索，精准匹配。",
+        },
+        {
+          q:"所属行业领域怎么填？",
+          a:"根据本单位所从事的主营业务领域据实填写，如：金属制品业、通用设备制造业、农业加工、生物制药等。",
+        },
+        {
+          q:"发布时间指的是什么？",
+          a:"是指所要发布信息的生效时间。",
+        },
+        {
+          q:"提示递交失败是怎么回事？",
+          a:"请检查录入的数据是否完整准确、是否超出字数限制。",
+        },
+        {
+          q:"“链接”栏填写什么内容？",
+          a:"填写本单位的官网地址或者在该项需求信息详情的链接。",
+        },
+        {
+          q:"“我要出力”模块主要功能是什么？",
+          a:"主要用于公益性组织、志愿者或能助力人才供需对接服务的第三方机构发布相关信息。",
+        },
+        {
+          q:"人才对接成功的，要不要进行反馈？",
+          a:"用户在线下进行人才对接成功后，需求双方应积极向运营方（E-mail:gslhr@acfic.org.cn）进行反馈，以便运营方及时掌握，提供更多服务，并可在“实时播报”以及其他相关媒体中进行宣传展示。",
+        },
+      ]
     }
   },
   created() {
@@ -2546,14 +2575,20 @@ export default {
   .help-wrapper{
     background:#EEEEEE;
     .help-top{
+      position:relative;
       display:flex;
-      justify-content:flex-start;
+      justify-content:center;
       align-items:center;
       width:100%;
       height:44px;
+      line-height:44px;
+      text-align:center;
       border-bottom:1px solid #eee;
-      background:#fff;
+      background:#216AFF;
       .go-back{
+        position:absolute;
+        top:0;
+        left:0;
         display:flex;
         justify-content:center;
         align-items:center;
@@ -2564,7 +2599,8 @@ export default {
         font-size:18px;
         font-family:PingFang SC;
         font-weight:bold;
-        color:rgba(51,51,51,1);
+        color:#fff;
+        
       }
     }
     .help-body{
@@ -2584,6 +2620,7 @@ export default {
             background:rgba(255,173,15,1);
             border-radius:3px;
             color:#fff;
+            margin-right:8px;
 
           }
         }
@@ -2593,11 +2630,13 @@ export default {
           font-weight:500;
           color:rgba(102,102,102,1);
           margin-top:16px;
+          line-height:20px;
           span{
             padding:0px 4px;
             background:rgba(39,198,169,1);
             border-radius:3px;
             color:#fff;
+            margin-right:8px;
 
           }
         }

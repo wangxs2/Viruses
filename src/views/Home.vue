@@ -191,9 +191,14 @@
     <van-popup v-model="show" position="bottom" :style="{height: heightCur }" :overlay="false" >
       <div class="search-wrapper">
         <div class="tab-item-list">
-          <div v-for="(item,i) in menuList" :key="i" @click="searchTabItem(i)" :class="selectIndex==i?'tab-item tab-item-span-active':'tab-item'">
-          {{item.name}}
-            
+          <div class="go-back-home" @click="show=false">
+              <van-icon name="arrow-left" color="#ffffff" size="18"/>
+          </div>
+          <div class="tab-all-wrapper">
+            <div v-for="(item,i) in menuList" :key="i" @click="searchTabItem(i)" :class="selectIndex==i?'tab-item tab-item-span-active':'tab-item'">
+            {{item.name}}
+              
+            </div>
           </div>
         </div>
         <div class="input-wrapper">
@@ -224,7 +229,7 @@
             <span v-for="(item,i) in timeList" :key="i" @click="selectTimeItem(item)"><img src="../assets/image/time.png" alt="">{{item}}</span>
           </div>
         </div>
-        <div class="down-up-wrapper" @click="downUp">
+        <!-- <div class="down-up-wrapper" @click="downUp">
           <div class="img-write" v-if="downUpImg">
 
             <img class="down-up" src="../assets/image/down.png" alt="">  
@@ -234,7 +239,7 @@
             <img class="down-up" src="../assets/image/up.png" alt="">
             <span>收起</span>
           </div>
-        </div>
+        </div> -->
         
       </div>
       
@@ -345,8 +350,9 @@
         <img src="../assets/image/curtimewrite.png" alt="">
       </div>
       <div class="line"></div>
-      <div class="cur-time-img" @click="curTimeBtn(1)">
-        <img src="../assets/image/renwu.png" alt="">
+      <div class="cur-time-img" @click="helpInfoShow=true">
+        <img src="../assets/image/use-icon.svg" alt="">
+        <span>使用说明</span>
       </div>
     </div>
 
@@ -402,6 +408,44 @@
         <div class="close-luru-model" @click="contectSelect"><van-icon name="cross" size="16" color="#fff"/></div>
       </div>
     </div>
+    <div class="show-help">
+
+      <van-popup v-model="helpInfoShow" position="bottom" :style="{ height: '100%' }">
+        <div class="help-wrapper">
+          <div class="help-top">
+            <div class="go-back" @click="helpInfoShow=false">
+              <van-icon name="arrow-left" color="#333333" size="18"/>
+            </div>
+            <span>全国工商联复工复产人才对接平台</span>
+
+          </div>
+          <div class="help-body">
+            <div class="help-item">
+              <div class="help-q">
+                <span>Q</span>
+                平台性质是什么？
+              </div>
+              <div class="help-a">
+                <span>A</span>
+                本平台系全国工商联联合上海产业技术研究院创建的服务 于全国广大企业复工复产人力资源供需对接的公益性平台。
+              </div>
+            </div>
+            
+            <div class="help-item">
+              <div class="help-q">
+                <span>Q</span>
+                平台性质是什么？
+              </div>
+              <div class="help-a">
+                <span>A</span>
+                本平台系全国工商联联合上海产业技术研究院创建的服务 于全国广大企业复工复产人力资源供需对接的公益性平台。
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </van-popup>
+    </div>
 
 
     <!-- 医护用品规则说明 -->
@@ -420,6 +464,7 @@ export default {
   },
   data() {
     return {
+      helpInfoShow:false,
       showmap:false,
       fenxi_img:'https://medicalsupplies.sitiits.com/share.png',
       fenxi_title:'企业复工复产人才对接平台',
@@ -1414,6 +1459,11 @@ export default {
 .search-position-input .van-field__body{
   height: 34px;
 }
+.show-help{
+  .van-popup{
+    background-color:#eee;
+  }
+}
 
 
 </style>
@@ -2167,21 +2217,40 @@ export default {
       justify-content:space-between;
       align-items:center;
       height:44px;
-      background:rgba(242,242,242,1);
+      background:#216AFF;
       margin-bottom:12px;
-      .tab-item{
-        width:33.3%;
-        height:44px;
-        line-height:44px;
-        text-align:center;
-        font-size:16px;
-        font-family:PingFang SC;
-        font-weight:500;
-        color:rgba(102,102,102,1);
-        &.tab-item-span-active{
-          color:#fff;
-        background:#216AFF;
+      
+      .go-back-home{
+          display:flex;
+          justify-content:center;
+          align-items:center;
+          width:35px;
+          height:44px;
+          background:#216AFF;
 
+      }
+      .tab-all-wrapper{
+        flex:1;
+        display:flex;
+        justify-content:space-around;
+        align-items:center;
+
+        .tab-item{
+          width:60px;
+          height:44px;
+          line-height:44px;
+          text-align:center;
+          font-size:16px;
+          font-family:PingFang SC;
+          font-weight:500;
+          color:#fff;
+          background:#216AFF;
+          box-sizing:border-box;
+          &.tab-item-span-active{
+            border-bottom:4px solid #fff;
+            box-sizing:border-box;
+
+          }
         }
       }
     }
@@ -2251,7 +2320,7 @@ export default {
       display:flex;
       justify-content: flex-start;
       align-items:center;
-      height: 44px;
+      height: 38px;
       background:rgba(242,245,255,1);
       border:1px solid rgba(224,224,224,1);
       border-radius:12px;
@@ -2259,7 +2328,7 @@ export default {
       img{
         width: 18px;
         height: 18px;
-        padding: 10px 15px;
+        padding: 9px 15px;
       }
       form{
         display:flex;
@@ -2446,6 +2515,67 @@ export default {
     img:active{
       width:13px;
       height:13px;
+    }
+  }
+  .help-wrapper{
+    background:#EEEEEE;
+    .help-top{
+      display:flex;
+      justify-content:flex-start;
+      align-items:center;
+      width:100%;
+      height:44px;
+      border-bottom:1px solid #eee;
+      background:#fff;
+      .go-back{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:44px;
+        width:34px;
+      }
+      span{
+        font-size:18px;
+        font-family:PingFang SC;
+        font-weight:bold;
+        color:rgba(51,51,51,1);
+      }
+    }
+    .help-body{
+      .help-item{
+        text-align:left;
+        padding:21px 10px;
+        background:#fff;
+        margin-bottom:5px;
+        .help-q{
+          font-size:15px;
+          font-family:PingFang SC;
+          font-weight:bold;
+          color:rgba(51,51,51,1);
+          span{
+            font-size:13px;
+            padding:0px 4px;
+            background:rgba(255,173,15,1);
+            border-radius:3px;
+            color:#fff;
+
+          }
+        }
+        .help-a{
+          font-size:13px;
+          font-family:PingFang SC;
+          font-weight:500;
+          color:rgba(102,102,102,1);
+          margin-top:16px;
+          span{
+            padding:0px 4px;
+            background:rgba(39,198,169,1);
+            border-radius:3px;
+            color:#fff;
+
+          }
+        }
+      }
     }
   }
 //   .icon-direction:active {
@@ -2779,6 +2909,7 @@ export default {
     z-index:10;
     .cur-time-img{
       display:flex;
+      flex-direction:column;
       justify-content:center;
       align-items:center;
       width: 100%;
@@ -2789,8 +2920,15 @@ export default {
       }
       &:last-child{
         img{
-          width:32px;
-          height: 29px;
+          width:18px;
+          height: 17px;
+        }
+        span{
+          font-size:9px;
+          font-family:PingFang SC;
+          font-weight:bold;
+          color:rgba(255,111,24,1);
+          padding-top:4px;
         }
 
       }

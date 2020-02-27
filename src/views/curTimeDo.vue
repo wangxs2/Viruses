@@ -2,6 +2,9 @@
     <div class="cur-time-do">
         <div class="cur-time-donate">
             <div class="time-donate">
+                <div class="go-back-home" @click="goBackHome">
+                  <van-icon name="arrow-left" color="#ffffff" size="16"/>
+                </div>
                 <van-tabs @click="timeDonateTab" v-model="activeName">
                     <van-tab title="实时播报"> 
                         <!-- <div class="top" id="top-content"><img src="../assets/image/curtimewrite.png" alt=""><span class="top-content-write">{{curTimeTopContent}}</span><van-icon name="cross" size="20" @click="closeCurTime"/></div> -->
@@ -125,9 +128,6 @@
             </van-popup>
       
 
-        </div>
-        <div class="go-back-home" @click="goBackHome">
-            <van-icon name="arrow-left" color="#ffffff" size="26"/>
         </div>
 
     </div>
@@ -457,11 +457,14 @@ export default {
     .cur-time-do .van-cell:not(:last-child)::after{
         border:0;
     }
+    .van-tabs{
+      flex:1;
+    }
     .van-tabs__nav{
         position:fixed;
         top:0;
-        left:0;
-        right:0;
+        // left:0;
+        right:35px;
         height:44px;
         z-index:10;
     }
@@ -474,6 +477,8 @@ export default {
     }
     .van-tabs__nav{
         background:#216AFF;
+        right:0;
+        left:35px;
     }
     .van-tabs__nav--line{
         padding-bottom:0;
@@ -482,9 +487,14 @@ export default {
         bottom:0;
         background:#fff;
     }
-    .van-popup__close-icon--top-right{
-    top: 9px!important;
+    .van-tabs__content{
+      position:absolute;
+      left:-35px;
+      right:0;
     }
+    // .van-popup__close-icon--top-right{
+    // top: 9px!important;
+    // }
 // }
 </style>
 <style lang="scss" scoped>
@@ -498,20 +508,23 @@ export default {
 
   }
   .go-back-home{
-      position:absolute;
-      top:5px;
-      left:-4px;
-      padding:0 10px 10px 0;
-      z-index:10;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      width:35px;
+      height:44px;
+      text-align:center;
+      background:#216AFF;
 
   }
   .time-donate{
+    display:flex;
     .top{
       display:flex;
       justify-content:space-between;
       align-items: center;
       width: 100%;
-    //   background:linear-gradient(180deg,rgba(89,101,233,1) 0%,rgba(91,178,245,1) 100%);
+      //   background:linear-gradient(180deg,rgba(89,101,233,1) 0%,rgba(91,178,245,1) 100%);
         background:#FFFCE8;
       padding:15px 10px;
       box-sizing:border-box;

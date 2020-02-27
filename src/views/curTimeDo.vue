@@ -444,7 +444,7 @@ export default {
 };
 </script>
 <style lang="scss">
-// .cur-time-do{
+.cur-time-do{
 
     .bigbox{
     width: 100%;
@@ -470,10 +470,10 @@ export default {
     }
     .van-tab{
         color: #fff;
-        font-size:15px;
+        font-size:14px;
         font-family:PingFang SC;
         font-weight:bold;
-        color:rgba(255,255,255,1);
+        padding: 0;
     }
     .van-tabs__nav{
         background:#216AFF;
@@ -495,7 +495,7 @@ export default {
     // .van-popup__close-icon--top-right{
     // top: 9px!important;
     // }
-// }
+}
 </style>
 <style lang="scss" scoped>
 .cur-time-do {

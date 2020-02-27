@@ -630,7 +630,9 @@
       </div>
       <div class="line"></div>
       <div class="cur-time-img" @click="curTimeBtn(1)">
-        <img src="../assets/image/renwu.png" alt="">
+        <!-- <img src="../assets/image/zhsa.png" alt=""> -->
+        <div class="zhsa"></div>
+        <div style="color:#ff6f18;font-size:12px">资助信息</div>
       </div>
     </div>
 
@@ -2923,18 +2925,28 @@ export default {
     flex-direction: column;
     justify-content: space-around;
     align-items: center; 
-    width:44px;
-    height:88px;
+    // width:44px;
+    // height:88px;
     background:rgba(255,252,232,1);
     box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32);
     border-radius:6px;
+    box-sizing:border-box;
+    padding:2px 4px;
     z-index:10;
     .cur-time-img{
       display:flex;
+      flex-direction: column;
       justify-content:center;
       align-items:center;
       width: 100%;
       height: 40px;
+      .zhsa{
+        width:25px;
+        height:28px;
+        background-image:url("../assets/image/zhsa.png");
+        background-size: 100% 100%;
+        margin-top:2px;
+      }
       img{
         width:28px;
         height: 26px;

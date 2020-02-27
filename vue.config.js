@@ -6,7 +6,7 @@ const webpack = require('webpack')
 // }
 
 module.exports = {
-  lintOnSave: true,
+  lintOnSave: false,
   publicPath: './', // 部署项目路径
   devServer: {
     port: 8086, // 端口号

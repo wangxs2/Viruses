@@ -307,7 +307,7 @@
                     multiple
                     :after-read="tiRead" 
                     @delete="tidelete"
-                    :max-count="2"
+                    :max-count="5"
                   />
                 </div>
                   <span class="desc">请上传公函照片，营业执照或身份证正反面照片，最多5张。</span>
@@ -439,7 +439,7 @@
                     multiple
                     :after-read="saRead" 
                     @delete="sadelete"
-                    :max-count="2"
+                    :max-count="5"
                   />
                   
                 </div>

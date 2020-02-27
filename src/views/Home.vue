@@ -1375,6 +1375,7 @@ export default {
               pathL:pathArray,
               strokeColor: '#00eeff',
               strokeWeight: 0,
+              strokeOpacity:0,
               fillColor: '#ffefef',
               fillOpacity: 0.6
           });

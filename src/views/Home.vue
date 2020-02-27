@@ -1268,11 +1268,44 @@ export default {
         resizeEnable: true,
         // preloadMode: true,
         center:[111.160477,32.1624],
-        zoom:4,
+        zoom:3,
         mapStyle:'amap://styles/9fb204085bdb47adb66e074fca3376be',
       });
+      this.getMiao()
       this.initMap()
 
+    },
+    getMiao(){
+      new AMap.DistrictSearch({
+          extensions:'all',
+          subdistrict:0
+      }).search('中国',(status,result)=>{
+          // 外多边形坐标数组和内多边形坐标数组
+          var outer = [
+              new AMap.LngLat(-360,90,true),
+              new AMap.LngLat(-360,-90,true),
+              new AMap.LngLat(360,-90,true),
+              new AMap.LngLat(360,90,true),
+          ];
+          var holes = result.districtList[0].boundaries
+
+          var pathArray = [
+              outer
+          ];
+          console.log(holes)
+          // pathArray.push.apply(pathArray,holes)
+          pathArray=holes
+          var polygon = new AMap.Polygon( {
+              pathL:pathArray,
+              strokeColor: '#00eeff',
+              strokeWeight: 0,
+              fillColor: '#ffefef',
+              fillOpacity: 0.6
+          });
+          polygon.setPath(pathArray);
+          this.myMap.add(polygon)
+      })
+    
     },
     detailright(row){
       this.isDetail=true

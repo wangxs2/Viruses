@@ -217,11 +217,11 @@
 
             <p class="title">用工</p>
           <div class="list list1">
-            <span v-for="(item,i) in wuziList" :key="i" @click="selectItem(item)">{{item}}</span>
+            <span v-for="(item,i) in wuziList" :key="i" @click="selectItem(item)" v-if="item">{{item}}</span>
           </div>
           <p class="title">地区</p>
           <div class="list list2">
-            <span v-for="(item,i) in cityList" :key="i" @click="selectItem(item)">{{item}}</span>
+            <span v-for="(item,i) in cityList" :key="i" @click="selectItem(item)" v-if="item">{{item}}</span>
           </div>
           
           <p class="title">发布时间查询</p>

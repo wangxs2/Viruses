@@ -824,7 +824,7 @@ export default {
             backgroundRepeat:'no-repeat',
             backgroundSize:'100% 100%'
           },
-          name: "我有需求洒",
+          name: "我有需求",
           type:1
         },{
           backgroundImgStyle:{

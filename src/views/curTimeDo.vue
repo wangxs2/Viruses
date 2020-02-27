@@ -35,7 +35,9 @@
                                                 <span class="title" v-else-if="!item.isTop&&!item.isNew&&item.headline&&item.headline.length>14">{{item.headline.substring(0,13)}}...</span> -->
                                                 <span class="title">{{item.headline}}</span>
                                             </div>
-                                            <div class="articl"><div class="van-multi-ellipsis--l3">{{item.mainBody}}</div></div>
+                                            <!-- <div class="articl"> -->
+                                              <div class="van-multi-ellipsis--l3 articl">{{item.mainBody}}</div>
+                                            <!-- </div> -->
                                             <div class="origin">信息来源：<span>{{item.publishSource}}</span></div>
                                             </a>
                                         </div>
@@ -485,7 +487,7 @@ export default {
     }
     .van-tabs__content{
       position:absolute;
-      left:-35px;
+      left:0;
       right:0;
     }
     .van-cell{
@@ -509,6 +511,10 @@ export default {
 
   }
   .go-back-home{
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:10;
       display:flex;
       justify-content:center;
       align-items:center;
@@ -663,7 +669,7 @@ export default {
               font-weight:500;
               color:rgba(102,102,102,1);
               line-height:15px;
-              margin: 12px 0;
+              margin: 8px 0;
               text-align: left;
 
             }

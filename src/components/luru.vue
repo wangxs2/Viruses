@@ -1,6 +1,6 @@
 <template>
     <div class="luru">
-      <van-icon style="position:absolute;top:4px;right:4px;" color="#ffffff" name="close" size="28px" @click="closebig" />
+      <img style="position:absolute;top:10px;left:10px;width:20px;height:20px;" src="../assets/image/back@2x.png" @click="closebig" />
       <van-popup
         v-model="showmaterial"
         position="right"
@@ -38,22 +38,22 @@
             <div class="form-wrapper" v-if="curTabIndex==1">
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">机构名称</span>
-                <van-field v-model="form1.hispotalName" type="text" placeholder="请填写" :error-message="errorMessage1.hispotalName"/>
+                <van-field v-model="form1.hispotalName" type="text" placeholder="请输入机构全称" :error-message="errorMessage1.hispotalName"/>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
-                <van-field v-model="form1.address" type="text" readonly placeholder="省市" :error-message="errorMessage1.address" @click="showPicker = true"/>
+                <van-field v-model="form1.address" type="text" readonly placeholder="请选择机构所在省市" :error-message="errorMessage1.address" @click="showPicker = true"/>
                 <van-popup v-model="showPicker" position="bottom">
                     <van-picker show-toolbar  :columns="columns" @cancel="onCancel" @confirm="onConfirm" @change="onChange" />
                 </van-popup>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">详细地址(门牌号)</span>
-                <van-field v-model="form1.addressDetail" type="text" placeholder="街道、门牌号等" :error-message="errorMessage1.addressDetail"/>
+                <span><img style="" src="../assets/image/star.png" alt="">详细地址</span>
+                <van-field v-model="form1.addressDetail" type="text" placeholder="请输入详细地址（街道、门牌号）" :error-message="errorMessage1.addressDetail"/>
               </div>
               <div class="form-input">
                 <span>所属行业领域</span>
-                <van-field v-model="form1.type" type="text" placeholder="所属行业领域" :error-message="errorMessage1.addressDetail"/>
+                <van-field v-model="form1.type" type="text" placeholder="请输入本单位主要从事的行业领域（如建筑业、服装业）" :error-message="errorMessage1.addressDetail"/>
               </div>
               <!-- <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">物资对接情况</span>
@@ -66,7 +66,7 @@
                 </div>
               </div> -->
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">用工数量</span>
+                <span><img style="" src="../assets/image/star.png" alt="">用工需求</span>
                 <div class="comfirm-need-input-wrapper">
                   <div class="comfirm-need-top">
 
@@ -96,27 +96,6 @@
                 <span>需求说明</span>
                 <van-field v-model="form1.descr" type="textarea" maxlength="200" placeholder="请输入需求，最多可填200字" show-word-limit :error-message="errorMessage1.addressDetail"/>
               </div>
-              <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
-                <div class="comfirm-need-input-wrapper">
-                  <div class="comfirm-need-top comfirm-need-top-tel">
-
-                    <div class="comfirm-need-head">
-                      <div class="name">联系人</div>
-                      <div class="num">联系方式</div>
-                    </div>
-                    <div class="comfirm-need-body" v-for="(iteam,index) in form1.contectTelList" :key="index">
-                      <div class="name">
-                        <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
-
-                        <van-field class="sup-name" v-model="iteam.name" type="text" placeholder="输入联系人"   input-align="center"/>
-                      </div>
-                      <div class="num"><van-field class="tel" v-model="iteam.tel" type="text" placeholder="输入电话号码(建议手机)" @blur="linkTelBlur(1,iteam.tel,index)"/><img @click="deleteTel(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
-                    </div>
-                  </div>
-                  <div class="comfirm-need-bottom" @click="addTel"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
-                </div>
-              </div>
               <!-- <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-input-wrapper">
@@ -129,7 +108,7 @@
               </div> -->
               <div class="form-input">
                 <span>发布时间</span>
-                <van-field v-model="form1.startTime" placeholder="选择时间" readonly @click="startTimePop = true"/>
+                <van-field v-model="form1.startTime" placeholder="请选择信息发布时间" readonly @click="startTimePop = true"/>
                 <van-popup v-model="startTimePop" position="bottom">
                   <van-datetime-picker
                     v-model="currentDate"
@@ -152,15 +131,36 @@
                 </div>
               </div> -->
               <div class="form-input">
-                <span>单位网址</span>
-                <van-field v-model="form1.sourceLink" type="textarea" placeholder="请填写" :error-message="errorMessage1.sourceLink"/>
+                <span>信息链接</span>
+                <van-field v-model="form1.sourceLink" type="text" placeholder="请填写" :error-message="errorMessage1.sourceLink"/>
+              </div>
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
+                <div class="comfirm-need-input-wrapper">
+                  <div class="comfirm-need-top comfirm-need-top-tel">
+
+                    <div class="comfirm-need-head">
+                      <div class="name">联系人</div>
+                      <div class="num">联系方式</div>
+                    </div>
+                    <div class="comfirm-need-body" v-for="(iteam,index) in form1.contectTelList" :key="index">
+                      <div class="name">
+                        <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
+
+                        <van-field class="sup-name" v-model="iteam.name" type="text" placeholder="输入联系人"   input-align="center"/>
+                      </div>
+                      <div class="num"><van-field class="tel" v-model="iteam.tel" type="text" placeholder="输入电话号码(建议手机)" @blur="linkTelBlur(1,iteam.tel,index)"/><img @click="deleteTel(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
+                    </div>
+                  </div>
+                  <div class="comfirm-need-bottom" @click="addTel"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
+                </div>
               </div>
               <!-- <div class="form-input">
                 <span>其他说明</span>
                 <van-field v-model="form1.needsDescr" type="textarea" placeholder="备注"/>
               </div> -->
               <div class="form-input">
-                <span>证明材料</span>
+                <span><img style="" src="../assets/image/star.png" alt="">证明材料</span>
                 <div class="need-img-wrapper">
                   <van-uploader
                     v-model="form1.fileList"
@@ -170,28 +170,28 @@
                     :max-count="5"
                   />
                 </div>
-                  <span class="desc">请上传公函照片及营业执照，最多5张。</span>
+                  <span class="desc">请上传公函照片及法人执照，最多5张。</span>
               </div>
               <div class="confirm-btn" @click="confirmone">提交</div>
             </div>
             <div class="form-wrapper" v-if="curTabIndex==2">
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">提供方名称</span>
-                <van-field v-model="form2.hispotalName" type="text" placeholder="请填写" :error-message="errorMessage2.hispotalName"/>
+                <span><img style="" src="../assets/image/star.png" alt="">机构名称</span>
+                <van-field v-model="form2.hispotalName" type="text" placeholder="请填写机构全称" :error-message="errorMessage2.hispotalName"/>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
-                <van-field v-model="form2.address" type="text" readonly placeholder="省市" :error-message="errorMessage2.address" @click="showPicker1 = true"/>
+                <van-field v-model="form2.address" type="text" readonly placeholder="请选择机构所在省市" :error-message="errorMessage2.address" @click="showPicker1 = true"/>
                 <van-popup v-model="showPicker1" position="bottom">
                     <van-picker show-toolbar :columns="columns" @cancel="onCancel1" @confirm="onConfirm1" @change="onChange1" />
                 </van-popup>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">详细地址(门牌号)</span>
-                <van-field v-model="form2.addressDetail" type="text" placeholder="街道、门牌号等" :error-message="errorMessage2.addressDetail"/>
+                <span><img style="" src="../assets/image/star.png" alt="">详细地址</span>
+                <van-field v-model="form2.addressDetail" type="text" placeholder="请输入详细地址（街道、门牌号）" :error-message="errorMessage2.addressDetail"/>
               </div>
               <div class="form-input">
-                <span>类型</span>
+                <span>机构类型</span>
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form2.type" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruTypeRadio1" :key="i+item.name">
@@ -222,7 +222,7 @@
                 </div>
               </div> -->
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">可提供工人数量</span>
+                <span><img style="" src="../assets/image/star.png" alt="">供应人数</span>
                 <div class="comfirm-need-input-wrapper">
                   <div class="comfirm-need-top">
 
@@ -246,6 +246,34 @@
                   <div class="comfirm-need-bottom" @click="addDemand1"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
                 </div>
               </div>
+              <!-- <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
+                <div class="comfirm-input-wrapper">
+                  <div class="comfirm-input" v-for="(item,i) in form2.contectTelList" :key="i">
+                    <van-field class="contect" v-model="item.name" type="text" placeholder="输入联系人" />-
+                    <van-field class="tel" v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)"  @blur="linkTelBlur(2,item.tel,i)"/>
+                    
+                  </div>
+                </div>
+              </div> -->
+              <div class="form-input">
+                <span>预计到岗时间</span>
+                <van-field v-model="form2.startTime" placeholder="选择时间" readonly @click="startTimePopNeed = true"/>
+                <van-popup v-model="startTimePopNeed" position="bottom">
+                  <van-datetime-picker
+                    v-model="currentDateNeed"
+                    type="date"
+                    :min-date="minDate"
+                    @confirm="confirmTimeNeed"
+                    @cancel="cancelTimeNeed"
+                    :formatter="formatter"
+                  />
+                </van-popup>
+              </div>
+              <div class="form-input">
+                <span>信息链接</span>
+                <van-field v-model="form2.sourceLink" type="text" placeholder="请上传信息详情的网站链接" :error-message="errorMessage2.sourceLink"/>
+              </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
                 <div class="comfirm-need-input-wrapper">
@@ -267,40 +295,12 @@
                   <div class="comfirm-need-bottom" @click="addTel1"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
                 </div>
               </div>
-              <!-- <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
-                <div class="comfirm-input-wrapper">
-                  <div class="comfirm-input" v-for="(item,i) in form2.contectTelList" :key="i">
-                    <van-field class="contect" v-model="item.name" type="text" placeholder="输入联系人" />-
-                    <van-field class="tel" v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)"  @blur="linkTelBlur(2,item.tel,i)"/>
-                    
-                  </div>
-                </div>
-              </div> -->
               <div class="form-input">
-                <span>工人上岗时间</span>
-                <van-field v-model="form2.startTime" placeholder="选择时间" readonly @click="startTimePopNeed = true"/>
-                <van-popup v-model="startTimePopNeed" position="bottom">
-                  <van-datetime-picker
-                    v-model="currentDateNeed"
-                    type="date"
-                    :min-date="minDate"
-                    @confirm="confirmTimeNeed"
-                    @cancel="cancelTimeNeed"
-                    :formatter="formatter"
-                  />
-                </van-popup>
+                <span>具体描述</span>
+                <van-field v-model="form2.descr" type="textarea" maxlength="200" placeholder="请填写具体描述，最多可填200字" show-word-limit/>
               </div>
               <div class="form-input">
-                <span>单位网址</span>
-                <van-field v-model="form2.sourceLink" type="textarea" placeholder="请填写" :error-message="errorMessage2.sourceLink"/>
-              </div>
-              <div class="form-input">
-                <span>其他说明</span>
-                <van-field v-model="form2.descr" type="textarea" maxlength="200" placeholder="请填写其他说明，最多可填200字" show-word-limit/>
-              </div>
-              <div class="form-input">
-                <span>证明材料</span>
+                <span><img style="" src="../assets/image/star.png" alt="">证明材料</span>
                 <div class="need-img-wrapper">
                   <van-uploader
                     v-model="form2.fileList"
@@ -317,26 +317,26 @@
             <div class="form-wrapper" v-if="curTabIndex==3">
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">机构名称</span>
-                <van-field v-model="form3.name" type="text" placeholder="请填写" :error-message="errorMessage3.hispotalName"/>
+                <van-field v-model="form3.name" type="text" placeholder="请填写机构全称" :error-message="errorMessage3.hispotalName"/>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
-                <van-field v-model="form3.address2" type="text" readonly placeholder="省市" :error-message="errorMessage3.address2" @click="showPicker = true"/>
+                <van-field v-model="form3.address2" type="text" readonly placeholder="请选择机构所在省市" :error-message="errorMessage3.address2" @click="showPicker = true"/>
                 <van-popup v-model="showPicker" position="bottom">
                     <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm3" @change="onChange" />
                 </van-popup>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">详细地址(门牌号)</span>
-                <van-field v-model="form3.address" type="text" placeholder="街道、门牌号等" :error-message="errorMessage3.address"/>
+                <span><img style="" src="../assets/image/star.png" alt="">详细地址</span>
+                <van-field v-model="form3.address" type="text" placeholder="请输入详细地址（街道、门牌号）" :error-message="errorMessage3.address"/>
               </div>
               <div class="form-input">
                 <span>服务覆盖范围</span>
-                <van-field v-model="form3.serviceRange" type="text" placeholder="输入例如：山东全省16个地市" :error-message="errorMessage3.serviceRange"/>
+                <van-field v-model="form3.serviceRange" type="text" placeholder="请填写行业领域或地理区域" :error-message="errorMessage3.serviceRange"/>
               </div>
               <div class="form-input">
-                <span>请选择可提供服务的起始日期</span>
-                <van-field v-model="form3.startTime" placeholder="选择时间" readonly @click="startTimePop3 = true"/>
+                <span>起始日期</span>
+                <van-field v-model="form3.startTime" placeholder="请选择提出出力服务的起始日期" readonly @click="startTimePop3 = true"/>
                 <van-popup v-model="startTimePop3" position="bottom">
                   <van-datetime-picker
                     v-model="currentDate3"
@@ -350,8 +350,8 @@
                 </van-popup>
               </div>
               <div class="form-input">
-                <span>请选择可提供服务的结束日期</span>
-                <van-field v-model="form3.endTime" placeholder="选择时间" readonly @click="startTimePop4 = true"/>
+                <span>结束日期</span>
+                <van-field v-model="form3.endTime" placeholder="请选择提出出力服务的结束日期" readonly @click="startTimePop4 = true"/>
                 <van-popup v-model="startTimePop4" position="bottom">
                   <van-datetime-picker
                     v-model="currentDate1"
@@ -379,11 +379,11 @@
                 <van-field v-model="form3.linkUrl" type="textarea" placeholder="请填写" :error-message="errorMessage3.linkUrl"/>
               </div> -->
               <div class="form-input">
-                <span>单位网址</span>
-                <van-field v-model="form3.sourceLink" type="textarea" placeholder="请填写" :error-message="errorMessage3.sourceLink"/>
+                <span>信息链接</span>
+                <van-field v-model="form3.sourceLink" type="text" placeholder="请上传信息详情的网站链接" :error-message="errorMessage3.sourceLink"/>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
+                <span><img style="" src="../assets/image/star.png" alt="">联系方式</span>
                 <div class="comfirm-need-input-wrapper">
                   <div class="comfirm-need-top comfirm-need-top-tel">
 
@@ -428,11 +428,11 @@
                 </div>
               </div> -->
               <div class="form-input">
-                <span>其他说明</span>
-                <van-field v-model="form3.descr" type="textarea" maxlength="200" placeholder="请填写其他说明，最多可填200字" show-word-limit />
+                <span>具体描述</span>
+                <van-field v-model="form3.descr" type="textarea" maxlength="200" placeholder="请填写具体描述，最多可填200字" show-word-limit />
               </div>
               <div class="form-input">
-                <span>证明材料</span>
+                <span><img style="" src="../assets/image/star.png" alt="">证明材料</span>
                 <div class="need-img-wrapper">
                   <van-uploader
                     v-model="filst"
@@ -688,6 +688,9 @@ export default {
           name:"商协会"
         },{
           id:10,
+          name:"人才中介机构"
+        },{
+          id:10,
           name:"其他"
         },
       ], 
@@ -762,6 +765,9 @@ export default {
         },{
           id:3,
           name:"企业"
+        },{
+          id:10,
+          name:"政府机构"
         },{
           id:10,
           name:"其他"
@@ -1504,7 +1510,7 @@ linkTelBlur(type,tel,index){
           return item.tel == ""||item.name=='' //返回true
       })
       if(this.form3.name==""||this.form3.province==""||this.form3.city==""
-      ||this.form3.address==""){
+      ||this.form3.address==""||this.meedUrlArr.length==0){
         this.$toast('请完善信息');
       }else if (y){
         this.$toast('请输入联系人、联系电话且相互对应');
@@ -1734,7 +1740,7 @@ linkTelBlur(type,tel,index){
       let y=this.form1.contectTelList.some(item =>{
           return item.tel == ""||item.name=='' //返回true
       })
-        if (this.form1.hispotalName==""||this.form1.province==""|x||this.form1.city==""|| this.form1.addressDetail==""){
+        if (this.form1.hispotalName==""||this.form1.province==""|x||this.form1.city==""|| this.form1.addressDetail==""||this.meedUrlArr1.length==0){
             this.$toast('请完善信息');
         }else if (y){
         this.$toast('请输入联系人、联系电话且相互对应');
@@ -1783,7 +1789,7 @@ linkTelBlur(type,tel,index){
       let y=this.form2.contectTelList.some(item =>{
           return item.tel == ""||item.name=='' //返回true
       })
-      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||x){
+      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||x||this.meedUrlArr2.length==0){
           this.$toast('请完善信息');
       }else if (y){
         this.$toast('请输入联系人、联系电话且相互对应');

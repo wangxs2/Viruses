@@ -94,7 +94,7 @@
               </div>
               <div class="form-input">
                 <span>需求说明</span>
-                <van-field v-model="form1.descr" type="textarea" maxlength="1000" placeholder="请输入需求" show-word-limit :error-message="errorMessage1.addressDetail"/>
+                <van-field v-model="form1.descr" type="textarea" maxlength="200" placeholder="请输入需求，最多可填200字" show-word-limit :error-message="errorMessage1.addressDetail"/>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
@@ -152,7 +152,7 @@
                 </div>
               </div> -->
               <div class="form-input">
-                <span>链接</span>
+                <span>单位网址</span>
                 <van-field v-model="form1.sourceLink" type="textarea" placeholder="请填写" :error-message="errorMessage1.sourceLink"/>
               </div>
               <!-- <div class="form-input">
@@ -160,7 +160,7 @@
                 <van-field v-model="form1.needsDescr" type="textarea" placeholder="备注"/>
               </div> -->
               <div class="form-input">
-                <span>需求证明</span>
+                <span>证明材料</span>
                 <div class="need-img-wrapper">
                   <van-uploader
                     v-model="form1.fileList"
@@ -170,7 +170,7 @@
                     :max-count="5"
                   />
                 </div>
-                  <span class="desc">请上传需求公函照片或官网文件截图，最多可上传5张。</span>
+                  <span class="desc">请上传公函照片及营业执照，最多5张。</span>
               </div>
               <div class="confirm-btn" @click="confirmone">提交</div>
             </div>
@@ -292,12 +292,12 @@
                 </van-popup>
               </div>
               <div class="form-input">
-                <span>链接</span>
+                <span>单位网址</span>
                 <van-field v-model="form2.sourceLink" type="textarea" placeholder="请填写" :error-message="errorMessage2.sourceLink"/>
               </div>
               <div class="form-input">
                 <span>其他说明</span>
-                <van-field v-model="form2.descr" type="textarea" maxlength="1000" placeholder="备注" show-word-limit/>
+                <van-field v-model="form2.descr" type="textarea" maxlength="200" placeholder="请填写其他说明，最多可填200字" show-word-limit/>
               </div>
               <div class="form-input">
                 <span>证明材料</span>
@@ -307,10 +307,10 @@
                     multiple
                     :after-read="tiRead" 
                     @delete="tidelete"
-                    :max-count="2"
+                    :max-count="5"
                   />
                 </div>
-                  <span class="desc">企业提供方请上传营业执照照片，个人提供方请上传身份证正反面照片，最多可上传2张照片</span>
+                  <span class="desc">请上传公函照片，营业执照或身份证正反面照片，最多5张。</span>
               </div>
               <div class="confirm-btn" @click="confirmtwo">提交</div>
             </div>
@@ -379,7 +379,7 @@
                 <van-field v-model="form3.linkUrl" type="textarea" placeholder="请填写" :error-message="errorMessage3.linkUrl"/>
               </div> -->
               <div class="form-input">
-                <span>链接</span>
+                <span>单位网址</span>
                 <van-field v-model="form3.sourceLink" type="textarea" placeholder="请填写" :error-message="errorMessage3.sourceLink"/>
               </div>
               <div class="form-input">
@@ -429,21 +429,21 @@
               </div> -->
               <div class="form-input">
                 <span>其他说明</span>
-                <van-field v-model="form3.descr" type="textarea" maxlength="1000" placeholder="请填写" show-word-limit />
+                <van-field v-model="form3.descr" type="textarea" maxlength="200" placeholder="请填写其他说明，最多可填200字" show-word-limit />
               </div>
               <div class="form-input">
-                <span>身份证明</span>
+                <span>证明材料</span>
                 <div class="need-img-wrapper">
                   <van-uploader
                     v-model="filst"
                     multiple
                     :after-read="saRead" 
                     @delete="sadelete"
-                    :max-count="2"
+                    :max-count="5"
                   />
                   
                 </div>
-                <span class="desc">企业提供方请上传营业执照照片，个人提供方请上传身份证正反面照片，最多可上传2张照片</span>
+                <span class="desc">请上传公函照片，营业执照或身份证正反面照片，最多5张。</span>
               </div>
               <div class="confirm-btn" @click="confirmthree">提交</div>
             </div>

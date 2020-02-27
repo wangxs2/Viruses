@@ -12,7 +12,7 @@
 
                                         <div class="time-wrapper">
                                             <span class="time-length">{{item.duration}}</span>
-                                            <span class="time-cur" v-if="item.pubDate">{{item.pubDate.substring(5,16)}}</span>
+                                            <span class="time-cur" v-if="item.pubDate">{{item.pubDate.substring(5,10)}}</span>
                                         </div>
 
                                         <div class="line-split">
@@ -32,7 +32,7 @@
                                                 <span class="title" v-else-if="!item.isTop&&!item.isNew&&item.headline&&item.headline.length>14">{{item.headline.substring(0,13)}}...</span> -->
                                                 <span class="title">{{item.headline}}</span>
                                             </div>
-                                            <div class="articl">{{item.mainBody}}</div>
+                                            <div class="articl"><div class="van-multi-ellipsis--l3">{{item.mainBody}}</div></div>
                                             <div class="origin">信息来源：<span>{{item.publishSource}}</span></div>
                                             </a>
                                         </div>
@@ -603,7 +603,7 @@ export default {
           }
         }
         .main-content{
-          width:232px;
+          width:250px;
           background:rgba(255,255,255,1);
           border-radius:4px;
           padding: 12px;

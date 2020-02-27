@@ -904,6 +904,7 @@ methods:{
         this.form1.needImg=''
         this.form1.descr=''
         this.form1.sourceLink=''
+        this.meedUrlArr1=[]
         this.curNeed1=0
         this.testindex=0
         this.telindex=0
@@ -945,6 +946,7 @@ methods:{
         this.form2.needImg=''
         this.form2.descr=''
         this.form2.sourceLink=''
+        this.meedUrlArr2=[]
         
         this.curNeed2=0
         this.testindex1=0
@@ -978,6 +980,7 @@ methods:{
         this.form3.materialDetails1=[]
         this.form3.descr=''
         this.form3.sourceLink=''
+        this.meedUrlArr=[]
         this.filst=[]
         this.telindex2=0
   },

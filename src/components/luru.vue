@@ -135,7 +135,7 @@
                 <van-field v-model="form1.sourceLink" type="text" placeholder="请填写" :error-message="errorMessage1.sourceLink"/>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
+                <span><img style="" src="../assets/image/star.png" alt="">联系方式</span>
                 <div class="comfirm-need-input-wrapper">
                   <div class="comfirm-need-top comfirm-need-top-tel">
 
@@ -275,7 +275,7 @@
                 <van-field v-model="form2.sourceLink" type="text" placeholder="请上传信息详情的网站链接" :error-message="errorMessage2.sourceLink"/>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
+                <span><img style="" src="../assets/image/star.png" alt="">联系方式</span>
                 <div class="comfirm-need-input-wrapper">
                   <div class="comfirm-need-top comfirm-need-top-tel">
 

@@ -705,13 +705,23 @@ export default {
   },
   methods:{
     goHref(url){
+      if (url.indexOf("http://") != -1 || url.indexOf("https://") != -1){
 
-      var p=window.location.protocol
-      var a=document.createElement('a')
-      a.setAttribute('href',`${p}//${url}`)
-      a.setAttribute('target','_blank');
-      a.click();
-      document.getElementsByTagName("body")[0].appendChild(a)
+        var a=document.createElement('a')
+        a.setAttribute('href',`${url}`)
+        a.setAttribute('target','_blank');
+        a.click();
+        document.getElementsByTagName("body")[0].appendChild(a)
+      } else {
+        var p=window.location.protocol
+        var a=document.createElement('a')
+        a.setAttribute('href',`${p}//${url}`)
+        a.setAttribute('target','_blank');
+        a.click();
+        document.getElementsByTagName("body")[0].appendChild(a)
+
+      }
+
     },
     closeDetail(){
       this.isDetail=false
@@ -1077,24 +1087,20 @@ export default {
             this.mapobj.needsNamearr=str.needsName.split(",")
           }
           if (str.needsDescr){
-            this.mapobj.needsDescrList=str.needsDescr.split(",")
+            this.mapobj.needsDescrList1=str.needsDescr.split(",")
             let obj={}
-            this.mapobj.needsDescrList.forEach(v=> {
-              this.mapobj.needsDescrList=[]
-              v=v.split(":")
-              obj={
-                name:v[0],
-                num:v[1],
-              } 
-              this.mapobj.needsDescrList.push(obj)
-            })
+            let x=this.mapobj.needsDescrList1
+            for(let i=0;i<x.length;i++){
+              x[i]=x[i].split(":")
+            }
+            this.mapobj.needsDescrList=this.jsonFormat(x)
           }
       
-          if (row.sourceLink){
+          if (str.sourceLink){
             var reg = /[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/gi; 
             var reg1 = /^\d+$/
-            if(!reg.test(row.sourceLink)&&!reg1.test(row.sourceLink)){
-            this.mapobj.sourceLinkReg=row.sourceLink
+            if(!reg.test(str.sourceLink)&&!reg1.test(str.sourceLink)){
+            this.mapobj.sourceLinkReg=str.sourceLink
             } else {
               this.mapobj.sourceLinkReg=''
             }
@@ -1411,6 +1417,19 @@ export default {
       })
     
     },
+
+    jsonFormat (dataset) {
+      const data = dataset
+      let datajson = {}
+      var jsonresult = []
+      for (let i = 0; i < data.length; i++) {
+        datajson.name=data[i][0]
+        datajson.num=data[i][1]
+        jsonresult.push(datajson)
+        datajson = {}
+      }
+      return jsonresult
+    },
     detailright(row){
       this.isDetail=true
       this.mapobj=row
@@ -1418,17 +1437,13 @@ export default {
         this.mapobj.needsNamearr=row.needsName.split(",")
       }
       if (row.needsDescr){
-        this.mapobj.needsDescrList=row.needsDescr.split(",")
+        this.mapobj.needsDescrList1=row.needsDescr.split(",")
         let obj={}
-        this.mapobj.needsDescrList.forEach(v=> {
-          this.mapobj.needsDescrList=[]
-          v=v.split(":")
-          obj={
-            name:v[0],
-            num:v[1],
-          } 
-          this.mapobj.needsDescrList.push(obj)
-        })
+        let x=this.mapobj.needsDescrList1
+        for(let i=0;i<x.length;i++){
+          x[i]=x[i].split(":")
+        }
+        this.mapobj.needsDescrList=this.jsonFormat(x)
       }
       
       if (row.sourceLink){
@@ -1510,25 +1525,21 @@ export default {
         this.mapobj.needsNamearr=str.needsName.split(",")
       }
       if (str.needsDescr){
-        this.mapobj.needsDescrList=str.needsDescr.split(",")
+        this.mapobj.needsDescrList1=str.needsDescr.split(",")
         let obj={}
-        this.mapobj.needsDescrList.forEach(v=> {
-          this.mapobj.needsDescrList=[]
-          v=v.split(":")
-          obj={
-            name:v[0],
-            num:v[1],
-          } 
-          this.mapobj.needsDescrList.push(obj)
-        })
+        let x=this.mapobj.needsDescrList1
+        for(let i=0;i<x.length;i++){
+          x[i]=x[i].split(":")
+        }
+        this.mapobj.needsDescrList=this.jsonFormat(x)
       }
       
       
-      if (row.sourceLink){
+      if (str.sourceLink){
         var reg = /[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/gi; 
         var reg1 = /^\d+$/
-        if(!reg.test(row.sourceLink)&&!reg1.test(row.sourceLink)){
-        this.mapobj.sourceLinkReg=row.sourceLink
+        if(!reg.test(str.sourceLink)&&!reg1.test(str.sourceLink)){
+        this.mapobj.sourceLinkReg=str.sourceLink
         } else {
           this.mapobj.sourceLinkReg=''
         }

@@ -103,7 +103,7 @@
             <div v-if="mapobj.status&&mapobj.status==2" class="right-btn right-btn3">政府托管</div>
             <div v-if="mapobj.status&&mapobj.status==3" class="right-btn right-btn4">尚未核实</div> -->
           </div>
-          <div class="link-go" v-if="mapobj.sourceLink" @click="goHref(mapobj.sourceLink)">
+          <div class="link-go" v-if="mapobj.sourceLinkReg" @click="goHref(mapobj.sourceLinkReg)">
             <img src="../assets/image/link-icon.png"/>
             <span>点击查看企业</span>
           </div>
@@ -715,7 +715,7 @@ export default {
     },
     closeDetail(){
       this.isDetail=false
-      if (this.mapobj.sourceLink){
+      if (this.mapobj.sourceLinkReg){
 
         let x=document.getElementsByTagName("body")[0].lastChild
         document.getElementsByTagName("body")[0].removeChild(x)
@@ -1089,6 +1089,19 @@ export default {
               this.mapobj.needsDescrList.push(obj)
             })
           }
+      
+          if (row.sourceLink){
+            var reg = /[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/gi; 
+            var reg1 = /^\d+$/
+            if(!reg.test(row.sourceLink)&&!reg1.test(row.sourceLink)){
+            this.mapobj.sourceLinkReg=row.sourceLink
+            } else {
+              this.mapobj.sourceLinkReg=''
+            }
+
+          } else {
+            this.mapobj.sourceLinkReg=''
+          }
         }
       })
         this.mass.setMap(this.myMap);
@@ -1417,6 +1430,19 @@ export default {
           this.mapobj.needsDescrList.push(obj)
         })
       }
+      
+      if (row.sourceLink){
+        var reg = /[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/gi; 
+        var reg1 = /^\d+$/
+        if(!reg.test(row.sourceLink)&&!reg1.test(row.sourceLink)){
+        this.mapobj.sourceLinkReg=row.sourceLink
+        } else {
+          this.mapobj.sourceLinkReg=''
+        }
+
+      } else {
+        this.mapobj.sourceLinkReg=''
+      }
 
     },
     mapinit(res){
@@ -1495,6 +1521,20 @@ export default {
           } 
           this.mapobj.needsDescrList.push(obj)
         })
+      }
+      
+      
+      if (row.sourceLink){
+        var reg = /[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/gi; 
+        var reg1 = /^\d+$/
+        if(!reg.test(row.sourceLink)&&!reg1.test(row.sourceLink)){
+        this.mapobj.sourceLinkReg=row.sourceLink
+        } else {
+          this.mapobj.sourceLinkReg=''
+        }
+
+      } else {
+        this.mapobj.sourceLinkReg=''
       }
     })
      return marker

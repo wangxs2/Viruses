@@ -1607,7 +1607,7 @@ linkTelBlur(type,tel,index){
       }else if (y){
         this.$toast('请输入联系人、联系电话且相互对应');
       }else if(this.form3.sourceLink&&!str.test(this.form3.sourceLink)){
-          this.$toast('请输入以以http://或https://开头网址链接');
+          this.$toast('请输入以http://或https://开头网址链接');
       }else{
         // this.form3.materialDetails1.forEach(iteam=>{
         //   let obj={}
@@ -1840,7 +1840,7 @@ linkTelBlur(type,tel,index){
         }else if (y){
         this.$toast('请输入联系人、联系电话且相互对应');
       }else if(this.form1.sourceLink&&!str.test(this.form1.sourceLink)){
-          this.$toast('请输入以以http://或https://开头网址链接');
+          this.$toast('请输入以http://或https://开头网址链接');
       }else{
          this.form1.contectTelList.forEach(v=> {
            if (v.tel||v.name&&v.tel){
@@ -1893,7 +1893,7 @@ linkTelBlur(type,tel,index){
       }else if (y){
         this.$toast('请输入联系人、联系电话且相互对应');
       }else if(this.form2.sourceLink&&!str.test(this.form2.sourceLink)){
-          this.$toast('请输入以以http://或https://开头网址链接');
+          this.$toast('请输入以http://或https://开头网址链接');
       }else{
          this.form2.contectTelList.forEach(v=> {
            if (v.tel||v.name&&v.tel){

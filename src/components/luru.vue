@@ -518,6 +518,7 @@ export default {
         startTime:'',
         needOrgin:'',
         needImg:'',
+        needsDescr:''
       },
       searchid:-1,
       showresult:false,
@@ -555,6 +556,7 @@ export default {
         startTime:'',
         needOrgin:'',
         needImg:'',
+        needsDescr:''
       },
       errorMessage2:{
         hispotalName:'',
@@ -873,6 +875,7 @@ methods:{
         this.form1.startTime=''
         this.form1.needOrgin=1
         this.form1.needImg=''
+        this.form1.needsDescr=''
         this.curNeed1=0
         this.testindex=0
         this.telindex=0
@@ -912,6 +915,7 @@ methods:{
         this.form2.startTime=''
         this.form2.needOrgin=''
         this.form2.needImg=''
+        this.form2.needsDescr=''
         
         this.curNeed2=0
         this.testindex1=0
@@ -1728,6 +1732,7 @@ linkTelBlur(type,tel,index){
             picUrl:this.meedUrlArr1.join(','),
               longitude:'',
               latitude:'',
+              needsDescr:this.form1.needsDescr
       
           }
             this.addresschange1(this.params1.province+this.params1.city+this.params1.address,1)
@@ -1768,6 +1773,7 @@ linkTelBlur(type,tel,index){
               picUrl:this.meedUrlArr2.join(","),
               longitude:'',
               latitude:'',
+              needsDescr:this.form2.needsDescr
         
             }
             this.addresschange1(this.params2.province+this.params2.city+this.params2.address,2)

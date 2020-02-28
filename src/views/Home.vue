@@ -415,7 +415,7 @@
         <div class="help-wrapper">
           <div class="help-top">
             <div class="go-back" @click="helpInfoShow=false">
-              <van-icon name="arrow-left" color="#fff" size="18"/>
+              <van-icon name="arrow-left" color="#fff" size="20"/>
             </div>
             <span>使用说明</span>
           </div>

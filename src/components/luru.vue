@@ -205,7 +205,7 @@
                 <van-field v-model="form2.serviceRange" type="text" placeholder="请输入本单位主要从事的行业领域（如建筑业、服装业）" :error-message="errorMessage1.addressDetail"/>
               </div>
               <div class="form-input">
-                <span>机构类型</span>
+                <span><img style="" src="../assets/image/star.png" alt="">机构类型</span>
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form2.type" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruTypeRadio1" :key="i+item.name">

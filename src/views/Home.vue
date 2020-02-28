@@ -192,7 +192,7 @@
       <div class="search-wrapper">
         <div class="tab-item-list">
           <div class="go-back-home" @click="show=false">
-              <van-icon name="arrow-left" color="#ffffff" size="18"/>
+              <van-icon name="arrow-left" color="#ffffff" size="20"/>
           </div>
           <div class="tab-all-wrapper">
             <div v-for="(item,i) in menuList" :key="i" @click="searchTabItem(i)" :class="selectIndex==i?'tab-item tab-item-span-active':'tab-item'">

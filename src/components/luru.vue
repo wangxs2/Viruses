@@ -1,6 +1,6 @@
 <template>
     <div class="luru">
-      <img style="position:absolute;top:10px;left:10px;width:20px;height:20px;" src="../assets/image/back@2x.png" @click="closebig" />
+      <img style="position:absolute;top:10px;left:10px;width:30px;height:30px;" src="../assets/image/back@2x.png" @click="closebig" />
       <van-popup
         v-model="showmaterial"
         position="right"
@@ -53,7 +53,17 @@
               </div>
               <div class="form-input">
                 <span>所属行业领域</span>
-                <van-field v-model="form1.type" type="text" placeholder="请输入本单位主要从事的行业领域（如建筑业、服装业）" :error-message="errorMessage1.addressDetail"/>
+                <van-field v-model="form1.serviceRange" type="text" placeholder="请输入本单位主要从事的行业领域（如建筑业、服装业）" :error-message="errorMessage1.addressDetail"/>
+              </div>
+              <div class="form-input">
+                <span>机构类型</span>
+                <div class="comfirm-radio">
+                  <van-radio-group v-model="form1.type" class="radio-group">
+                    <div class="sig-radio" v-for="(item,i) in luruOrgType" :key="i+item.name">
+                    <van-radio :name="item.name" checked-color="#2D65E3">{{item.name}}</van-radio>
+                    </div>
+                  </van-radio-group>
+                </div>
               </div>
               <!-- <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">物资对接情况</span>
@@ -189,6 +199,10 @@
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">详细地址</span>
                 <van-field v-model="form2.addressDetail" type="text" placeholder="请输入详细地址（街道、门牌号）" :error-message="errorMessage2.addressDetail"/>
+              </div>
+              <div class="form-input">
+                <span>所属行业领域</span>
+                <van-field v-model="form2.serviceRange" type="text" placeholder="请输入本单位主要从事的行业领域（如建筑业、服装业）" :error-message="errorMessage1.addressDetail"/>
               </div>
               <div class="form-input">
                 <span>机构类型</span>
@@ -329,6 +343,16 @@
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">详细地址</span>
                 <van-field v-model="form3.address" type="text" placeholder="请输入详细地址（街道、门牌号）" :error-message="errorMessage3.address"/>
+              </div>
+              <div class="form-input">
+                <span>出力类型</span>
+                <div class="comfirm-radio">
+                  <van-radio-group v-model="form3.serviceType" class="radio-group">
+                    <div class="sig-radio" v-for="(item,i) in luruServiceTypeType" :key="i+item.name">
+                    <van-radio :name="item.name" checked-color="#2D65E3">{{item.name}}</van-radio>
+                    </div>
+                  </van-radio-group>
+                </div>
               </div>
               <div class="form-input">
                 <span>服务覆盖范围</span>
@@ -493,7 +517,7 @@ export default {
           }
 
         ],//需求表
-        type:'',
+        type:'普通民企',
         sup:[],
         needList:{
             name:'',
@@ -513,7 +537,8 @@ export default {
         needOrgin:1,
         needImg:'',
         descr:'',
-        sourceLink:''
+        sourceLink:'',
+        serviceRange:''
       },
       errorMessage1:{
         hispotalName:'',
@@ -572,7 +597,8 @@ export default {
         needOrgin:'',
         needImg:'',
         descr:'',
-        sourceLink:''
+        sourceLink:'',
+        serviceRange:''
       },
       errorMessage2:{
         hispotalName:'',
@@ -616,7 +642,8 @@ export default {
             }
         ],
         linkPeople:'',
-        sourceLink:''
+        sourceLink:'',
+        serviceType:'法律咨询'
         // materialDetails:[],
         // materialDetails1:[],
       },
@@ -657,6 +684,56 @@ export default {
           name: "我要出力",
           type:3
         }
+      ],
+      luruOrgType:[
+        {
+          id:4,
+          name:"普通民企"
+        },{
+          id:5,
+          name:"工商联执常委企业"
+        },{
+          id:6,
+          name:"央企/国企"
+        },{
+          id:7,
+          name:"个体工商户"
+        },{
+          id:0,
+          name:"政府机构或事业单位"
+        },{
+          id:0,
+          name:"商协会"
+        },
+
+      ],
+      luruServiceTypeType:[
+        {
+          id:4,
+          name:"法律咨询"
+        },{
+          id:5,
+          name:"交通运输"
+        },{
+          id:6,
+          name:"健康体检"
+        },{
+          id:7,
+          name:"面试测评"
+        },{
+          id:0,
+          name:"劳务派遣"
+        },{
+          id:0,
+          name:"代缴保险"
+        },{
+          id:0,
+          name:"优惠政策"
+        },{
+          id:0,
+          name:"其他"
+        },
+
       ],
       luruTypeRadio:[ //录入类型单选数据
         {
@@ -895,7 +972,7 @@ methods:{
                 tel:'',
             }
         ]
-        this.form1.type=''
+        this.form1.type='普通民企'
         this.form1.longitude=''
         this.form1.latitude=''
         this.form1.fileList=[]
@@ -904,6 +981,7 @@ methods:{
         this.form1.needImg=''
         this.form1.descr=''
         this.form1.sourceLink=''
+        this.form1.serviceRange=''
         this.meedUrlArr1=[]
         this.curNeed1=0
         this.testindex=0
@@ -946,6 +1024,7 @@ methods:{
         this.form2.needImg=''
         this.form2.descr=''
         this.form2.sourceLink=''
+        this.form2.serviceRange=''
         this.meedUrlArr2=[]
         
         this.curNeed2=0
@@ -1776,7 +1855,8 @@ linkTelBlur(type,tel,index){
             longitude:'',
             latitude:'',
             descr:this.form1.descr,
-            sourceLink:this.form1.sourceLink
+            sourceLink:this.form1.sourceLink,
+            serviceRange:this.form1.serviceRange,
       
           }
             this.addresschange1(this.params1.province+this.params1.city+this.params1.address,1)
@@ -1818,7 +1898,8 @@ linkTelBlur(type,tel,index){
               longitude:'',
               latitude:'',
               descr:this.form2.descr,
-              sourceLink:this.form2.sourceLink
+              sourceLink:this.form2.sourceLink,
+              serviceRange:this.form2.serviceRange,
         
             }
             this.addresschange1(this.params2.province+this.params2.city+this.params2.address,2)

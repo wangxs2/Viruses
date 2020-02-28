@@ -3,7 +3,7 @@
         <div class="cur-time-donate">
             <div class="time-donate">
                 <div class="go-back-home" @click="goBackHome">
-                  <van-icon name="arrow-left" color="#ffffff" size="16"/>
+                  <van-icon name="arrow-left" color="#ffffff" size="20"/>
                 </div>
                 <van-tabs @click="timeDonateTab" v-model="activeName">
                     <van-tab title="实时播报"> 
@@ -669,7 +669,7 @@ export default {
               font-weight:500;
               color:rgba(102,102,102,1);
               line-height:15px;
-              margin: 8px 0;
+              margin: 5px 0 0 0;
               text-align: left;
 
             }

@@ -93,7 +93,7 @@
     <van-overlay  :show="isDetail" :z-index="99" :duration="0"	>
       <div class="hospatilBox">
         <div class="contentDetail">
-          <van-icon class="closeimg" @click="isDetail=false" :size="24" name="cross" />
+          <van-icon class="closeimg" @click="closeDetail" :size="24" name="cross" />
           <div style="font-size:17px;text-align:left">{{mapobj.hospitalName}}</div>
           <div class="address"> 
             <div class="left-font" v-if="mapobj.hospitalAddress!==undefined&&mapobj.hospitalAddress!==''" style="color:#666666;width:75%;word-wrap:break-word;text-align:left"><van-icon name="location-o" size="15" /> <div class="van-van-multi-ellipsis--l2" style="margin-left:2px;font-size:14px">{{mapobj.hospitalAddress}}</div></div>
@@ -705,7 +705,21 @@ export default {
   },
   methods:{
     goHref(url){
-       window.open(url);
+
+      var p=window.location.protocol
+      var a=document.createElement('a')
+      a.setAttribute('href',`${p}//${url}`)
+      a.setAttribute('target','_blank');
+      a.click();
+      document.getElementsByTagName("body")[0].appendChild(a)
+    },
+    closeDetail(){
+      this.isDetail=false
+      if (this.mapobj.sourceLink){
+
+        let x=document.getElementsByTagName("body")[0].lastChild
+        document.getElementsByTagName("body")[0].removeChild(x)
+      }
     },
     //微信分享
       WeChatshare(){

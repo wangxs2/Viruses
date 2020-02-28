@@ -56,7 +56,7 @@
                 <van-field v-model="form1.serviceRange" type="text" placeholder="请输入本单位主要从事的行业领域（如建筑业、服装业）" :error-message="errorMessage1.addressDetail"/>
               </div>
               <div class="form-input">
-                <span>机构类型</span>
+                <span><img style="" src="../assets/image/star.png" alt="">机构类型</span>
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form1.type" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruOrgType" :key="i+item.name">
@@ -345,7 +345,7 @@
                 <van-field v-model="form3.address" type="text" placeholder="请输入详细地址（街道、门牌号）" :error-message="errorMessage3.address"/>
               </div>
               <div class="form-input">
-                <span>出力范围</span>
+                <span><img style="" src="../assets/image/star.png" alt="">出力范围</span>
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form3.serviceType" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruServiceTypeType" :key="i+item.name">
@@ -359,7 +359,7 @@
                 <van-field v-model="form3.serviceRange" type="text" placeholder="请填写行业领域或地理区域" :error-message="errorMessage3.serviceRange"/>
               </div>
               <div class="form-input">
-                <span>起始日期</span>
+                <span><img style="" src="../assets/image/star.png" alt="">起始日期</span>
                 <van-field v-model="form3.startTime" placeholder="请选择提供出力服务的起始日期" readonly @click="startTimePop3 = true"/>
                 <van-popup v-model="startTimePop3" position="bottom">
                   <van-datetime-picker
@@ -374,7 +374,7 @@
                 </van-popup>
               </div>
               <div class="form-input">
-                <span>结束日期</span>
+                <span><img style="" src="../assets/image/star.png" alt="">结束日期</span>
                 <van-field v-model="form3.endTime" placeholder="请选择提供出力服务的结束日期" readonly @click="startTimePop4 = true"/>
                 <van-popup v-model="startTimePop4" position="bottom">
                   <van-datetime-picker
@@ -388,7 +388,7 @@
                 </van-popup>
               </div>
               <div class="form-input">
-                <span>机构类型</span>
+                <span><img style="" src="../assets/image/star.png" alt="">机构类型</span>
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form3.type" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruOriginizeTypeRadio" :key="i+item.name">
@@ -1599,11 +1599,15 @@ linkTelBlur(type,tel,index){
       let y=this.form3.contectTelList.some(item =>{
           return item.tel == ""||item.name=='' //返回true
       })
+      
+      let str=/^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(.)+$/
       if(this.form3.name==""||this.form3.province==""||this.form3.city==""
-      ||this.form3.address==""||this.meedUrlArr.length==0){
+      ||this.form3.address==""||this.meedUrlArr.length==0||this.form3.startTime==''||this.form3.endTime==''){
         this.$toast('请完善信息');
       }else if (y){
         this.$toast('请输入联系人、联系电话且相互对应');
+      }else if(this.form3.sourceLink&&!str.test(this.form3.sourceLink)){
+          this.$toast('请输入以以http://或https://开头网址链接');
       }else{
         // this.form3.materialDetails1.forEach(iteam=>{
         //   let obj={}
@@ -1830,10 +1834,13 @@ linkTelBlur(type,tel,index){
       let y=this.form1.contectTelList.some(item =>{
           return item.tel == ""||item.name=='' //返回true
       })
+        let str=/^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(.)+$/
         if (this.form1.hispotalName==""||this.form1.province==""|x||this.form1.city==""|| this.form1.addressDetail==""||this.meedUrlArr1.length==0||this.form1.startTime==''){
             this.$toast('请完善信息');
         }else if (y){
         this.$toast('请输入联系人、联系电话且相互对应');
+      }else if(this.form1.sourceLink&&!str.test(this.form1.sourceLink)){
+          this.$toast('请输入以以http://或https://开头网址链接');
       }else{
          this.form1.contectTelList.forEach(v=> {
            if (v.tel||v.name&&v.tel){
@@ -1880,10 +1887,13 @@ linkTelBlur(type,tel,index){
       let y=this.form2.contectTelList.some(item =>{
           return item.tel == ""||item.name=='' //返回true
       })
+      let str=/^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(.)+$/
       if (this.form2.hispotalName==""||this.form2.province==""||this.form2.city==""|| this.form2.addressDetail==""||x||this.meedUrlArr2.length==0||this.form2.startTime==''){
           this.$toast('请完善信息');
       }else if (y){
         this.$toast('请输入联系人、联系电话且相互对应');
+      }else if(this.form2.sourceLink&&!str.test(this.form2.sourceLink)){
+          this.$toast('请输入以以http://或https://开头网址链接');
       }else{
          this.form2.contectTelList.forEach(v=> {
            if (v.tel||v.name&&v.tel){

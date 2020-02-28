@@ -500,6 +500,7 @@ export default {
         startTime:'',
         needOrgin:1,
         needImg:'',
+        needsDescr:''
       },
       errorMessage1:{
         hispotalName:'',

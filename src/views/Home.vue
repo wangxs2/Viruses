@@ -2911,11 +2911,7 @@ export default {
         background: #f1f1f1;
         margin-top: 20px;
       }
-
     }
-
-
-
   }
   .cur-time-btn{
     position: fixed;

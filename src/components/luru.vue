@@ -154,7 +154,7 @@
               </div>
               <div class="form-input">
                 <span>其他说明</span>
-                <van-field v-model="form1.needsDescr" type="textarea" placeholder="备注"/>
+                <van-field v-model="form1.descr" type="textarea" placeholder="备注"/>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">需求证明</span>
@@ -290,7 +290,7 @@
               </div>
               <div class="form-input">
                 <span>其他说明</span>
-                <van-field v-model="form2.needsDescr" type="textarea" placeholder="备注"/>
+                <van-field v-model="form2.descr" type="textarea" placeholder="备注"/>
               </div>
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">身份证明</span>
@@ -500,7 +500,7 @@ export default {
         startTime:'',
         needOrgin:1,
         needImg:'',
-        needsDescr:''
+        descr:''
       },
       errorMessage1:{
         hispotalName:'',
@@ -557,7 +557,7 @@ export default {
         startTime:'',
         needOrgin:'',
         needImg:'',
-        needsDescr:''
+        descr:''
       },
       errorMessage2:{
         hispotalName:'',
@@ -876,7 +876,7 @@ methods:{
         this.form1.startTime=''
         this.form1.needOrgin=1
         this.form1.needImg=''
-        this.form1.needsDescr=''
+        this.form1.descr=''
         this.curNeed1=0
         this.testindex=0
         this.telindex=0
@@ -916,7 +916,7 @@ methods:{
         this.form2.startTime=''
         this.form2.needOrgin=''
         this.form2.needImg=''
-        this.form2.needsDescr=''
+        this.form2.descr=''
         
         this.curNeed2=0
         this.testindex1=0
@@ -1733,7 +1733,7 @@ linkTelBlur(type,tel,index){
             picUrl:this.meedUrlArr1.join(','),
               longitude:'',
               latitude:'',
-              needsDescr:this.form1.needsDescr
+              descr:this.form1.descr
       
           }
             this.addresschange1(this.params1.province+this.params1.city+this.params1.address,1)
@@ -1774,7 +1774,7 @@ linkTelBlur(type,tel,index){
               picUrl:this.meedUrlArr2.join(","),
               longitude:'',
               latitude:'',
-              needsDescr:this.form2.needsDescr
+              descr:this.form2.descr
         
             }
             this.addresschange1(this.params2.province+this.params2.city+this.params2.address,2)

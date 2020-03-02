@@ -3,6 +3,7 @@
     <div class="onebif">
       <div style="font-size:12px">近1月数据</div>
       <div style="font-size:12px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span></div>
+      <div style="font-size:14px" @click="changeLangEvent">点击切换中英文{{$t('m.demander')}}</div>
     </div>
     <div class="twobif">{{zanz.encourage}}次</div>
     <div class="threebif" @click="dzanclick">
@@ -697,6 +698,7 @@ export default {
   },
   data() {
     return {
+      lang:'zh-CN',
       showmap:false,
       fenxi_img:'https://medicalsupplies.sitiits.com/share.png',
       fenxi_title:'云逆行·新冠肺炎物资公益平台',
@@ -704,7 +706,7 @@ export default {
       menuList: [
         {
           id:1,
-          name: "需方",
+          name: this.$t('m.demander'),
           imgUrl: [
             require("../assets/image/icon7.png"),
             require("../assets/image/list1.png")
@@ -1006,6 +1008,19 @@ export default {
       this.getDataList()
       this.getWuziList()
       this.getCityList()
+    },
+    /**
+ * 切换语言 
+ */ 
+    changeLangEvent() {
+      console.log(this.lang)
+      if ( this.lang === 'zh-CN' ) {
+              this.lang = 'en-US';
+              this.$i18n.locale = this.lang;//关键语句
+      }else {
+          this.lang = 'zh-CN';
+          this.$i18n.locale = this.lang;//关键语句
+      }
     },
     //一键关注
     yjgz(){

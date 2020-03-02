@@ -3,7 +3,7 @@
     <div class="onebif">
       <div style="font-size:12px">近1月数据</div>
       <div style="font-size:12px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span></div>
-      <div style="font-size:14px" @click="changeLangEvent">点击切换中英文{{$t('m.demander')}}</div>
+      <!-- <div style="font-size:14px" @click="changeLangEvent">点击切换中英文{{$t('m.demander')}}</div> -->
     </div>
     <div class="twobif">{{zanz.encourage}}次</div>
     <div class="threebif" @click="dzanclick">
@@ -706,7 +706,7 @@ export default {
       menuList: [
         {
           id:1,
-          name: this.$t('m.demander'),
+          name: "需方",
           imgUrl: [
             require("../assets/image/icon7.png"),
             require("../assets/image/list1.png")

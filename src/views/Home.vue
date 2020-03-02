@@ -698,6 +698,19 @@ export default {
   },
   data() {
     return {
+      myIcon: [ new BMap.Icon(require('../assets/image/icon4.png'), new BMap.Size(20,20)),
+      new BMap.Icon(require('../assets/image/icon5.png'), new BMap.Size(20,20)), 
+      new BMap.Icon(require('../assets/image/icon4.png'), new BMap.Size(20,20),{imageSize:(20,20)}),
+      new BMap.Icon(require('../assets/image/icon2.png'), new BMap.Size(20,20)), 
+      new BMap.Icon(require('../assets/image/icon51.png'), new BMap.Size(20,20)),
+      new BMap.Icon(require('../assets/image/icon3.png'), new BMap.Size(20,20)), 
+      new BMap.Icon(require('../assets/image/icon1.png'), new BMap.Size(20,20)),
+      new BMap.Icon(require('../assets/image/list4.png'), new BMap.Size(20,20)),
+      new BMap.Icon(require('../assets/image/list6.png'), new BMap.Size(20,20)),
+      new BMap.Icon(require('../assets/image/list8.png'), new BMap.Size(20,20)),
+      new BMap.Icon(require('../assets/image/list9.png'), new BMap.Size(20,20)),
+      new BMap.Icon(require('../assets/image/list10.png'), new BMap.Size(20,20))
+      ],
       lang:'zh-CN',
       showmap:false,
       fenxi_img:'https://medicalsupplies.sitiits.com/share.png',
@@ -738,7 +751,6 @@ export default {
       myMap:null,
       mass:null,
       markerSa:null,
-      pointGroup: new AMap.OverlayGroup(), // 省集合
       isDetail:false,
       agreement:false,
       specifications:false,//医用规则说明
@@ -880,34 +892,6 @@ export default {
     document.body.scrollTop =scrolltop;
     });
     this.WeChatshare()
-    //地图的放大缩小
-    // this.myMap.on("zoomend", () => {
-    //   let numberMap = this.myMap.getZoom();
-    //   if(numberMap>5||numberMap==5){
-    //     this.pointGroup.clearOverlays()
-    //     if(this.mass==null){
-    //       this.getDataList()
-    //     }
-    //   }else{
-    //     if(this.mass){
-    //       alert(1)
-    //         this.mass.clear()
-    //         this.mass=null
-    //       }
-    //     if(this.pointGroup.Pw.length==0){
-          
-    //       if(this.query.orgType==1){
-    //         this.getProvinMark("#216AFF")
-    //       }else if(this.query.orgType==2){
-    //         this.getProvinMark("#FF7550")
-    //       }else{
-    //         this.getProvinMark("#DE78FF")
-    //       }
-    //     }
-       
-    //   }
-      
-    // })
   },
   methods:{
     //微信分享
@@ -1031,27 +1015,14 @@ export default {
       if(this.markerSa){
         this.markerSa.setMap(null);
       }
-      let geolocation = new AMap.Geolocation({
-        enableHighAccuracy: true, //是否使用高精度定位，默认:true
-        timeout: 10000, //超过10秒后停止定位，默认：无穷大
-        maximumAge: 0, //定位结果缓存0毫秒，默认：0
-        convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
-        showButton: true, //显示定位按钮，默认：true
-        buttonPosition: "RB", //定位按钮停靠位置，默认：'LB'，左下角
-        buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-        showMarker: false, //定位成功后在定位到的位置显示点标记，默认：true
-        showCircle: true, //定位成功后用圆圈表示定位精度范围，默认：true
-        panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
-        useNative: true,
-        zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-      });
-      geolocation.getCurrentPosition((status, result) => {
-        if(status=='complete'){
-          this.addMarker (result.position)
-        }else{
-          this.$toast("获取当前位置失败");
-        }
-      });
+      // let geolocation = 
+      // geolocation.getCurrentPosition((status, result) => {
+      //   if(status=='complete'){
+      //     this.addMarker (result.position)
+      //   }else{
+      //     this.$toast("获取当前位置失败");
+      //   }
+      // });
     },
     // 实例化当前点点标记
     addMarker (val) {
@@ -1232,69 +1203,20 @@ export default {
       
     },
     createMarks(citys){
-      let style = [{
-            url: require('../assets/image/icon4.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        }, {
-            url: require('../assets/image/icon5.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        }, {
-            url: require('../assets/image/icon4.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        }, {
-            url: require('../assets/image/icon2.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        }, {
-            url: require('../assets/image/icon51.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        }, {
-            url: require('../assets/image/icon3.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        }, {
-            url: require('../assets/image/icon1.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        }, {
-            url: require('../assets/image/list4.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        }, {
-            url: require('../assets/image/list6.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        },{
-            url: require('../assets/image/list8.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        },{
-            url: require('../assets/image/list9.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        },{
-            url: require('../assets/image/list10.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        }
+      let style = [ new BMap.Icon(require('../assets/image/icon4.png'), new BMap.Size(20,20)),
+      new BMap.Icon(require('../assets/image/icon5.png'), new BMap.Size(20,20)), 
+      new BMap.Icon(require('../assets/image/icon4.png'), new BMap.Size(20,20)),
+      new BMap.Icon(require('../assets/image/icon2.png'), new BMap.Size(20,20)), 
+      new BMap.Icon(require('../assets/image/icon51.png'), new BMap.Size(20,20)),
+      new BMap.Icon(require('../assets/image/icon3.png'), new BMap.Size(20,20)), 
+      new BMap.Icon(require('../assets/image/icon1.png'), new BMap.Size(20,20)),
+      new BMap.Icon(require('../assets/image/list4.png'), new BMap.Size(20,20)),
+      new BMap.Icon(require('../assets/image/list6.png'), new BMap.Size(20,20)),
+      new BMap.Icon(require('../assets/image/list8.png'), new BMap.Size(20,20)),
+      new BMap.Icon(require('../assets/image/list9.png'), new BMap.Size(20,20)),
+      new BMap.Icon(require('../assets/image/list10.png'), new BMap.Size(20,20))
       ];
-      this.mass = new AMap.MassMarks(citys, {
-        zIndex: 111,
-        cursor: 'pointer',
-        style: style
-        });
-      this.mass.on("click", (e) => {
-        this.isDetail=true
-        if(e.data){
-          let str=e.data
-          this.mapobj=str
-        }
-      })
-        this.mass.setMap(this.myMap);
+      
     },
     //初始化 获取省的点
     getProvinMark(color){
@@ -1427,17 +1349,36 @@ export default {
               })
             }
             if(itam.gaodeLat){
+              if(this.query.orgType==2){
+                if(itam.status){
+                itam.style=itam.status==1?9:itam.status==2?10:itam.status==3?11:11
+                }else{
+                  itam.style=11
+                }
+              }else if(this.query.orgType==3){
+                itam.style=8
+              }else{
+                itam.style=itam.orgStatus
+              }
               itam.gaodeLat=decodeURIComponent(encrypt.Decrypt(itam.gaodeLat))
               itam.gaodeLon=decodeURIComponent(encrypt.Decrypt(itam.gaodeLon))
+              this.getbadu(itam)
+              
             }
             
           })
           this.total=arrsa.length
           this.dataList=arrsa
-          this.getmarkers(arrsa)
+          // this.getmarkers(arrsa)
         }
        
       })
+    },
+    //百度的加载自己的图标
+    getbadu(row){
+      let point = new BMap.Point(row.gaodeLon,row.gaodeLat);
+      let marker = new BMap.Marker(point,{icon:this.myIcon[row.style]});
+      this.myMap.addOverlay(marker);
     },
     // 选择时间
     selectTimeItem(item) {
@@ -1557,48 +1498,20 @@ export default {
       });
     },
     getMap () {
-      this.myMap = new AMap.Map("myMap", {
-        animateEnable: false,
-        resizeEnable: true,
-        // preloadMode: true,
-        center:[111.160477,32.1624],
-        zoom:4,
-        mapStyle:'amap://styles/9fb204085bdb47adb66e074fca3376be',
-      });
-      this.initMap()
-
+      this.myMap = new BMap.Map("myMap", {});
+      // this.myMap.centerAndZoom([111.160477,32.1624], 4)
+      this.myMap.centerAndZoom(new BMap.Point(105.000, 38.000), 4);
+      this.myMap.setMapStyleV2({     
+        styleId: '8353a33541df95b4aca4c33afd5cc1de'
+      })
+      this.myMap.enableScrollWheelZoom();
     },
     detailright(row){
       this.isDetail=true
       this.mapobj=row
 
     },
-    mapinit(res){
-     this.myMap.clearMap()
-      const markerslist=[]
-      res.forEach(item => {
-        if(item.linkTel!==undefined){
-          item.linkTelarr=item.linkTel.split(",")
-        }
-        if(item.linkPeople!==undefined){
-          item.linkPeoplearr=item.linkPeople.split(",")
-        }
-        if(item.needsName!==undefined){
-          item.needsNamearr=item.needsName.split(",")
-        }
-        if(item.needsDescr!==undefined){
-          item.needsDescrarr=item.needsDescr.split(",")
-        }
-        if(item.longitude){
-          item.lnglat=[item.gaodeLon, item.gaodeLat]
-          markerslist.push(this.createPoint(item))
-          // 
-        }
-        
-      })
-      this.myMap.add(markerslist)
-      
-    },
+    
 
   initMap(){
     
@@ -1608,34 +1521,7 @@ export default {
       }
     });
   },
-  
-  createPoint(row) {
-    let marker = new AMap.Marker({
-      position: new AMap.LngLat(row.gaodeLon, row.gaodeLat),
-      offset: new AMap.Pixel(-7, -7),
-      icon: new AMap.Icon({
-        size: new AMap.Size(14, 14),
-        image:
-          (row.type == 2&&row.isLack==1)
-            ? require('../assets/image/icon4.png')
-            : (row.type == 2&&row.isLack==0)?require('../assets/image/icon3.png')
-            : (row.type == 1&&row.isLack==0)?require('../assets/image/icon1.png')
-            :(row.type == 1&&row.isLack==1)?require('../assets/image/icon2.png'):require('../assets/image/icon5.png'),
-        imageSize: new AMap.Size(14,14)
-      }), // 添加 Icon 图标 URL
-      zIndex: 100,
-      // map:this.myMap,
-      extData: { row }
-    })
-    // touchstart
-    marker.on("click", (e) => {
-      // alert(2)
-      this.isDetail=true
-      let str=e.target.B.extData.row
-      this.mapobj=str
-    })
-     return marker
-  }
+ 
   }
 };
 </script>
@@ -1655,9 +1541,6 @@ export default {
 .van-popup__close-icon--top-right{
   top: 9px!important;
   right: 3px!important;
-}
-.amap-logo{
-  display:none !important;
 }
 .search-position-input .van-cell{
   height:34px;

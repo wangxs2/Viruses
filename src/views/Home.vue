@@ -711,6 +711,7 @@ export default {
       new BMap.Icon(require('../assets/image/list9.png'), new BMap.Size(20,20)),
       new BMap.Icon(require('../assets/image/list10.png'), new BMap.Size(20,20))
       ],
+      pointCollection:null,
       lang:'zh-CN',
       showmap:false,
       fenxi_img:'https://medicalsupplies.sitiits.com/share.png',
@@ -1013,11 +1014,26 @@ export default {
     //获取当前位置
     getPosition(){
       if(this.markerSa){
-        this.markerSa.setMap(null);
+        this.myMap.removeOverlay(this.markerSa);
       }
+      let myIcon=new BMap.Icon(require('../assets/image/iconpr.png'), new BMap.Size(33,33))
+      var geolocation = new BMap.Geolocation();
+          geolocation.getCurrentPosition((r)=>{
+            console.log(geolocation)
+              if(geolocation.getStatus() == BMAP_STATUS_SUCCESS){
+                  this.markerSa = new BMap.Marker(r.point,{icon:myIcon});
+                  this.myMap.addOverlay(this.markerSa);
+                  // this.myMap.panTo(r.point);
+                  this.myMap.centerAndZoom(new BMap.Point(r.point.lng,r.point.lat), 8);
+                  this.$toast('您的位置：'+r.point.lng+','+r.point.lat)
+              }
+              else {
+                this.$toast('failed'+geolocation.getStatus())
+              }        
+          },{enableHighAccuracy: true})
       // let geolocation = 
       // geolocation.getCurrentPosition((status, result) => {
-      //   if(status=='complete'){
+      //   if(status=='complete'){ require('../assets/image/iconpr.png')
       //     this.addMarker (result.position)
       //   }else{
       //     this.$toast("获取当前位置失败");
@@ -1311,16 +1327,14 @@ export default {
       this.dataList=[]
       let phonearr=[]
       let monarr=[]
-      if(this.mass){
-       this.mass.clear()
-       this.mass=null
+      if(this.pointCollection){
+       this.pointCollection.clear()
       }
       this.$fetchGet("hospital/selectHospital",this.query).then(res=> {
         this.showmap=false
         if(res.content.length==0){
-          if(this.mass){
-            this.mass.clear()
-            this.mass=null
+          if(this.pointCollection){
+            this.pointCollection.clear()
             }
           this.total=0
           
@@ -1362,14 +1376,14 @@ export default {
               }
               itam.gaodeLat=decodeURIComponent(encrypt.Decrypt(itam.gaodeLat))
               itam.gaodeLon=decodeURIComponent(encrypt.Decrypt(itam.gaodeLon))
-              this.getbadu(itam)
+              // this.getbadu(itam)
               
             }
             
           })
           this.total=arrsa.length
           this.dataList=arrsa
-          // this.getmarkers(arrsa)
+          this.getmarkerbai(arrsa)
         }
        
       })
@@ -1379,6 +1393,38 @@ export default {
       let point = new BMap.Point(row.gaodeLon,row.gaodeLat);
       let marker = new BMap.Marker(point,{icon:this.myIcon[row.style]});
       this.myMap.addOverlay(marker);
+    },
+    //百度加载海量点
+    getmarkerbai(mydata){
+      let color=this.query.orgType==1?'#ff9200':this.query.orgType==2?'#216aff':'#a84aff'
+      console.log(color)
+      if (document.createElement('canvas').getContext) {  // 判断当前浏览器是否支持绘制海量点
+        let points = [];  // 添加海量点数据
+        for (var i = 0; i < mydata.length; i++) {
+          points.push(new BMap.Point(mydata[i].gaodeLon, mydata[i].gaodeLat));
+        }
+        let options = {
+            size: BMAP_POINT_SIZE_BIGGER,
+            shape: BMAP_POINT_SHAPE_WATERDROP,
+            color: color
+        }
+        this.pointCollection = new BMap.PointCollection(points, options);  // 初始化PointCollection
+        this.pointCollection.addEventListener('click',  (e)=> {
+          for (var i = 0; i < mydata.length; i++) {
+              if(mydata[i].gaodeLon==e.point.lng&&mydata[i].gaodeLat==e.point.lat){//经度==点击的,维度
+                this.isDetail=true
+                this.mapobj=mydata[i]
+                console.log(mydata[i])
+              }
+          }
+
+        });
+        this.myMap.addOverlay(this.pointCollection);  // 添加Overlay
+    } else {
+        // alert('请在chrome、safari、IE8+以上浏览器查看本示例');
+        this.$toast('请在chrome、safari、IE8+以上浏览器查看本示例');
+    }
+
     },
     // 选择时间
     selectTimeItem(item) {

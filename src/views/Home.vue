@@ -1404,8 +1404,8 @@ export default {
           points.push(new BMap.Point(mydata[i].gaodeLon, mydata[i].gaodeLat));
         }
         let options = {
-            size: BMAP_POINT_SIZE_BIGGER,
-            shape: BMAP_POINT_SHAPE_WATERDROP,
+            size: BMAP_POINT_SIZE_NORMAL,
+            shape: BMAP_POINT_SHAPE_CIRCLE,
             color: color
         }
         this.pointCollection = new BMap.PointCollection(points, options);  // 初始化PointCollection

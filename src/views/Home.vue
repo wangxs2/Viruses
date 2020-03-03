@@ -176,7 +176,6 @@
         </div>
         <div class="input-wrapper">
           <img src="../assets/image/search.png" alt="" @click="search">
-
           <form action="javascript:return true"> 
             <input type="search" placeholder="查询继续支援医院、物资、区域" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==0"> 
             <input type="search" placeholder="查询继续支援企业、物资、区域" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==1"> 
@@ -1551,6 +1550,7 @@ export default {
         styleId: '8353a33541df95b4aca4c33afd5cc1de'
       })
       this.myMap.enableScrollWheelZoom();
+      this.myMap.disableDoubleClickZoom()
     },
     detailright(row){
       this.isDetail=true

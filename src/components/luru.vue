@@ -1103,28 +1103,37 @@ closebig(){
   this.$emit('fatherMethod');
 },
 //地址解析
-addresschange(address){
-  var geocoder = new AMap.Geocoder();
-  geocoder.getLocation(address, (status, result)=> {
-      if (status === 'complete'&&result.geocodes.length) {
+addresschange(province,city,address){
+  // var geocoder = new AMap.Geocoder();
+  // geocoder.getLocation(address, (status, result)=> {
+  //     if (status === 'complete'&&result.geocodes.length) {
        
-        let lnglat = result.geocodes[0].location
-        //  return lnglat
-         this.form3.longitude=lnglat.lng
-         this.form3.latitude=lnglat.lat
-         this.$fetchPost("material/save",this.form3,'json').then(res=> {
-            if(res.code=="success"){
-              this.showresult=true
-              this.clearForm3()
-            }else{
-              this.$toast(res.message);
-            }
-        })
+  //       let lnglat = result.geocodes[0].location
+  //       //  return lnglat
+  //        this.form3.longitude=lnglat.lng
+  //        this.form3.latitude=lnglat.lat
+  //        this.$fetchPost("material/save",this.form3,'json').then(res=> {
+  //           if(res.code=="success"){
+  //             this.showresult=true
+  //             this.clearForm3()
+  //           }else{
+  //             this.$toast(res.message);
+  //           }
+  //       })
          
-      }else{
-          // log.error('根据地址查询位置失败');
-      }
-  });
+  //     }else{
+  //     }
+  // });
+
+  var myGeo = new BMap.Geocoder();
+	// 将地址解析结果显示在地图上,并调整地图视野
+	myGeo.getPoint(address, (point)=>{
+		if (point) {
+		
+		}else{
+			alert("您选择地址没有解析到结果!");
+		}
+	}, "河南省平顶山");
 },
 cancleNeedName(){
   this.startTimePopNeedName=false
@@ -1507,7 +1516,7 @@ linkTelBlur(type,tel,index){
         }),
         this.form3.linkPeople=arr.join(",")
         this.form3.picUrl=this.meedUrlArr.join(",")
-        this.addresschange(this.form3.province+this.form3.city+this.form3.address)
+        this.addresschange(this.form3.province,this.form3.city,this.form3.address)
         
       }
     },

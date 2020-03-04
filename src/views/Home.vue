@@ -1259,6 +1259,8 @@ export default {
         // }
         if(item.needsName!==undefined){
           item.needsNamearr=item.needsName.split(",")
+          console.log(item.linkAddress)
+          console.log(item.needsNamearr)
         }
         if(item.needsDescr!==undefined){
           item.needsDescrarr=item.needsDescr.split(",")
@@ -1413,6 +1415,7 @@ export default {
           arrsa.forEach(itam=>{
             if(itam.hospitalAddress){
               itam.hospitalAddress=decodeURIComponent(encrypt.Decrypt(itam.hospitalAddress))
+              
             }
             if(itam.hospitalName){
               itam.hospitalName=decodeURIComponent(encrypt.Decrypt(itam.hospitalName))
@@ -1424,11 +1427,16 @@ export default {
                 itam.linkPeoplearr1.push(decodeURIComponent(encrypt.Decrypt(iteam)))
               })
             }
+            if(itam.needsName!==undefined){
+                itam.needsNamearr=itam.needsName.split(",")
+              }
             if(itam.linkTel!==undefined){
               itam.linkTelarr1=[]
               phonearr=itam.linkTel.split(",")
               phonearr.forEach(itm=>{
                 itam.linkTelarr1.push(decodeURIComponent(encrypt.Decrypt(itm)))
+                console.log(itam.linkTelarr1)
+                console.log(itam.hospitalName)
               })
             }
             if(itam.gaodeLat){
@@ -1469,17 +1477,17 @@ export default {
       if (document.createElement('canvas').getContext) {  // 判断当前浏览器是否支持绘制海量点
         let points = [];  // 添加海量点数据
         for (var i = 0; i < mydata.length; i++) {
-          points.push(new BMap.Point(mydata[i].gaodeLon, mydata[i].gaodeLat));
+          points.push(new BMap.Point(mydata[i].longitude, mydata[i].latitude));
         }
         let options = {
-            size: BMAP_POINT_SIZE_NORMAL,
+            size: BMAP_POINT_SIZE_BIG,
             shape: BMAP_POINT_SHAPE_CIRCLE,
             color: color
         }
         this.pointCollection = new BMap.PointCollection(points, options);  // 初始化PointCollection
         this.pointCollection.addEventListener('click',  (e)=> {
           for (var i = 0; i < mydata.length; i++) {
-              if(mydata[i].gaodeLon==e.point.lng&&mydata[i].gaodeLat==e.point.lat){//经度==点击的,维度
+              if(mydata[i].longitude==e.point.lng&&mydata[i].latitude==e.point.lat){//经度==点击的,维度
                 this.isDetail=true
                 this.mapobj=mydata[i]
               }
@@ -1621,7 +1629,7 @@ export default {
       })
       this.myMap.enableScrollWheelZoom();
       this.myMap.disableDoubleClickZoom()
-      this.mctGeo()
+      // this.mctGeo()
       	// var myGeo = new BMap.Geocoder();
         // 将地址解析结果显示在地图上,并调整地图视野
         // myGeo.getPoint("英国伦敦", (point)=>{

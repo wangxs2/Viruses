@@ -47,29 +47,6 @@
                         </van-list>
 
                     </van-tab>
-                    <van-tab title="出力进展">
-                        <van-list v-model="loading1" :finished="finished1" finished-text="没有更多了" @load="onLoad1" :error.sync="error1" error-text="请求失败，点击重新加载">
-                            <van-cell v-for="(item, i) in curTimeDataList" :key="i">
-                                <div class="donate-list1">
-                                    <div class="renwu-list-item">
-                                        <div class="list-item-top">
-                                            <div class="title">
-                                                <span class="title-name">{{item.title}}</span>
-                                            </div>
-                                            <div class="desc">{{item.body}}</div>
-                                        </div>
-                                        <div class="list-item-bottom">
-                                            <span class="time" v-if="item.updateTime">{{item.updateTime.substring(0,10)}}</span>
-                                            <span class="btn" @click="showPdf(item.linksCur)" v-if="item.links"><img class="down-up" src="../assets/image/pdf.png" alt="">查看任务详单</span>
-                                        </div>
-                                        <div class="tab" style="background:rgba(255,69,69,1)" v-if="item.status==0">等待资助</div>
-                                        <div class="tab" style="background:rgba(2,199,150,1)" v-else-if="item.status==1">资助完成</div>
-                                    </div>
-                                </div>
-                            </van-cell>
-                        </van-list>
-
-                    </van-tab>
                     <van-tab title="需求详情">
                         <van-list v-model="loading2" :finished="finished2" finished-text="没有更多了" @load="onLoad2" :error.sync="error2" error-text="请求失败，点击重新加载">
                             <van-cell v-for="(item, i) in curTimeDataList" :key="i">
@@ -112,6 +89,29 @@
                                         <div class="tab1" style="color:#FF4545" v-if="item.status==0">未核实</div>
                                         <div class="tab1" style="color:#02C796" v-else-if="item.status==2">已完结</div>
                                         <div class="tab1" style="color:#216AFF" v-else-if="item.status==1">已核实</div>
+                                    </div>
+                                </div>
+                            </van-cell>
+                        </van-list>
+
+                    </van-tab>
+                    <van-tab title="出力进展">
+                        <van-list v-model="loading1" :finished="finished1" finished-text="没有更多了" @load="onLoad1" :error.sync="error1" error-text="请求失败，点击重新加载">
+                            <van-cell v-for="(item, i) in curTimeDataList" :key="i">
+                                <div class="donate-list1">
+                                    <div class="renwu-list-item">
+                                        <div class="list-item-top">
+                                            <div class="title">
+                                                <span class="title-name">{{item.title}}</span>
+                                            </div>
+                                            <div class="desc">{{item.body}}</div>
+                                        </div>
+                                        <div class="list-item-bottom">
+                                            <span class="time" v-if="item.updateTime">{{item.updateTime.substring(0,10)}}</span>
+                                            <span class="btn" @click="showPdf(item.linksCur)" v-if="item.links"><img class="down-up" src="../assets/image/pdf.png" alt="">查看任务详单</span>
+                                        </div>
+                                        <div class="tab" style="background:rgba(255,69,69,1)" v-if="item.status==0">等待资助</div>
+                                        <div class="tab" style="background:rgba(2,199,150,1)" v-else-if="item.status==1">资助完成</div>
                                     </div>
                                 </div>
                             </van-cell>
@@ -260,12 +260,12 @@ export default {
       this.error3= false
         if (name==0&&this.loading){
             this.onLoad()
-        }else if (name==1&&this.loading1){
-            this.onLoad1()
-        }else if (name==2&&this.loading2){
+        }else if (name==1&&this.loading2){
             this.onLoad2()
-        }else if (name==3&&this.loading3){
+        }else if (name==2&&this.loading3){
             this.onLoad3()
+        }else if (name==3&&this.loading1){
+            this.onLoad1()
         }
     },
     // 获取实时资讯数据

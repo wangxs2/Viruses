@@ -710,6 +710,7 @@ export default {
       new BMap.Icon(require('../assets/image/list9.png'), new BMap.Size(20,20)),
       new BMap.Icon(require('../assets/image/list10.png'), new BMap.Size(20,20))
       ],
+      convertor:null,
       pointCollection:null,
       lang:'zh-CN',
       showmap:false,
@@ -869,7 +870,10 @@ export default {
         }
       ],
       curSearchTabItem:0, //搜索当前选择组织
+      type3: [550, 30],
       fugongModel:true, // 复工
+      xveax:"",
+      xvsy:''
     }
   },
   created() {
@@ -880,8 +884,8 @@ export default {
     // this.getProvinMark("#216AFF")
   },
  mounted () {
-  //  console.log(wx)
     this.getMap()
+    this.getPosition()
     var scrolltop = document.body.scrollTop;
     $('input').focus(function(){
     interval = setInterval(function(){
@@ -900,7 +904,6 @@ export default {
         let data={url:window.location.href.split('#')[0]};
         this.$fetchGet('signature/getSignature',data)
         .then((res)=>{
-          console.log(res)
           wx.config({
             debug: false, //开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: 'wxc941dba7ff69275c', //必填，公众号的唯一标识
@@ -982,7 +985,6 @@ export default {
           });
         })
         .catch((res)=>{
-          // console.log(res);
         })
       },
     searchTabItem(index){
@@ -997,7 +999,6 @@ export default {
  * 切换语言 
  */ 
     changeLangEvent() {
-      console.log(this.lang)
       if ( this.lang === 'zh-CN' ) {
               this.lang = 'en-US';
               this.$i18n.locale = this.lang;//关键语句
@@ -1012,32 +1013,101 @@ export default {
     },
     //获取当前位置
     getPosition(){
-      if(this.markerSa){
-        this.myMap.removeOverlay(this.markerSa);
+      let self=this
+      if(self.markerSa){
+        self.myMap.removeOverlay(self.markerSa);
       }
+      // var geolocation = new BMap.Geolocation();
+      // geolocation.getCurrentPosition((r)=>{
+      //         if(geolocation.getStatus() == BMAP_STATUS_SUCCESS){
+      //             this.markerSa = new BMap.Marker(r.point,{icon:myIcon});
+      //             this.myMap.addOverlay(this.markerSa);
+      //             this.myMap.centerAndZoom(new BMap.Point(r.point.lng,r.point.lat), 8);
+      //             this.$toast('您的位置：'+r.point.lng+','+r.point.lat)
+      //         }
+      //         else {
+      //           this.$toast('failed'+geolocation.getStatus())
+      //         }        
+      //     },{enableHighAccuracy: true})
+      // navigator.geolocation.getCurrentPosition( (position)=> {
+      // },(error)=>{
+      // })
+       if (navigator.geolocation){
+         
+          function showPosition(Position) {
+              alert(Position.coords.longitude)
+              this.xveax=Position.coords.longitude
+              this.xvsy=Position.coords.latitude 
+              alert(this.xvsy)
+          }
+          navigator.geolocation.getCurrentPosition(function(position) {
+                    var p1 = new BMap.Point(
+                      position.coords.longitude,
+                      position.coords.latitude
+                    );
+                    setTimeout(function() {
+                      var convertor = new BMap.Convertor();
+                      var pointArr = [];
+                      pointArr.push(p1);
+                      convertor.translate(
+                        pointArr,
+                        self.getTransType(position.coords.accuracy), //获取需转换的类型
+                        5,
+                        function(data) {
+                          if (data.status === 0) {
+                            p1 = data.points[0];
+                          }
+                          let myIcon=new BMap.Icon(require('../assets/image/iconpr.png'), new BMap.Size(33,33))
+                          self.markerSa = new BMap.Marker(p1,{icon:myIcon});
+                          self.myMap.addOverlay(self.markerSa); //标出所在地
+                          self.myMap.panTo(p1);
+                         
+                        }
+                      );
+                    }, 1000)
+                    },(error)=>{
+                })
+          // alert(showPosition)
+          // alert(showPosition())
+      }else{
+          this.$toast("Geolocation is not supported by this browser.");
+      }
+      
+    },
+    getTransType(accuracy) {
+      if (window.localStorage) {
+        var transType = localStorage.getItem("xdlcfwapp_transType");
+        if (transType != null && transType != "") {
+          return transType;
+        }
+      }
+
+      for (var i = 0; i < this.type3.length; i++) {
+        if (this.type3[i] == accuracy) {
+          localStorage.setItem("xdlcfwapp_transType", 3);
+          return 3;
+        }
+      }
+      localStorage.setItem("xdlcfwapp_transType", 1);
+      return 1;
+    },
+    genan(x,y){
       let myIcon=new BMap.Icon(require('../assets/image/iconpr.png'), new BMap.Size(33,33))
-      var geolocation = new BMap.Geolocation();
-          geolocation.getCurrentPosition((r)=>{
-            console.log(geolocation)
-              if(geolocation.getStatus() == BMAP_STATUS_SUCCESS){
-                  this.markerSa = new BMap.Marker(r.point,{icon:myIcon});
-                  this.myMap.addOverlay(this.markerSa);
-                  // this.myMap.panTo(r.point);
-                  this.myMap.centerAndZoom(new BMap.Point(r.point.lng,r.point.lat), 8);
-                  this.$toast('您的位置：'+r.point.lng+','+r.point.lat)
-              }
-              else {
-                this.$toast('failed'+geolocation.getStatus())
-              }        
-          },{enableHighAccuracy: true})
-      // let geolocation = 
-      // geolocation.getCurrentPosition((status, result) => {
-      //   if(status=='complete'){ require('../assets/image/iconpr.png')
-      //     this.addMarker (result.position)
-      //   }else{
-      //     this.$toast("获取当前位置失败");
-      //   }
-      // });
+      const  gpsPoint = new BMap.Point(x,y);
+      const  pointArr = [];
+      pointArr.push(ggPoint);
+      alert(123)
+      alert(this.convertor)
+      this.convertor.translate(pointArr,1,5,(data) => {
+        alert(data)
+        if (data.status === 0) {
+          this.markerSa = new BMap.Marker(data.points[0],{icon:myIcon});
+          this.myMap.addOverlay(this.markerSa);
+          this.myMap.panTo(data.points[0]);
+        } else {
+          this.$toast('转换百度坐标失败！');
+        }
+      })
     },
     // 实例化当前点点标记
     addMarker (val) {
@@ -1396,7 +1466,6 @@ export default {
     //百度加载海量点
     getmarkerbai(mydata){
       let color=this.query.orgType==1?'#ff9200':this.query.orgType==2?'#216aff':'#a84aff'
-      console.log(color)
       if (document.createElement('canvas').getContext) {  // 判断当前浏览器是否支持绘制海量点
         let points = [];  // 添加海量点数据
         for (var i = 0; i < mydata.length; i++) {
@@ -1413,7 +1482,6 @@ export default {
               if(mydata[i].gaodeLon==e.point.lng&&mydata[i].gaodeLat==e.point.lat){//经度==点击的,维度
                 this.isDetail=true
                 this.mapobj=mydata[i]
-                console.log(mydata[i])
               }
           }
 
@@ -1543,7 +1611,9 @@ export default {
       });
     },
     getMap () {
-      this.myMap = new BMap.Map("myMap", {});
+      this.myMap = new BMap.Map("myMap", {
+        enableMapClick:false
+      });
       // this.myMap.centerAndZoom([111.160477,32.1624], 4)
       this.myMap.centerAndZoom(new BMap.Point(105.000, 38.000), 4);
       this.myMap.setMapStyleV2({     
@@ -1551,6 +1621,29 @@ export default {
       })
       this.myMap.enableScrollWheelZoom();
       this.myMap.disableDoubleClickZoom()
+      this.mctGeo()
+      	// var myGeo = new BMap.Geocoder();
+        // 将地址解析结果显示在地图上,并调整地图视野
+        // myGeo.getPoint("英国伦敦", (point)=>{
+        //   if (point) {
+        //     console.log(point)
+        //     this.myMap.centerAndZoom(point, 16);
+        //     this.myMap.addOverlay(new BMap.Marker(point));
+        //   }else{
+        //     alert("您选择地址没有解析到结果!");
+        //   }
+        // }, "英国");
+    },
+    
+//以下两句话为创建地图
+
+    mctGeo(){
+        var mctXX = 12128773.43;
+        var mctYY = 4632249.00;    
+        var mctXY = new BMap.Pixel(mctXX,mctYY);    
+        var projection2 = this.myMap.getMapType().getProjection();
+        var LngLat = projection2.pointToLngLat(mctXY); 
+        console.log(LngLat)   
     },
     detailright(row){
       this.isDetail=true

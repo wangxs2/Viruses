@@ -152,7 +152,8 @@
               <div class="table-wrapper">
                 <div class="tab-head">
                   <div class="tab-items-name">岗位名称</div>
-                  <div class="tab-items-num">需求数量</div>
+                  <div class="tab-items-num" v-if="query.orgType==1">需求数量</div>
+                  <div class="tab-items-num" v-else>提供岗位数量</div>
                 </div>
                 <div :class="[mapobj.needsDescrList.length<=4?'tab-body-noheight':'tab-body']">
                   <div class="tab-items" v-for="(item,i) in mapobj.needsDescrList" :key="i">
@@ -163,7 +164,9 @@
               </div>
 
           </div>
-          <div class="need-descr" v-if="mapobj.descr">需求说明：{{mapobj.descr}}</div>
+          <div class="need-descr" v-if="mapobj.descr&&query.orgType==1">需求说明：{{mapobj.descr}}</div>
+          <div class="need-descr" v-if="mapobj.descr&&query.orgType==2">提供岗位描述：{{mapobj.descr}}</div>
+          <div class="need-descr" v-if="mapobj.descr&&query.orgType==3">提供服务描述：{{mapobj.descr}}</div>
           <!-- <div class="material" v-if="mapobj.needsNamearr!==undefined">
             <div v-for="(item,index) in mapobj.needsNamearr"
                   :key="index" class="boll-item"><span class="boll"></span>{{item}}</div>

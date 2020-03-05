@@ -111,7 +111,7 @@
                                             <span class="btn" @click="showPdf(item.linksCur)" v-if="item.links"><img class="down-up" src="../assets/image/pdf.png" alt="">查看任务详单</span>
                                         </div>
                                         <div class="tab" style="background:rgba(255,69,69,1)" v-if="item.status==0">等待资助</div>
-                                        <div class="tab" style="background:rgba(2,199,150,1)" v-else-if="item.status==1">资助完成</div>
+                                        <div class="tab" style="background:rgba(2,199,150,1)" v-else-if="item.status==1">用工成功</div>
                                     </div>
                                 </div>
                             </van-cell>
@@ -703,7 +703,7 @@ export default {
                     justify-content:space-between;
                     align-items:center;
                     .title-name{
-                        width:253px;
+                        width:200px;
                         font-size:15px;
                         font-family:PingFang SC;
                         font-weight:bold;

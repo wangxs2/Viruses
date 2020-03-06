@@ -1017,61 +1017,60 @@ export default {
       if(self.markerSa){
         self.myMap.removeOverlay(self.markerSa);
       }
-      // var geolocation = new BMap.Geolocation();
-      // geolocation.getCurrentPosition((r)=>{
-      //         if(geolocation.getStatus() == BMAP_STATUS_SUCCESS){
-      //             this.markerSa = new BMap.Marker(r.point,{icon:myIcon});
-      //             this.myMap.addOverlay(this.markerSa);
-      //             this.myMap.centerAndZoom(new BMap.Point(r.point.lng,r.point.lat), 8);
-      //             this.$toast('您的位置：'+r.point.lng+','+r.point.lat)
-      //         }
-      //         else {
-      //           this.$toast('failed'+geolocation.getStatus())
-      //         }        
-      //     },{enableHighAccuracy: true})
-      // navigator.geolocation.getCurrentPosition( (position)=> {
-      // },(error)=>{
-      // })
-       if (navigator.geolocation){
+      let myIcon=new BMap.Icon(require('../assets/image/iconpr.png'), new BMap.Size(33,33))
+      var geolocation = new BMap.Geolocation();
+      geolocation.getCurrentPosition((r)=>{
+              if(geolocation.getStatus() == BMAP_STATUS_SUCCESS){
+                  this.markerSa = new BMap.Marker(r.point,{icon:myIcon});
+                  this.myMap.addOverlay(this.markerSa);
+                  this.myMap.centerAndZoom(new BMap.Point(r.point.lng,r.point.lat), 8);
+                  this.$toast('您的位置：'+r.point.lng+','+r.point.lat)
+              }
+              else {
+                this.$toast('failed'+geolocation.getStatus())
+              }        
+          },{enableHighAccuracy: true})
+      navigator.geolocation.getCurrentPosition( (position)=> {
+      },(error)=>{
+      })
+      //  if (navigator.geolocation){
          
-          function showPosition(Position) {
-              alert(Position.coords.longitude)
-              this.xveax=Position.coords.longitude
-              this.xvsy=Position.coords.latitude 
-              alert(this.xvsy)
-          }
-          navigator.geolocation.getCurrentPosition(function(position) {
-                    var p1 = new BMap.Point(
-                      position.coords.longitude,
-                      position.coords.latitude
-                    );
-                    setTimeout(function() {
-                      var convertor = new BMap.Convertor();
-                      var pointArr = [];
-                      pointArr.push(p1);
-                      convertor.translate(
-                        pointArr,
-                        self.getTransType(position.coords.accuracy), //获取需转换的类型
-                        5,
-                        function(data) {
-                          if (data.status === 0) {
-                            p1 = data.points[0];
-                          }
-                          let myIcon=new BMap.Icon(require('../assets/image/iconpr.png'), new BMap.Size(33,33))
-                          self.markerSa = new BMap.Marker(p1,{icon:myIcon});
-                          self.myMap.addOverlay(self.markerSa); //标出所在地
-                          self.myMap.panTo(p1);
+      //     function showPosition(Position) {
+      //         alert(Position.coords.longitude)
+      //         this.xveax=Position.coords.longitude
+      //         this.xvsy=Position.coords.latitude 
+      //         alert(this.xvsy)
+      //     }
+      //     navigator.geolocation.getCurrentPosition(function(position) {
+      //               var p1 = new BMap.Point(
+      //                 position.coords.longitude,
+      //                 position.coords.latitude
+      //               );
+      //               setTimeout(function() {
+      //                 var convertor = new BMap.Convertor();
+      //                 var pointArr = [];
+      //                 pointArr.push(p1);
+      //                 convertor.translate(
+      //                   pointArr,
+      //                   self.getTransType(position.coords.accuracy),
+      //                   5,
+      //                   function(data) {
+      //                     if (data.status === 0) {
+      //                       p1 = data.points[0];
+      //                     }
+      //                     let myIcon=new BMap.Icon(require('../assets/image/iconpr.png'), new BMap.Size(33,33))
+      //                     self.markerSa = new BMap.Marker(p1,{icon:myIcon});
+      //                     self.myMap.addOverlay(self.markerSa);
+      //                     self.myMap.panTo(p1);
                          
-                        }
-                      );
-                    }, 1000)
-                    },(error)=>{
-                })
-          // alert(showPosition)
-          // alert(showPosition())
-      }else{
-          this.$toast("Geolocation is not supported by this browser.");
-      }
+      //                   }
+      //                 );
+      //               }, 1000)
+      //               },(error)=>{
+      //           })
+      // }else{
+      //     this.$toast("Geolocation is not supported by this browser.");
+      // }
       
     },
     getTransType(accuracy) {
@@ -1439,7 +1438,7 @@ export default {
                 console.log(itam.hospitalName)
               })
             }
-            if(itam.gaodeLat){
+            if(itam.longitude){
               if(this.query.orgType==2){
                 if(itam.status){
                 itam.style=itam.status==1?9:itam.status==2?10:itam.status==3?11:11
@@ -1451,8 +1450,8 @@ export default {
               }else{
                 itam.style=itam.orgStatus
               }
-              itam.gaodeLat=decodeURIComponent(encrypt.Decrypt(itam.gaodeLat))
-              itam.gaodeLon=decodeURIComponent(encrypt.Decrypt(itam.gaodeLon))
+              itam.latitude=decodeURIComponent(encrypt.Decrypt(itam.latitude))
+              itam.longitude=decodeURIComponent(encrypt.Decrypt(itam.longitude))
               // this.getbadu(itam)
               
             }
@@ -1467,7 +1466,7 @@ export default {
     },
     //百度的加载自己的图标
     getbadu(row){
-      let point = new BMap.Point(row.gaodeLon,row.gaodeLat);
+      let point = new BMap.Point(row.longitude,row.latitude);
       let marker = new BMap.Marker(point,{icon:this.myIcon[row.style]});
       this.myMap.addOverlay(marker);
     },
@@ -1490,6 +1489,7 @@ export default {
               if(mydata[i].longitude==e.point.lng&&mydata[i].latitude==e.point.lat){//经度==点击的,维度
                 this.isDetail=true
                 this.mapobj=mydata[i]
+                console.log(this.mapobj)
               }
           }
 

@@ -1523,7 +1523,7 @@ linkTelBlur(type,tel,index){
         this.form2.province=row.name
         this.form2.city=""
       }else{
-        this.form3.address=row.name
+        this.form3.address2=row.name
         this.form3.province=row.name
         this.form3.city=""
       }

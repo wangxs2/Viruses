@@ -44,13 +44,19 @@
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
                 <van-field v-model="form1.address" type="text" readonly placeholder="省市" :error-message="errorMessage1.address" @click="showPicker = true"/>
                 <van-popup  v-model="showPicker"  closeable close-icon="close" round position="bottom">
-                    <van-tabs style="margin-top:16px" color="#174fce" @click="isxiaosa" v-model="activechina">
-                      <van-tab title="中国大陆">中国大陆</van-tab>
+                    <van-tabs style="margin-top:35px" color="#174fce" @click="isxiaosa" v-model="activechina">
+                      <van-tab title="中国">中国</van-tab>
                       <van-tab title="海外国家/地区">海外国家/地区</van-tab>
                     </van-tabs>
                     <van-picker v-if="activechina==0" show-toolbar  :columns="columns" @cancel="onCancel" @confirm="onConfirm" @change="onChange" />
                     <div class="chinabox" v-if="activechina==1">
-                        <div @click="ischange(item,index,1)" :style="{color:iswg==index?'#174fce':''}" v-for="(item,index) in nochinaData" :key="index">{{item.name}}</div>
+                      <van-index-bar class="indexBar"  :sticky="false" highlight-color="#fb6463">
+                              <van-index-anchor    v-for="(item,index) in firstName" :key="index" :index="index">
+                                <span class="indexWord" style="margin-left:20px">{{index}}</span>
+                                <van-cell @click="ischange(citem,cindex,1)" v-for="(citem,cindex) in item" :key="cindex"  :title="citem.name"/>
+                              </van-index-anchor>
+                      </van-index-bar>
+                        <!-- <div @click="ischange(item,index,1)" :style="{color:iswg==index?'#174fce':''}" v-for="(item,index) in nochinaData" :key="index">{{item.name}}</div> -->
                     </div>
 
                 </van-popup>
@@ -190,13 +196,19 @@
                     <van-picker show-toolbar :columns="columns" @cancel="onCancel1" @confirm="onConfirm1" @change="onChange1" />
                 </van-popup> -->
                 <van-popup  v-model="showPicker1"  closeable close-icon="close" round position="bottom">
-                    <van-tabs style="margin-top:16px" color="#174fce" @click="isxiaosa" v-model="activechina">
-                      <van-tab title="中国大陆">中国大陆</van-tab>
+                    <van-tabs style="margin-top:35px" color="#174fce" @click="isxiaosa" v-model="activechina">
+                      <van-tab title="中国">中国</van-tab>
                       <van-tab title="海外国家/地区">海外国家/地区</van-tab>
                     </van-tabs>
                     <van-picker  v-if="activechina==0" show-toolbar :columns="columns" @cancel="onCancel1" @confirm="onConfirm1" @change="onChange1" />
                     <div class="chinabox" v-if="activechina==1">
-                        <div @click="ischange(item,index,2)" :style="{color:iswg==index?'#174fce':''}" v-for="(item,index) in nochinaData" :key="index">{{item.name}}</div>
+                      <van-index-bar class="indexBar"  :sticky="false" highlight-color="#fb6463">
+                              <van-index-anchor    v-for="(item,index) in firstName" :key="index" :index="index">
+                                <span class="indexWord" style="margin-left:20px">{{index}}</span>
+                                <van-cell @click="ischange(citem,cindex,2)" v-for="(citem,cindex) in item" :key="cindex"  :title="citem.name"/>
+                              </van-index-anchor>
+                      </van-index-bar>
+                        <!-- <div @click="ischange(item,index,2)" :style="{color:iswg==index?'#174fce':''}" v-for="(item,index) in nochinaData" :key="index">{{item.name}}</div> -->
                     </div>
 
                 </van-popup>
@@ -337,13 +349,19 @@
                     <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm3" @change="onChange" />
                 </van-popup> -->
                 <van-popup  v-model="showPicker"  closeable close-icon="close" round position="bottom">
-                    <van-tabs style="margin-top:16px" color="#174fce" @click="isxiaosa" v-model="activechina">
-                      <van-tab title="中国大陆">中国大陆</van-tab>
+                    <van-tabs style="margin-top:35px" color="#174fce" @click="isxiaosa" v-model="activechina">
+                      <van-tab title="中国">中国</van-tab>
                       <van-tab title="海外国家/地区">海外国家/地区</van-tab>
                     </van-tabs>
                     <van-picker v-if="activechina==0" show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm3" @change="onChange" />
                     <div class="chinabox" v-if="activechina==1">
-                        <div @click="ischange(item,index,3)" :style="{color:iswg==index?'#174fce':''}" v-for="(item,index) in nochinaData" :key="index">{{item.name}}</div>
+                      <van-index-bar class="indexBar"  :sticky="false" highlight-color="#fb6463">
+                              <van-index-anchor    v-for="(item,index) in firstName" :key="index" :index="index">
+                                <span class="indexWord" style="margin-left:20px">{{index}}</span>
+                                <van-cell @click="ischange(citem,cindex,3)" v-for="(citem,cindex) in item" :key="cindex"  :title="citem.name"/>
+                              </van-index-anchor>
+                      </van-index-bar>
+                      <!-- <div @click="ischange(item,index,3)" :style="{color:iswg==index?'#174fce':''}" v-for="(item,index) in nochinaData" :key="index">{{item.name}}</div> -->
                     </div>
 
                 </van-popup>
@@ -501,6 +519,7 @@ export default {
       testnum:'',
       activechina:0,//中国或者国外的
       form1:{ // 录入表单
+        country:'',
         selectItem:'',
         hispotalName:'',
         province:'',//省
@@ -557,6 +576,7 @@ export default {
       searchid:-1,
       showresult:false,
       form2:{ // 录入表单
+        country:'',
         selectItem:'',
         hispotalName:'',
         addressArr:[],
@@ -611,6 +631,7 @@ export default {
       },
       filst:[],
       form3:{ // 录入表单
+        country:'',
         materialType:3,//民间组织
         name:'',//机构名称
         province:'',//省
@@ -830,6 +851,7 @@ export default {
       readonly2:true,//需求表中输入框是否可读
       curNeed1:0,// 当前选择需求为其他
       curNeed2:0,// 当前选择需求为其他
+      firstName:{},
     };
   },
    props: {
@@ -837,7 +859,24 @@ export default {
       required: true,
     },
   created() {
-    this.nochinaData=nochina
+    // this.nochinaData=nochina
+    nochina.forEach(iteam=>{
+      iteam.pinyin=iteam.pinyin.substr(0, 1).toUpperCase()
+      this.nochinaData.push(iteam)
+    })
+    
+    // let firstName = {};
+    let FirstPin= ["A", "B", "C", "D", "E", "F", "G", "H","I","J", "K", "L", "M", "N", "O","P", "Q", "R", "S", "T","U","V", "W", "X", "Y", "Z"]
+    FirstPin.forEach((item)=>{
+        this.firstName[item] = [];
+        this.nochinaData.forEach((el)=>{
+            let first = el.pinyin;
+            if( first == item ){
+              this.firstName[item].push(el)
+            }       
+        })
+    })
+    console.log(this.firstName)
   },
   watch:{
   },
@@ -845,29 +884,6 @@ export default {
   
  },
  mounted () {
-  //  let interval
-  //   $('input').focus(function(){
-  //     interval = setInterval(function(){
-  //     document.body.scrollTop = document.body.scrollHeight;
-  //   },100)
-  //   }).blur(function(){
-  //     clearInterval(interval);
-  //     document.body.scrollTop =scrolltop;
-  //   });
-    let pos = 0;
-    // if ( $('input').selectionStart ==  $('input').selectionEnd) {
-    //     pos = isNaN(temp) || 
-    //        $('input').selectionStart % 5 != 0 || 
-    //       val.length < old.length ?
-    //        $('input').selectionStart :  $('input').selectionStart + 1;
-    //   } else {
-    //     pos = -1;
-    //   }
-    // this.$nextTick(() => {
-    //   if (pos != -1) {
-    //     this.$refs.focusa.setSelectionRange(pos, pos);
-    //   }
-    // });
      this.columns[0].values = Object.values(this.allCity).map(function(e){
         return {text:e.name}
     })
@@ -1140,25 +1156,48 @@ closebig(){
   this.$emit('fatherMethod');
 },
 //地址解析
-addresschange(province,city,address){
-      let myGeo = new BMap.Geocoder();
-      // 将地址解析结果显示在地图上,并调整地图视野
-      myGeo.getPoint(province+city+address, (point)=>{
-        if (point) {
-          this.form3.longitude=point.lng
-          this.form3.latitude=point.lat
-          this.$fetchPost("material/save",this.form3,'json').then(res=> {
-            if(res.code=="success"){
-              this.showresult=true
-              this.clearForm3()
+addresschange(address){
+      // let myGeo = new BMap.Geocoder();
+      // // 将地址解析结果显示在地图上,并调整地图视野
+      // myGeo.getPoint(province+city+address, (point)=>{
+      //   if (point) {
+      //     this.form3.longitude=point.lng
+      //     this.form3.latitude=point.lat
+      //     this.$fetchPost("material/save",this.form3,'json').then(res=> {
+      //       if(res.code=="success"){
+      //         this.showresult=true
+      //         this.clearForm3()
+      //       }else{
+      //         this.$toast(res.message);
+      //       }
+      //     })
+      //   }else{
+      //     alert("您选择地址没有解析到结果!");
+      //   }
+      // }, province+city);
+
+       var geocoder = new AMap.Geocoder();
+        geocoder.getLocation(address, (status, result)=> {
+            if (status === 'complete'&&result.geocodes.length) {
+            
+              let lnglat = result.geocodes[0].location
+              //  return lnglat
+              this.form3.longitude=lnglat.lng
+              this.form3.latitude=lnglat.lat
+              this.form3.country="中国"
+              this.$fetchPost("material/save",this.form3,'json').then(res=> {
+                  if(res.code=="success"){
+                    this.showresult=true
+                    this.clearForm3()
+                  }else{
+                    this.$toast(res.message);
+                  }
+              })
+              
             }else{
-              this.$toast(res.message);
+                // log.error('根据地址查询位置失败');
             }
-          })
-        }else{
-          alert("您选择地址没有解析到结果!");
-        }
-      }, province+city);
+        });
 },
 cancleNeedName(){
   this.startTimePopNeedName=false
@@ -1515,16 +1554,20 @@ linkTelBlur(type,tel,index){
       this.showPicker=false
       this.showPicker1=false
       if(type==1){
+        
         this.form1.address=row.name
-        this.form1.province=row.name
+        this.form1.country=row.name
+        this.form1.province=""
         this.form1.city=""
       }else if(type==2){
+        this.form2.country=row.name
         this.form2.address=row.name
-        this.form2.province=row.name
+        this.form2.province=""
         this.form2.city=""
       }else{
+        this.form3.country=row.name
         this.form3.address2=row.name
-        this.form3.province=row.name
+        this.form3.province=""
         this.form3.city=""
       }
     },
@@ -1534,7 +1577,7 @@ linkTelBlur(type,tel,index){
       let y=this.form3.contectTelList.some(item =>{
           return item.tel == ""||item.name=='' //返回true
       })
-      if(this.form3.name==""||this.form3.province==""
+      if(this.form3.name==""
       ||this.form3.address==""||this.form3.serviceRange==""||
       this.form3.startTime==""||this.form3.endTime==""||this.form3.materialDetails1.length==0||this.meedUrlArr.length==0){
         this.$toast('请完善信息');
@@ -1571,7 +1614,7 @@ linkTelBlur(type,tel,index){
                   }
               })
         }else{
-          this.addresschange(this.form3.province,this.form3.city,this.form3.address)
+          this.addresschange(this.form3.province+this.form3.city+this.form3.address)
         }
         
         
@@ -1774,7 +1817,7 @@ linkTelBlur(type,tel,index){
       let y=this.form1.contectTelList.some(item =>{
           return item.tel == ""||item.name=='' //返回true
       })
-        if (this.form1.hispotalName==""||this.form1.province==""|| this.form1.addressDetail==""||this.form1.sup.length==0||x||this.form1.startTime==""||this.meedUrlArr1.length==0){
+        if (this.form1.hispotalName==""|| this.form1.address==""||this.form1.addressDetail==""||this.form1.sup.length==0||x||this.form1.startTime==""||this.meedUrlArr1.length==0){
             this.$toast('请完善信息');
         }else if (y){
         this.$toast('请输入联系人、联系电话且相互对应');
@@ -1786,6 +1829,7 @@ linkTelBlur(type,tel,index){
          })
           this.params1= { 
             materialType:1,
+            country:this.form1.country,
             name:this.form1.hispotalName,
             province:this.form1.province,
             city:this.form1.city,
@@ -1811,7 +1855,7 @@ linkTelBlur(type,tel,index){
                   }
               })
             }else{
-              this.addresschange1(this.params1.province,this.params1.city,this.params1.address,1)
+              this.addresschange1(this.params1.province+this.params1.city+this.params1.address,1)
 
             }
         }
@@ -1826,7 +1870,7 @@ linkTelBlur(type,tel,index){
       let y=this.form2.contectTelList.some(item =>{
           return item.tel == ""||item.name=='' //返回true
       })
-      if (this.form2.hispotalName==""||this.form2.province==""||this.form2.addressDetail==""||x||this.form2.startTime==""||this.meedUrlArr2.length==0){
+      if (this.form2.hispotalName==""||this.form1.address==""||this.form2.addressDetail==""||x||this.form2.startTime==""||this.meedUrlArr2.length==0){
           this.$toast('请完善信息');
       }else if (y){
         this.$toast('请输入联系人、联系电话且相互对应');
@@ -1838,6 +1882,7 @@ linkTelBlur(type,tel,index){
          })
             this.params2= { 
               materialType:2,
+              country:this.form2.country,
               name:this.form2.hispotalName,
               province:this.form2.province,
               city:this.form2.city,
@@ -1863,20 +1908,22 @@ linkTelBlur(type,tel,index){
                   }
               })
             }else{
-               this.addresschange1(this.params2.province,this.params2.city,this.params2.address,2)
+               this.addresschange1(this.params2.province+this.params2.city+this.params2.address,2)
             }
       }
     },
     //地址解析
-    addresschange1(province,city,address,type){
-       let myGeo = new BMap.Geocoder();
-        // 将地址解析结果显示在地图上,并调整地图视野
-        myGeo.getPoint(province+city+address, (point)=>{
-          if (point) {
-
+    addresschange1(address,type){
+         var geocoder = new AMap.Geocoder();
+      geocoder.getLocation(address, (status, result)=> {
+          if (status === 'complete'&&result.geocodes.length) {
+          
+            let lnglat = result.geocodes[0].location
+            //  return lnglat
             if (type==1){
               this.params1.longitude=lnglat.lng
               this.params1.latitude=lnglat.lat
+              this.params1.country="中国"
               this.$fetchPost("material/save",this.params1,'json').then(res=> {
                   this.$toast(res.message);
                   if(res.code=="success"){
@@ -1887,6 +1934,7 @@ linkTelBlur(type,tel,index){
             }else if (type==2){
               this.params2.longitude=lnglat.lng
               this.params2.latitude=lnglat.lat
+              this.params2.country="中国"
               this.$fetchPost("material/save",this.params2,'json').then(res=> {
                   this.$toast(res.message);
                   if(res.code=="success"){
@@ -1897,9 +1945,9 @@ linkTelBlur(type,tel,index){
             }
             
           }else{
-            this.$toast("您选择地址没有解析到结果!");
+              // log.error('根据地址查询位置失败');
           }
-        }, province+city);
+      });
     },
     // 点击确定
     confirmTime() {
@@ -2002,7 +2050,7 @@ linkTelBlur(type,tel,index){
   }
 };
 </script>
-<style>
+<style lang="scss">
 [class*=van-hairline]::after{
   border:none !important;
 }
@@ -2012,6 +2060,15 @@ linkTelBlur(type,tel,index){
 .header-box .van-field__body{
   justify-content:flex-start;
 }
+.chinabox{
+  .van-cell{
+    padding: 0 20px;
+  }
+  .van-index-bar__sidebar{
+    top:60%
+  }
+}
+
 </style>
 <style lang="scss" scoped>
 .luru{
@@ -2078,7 +2135,8 @@ linkTelBlur(type,tel,index){
       height:500px;
       div{
         box-sizing:border-box;
-        padding:6px 10px;
+        // padding:6px 20px;
+        // padding-left:40px;
       }
     }
     .banner{

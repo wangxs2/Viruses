@@ -176,6 +176,7 @@
         </div>
         <div class="input-wrapper">
           <img src="../assets/image/search.png" alt="" @click="search">
+
           <form action="javascript:return true"> 
             <input type="search" placeholder="查询继续支援医院、物资、区域" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==0"> 
             <input type="search" placeholder="查询继续支援企业、物资、区域" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==1"> 
@@ -697,21 +698,6 @@ export default {
   },
   data() {
     return {
-      myIcon: [ new BMap.Icon(require('../assets/image/icon4.png'), new BMap.Size(20,20)),
-      new BMap.Icon(require('../assets/image/icon5.png'), new BMap.Size(20,20)), 
-      new BMap.Icon(require('../assets/image/icon4.png'), new BMap.Size(20,20),{imageSize:(20,20)}),
-      new BMap.Icon(require('../assets/image/icon2.png'), new BMap.Size(20,20)), 
-      new BMap.Icon(require('../assets/image/icon51.png'), new BMap.Size(20,20)),
-      new BMap.Icon(require('../assets/image/icon3.png'), new BMap.Size(20,20)), 
-      new BMap.Icon(require('../assets/image/icon1.png'), new BMap.Size(20,20)),
-      new BMap.Icon(require('../assets/image/list4.png'), new BMap.Size(20,20)),
-      new BMap.Icon(require('../assets/image/list6.png'), new BMap.Size(20,20)),
-      new BMap.Icon(require('../assets/image/list8.png'), new BMap.Size(20,20)),
-      new BMap.Icon(require('../assets/image/list9.png'), new BMap.Size(20,20)),
-      new BMap.Icon(require('../assets/image/list10.png'), new BMap.Size(20,20))
-      ],
-      convertor:null,
-      pointCollection:null,
       lang:'zh-CN',
       showmap:false,
       fenxi_img:'https://medicalsupplies.sitiits.com/share.png',
@@ -752,6 +738,7 @@ export default {
       myMap:null,
       mass:null,
       markerSa:null,
+      pointGroup: new AMap.OverlayGroup(), // 省集合
       isDetail:false,
       agreement:false,
       specifications:false,//医用规则说明
@@ -870,10 +857,7 @@ export default {
         }
       ],
       curSearchTabItem:0, //搜索当前选择组织
-      type3: [550, 30],
       fugongModel:true, // 复工
-      xveax:"",
-      xvsy:''
     }
   },
   created() {
@@ -884,8 +868,8 @@ export default {
     // this.getProvinMark("#216AFF")
   },
  mounted () {
+  //  console.log(wx)
     this.getMap()
-    this.getPosition()
     var scrolltop = document.body.scrollTop;
     $('input').focus(function(){
     interval = setInterval(function(){
@@ -896,6 +880,34 @@ export default {
     document.body.scrollTop =scrolltop;
     });
     this.WeChatshare()
+    //地图的放大缩小
+    // this.myMap.on("zoomend", () => {
+    //   let numberMap = this.myMap.getZoom();
+    //   if(numberMap>5||numberMap==5){
+    //     this.pointGroup.clearOverlays()
+    //     if(this.mass==null){
+    //       this.getDataList()
+    //     }
+    //   }else{
+    //     if(this.mass){
+    //       alert(1)
+    //         this.mass.clear()
+    //         this.mass=null
+    //       }
+    //     if(this.pointGroup.Pw.length==0){
+          
+    //       if(this.query.orgType==1){
+    //         this.getProvinMark("#216AFF")
+    //       }else if(this.query.orgType==2){
+    //         this.getProvinMark("#FF7550")
+    //       }else{
+    //         this.getProvinMark("#DE78FF")
+    //       }
+    //     }
+       
+    //   }
+      
+    // })
   },
   methods:{
     //微信分享
@@ -904,6 +916,7 @@ export default {
         let data={url:window.location.href.split('#')[0]};
         this.$fetchGet('signature/getSignature',data)
         .then((res)=>{
+          console.log(res)
           wx.config({
             debug: false, //开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: 'wxc941dba7ff69275c', //必填，公众号的唯一标识
@@ -912,11 +925,9 @@ export default {
             signature: res.content.signature, // 必填，签名
             jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage',"onMenuShareQQ",'onMenuShareWeibo','onMenuShareQZone'] // 必填，需要使用的JS接口列表
           });
-
           //拼接当前地址 
           let shareUrl=window.location.href.split('#')[0]+'#'+window.location.href.split('#')[1];
           // shareUrl = shareUrl.split('#')[0] + 'static/html/redirect.html?app3Redirect=' + encodeURIComponent(shareUrl);
-
           wx.ready(function () {
             //分享给朋友
             wx.onMenuShareAppMessage({
@@ -985,6 +996,7 @@ export default {
           });
         })
         .catch((res)=>{
+          // console.log(res);
         })
       },
     searchTabItem(index){
@@ -999,6 +1011,7 @@ export default {
  * 切换语言 
  */ 
     changeLangEvent() {
+      console.log(this.lang)
       if ( this.lang === 'zh-CN' ) {
               this.lang = 'en-US';
               this.$i18n.locale = this.lang;//关键语句
@@ -1013,100 +1026,30 @@ export default {
     },
     //获取当前位置
     getPosition(){
-      let self=this
-      if(self.markerSa){
-        self.myMap.removeOverlay(self.markerSa);
+      if(this.markerSa){
+        this.markerSa.setMap(null);
       }
-      let myIcon=new BMap.Icon(require('../assets/image/iconpr.png'), new BMap.Size(33,33))
-      var geolocation = new BMap.Geolocation();
-      geolocation.getCurrentPosition((r)=>{
-              if(geolocation.getStatus() == BMAP_STATUS_SUCCESS){
-                  this.markerSa = new BMap.Marker(r.point,{icon:myIcon});
-                  this.myMap.addOverlay(this.markerSa);
-                  this.myMap.centerAndZoom(new BMap.Point(r.point.lng,r.point.lat), 8);
-                  this.$toast('您的位置：'+r.point.lng+','+r.point.lat)
-              }
-              else {
-                this.$toast('failed'+geolocation.getStatus())
-              }        
-          },{enableHighAccuracy: true})
-      navigator.geolocation.getCurrentPosition( (position)=> {
-      },(error)=>{
-      })
-      //  if (navigator.geolocation){
-         
-      //     function showPosition(Position) {
-      //         alert(Position.coords.longitude)
-      //         this.xveax=Position.coords.longitude
-      //         this.xvsy=Position.coords.latitude 
-      //         alert(this.xvsy)
-      //     }
-      //     navigator.geolocation.getCurrentPosition(function(position) {
-      //               var p1 = new BMap.Point(
-      //                 position.coords.longitude,
-      //                 position.coords.latitude
-      //               );
-      //               setTimeout(function() {
-      //                 var convertor = new BMap.Convertor();
-      //                 var pointArr = [];
-      //                 pointArr.push(p1);
-      //                 convertor.translate(
-      //                   pointArr,
-      //                   self.getTransType(position.coords.accuracy),
-      //                   5,
-      //                   function(data) {
-      //                     if (data.status === 0) {
-      //                       p1 = data.points[0];
-      //                     }
-      //                     let myIcon=new BMap.Icon(require('../assets/image/iconpr.png'), new BMap.Size(33,33))
-      //                     self.markerSa = new BMap.Marker(p1,{icon:myIcon});
-      //                     self.myMap.addOverlay(self.markerSa);
-      //                     self.myMap.panTo(p1);
-                         
-      //                   }
-      //                 );
-      //               }, 1000)
-      //               },(error)=>{
-      //           })
-      // }else{
-      //     this.$toast("Geolocation is not supported by this browser.");
-      // }
-      
-    },
-    getTransType(accuracy) {
-      if (window.localStorage) {
-        var transType = localStorage.getItem("xdlcfwapp_transType");
-        if (transType != null && transType != "") {
-          return transType;
+      let geolocation = new AMap.Geolocation({
+        enableHighAccuracy: true, //是否使用高精度定位，默认:true
+        timeout: 10000, //超过10秒后停止定位，默认：无穷大
+        maximumAge: 0, //定位结果缓存0毫秒，默认：0
+        convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+        showButton: true, //显示定位按钮，默认：true
+        buttonPosition: "RB", //定位按钮停靠位置，默认：'LB'，左下角
+        buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+        showMarker: false, //定位成功后在定位到的位置显示点标记，默认：true
+        showCircle: true, //定位成功后用圆圈表示定位精度范围，默认：true
+        panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
+        useNative: true,
+        zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+      });
+      geolocation.getCurrentPosition((status, result) => {
+        if(status=='complete'){
+          this.addMarker (result.position)
+        }else{
+          this.$toast("获取当前位置失败");
         }
-      }
-
-      for (var i = 0; i < this.type3.length; i++) {
-        if (this.type3[i] == accuracy) {
-          localStorage.setItem("xdlcfwapp_transType", 3);
-          return 3;
-        }
-      }
-      localStorage.setItem("xdlcfwapp_transType", 1);
-      return 1;
-    },
-    genan(x,y){
-      let myIcon=new BMap.Icon(require('../assets/image/iconpr.png'), new BMap.Size(33,33))
-      const  gpsPoint = new BMap.Point(x,y);
-      const  pointArr = [];
-      pointArr.push(ggPoint);
-      alert(123)
-      alert(this.convertor)
-      this.convertor.translate(pointArr,1,5,(data) => {
-        alert(data)
-        if (data.status === 0) {
-          this.markerSa = new BMap.Marker(data.points[0],{icon:myIcon});
-          this.myMap.addOverlay(this.markerSa);
-          this.myMap.panTo(data.points[0]);
-        } else {
-          this.$toast('转换百度坐标失败！');
-        }
-      })
+      });
     },
     // 实例化当前点点标记
     addMarker (val) {
@@ -1153,7 +1096,6 @@ export default {
     // 录入弹框选择
     luruSelectBtn(type) {
       if (type!=4){
-
         this.curTabIndex=type
         // this.luruSelectModel=false
         this.reduceShow=true
@@ -1164,18 +1106,14 @@ export default {
     getCurTimeContent(){
       this.$fetchGet("donateCount/findDonateCount").then(res=> {
         if (res&&res.length){
-
           this.curTimeTopContent=res[0].content
         }
       })
     },
-
-
     isoneClick(){
       this.isone=false
       this.styleUp=false
       this.isoneClosePoint=0
-
     },
     fatherMethod(){
       this.reduceShow=false
@@ -1244,7 +1182,6 @@ export default {
       this.downUpImg=false
       // this.selectIndex=this.selectIndex1
       this.heightCur="100%"
-
     },
     //加载海量点
     getmarkers(citys){
@@ -1258,8 +1195,6 @@ export default {
         // }
         if(item.needsName!==undefined){
           item.needsNamearr=item.needsName.split(",")
-          console.log(item.linkAddress)
-          console.log(item.needsNamearr)
         }
         if(item.needsDescr!==undefined){
           item.needsDescrarr=item.needsDescr.split(",")
@@ -1278,7 +1213,6 @@ export default {
           }else{
             item.style=item.orgStatus
           }
-
           markerslist.push(item)
           // 
         }
@@ -1289,20 +1223,69 @@ export default {
       
     },
     createMarks(citys){
-      let style = [ new BMap.Icon(require('../assets/image/icon4.png'), new BMap.Size(20,20)),
-      new BMap.Icon(require('../assets/image/icon5.png'), new BMap.Size(20,20)), 
-      new BMap.Icon(require('../assets/image/icon4.png'), new BMap.Size(20,20)),
-      new BMap.Icon(require('../assets/image/icon2.png'), new BMap.Size(20,20)), 
-      new BMap.Icon(require('../assets/image/icon51.png'), new BMap.Size(20,20)),
-      new BMap.Icon(require('../assets/image/icon3.png'), new BMap.Size(20,20)), 
-      new BMap.Icon(require('../assets/image/icon1.png'), new BMap.Size(20,20)),
-      new BMap.Icon(require('../assets/image/list4.png'), new BMap.Size(20,20)),
-      new BMap.Icon(require('../assets/image/list6.png'), new BMap.Size(20,20)),
-      new BMap.Icon(require('../assets/image/list8.png'), new BMap.Size(20,20)),
-      new BMap.Icon(require('../assets/image/list9.png'), new BMap.Size(20,20)),
-      new BMap.Icon(require('../assets/image/list10.png'), new BMap.Size(20,20))
+      let style = [{
+            url: require('../assets/image/icon4.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }, {
+            url: require('../assets/image/icon5.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }, {
+            url: require('../assets/image/icon4.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }, {
+            url: require('../assets/image/icon2.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }, {
+            url: require('../assets/image/icon51.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }, {
+            url: require('../assets/image/icon3.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }, {
+            url: require('../assets/image/icon1.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }, {
+            url: require('../assets/image/list4.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }, {
+            url: require('../assets/image/list6.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        },{
+            url: require('../assets/image/list8.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        },{
+            url: require('../assets/image/list9.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        },{
+            url: require('../assets/image/list10.png'),
+            anchor: new AMap.Pixel(9, 9),
+            size: new AMap.Size(18, 18)
+        }
       ];
-      
+      this.mass = new AMap.MassMarks(citys, {
+        zIndex: 111,
+        cursor: 'pointer',
+        style: style
+        });
+      this.mass.on("click", (e) => {
+        this.isDetail=true
+        if(e.data){
+          let str=e.data
+          this.mapobj=str
+        }
+      })
+        this.mass.setMap(this.myMap);
     },
     //初始化 获取省的点
     getProvinMark(color){
@@ -1352,7 +1335,6 @@ export default {
       // this.show=false
       // this.reduceShow=!this.reduceShow
       // this.clickTabPoint=0
-
       this.luruSelectModel=true
       
       // this.clearErrorMessage()
@@ -1397,14 +1379,16 @@ export default {
       this.dataList=[]
       let phonearr=[]
       let monarr=[]
-      if(this.pointCollection){
-       this.pointCollection.clear()
+      if(this.mass){
+       this.mass.clear()
+       this.mass=null
       }
       this.$fetchGet("hospital/selectHospital",this.query).then(res=> {
         this.showmap=false
         if(res.content.length==0){
-          if(this.pointCollection){
-            this.pointCollection.clear()
+          if(this.mass){
+            this.mass.clear()
+            this.mass=null
             }
           this.total=0
           
@@ -1414,7 +1398,6 @@ export default {
           arrsa.forEach(itam=>{
             if(itam.hospitalAddress){
               itam.hospitalAddress=decodeURIComponent(encrypt.Decrypt(itam.hospitalAddress))
-              
             }
             if(itam.hospitalName){
               itam.hospitalName=decodeURIComponent(encrypt.Decrypt(itam.hospitalName))
@@ -1426,80 +1409,25 @@ export default {
                 itam.linkPeoplearr1.push(decodeURIComponent(encrypt.Decrypt(iteam)))
               })
             }
-            if(itam.needsName!==undefined){
-                itam.needsNamearr=itam.needsName.split(",")
-              }
             if(itam.linkTel!==undefined){
               itam.linkTelarr1=[]
               phonearr=itam.linkTel.split(",")
               phonearr.forEach(itm=>{
                 itam.linkTelarr1.push(decodeURIComponent(encrypt.Decrypt(itm)))
-                console.log(itam.linkTelarr1)
-                console.log(itam.hospitalName)
               })
             }
-            if(itam.longitude){
-              if(this.query.orgType==2){
-                if(itam.status){
-                itam.style=itam.status==1?9:itam.status==2?10:itam.status==3?11:11
-                }else{
-                  itam.style=11
-                }
-              }else if(this.query.orgType==3){
-                itam.style=8
-              }else{
-                itam.style=itam.orgStatus
-              }
-              itam.latitude=decodeURIComponent(encrypt.Decrypt(itam.latitude))
-              itam.longitude=decodeURIComponent(encrypt.Decrypt(itam.longitude))
-              // this.getbadu(itam)
-              
+            if(itam.gaodeLat){
+              itam.gaodeLat=decodeURIComponent(encrypt.Decrypt(itam.gaodeLat))
+              itam.gaodeLon=decodeURIComponent(encrypt.Decrypt(itam.gaodeLon))
             }
             
           })
           this.total=arrsa.length
           this.dataList=arrsa
-          this.getmarkerbai(arrsa)
+          this.getmarkers(arrsa)
         }
        
       })
-    },
-    //百度的加载自己的图标
-    getbadu(row){
-      let point = new BMap.Point(row.longitude,row.latitude);
-      let marker = new BMap.Marker(point,{icon:this.myIcon[row.style]});
-      this.myMap.addOverlay(marker);
-    },
-    //百度加载海量点
-    getmarkerbai(mydata){
-      let color=this.query.orgType==1?'#ff9200':this.query.orgType==2?'#216aff':'#a84aff'
-      if (document.createElement('canvas').getContext) {  // 判断当前浏览器是否支持绘制海量点
-        let points = [];  // 添加海量点数据
-        for (var i = 0; i < mydata.length; i++) {
-          points.push(new BMap.Point(mydata[i].longitude, mydata[i].latitude));
-        }
-        let options = {
-            size: BMAP_POINT_SIZE_BIG,
-            shape: BMAP_POINT_SHAPE_CIRCLE,
-            color: color
-        }
-        this.pointCollection = new BMap.PointCollection(points, options);  // 初始化PointCollection
-        this.pointCollection.addEventListener('click',  (e)=> {
-          for (var i = 0; i < mydata.length; i++) {
-              if(mydata[i].longitude==e.point.lng&&mydata[i].latitude==e.point.lat){//经度==点击的,维度
-                this.isDetail=true
-                this.mapobj=mydata[i]
-                console.log(this.mapobj)
-              }
-          }
-
-        });
-        this.myMap.addOverlay(this.pointCollection);  // 添加Overlay
-    } else {
-        // alert('请在chrome、safari、IE8+以上浏览器查看本示例');
-        this.$toast('请在chrome、safari、IE8+以上浏览器查看本示例');
-    }
-
     },
     // 选择时间
     selectTimeItem(item) {
@@ -1512,7 +1440,6 @@ export default {
       this.query.hour=item.substring(2,4)
       this.query.content=''
       this.getDataList()
-
     },
     // 选择物资，城市
     selectItem(item) {
@@ -1546,7 +1473,6 @@ export default {
         this.isone=false
         this.query.content=this.searchText
         this.getDataList()
-
       }else {
         this.$toast('请输入或选择搜索关键字');
       }
@@ -1560,7 +1486,6 @@ export default {
       this.show=true
       this.showSearch=false
       if (!this.isoneClosePoint){
-
         this.isone=false
       this.styleUp=false
       }else {
@@ -1585,7 +1510,6 @@ export default {
       if(!this.seven){
           this.seven=true
       }
-
     },
     shakeTime(val){
       this.$fetchGet("encourage/saveEncourage", {
@@ -1600,7 +1524,6 @@ export default {
         }
         
       });
-
     },
     dialPhoneNumber(){
       this.phoneshow=true
@@ -1619,47 +1542,46 @@ export default {
       });
     },
     getMap () {
-      this.myMap = new BMap.Map("myMap", {
-        enableMapClick:false
+      this.myMap = new AMap.Map("myMap", {
+        animateEnable: false,
+        resizeEnable: true,
+        // preloadMode: true,
+        center:[111.160477,32.1624],
+        zoom:4,
+        mapStyle:'amap://styles/9fb204085bdb47adb66e074fca3376be',
       });
-      // this.myMap.centerAndZoom([111.160477,32.1624], 4)
-      this.myMap.centerAndZoom(new BMap.Point(105.000, 38.000), 4);
-      this.myMap.setMapStyleV2({     
-        styleId: '8353a33541df95b4aca4c33afd5cc1de'
-      })
-      this.myMap.enableScrollWheelZoom();
-      this.myMap.disableDoubleClickZoom()
-      // this.mctGeo()
-      	// var myGeo = new BMap.Geocoder();
-        // 将地址解析结果显示在地图上,并调整地图视野
-        // myGeo.getPoint("英国伦敦", (point)=>{
-        //   if (point) {
-        //     console.log(point)
-        //     this.myMap.centerAndZoom(point, 16);
-        //     this.myMap.addOverlay(new BMap.Marker(point));
-        //   }else{
-        //     alert("您选择地址没有解析到结果!");
-        //   }
-        // }, "英国");
-    },
-    
-//以下两句话为创建地图
-
-    mctGeo(){
-        var mctXX = 12128773.43;
-        var mctYY = 4632249.00;    
-        var mctXY = new BMap.Pixel(mctXX,mctYY);    
-        var projection2 = this.myMap.getMapType().getProjection();
-        var LngLat = projection2.pointToLngLat(mctXY); 
-        console.log(LngLat)   
+      this.initMap()
     },
     detailright(row){
       this.isDetail=true
       this.mapobj=row
-
     },
-    
-
+    mapinit(res){
+     this.myMap.clearMap()
+      const markerslist=[]
+      res.forEach(item => {
+        if(item.linkTel!==undefined){
+          item.linkTelarr=item.linkTel.split(",")
+        }
+        if(item.linkPeople!==undefined){
+          item.linkPeoplearr=item.linkPeople.split(",")
+        }
+        if(item.needsName!==undefined){
+          item.needsNamearr=item.needsName.split(",")
+        }
+        if(item.needsDescr!==undefined){
+          item.needsDescrarr=item.needsDescr.split(",")
+        }
+        if(item.longitude){
+          item.lnglat=[item.gaodeLon, item.gaodeLat]
+          markerslist.push(this.createPoint(item))
+          // 
+        }
+        
+      })
+      this.myMap.add(markerslist)
+      
+    },
   initMap(){
     
     this.$fetchGet("view/viewCount").then(res => {
@@ -1668,12 +1590,38 @@ export default {
       }
     });
   },
- 
+  
+  createPoint(row) {
+    let marker = new AMap.Marker({
+      position: new AMap.LngLat(row.gaodeLon, row.gaodeLat),
+      offset: new AMap.Pixel(-7, -7),
+      icon: new AMap.Icon({
+        size: new AMap.Size(14, 14),
+        image:
+          (row.type == 2&&row.isLack==1)
+            ? require('../assets/image/icon4.png')
+            : (row.type == 2&&row.isLack==0)?require('../assets/image/icon3.png')
+            : (row.type == 1&&row.isLack==0)?require('../assets/image/icon1.png')
+            :(row.type == 1&&row.isLack==1)?require('../assets/image/icon2.png'):require('../assets/image/icon5.png'),
+        imageSize: new AMap.Size(14,14)
+      }), // 添加 Icon 图标 URL
+      zIndex: 100,
+      // map:this.myMap,
+      extData: { row }
+    })
+    // touchstart
+    marker.on("click", (e) => {
+      // alert(2)
+      this.isDetail=true
+      let str=e.target.B.extData.row
+      this.mapobj=str
+    })
+     return marker
+  }
   }
 };
 </script>
 <style lang="scss">
-
 .likeAddAnimate-enter-active, .likeAddAnimate-leave-active{
   transition: all 1.5s ease
 }
@@ -1689,6 +1637,9 @@ export default {
   top: 9px!important;
   right: 3px!important;
 }
+.amap-logo{
+  display:none !important;
+}
 .search-position-input .van-cell{
   height:34px;
   padding:0;
@@ -1696,8 +1647,6 @@ export default {
 .search-position-input .van-field__body{
   height: 34px;
 }
-
-
 </style>
 <style lang="scss" scoped>
 .home {
@@ -1796,13 +1745,11 @@ export default {
       position:absolute;
       top:90px;
       right:60px;
-
     }
     &.twobif2{
       position:absolute;
       top:40px;
       right:60px;
-
     }
   }
   .forew{
@@ -1822,13 +1769,11 @@ export default {
       position:absolute;
       top:90px;
       left:20px;
-
     }
     &.forew2{
       position:absolute;
       top:40px;
       left:20px;
-
     }
   }
   .dzan{
@@ -1885,7 +1830,6 @@ export default {
       width: 100%;
       table-layout: fixed;
     }
-
   }
   .agreement-content{
     box-sizing: border-box;
@@ -1915,7 +1859,6 @@ export default {
     }
     img{
       width: 100%;
-
     }
   }
   .writefont{
@@ -1944,7 +1887,6 @@ export default {
       display:flex;
       justify-content:flex-start;
       align-items:center;
-
       img{
         width:15px;
         height:15px;
@@ -1999,14 +1941,12 @@ export default {
         align-items:center;
         color:#FFC046;
       }
-
     }
     
     .arrow-up{
       position:absolute;
       top:-45px;
       left:20px;
-
       .triangle_border_up{
         width:0;
         height:0;
@@ -2063,7 +2003,6 @@ export default {
         margin-top: 10px;
         margin-left: 18px;
         .sub-title{
-
         }
         .btn{
           margin-left:10px;
@@ -2075,7 +2014,6 @@ export default {
           background:#fff;
           border-radius: 8px;
         }
-
       }
       .close-btn{
         position:absolute;
@@ -2112,7 +2050,6 @@ export default {
             font-weight:500;
             color:rgba(255,255,255,1);
             margin-top:36px;
-
           }
         }
         .btn-list:nth-child(3){
@@ -2128,7 +2065,6 @@ export default {
       justify-content:center;
       align-items:center;
       padding:5px 12px;
-
       .write{
         font-size:11px;
         width:100%;
@@ -2184,7 +2120,6 @@ export default {
        padding-left:12px;
       background:rgba(255,255,255,1);
       box-shadow:0px 1px 0px 0px rgba(238,238,238,1);
-
     }
   }
   .hospatilBox{
@@ -2204,8 +2139,6 @@ export default {
       .btnSty-wrapper{
         display:flex;
         justify-content:center;
-
-
         .btnSty{
           // display:inline-block;
           font-size:15px;
@@ -2348,7 +2281,6 @@ export default {
       flex-direction:column;
       justify-content:center;
       align-items:center;
-
       .down-up{
         width:30px;
         height: 12px;
@@ -2360,10 +2292,8 @@ export default {
         font-weight:500;
         color:rgba(170,170,170,1);
       }
-
     }
     .tab-item-list{
-
       display:flex;
       justify-content:space-between;
       align-items:center;
@@ -2382,7 +2312,6 @@ export default {
         &.tab-item-span-active{
           color:#fff;
         background:#216AFF;
-
         }
       }
     }
@@ -2496,7 +2425,6 @@ export default {
         justify-content: center;
         align-items: center;
         margin-top: 100px;
-
         img{
           width: 194px;
           height:147px;
@@ -2507,7 +2435,6 @@ export default {
           font-weight:400;
           color:rgba(153,153,153,1);
           margin-top:23px;
-
         }
       }
       &:last-child{
@@ -2649,9 +2576,9 @@ export default {
       height:13px;
     }
   }
-//   .icon-direction:active {
+//   .icon-direction:active {
 //     bottom:12px;
-//   }
+//   }
   .search-write{
     position: fixed;
     top: 190px;
@@ -2684,7 +2611,6 @@ export default {
   }
   .cur-time-donate{
     background: #eee;
-
   }
   .time-donate{
     // .top{
@@ -2702,7 +2628,6 @@ export default {
     //     padding-left:10px;
     //     border-left: 3px solid #216AFF;
     //   }
-
     // }
     .top{
       display:flex;
@@ -2728,7 +2653,6 @@ export default {
         padding-left: 15px;
         border-left:1px solid #F2F1F1;
       }
-
     }
     .tab-list-btn{
       display:flex;
@@ -2746,11 +2670,9 @@ export default {
           padding-bottom:12px;
           border-bottom: 4px solid rgba(33,106,255,1);
         }
-
       }
     }
     .renwu-list-wrapper{
-
       padding:0 12px;
       .renwu-list-item{
         position:relative;
@@ -2769,7 +2691,6 @@ export default {
               padding-bottom:12px;
               .name{}
               .num{}
-
             }
             .money{
               font-size:13px;
@@ -2777,7 +2698,6 @@ export default {
               font-weight:500;
               color:rgba(102,102,102,1);
               padding-bottom:12px;
-
             }
             .direction{
               font-size:13px;
@@ -2785,11 +2705,8 @@ export default {
               font-weight:500;
               color:rgba(102,102,102,1);
               padding-bottom:12px;
-
             }
-
           }
-
         }
         .list-item-bottom{
           font-size:12px;
@@ -2827,7 +2744,6 @@ export default {
         justify-content: center;
         align-items: center;
         margin-top: 100px;
-
         img{
           width: 194px;
           height:147px;
@@ -2838,7 +2754,6 @@ export default {
           font-weight:400;
           color:rgba(153,153,153,1);
           margin-top:23px;
-
         }
       }
       .donate-list{
@@ -2862,7 +2777,6 @@ export default {
             font-weight:500;
             color:rgba(102,102,102,1);
             margin-top: 8.5px;
-
           }
         }
         .line-split{
@@ -2922,7 +2836,6 @@ export default {
                 color:rgba(51,51,51,1);
                 vertical-align:top;
                 // line-height:15px;
-
               }
             }
             .articl{
@@ -2933,7 +2846,6 @@ export default {
               line-height:15px;
               margin: 12px 0;
               text-align: left;
-
             }
             .origin{
               font-size:12px;
@@ -2942,12 +2854,10 @@ export default {
               color:rgba(153,153,153,1);
               text-align: right;
               span {
-
               }
             }
           }
         }
-
       }
       .loading-more{
         height: 30px;
@@ -2999,7 +2909,6 @@ export default {
           width:32px;
           height: 29px;
         }
-
       }
     }
     .line{
@@ -3019,7 +2928,6 @@ export default {
     justify-content: center;
     align-items: center;
     background:rgba(0,0,0,.5);
-
     .luru-model{
       position: relative;
       width: 327px;
@@ -3053,7 +2961,6 @@ export default {
         justify-content: center;
         align-items:center;
         padding:30px 0;
-
         .luru-btn{
           width:200px;
           height:40px;
@@ -3070,7 +2977,6 @@ export default {
           &:last-child{
             margin-bottom: 0;
           }
-
         }
       }
       .close-luru-model{
@@ -3092,7 +2998,6 @@ export default {
     justify-content: center;
     align-items: center;
     background:rgba(0,0,0,.5);
-
     .contect-model{
       position: relative;
       width: 339px;
@@ -3144,7 +3049,6 @@ export default {
               .name-tel{
               display:flex;
               justify-content: flex-start;
-
                 .name{}
                 .tel{
                   padding-left: 10px;
@@ -3187,7 +3091,6 @@ export default {
             color:rgba(255,255,255,1);
           }
         }
-
       }
       .close-luru-model{
         position: absolute;

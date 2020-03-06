@@ -4,42 +4,42 @@
       "name": "安道尔共和国",
       "en": "Andorra",
       "tel": "376",
-      "pinyin": "adeghg"
+      "pinyin": "a"
     },
     {
       "short": "A",
       "name": "阿拉伯联合酋长国",
       "en": "UnitedArabEmirates",
       "tel": "971",
-      "pinyin": "alblhqzg"
+      "pinyin": "a"
     },
     {
       "short": "A",
       "name": "阿富汗",
       "en": "Afghanistan",
       "tel": "93",
-      "pinyin": "afh"
+      "pinyin": "a"
     },
     {
       "short": "A",
       "name": "安提瓜和巴布达",
       "en": "AntiguaandBarbuda",
       "tel": "1268",
-      "pinyin": "atghbbd"
+      "pinyin": "a"
     },
     {
       "short": "A",
       "name": "安圭拉岛",
       "en": "Anguilla",
       "tel": "1264",
-      "pinyin": "agld"
+      "pinyin": "a"
     },
     {
       "short": "A",
       "name": "阿尔巴尼亚",
       "en": "Albania",
       "tel": "355",
-      "pinyin": "aebny"
+      "pinyin": "a"
     },
     {
       "short": "A",
@@ -297,14 +297,6 @@
   
     },
     {
-      "short": "CN",
-      "name": "中国",
-      "en": "China",
-      "tel": "86",
-      "pinyin": "zg"
-  
-    },
-    {
       "short": "CO",
       "name": "哥伦比亚",
       "en": "Colombia",
@@ -558,14 +550,6 @@
       "en": "Guyana",
       "tel": "592",
       "pinyin": "gyn"
-  
-    },
-    {
-      "short": "HK",
-      "name": "香港(中国)",
-      "en": "Hongkong",
-      "tel": "852",
-      "pinyin": "xgzg"
   
     },
     {
@@ -895,14 +879,6 @@
       "en": "Mongolia",
       "tel": "976",
       "pinyin": "mg"
-  
-    },
-    {
-      "short": "MO",
-      "name": "澳门（中国）",
-      "en": "Macao",
-      "tel": "853",
-      "pinyin": "am zg"
   
     },
     {
@@ -1408,14 +1384,6 @@
       "en": "TrinidadandTobago",
       "tel": "1809",
       "pinyin": "tlndhdbg"
-  
-    },
-    {
-      "short": "TW",
-      "name": "台湾（中国）",
-      "en": "Taiwan",
-      "tel": "886",
-      "pinyin": "twzg"
   
     },
     {

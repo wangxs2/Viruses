@@ -43,12 +43,13 @@
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
                 <van-field v-model="form1.address" type="text" readonly placeholder="省市" :error-message="errorMessage1.address" @click="showPicker = true"/>
-                <van-popup  v-model="showPicker"  closeable close-icon="close" round position="bottom">
+                <van-popup  v-model="showPicker" round position="bottom" overlay-class="countey" :style="{ height: '80%' }" >
+                    <van-icon style="position:absolute;top:12px;right:14px;" color="#333333" name="close" size="24px" @click="showPicker=false" />
                     <van-tabs style="margin-top:35px" color="#174fce" @click="isxiaosa" v-model="activechina">
                       <van-tab title="中国">中国</van-tab>
                       <van-tab title="海外国家/地区">海外国家/地区</van-tab>
                     </van-tabs>
-                    <van-picker v-if="activechina==0" show-toolbar  :columns="columns" @cancel="onCancel" @confirm="onConfirm" @change="onChange" />
+                    <van-picker v-if="activechina==0" show-toolbar visible-item-count="9" :columns="columns" @cancel="onCancel" @confirm="onConfirm" @change="onChange" />
                     <div class="chinabox" v-if="activechina==1">
                       <van-index-bar class="indexBar"  :sticky="false" highlight-color="#fb6463">
                               <van-index-anchor    v-for="(item,index) in firstName" :key="index" :index="index">
@@ -195,12 +196,13 @@
                 <!-- <van-popup v-model="showPicker1" position="bottom">
                     <van-picker show-toolbar :columns="columns" @cancel="onCancel1" @confirm="onConfirm1" @change="onChange1" />
                 </van-popup> -->
-                <van-popup  v-model="showPicker1"  closeable close-icon="close" round position="bottom">
+                <van-popup  v-model="showPicker1"  round position="bottom" overlay-class="countey" :style="{ height: '80%' }">
+                  <van-icon style="position:absolute;top:12px;right:14px;" color="#333333" name="close" size="24px" @click="showPicker1=false" />
                     <van-tabs style="margin-top:35px" color="#174fce" @click="isxiaosa" v-model="activechina">
                       <van-tab title="中国">中国</van-tab>
                       <van-tab title="海外国家/地区">海外国家/地区</van-tab>
                     </van-tabs>
-                    <van-picker  v-if="activechina==0" show-toolbar :columns="columns" @cancel="onCancel1" @confirm="onConfirm1" @change="onChange1" />
+                    <van-picker  v-if="activechina==0" visible-item-count="9" show-toolbar :columns="columns" @cancel="onCancel1" @confirm="onConfirm1" @change="onChange1" />
                     <div class="chinabox" v-if="activechina==1">
                       <van-index-bar class="indexBar"  :sticky="false" highlight-color="#fb6463">
                               <van-index-anchor    v-for="(item,index) in firstName" :key="index" :index="index">
@@ -348,12 +350,13 @@
                 <!-- <van-popup v-model="showPicker" position="bottom">
                     <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm3" @change="onChange" />
                 </van-popup> -->
-                <van-popup  v-model="showPicker"  closeable close-icon="close" round position="bottom">
+                <van-popup  v-model="showPicker" round position="bottom" overlay-class="countey" :style="{ height: '80%' }">
+                  <van-icon style="position:absolute;top:12px;right:14px;" color="#333333" name="close" size="24px" @click="showPicker=false" />
                     <van-tabs style="margin-top:35px" color="#174fce" @click="isxiaosa" v-model="activechina">
                       <van-tab title="中国">中国</van-tab>
                       <van-tab title="海外国家/地区">海外国家/地区</van-tab>
                     </van-tabs>
-                    <van-picker v-if="activechina==0" show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm3" @change="onChange" />
+                    <van-picker v-if="activechina==0" show-toolbar visible-item-count="9" :columns="columns" @cancel="onCancel" @confirm="onConfirm3" @change="onChange" />
                     <div class="chinabox" v-if="activechina==1">
                       <van-index-bar class="indexBar"  :sticky="false" highlight-color="#fb6463">
                               <van-index-anchor    v-for="(item,index) in firstName" :key="index" :index="index">
@@ -2065,8 +2068,11 @@ linkTelBlur(type,tel,index){
     padding: 0 20px;
   }
   .van-index-bar__sidebar{
-    top:60%
+    top:70%
   }
+}
+.countey{
+  position:relative;
 }
 
 </style>
@@ -2132,7 +2138,7 @@ linkTelBlur(type,tel,index){
       overflow:hidden;
       overflow-y:scroll;
       width:100%;
-      height:500px;
+      height:80%;
       div{
         box-sizing:border-box;
         // padding:6px 20px;

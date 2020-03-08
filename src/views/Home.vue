@@ -689,8 +689,10 @@
 
 <script>
  import encrypt from '@/libs/encrypt'
+  import coordTransform from '@/libs/coor.js'
  import luru from '@/components/luru'
  import wx from 'weixin-js-sdk'
+ import mapboxgl from 'mapbox-gl';
 export default {
   name: "home",
   components:{
@@ -698,6 +700,11 @@ export default {
   },
   data() {
     return {
+      mapBoxstyle :[require('../assets/image/icon4.png'),require('../assets/image/icon5.png'),require('../assets/image/icon4.png'),
+      require('../assets/image/icon2.png'),require('../assets/image/icon51.png'),require('../assets/image/icon3.png'),
+      require('../assets/image/icon1.png'),require('../assets/image/list4.png'),require('../assets/image/list6.png'),
+      require('../assets/image/list8.png'),require('../assets/image/list9.png'),require('../assets/image/list10.png'),
+      ],
       lang:'zh-CN',
       showmap:false,
       fenxi_img:'https://medicalsupplies.sitiits.com/share.png',
@@ -865,11 +872,13 @@ export default {
     this.getWuziList()
     this.getCityList()
     this.getCurTimeContent()
+    console.log(coordTransform)
     // this.getProvinMark("#216AFF")
   },
  mounted () {
   //  console.log(wx)
-    this.getMap()
+    // this.getMap()
+    this.getMapbox()
     var scrolltop = document.body.scrollTop;
     $('input').focus(function(){
     interval = setInterval(function(){
@@ -1026,30 +1035,30 @@ export default {
     },
     //获取当前位置
     getPosition(){
-      if(this.markerSa){
-        this.markerSa.setMap(null);
-      }
-      let geolocation = new AMap.Geolocation({
-        enableHighAccuracy: true, //是否使用高精度定位，默认:true
-        timeout: 10000, //超过10秒后停止定位，默认：无穷大
-        maximumAge: 0, //定位结果缓存0毫秒，默认：0
-        convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
-        showButton: true, //显示定位按钮，默认：true
-        buttonPosition: "RB", //定位按钮停靠位置，默认：'LB'，左下角
-        buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-        showMarker: false, //定位成功后在定位到的位置显示点标记，默认：true
-        showCircle: true, //定位成功后用圆圈表示定位精度范围，默认：true
-        panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
-        useNative: true,
-        zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-      });
-      geolocation.getCurrentPosition((status, result) => {
-        if(status=='complete'){
-          this.addMarker (result.position)
-        }else{
-          this.$toast("获取当前位置失败");
-        }
-      });
+      // if(this.markerSa){
+      //   this.markerSa.setMap(null);
+      // }
+      // let geolocation = new AMap.Geolocation({
+      //   enableHighAccuracy: true, //是否使用高精度定位，默认:true
+      //   timeout: 10000, //超过10秒后停止定位，默认：无穷大
+      //   maximumAge: 0, //定位结果缓存0毫秒，默认：0
+      //   convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+      //   showButton: true, //显示定位按钮，默认：true
+      //   buttonPosition: "RB", //定位按钮停靠位置，默认：'LB'，左下角
+      //   buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+      //   showMarker: false, //定位成功后在定位到的位置显示点标记，默认：true
+      //   showCircle: true, //定位成功后用圆圈表示定位精度范围，默认：true
+      //   panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
+      //   useNative: true,
+      //   zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+      // });
+      // geolocation.getCurrentPosition((status, result) => {
+      //   if(status=='complete'){
+      //     this.addMarker (result.position)
+      //   }else{
+      //     this.$toast("获取当前位置失败");
+      //   }
+      // });
     },
     // 实例化当前点点标记
     addMarker (val) {
@@ -1183,45 +1192,7 @@ export default {
       // this.selectIndex=this.selectIndex1
       this.heightCur="100%"
     },
-    //加载海量点
-    getmarkers(citys){
-      const markerslist=[]
-      citys.forEach(item => {
-        // if(item.linkTel!==undefined){
-        //   item.linkTelarr=item.linkTel.split(",")
-        // }
-        // if(item.linkPeople!==undefined){
-        //   item.linkPeoplearr=item.linkPeople.split(",")
-        // }
-        if(item.needsName!==undefined){
-          item.needsNamearr=item.needsName.split(",")
-        }
-        if(item.needsDescr!==undefined){
-          item.needsDescrarr=item.needsDescr.split(",")
-        }
-        if(item.gaodeLon){
-          item.lnglat=[item.gaodeLon, item.gaodeLat]
-          item.style= this.query.orgType==2?7:this.query.orgType==3?8:item.orgStatus
-          if(this.query.orgType==2){
-            if(item.status){
-             item.style=item.status==1?9:item.status==2?10:item.status==3?11:11
-            }else{
-              item.style=11
-            }
-          }else if(this.query.orgType==3){
-            item.style=8
-          }else{
-            item.style=item.orgStatus
-          }
-          markerslist.push(item)
-          // 
-        }
-        
-      })
-      this.createMarks(markerslist)
-      // this.showmap=false
-      
-    },
+    
     createMarks(citys){
       let style = [{
             url: require('../assets/image/icon4.png'),
@@ -1379,6 +1350,7 @@ export default {
       this.dataList=[]
       let phonearr=[]
       let monarr=[]
+      
       if(this.mass){
        this.mass.clear()
        this.mass=null
@@ -1416,18 +1388,81 @@ export default {
                 itam.linkTelarr1.push(decodeURIComponent(encrypt.Decrypt(itm)))
               })
             }
-            if(itam.gaodeLat){
+            if(itam.gaodeLat&&itam.gaodeLon){
               itam.gaodeLat=decodeURIComponent(encrypt.Decrypt(itam.gaodeLat))
               itam.gaodeLon=decodeURIComponent(encrypt.Decrypt(itam.gaodeLon))
+              if(this.query.orgType==2){
+                if(itam.status){
+                itam.style=itam.status==1?9:itam.status==2?10:itam.status==3?11:11
+                }else{
+                  itam.style=11
+                }
+              }else if(this.query.orgType==3){
+                itam.style=8
+              }else{
+                itam.style=itam.orgStatus
+              }
             }
             
           })
           this.total=arrsa.length
           this.dataList=arrsa
-          this.getmarkers(arrsa)
+          this.getmapbox(arrsa)
+          // this.getmarkers()
         }
        
       })
+    },
+    getmapbox(row){
+      console.log(111)
+      // add markers to map
+      row.forEach((marker)=> {
+        console.log(222)
+        // console.log()
+            // create a DOM element for the marker
+          let el = document.createElement('div');
+          el.className = 'marker';
+          el.style.backgroundImage =`url(${this.mapBoxstyle[marker.style]})`
+          el.style.backgroundSize="100% 100%"
+          el.style.width = '22px';
+          el.style.height = '22px';
+          
+          el.addEventListener('click', ()=> {
+            console.log(123)
+            this.isDetail=true
+            this.mapobj=marker
+          });
+          // console.log(markerhospitalName)
+          // console.log(marker.gaodeLon,marker.gaodeLat)
+          let point=coordTransform.gcj02towgs84(marker.gaodeLon,marker.gaodeLat)
+          console.log(point)
+          // add marker to map
+          new mapboxgl.Marker(el)
+          .setLngLat(point)
+          .addTo(this.myMap);
+      
+      });
+    },
+    getmarkers(){
+      let el = document.createElement('div');
+          el.className = 'poin';
+          el.style.backgroundImage =`url(${this.mapBoxstyle[0]})`
+          el.style.backgroundSize="100% 100%"
+          el.style.width = '22px';
+          el.style.height = '22px';
+          
+          el.addEventListener('click', ()=> {
+            console.log(123)
+            this.isDetail=true
+            this.mapobj=marker
+          });
+          console.log(coordTransform.gcj02towgs84(121.450605,31.187983))
+          let point=coordTransform.gcj02towgs84(121.450605,31.187983)
+          // add marker to map
+          new mapboxgl.Marker(el)
+          .setLngLat(point)
+          .addTo(this.myMap);
+      
     },
     // 选择时间
     selectTimeItem(item) {
@@ -1542,82 +1577,37 @@ export default {
       });
     },
     getMap () {
-      this.myMap = new AMap.Map("myMap", {
-        animateEnable: false,
-        resizeEnable: true,
-        // preloadMode: true,
-        center:[111.160477,32.1624],
-        zoom:4,
-        mapStyle:'amap://styles/9fb204085bdb47adb66e074fca3376be',
+      // this.myMap = new AMap.Map("myMap", {
+      //   animateEnable: false,
+      //   resizeEnable: true,
+      //   center:[111.160477,32.1624],
+      //   zoom:4,
+      //   mapStyle:'amap://styles/9fb204085bdb47adb66e074fca3376be',
+      // });
+      this.initMap()
+    },
+    getMapbox(){
+      mapboxgl.accessToken = 'pk.eyJ1Ijoid2FuZ3hzMiIsImEiOiJjazNpaTVpYjkwOGRyM25ycHJ4d3g3N29uIn0.Vi4TSzhNcxvwh_zeGJhQ_g';
+      this.myMap = new mapboxgl.Map({
+      container: 'myMap',
+      zoom: 2,
+      center: [114, 38.54],
+      style: 'mapbox://styles/mapbox/streets-v9'
       });
       this.initMap()
     },
+    
     detailright(row){
       this.isDetail=true
       this.mapobj=row
     },
-    mapinit(res){
-     this.myMap.clearMap()
-      const markerslist=[]
-      res.forEach(item => {
-        if(item.linkTel!==undefined){
-          item.linkTelarr=item.linkTel.split(",")
-        }
-        if(item.linkPeople!==undefined){
-          item.linkPeoplearr=item.linkPeople.split(",")
-        }
-        if(item.needsName!==undefined){
-          item.needsNamearr=item.needsName.split(",")
-        }
-        if(item.needsDescr!==undefined){
-          item.needsDescrarr=item.needsDescr.split(",")
-        }
-        if(item.longitude){
-          item.lnglat=[item.gaodeLon, item.gaodeLat]
-          markerslist.push(this.createPoint(item))
-          // 
-        }
-        
-      })
-      this.myMap.add(markerslist)
-      
-    },
   initMap(){
-    
     this.$fetchGet("view/viewCount").then(res => {
       if(res.code=="success"){
          this.zanz=res.content
       }
     });
   },
-  
-  createPoint(row) {
-    let marker = new AMap.Marker({
-      position: new AMap.LngLat(row.gaodeLon, row.gaodeLat),
-      offset: new AMap.Pixel(-7, -7),
-      icon: new AMap.Icon({
-        size: new AMap.Size(14, 14),
-        image:
-          (row.type == 2&&row.isLack==1)
-            ? require('../assets/image/icon4.png')
-            : (row.type == 2&&row.isLack==0)?require('../assets/image/icon3.png')
-            : (row.type == 1&&row.isLack==0)?require('../assets/image/icon1.png')
-            :(row.type == 1&&row.isLack==1)?require('../assets/image/icon2.png'):require('../assets/image/icon5.png'),
-        imageSize: new AMap.Size(14,14)
-      }), // 添加 Icon 图标 URL
-      zIndex: 100,
-      // map:this.myMap,
-      extData: { row }
-    })
-    // touchstart
-    marker.on("click", (e) => {
-      // alert(2)
-      this.isDetail=true
-      let str=e.target.B.extData.row
-      this.mapobj=str
-    })
-     return marker
-  }
   }
 };
 </script>

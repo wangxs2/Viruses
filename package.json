@@ -24,6 +24,7 @@
     "jquery": "^3.4.1",
     "js-base64": "^2.4.5",
     "lrz": "^4.9.40",
+    "mapbox-gl": "^1.8.1",
     "n-zepto": "^1.2.0",
     "pdfjs-dist": "^2.2.228",
     "postcss-px2rem": "^0.3.0",

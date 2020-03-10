@@ -8,8 +8,8 @@
         <div class="material-content">
           <div class="header-box">
             <van-icon name="arrow-left" @click="showmaterial=false" size="28" />
-            <van-field ref="focusa" style="flex:1;padding:4px 10px;margin:0 6px"  left-icon="search" clearable v-model="materialin" @input="getRemark()" placeholder="请输入搜索关键词" />
-            <span class="searchfone" @click="submit(materialin)">确定</span>
+            <van-field ref="focusa" style="flex:1;padding:4px 10px;margin:0 6px"  left-icon="search" clearable v-model="materialin" @input="getRemark()" :placeholder="$t('m.searchkey')" />
+            <span class="searchfone" @click="submit(materialin)">{{$t("m.confirm")}}</span>
           </div>
           <div class="content-box">
             <div class="content-item" v-for="(item,index) in materialData" :key="index" v-html="item.name" @click="submit(item.name)"></div>
@@ -24,37 +24,37 @@
         <van-loading size="64px" color="#1989fa"></van-loading>
       </div>
     </van-overlay>
-    <van-dialog v-model="showresult" title="提交成功" @confirm="closebig">
-      <div>我们将尽快与您联系<br>审核通过后，平台可见</div>
+    <van-dialog v-model="showresult" :title="$t('m.suncuccess')" @confirm="closebig">
+      <div>{{$t('m.suncuccess1')}}<br>{{$t('m.suncuccess2')}}</div>
     </van-dialog>
     <!-- 防止过快的切换 -->
       <div class="reduce-content">
-        <div  class="banner" :style="{'background-image':bannerback}"></div>
+        <div  class="banner" :style="{'background-image':$i18n.locale=='zh-CN'?bannerback:bannerback1}"></div>
         <div class="us-need-wrapper">
           <div class="us-need need">
             <div class="tab-btn">
-              <span :class="curTabIndex==item.type?'active':''" v-for="(item,i) in luruSelectData" :key="item.type+'tab'" @click="needTi(item.type)">{{item.name}}</span>
+              <span :class="curtabindex==item.type?'active':''" v-for="(item,i) in luruSelectData" :key="item.type+'tab'" @click="needTi(item.type)">{{$t(item.name)}}</span>
             </div>
-            <div class="form-wrapper" v-if="curTabIndex==1">
+            <div class="form-wrapper" v-if="curtabindex==1">
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">名称</span>
-                <van-field v-model="form1.hispotalName" type="text" @input="searchSaming(form1.hispotalName,1)" placeholder="请填写" :error-message="errorMessage1.hispotalName"/>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t("m.name")}}</span>
+                <van-field v-model="form1.hispotalName" type="text" @input="searchSaming(form1.hispotalName,1)" :placeholder="$t('m.please')" :error-message="errorMessage1.hispotalName"/>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
-                <van-field v-model="form1.address" type="text" readonly placeholder="省市" :error-message="errorMessage1.address" @click="showPicker = true"/>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t("m.district")}}</span>
+                <van-field v-model="form1.address" type="text" readonly :placeholder="$t('m.please')" :error-message="errorMessage1.address" @click="showPicker = true"/>
                 <van-popup  v-model="showPicker" round position="bottom" overlay-class="countey" >
                     <van-icon style="position:absolute;top:12px;right:14px;" color="#333333" name="close" size="24px" @click="showPicker=false" />
                     <van-tabs style="margin-top:35px" color="#174fce" @click="isxiaosa" v-model="activechina">
-                      <van-tab title="中国">中国</van-tab>
-                      <van-tab title="海外国家/地区">海外国家/地区</van-tab>
+                      <van-tab :title="$t('m.china')">{{$t('m.china')}}</van-tab>
+                      <van-tab :title="$t('m.overseas')">{{$t('m.overseas')}}</van-tab>
                     </van-tabs>
-                    <van-picker v-if="activechina==0" show-toolbar :visible-item-count="9" :columns="columns" @cancel="onCancel" @confirm="onConfirm" @change="onChange" />
+                    <van-picker v-if="activechina==0" show-toolbar :cancel-button-text="$t('m.cancel')" :confirm-button-text="$t('m.confirm')" :visible-item-count="9" :columns="columns" @cancel="onCancel" @confirm="onConfirm" @change="onChange" />
                     <div class="chinabox" v-if="activechina==1">
                       <van-index-bar class="indexBar"  :sticky="false" highlight-color="#fb6463">
                               <van-index-anchor    v-for="(item,index) in firstName" :key="index" :index="index">
                                 <span class="indexWord" style="margin-left:20px">{{index}}</span>
-                                <van-cell @click="ischange(citem,cindex,1)" v-for="(citem,cindex) in item" :key="cindex"  :title="citem.name"/>
+                                <van-cell @click="ischange(citem,cindex,1)" v-for="(citem,cindex) in item" :key="cindex"  :title="$i18n.locale=='zh-CN'?citem.name:citem.en"/>
                               </van-index-anchor>
                       </van-index-bar>
                         <!-- <div @click="ischange(item,index,1)" :style="{color:iswg==index?'#174fce':''}" v-for="(item,index) in nochinaData" :key="index">{{item.name}}</div> -->
@@ -63,73 +63,74 @@
                 </van-popup>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">详细地址(门牌号)</span>
-                <van-field v-model="form1.addressDetail" type="text" placeholder="街道、门牌号等" :error-message="errorMessage1.addressDetail"/>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t("m.address")}}</span>
+                <van-field v-model="form1.addressDetail" type="text" :placeholder="$t('m.Detailadd')" :error-message="errorMessage1.addressDetail"/>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">类型</span>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t("m.type")}}</span>
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form1.type" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruTypeRadio" :key="i+item.name">
-                    <van-radio :name="item.id" checked-color="#2D65E3" :label="item.name" @click="secectRadio(item.id)">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3" :label="$t(item.name)" @click="secectRadio(item.id)">{{$t(item.name)}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">物资对接情况</span>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.materialname')}}</span>
                 <div class="comfirm-radio">
                   <van-checkbox-group v-model="form1.sup" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruSupRadio" :key="i+item.name">
-                    <van-checkbox shape="square" checked-color="#2D65E3" :name="item.id">{{item.name}}</van-checkbox>
+                    <van-checkbox shape="square" checked-color="#2D65E3" :name="item.id">{{$t(item.name)}}</van-checkbox>
                     </div>
                   </van-checkbox-group>
                 </div>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">需求表</span>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.needtabel')}}</span>
+                <span class="desc need-table-desc">{{$t('m.needmsg')}}</span>
                 <div class="comfirm-need-input-wrapper">
                   <div class="comfirm-need-top">
 
                     <div class="comfirm-need-head">
-                      <div class="name">物资名称</div>
-                      <div class="num">需求数量</div>
+                      <div class="name">{{$t('m.nangood')}}</div>
+                      <div class="num">{{$t('m.nannum')}}</div>
                     </div>
                     <div class="comfirm-need-body" v-for="(iteam,index) in form1.materialDetails" :key="index">
                       <div class="name">
                         <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
 
-                        <van-field class="sup-name" :readonly="readonly1" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center" @focus="needFocus(index)" @blur="needBlur(index)"/>
+                        <van-field class="sup-name" :readonly="readonly1" v-model="iteam.needsName" type="text" :placeholder="$t('m.please')"   input-align="center" @focus="needFocus(index)" @blur="needBlur(index)"/>
                         <van-popup v-model="startTimePopNeedName" position="bottom">
-                        <van-picker show-toolbar :columns="needList" @confirm="confirmNeedName" @cancel="cancleNeedName" @change="changeNeedName" />
+                        <van-picker show-toolbar :columns="$t('m.needList')" @confirm="confirmNeedName" @cancel="cancleNeedName" @change="changeNeedName" />
                         </van-popup>
                       </div>
-                      <div class="num"><van-field class="sup-num" v-model="iteam.needsNum" type="number" placeholder="请输入数字" testnum input-align="center" /><img @click="deleteDemand(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
+                      <div class="num"><van-field class="sup-num" v-model="iteam.needsNum" type="number" :placeholder="$t('m.please')" testnum input-align="center" /><img @click="deleteDemand(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
                     </div>
                   </div>
-                  <div class="comfirm-need-bottom" @click="addDemand"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
+                  <div class="comfirm-need-bottom" @click="addDemand"><img style="" src="../assets/image/add1.png" alt="" >{{$t("m.add")}}</div>
                 </div>
-                <span class="desc need-table-desc">数量填写可便于物资调配，如不确定数量可不填写</span>
+                
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.contact')}}</span>
                 <div class="comfirm-need-input-wrapper">
                   <div class="comfirm-need-top comfirm-need-top-tel">
 
                     <div class="comfirm-need-head">
-                      <div class="name">联系人</div>
-                      <div class="num">联系方式</div>
+                      <div class="name">{{$t('m.contactp')}}</div>
+                      <div class="num">{{$t('m.contactt')}}</div>
                     </div>
                     <div class="comfirm-need-body" v-for="(iteam,index) in form1.contectTelList" :key="index">
                       <div class="name">
                         <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
 
-                        <van-field class="sup-name" v-model="iteam.name" type="text" placeholder="输入联系人"   input-align="center"/>
+                        <van-field class="sup-name" v-model="iteam.name" type="text" :placeholder="$t('m.contactp')"   input-align="center"/>
                       </div>
-                      <div class="num"><van-field class="tel" v-model="iteam.tel" type="text" placeholder="输入电话号码(建议手机)" @blur="linkTelBlur(1,iteam.tel,index)"/><img @click="deleteTel(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
+                      <div class="num"><van-field class="tel" v-model="iteam.tel" type="text" :placeholder="$t('m.contactt')" @blur="linkTelBlur(1,iteam.tel,index)"/><img @click="deleteTel(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
                     </div>
                   </div>
-                  <div class="comfirm-need-bottom" @click="addTel"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
+                  <div class="comfirm-need-bottom" @click="addTel"><img style="" src="../assets/image/add1.png" alt="" >{{$t("m.add")}}</div>
                 </div>
               </div>
               <!-- <div class="form-input">
@@ -143,8 +144,8 @@
                 </div>
               </div> -->
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">需求发布时间</span>
-                <van-field v-model="form1.startTime" placeholder="选择时间" readonly @click="startTimePop = true"/>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.time')}}</span>
+                <van-field v-model="form1.startTime" :placeholder="$t('m.setime')" readonly @click="startTimePop = true"/>
                 <van-popup v-model="startTimePop" position="bottom">
                   <van-datetime-picker
                     v-model="currentDate"
@@ -157,21 +158,21 @@
                 </van-popup>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">需求来源</span>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.sour')}}</span>
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form1.needOrgin" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruSourceRadio" :key="i+item.name">
-                    <van-radio :name="item.id" checked-color="#2D65E3">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3">{{$t(item.name)}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
               </div>
               <div class="form-input">
-                <span>其他说明</span>
-                <van-field v-model="form1.descr" type="textarea" placeholder="备注"/>
+                <span>{{$t('m.othermsg')}}</span>
+                <van-field v-model="form1.descr" type="textarea" :placeholder="$t('m.remark')"/>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">需求证明</span>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.proof')}}</span>
                 <div class="need-img-wrapper">
                   <van-uploader
                     v-model="form1.fileList"
@@ -181,33 +182,33 @@
                     :max-count="5"
                   />
                 </div>
-                  <span class="desc">请上传需求公函照片或官网文件截图，最多可上传5张。</span>
+                  <span class="desc">{{$t('m.needremark')}}</span>
               </div>
-              <div class="confirm-btn" @click="confirmone">提交</div>
+              <div class="confirm-btn" @click="confirmone">{{$t('m.submit')}}</div>
             </div>
-            <div class="form-wrapper" v-if="curTabIndex==2">
+            <div class="form-wrapper" v-if="curtabindex==2">
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">提供方名称</span>
-                <van-field v-model="form2.hispotalName" @input="searchSaming(form2.hispotalName,2)" type="text" placeholder="请填写" :error-message="errorMessage2.hispotalName"/>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.namesup')}}</span>
+                <van-field v-model="form2.hispotalName" @input="searchSaming(form2.hispotalName,2)" type="text" :placeholder="$t('m.please')" :error-message="errorMessage2.hispotalName"/>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
-                <van-field v-model="form2.address" type="text" readonly placeholder="省市" :error-message="errorMessage2.address" @click="showPicker1 = true"/>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.district')}}</span>
+                <van-field v-model="form2.address" type="text" readonly :placeholder="$t('m.please')" :error-message="errorMessage2.address" @click="showPicker1 = true"/>
                 <!-- <van-popup v-model="showPicker1" position="bottom">
                     <van-picker show-toolbar :columns="columns" @cancel="onCancel1" @confirm="onConfirm1" @change="onChange1" />
                 </van-popup> -->
                 <van-popup  v-model="showPicker1"  round position="bottom" overlay-class="countey">
                   <van-icon style="position:absolute;top:12px;right:14px;" color="#333333" name="close" size="24px" @click="showPicker1=false" />
                     <van-tabs style="margin-top:35px" color="#174fce" @click="isxiaosa" v-model="activechina">
-                      <van-tab title="中国">中国</van-tab>
-                      <van-tab title="海外国家/地区">海外国家/地区</van-tab>
+                      <van-tab :title="$t('m.china')">{{$t('m.china')}}</van-tab>
+                      <van-tab :title="$t('m.overseas')">{{$t('m.overseas')}}</van-tab>
                     </van-tabs>
-                    <van-picker  v-if="activechina==0" :visible-item-count="9" show-toolbar :columns="columns" @cancel="onCancel1" @confirm="onConfirm1" @change="onChange1" />
+                    <van-picker  v-if="activechina==0" :cancel-button-text="$t('m.cancel')" :confirm-button-text="$t('m.confirm')" :visible-item-count="9" show-toolbar :columns="columns" @cancel="onCancel1" @confirm="onConfirm1" @change="onChange1" />
                     <div class="chinabox" v-if="activechina==1">
                       <van-index-bar class="indexBar"  :sticky="false" highlight-color="#fb6463">
                               <van-index-anchor    v-for="(item,index) in firstName" :key="index" :index="index">
                                 <span class="indexWord" style="margin-left:20px">{{index}}</span>
-                                <van-cell @click="ischange(citem,cindex,2)" v-for="(citem,cindex) in item" :key="cindex"  :title="citem.name"/>
+                                <van-cell @click="ischange(citem,cindex,2)" v-for="(citem,cindex) in item" :key="cindex"  :title="$i18n.locale=='zh-CN'?citem.name:citem.en"/>
                               </van-index-anchor>
                       </van-index-bar>
                         <!-- <div @click="ischange(item,index,2)" :style="{color:iswg==index?'#174fce':''}" v-for="(item,index) in nochinaData" :key="index">{{item.name}}</div> -->
@@ -216,84 +217,84 @@
                 </van-popup>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">详细地址(门牌号)</span>
-                <van-field v-model="form2.addressDetail" type="text" placeholder="街道、门牌号等" :error-message="errorMessage2.addressDetail"/>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.address')}}</span>
+                <van-field v-model="form2.addressDetail" type="text" :placeholder="$t('m.Detailadd')" :error-message="errorMessage2.addressDetail"/>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">类型</span>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.type')}}</span>
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form2.type" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruTypeRadio1" :key="i+item.name">
 
-                    <van-radio :name="item.id" checked-color="#2D65E3">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3">{{$t(item.name)}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">物资提供方式</span>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.suptype')}}</span>
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form2.sup" class="radio-group">
-                    <div class="sig-radio" v-for="(item,i) in luruSupRadio1" :key="i+item.name">
-                    <van-radio :name="item.id" checked-color="#2D65E3">{{item.name}}</van-radio>
+                    <div class="sig-radio" style="width:50%" v-for="(item,i) in luruSupRadio1" :key="i+item.name">
+                    <van-radio :name="item.id" checked-color="#2D65E3">{{$t(item.name)}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">是否需要物流</span>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.issup')}}</span>
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form2.sup1" class="radio-group">
-                    <div class="sig-radio" v-for="(item,i) in luruneedRadio" :key="i+item.name">
-                    <van-radio :name="item.id" checked-color="#2D65E3">{{item.name}}</van-radio>
+                    <div class="sig-radio" style="width:50%" v-for="(item,i) in luruneedRadio" :key="i+item.name">
+                    <van-radio :name="item.id" checked-color="#2D65E3">{{$t(item.name)}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">可提供物资清单</span>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.cansup')}}</span>
                 <div class="comfirm-need-input-wrapper">
                   <div class="comfirm-need-top">
 
                     <div class="comfirm-need-head">
-                      <div class="name">物资名称</div>
-                      <div class="num">可提供数量</div>
+                      <div class="name">{{$t('m.nangood')}}</div>
+                      <div class="num">{{$t('m.nannum')}}</div>
                     </div>
                     <div class="comfirm-need-body" v-for="(iteam,index) in form2.materialDetails" :key="index">
                       <div class="name">
                         <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
 
                         
-                        <van-field class="sup-name" v-model="iteam.needsName" :readonly="readonly2" type="text" placeholder="输入物资名称"   input-align="center"  @focus="needFocus1(index)" @blur="needBlur1(index)"/>
+                        <van-field class="sup-name" v-model="iteam.needsName" :readonly="readonly2" type="text" :placeholder="$t('m.please')"   input-align="center"  @focus="needFocus1(index)" @blur="needBlur1(index)"/>
                         <van-popup v-model="startTimePopNeedName" position="bottom">
-                        <van-picker show-toolbar :columns="needList" @confirm="confirmNeedName1" @cancel="cancleNeedName" @change="changeNeedName1" />
+                        <van-picker show-toolbar :columns="$t('m.needList')" @confirm="confirmNeedName1" @cancel="cancleNeedName" @change="changeNeedName1" />
                         </van-popup>
                       </div>
-                      <div class="num"><van-field class="sup-num" v-model="iteam.needsNum" type="number" placeholder="请输入数字" testnum input-align="center" /><img @click="deleteDemand1(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
+                      <div class="num"><van-field class="sup-num" v-model="iteam.needsNum" type="number" :placeholder="$t('m.please')" testnum input-align="center" /><img @click="deleteDemand1(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
                     </div>
                   </div>
-                  <div class="comfirm-need-bottom" @click="addDemand1"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
+                  <div class="comfirm-need-bottom" @click="addDemand1"><img style="" src="../assets/image/add1.png" alt="" >{{$t("m.add")}}</div>
                 </div>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.contact')}}</span>
                 <div class="comfirm-need-input-wrapper">
                   <div class="comfirm-need-top comfirm-need-top-tel">
 
                     <div class="comfirm-need-head">
-                      <div class="name">联系人</div>
-                      <div class="num">联系方式</div>
+                      <div class="name">{{$t('m.contactp')}}</div>
+                      <div class="num">{{$t('m.contactt')}}</div>
                     </div>
                     <div class="comfirm-need-body" v-for="(iteam,index) in form2.contectTelList" :key="index">
                       <div class="name">
                         <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
 
-                        <van-field class="sup-name" v-model="iteam.name" type="text" placeholder="输入联系人"   input-align="center"/>
+                        <van-field class="sup-name" v-model="iteam.name" type="text" :placeholder="$t('m.contactp')"   input-align="center"/>
                       </div>
-                      <div class="num"><van-field class="tel" v-model="iteam.tel" type="text" placeholder="输入电话号码(建议手机)"  @blur="linkTelBlur(2,iteam.tel,index)"/><img @click="deleteTel1(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
+                      <div class="num"><van-field class="tel" v-model="iteam.tel" type="text" :placeholder="$t('m.contactt')"  @blur="linkTelBlur(2,iteam.tel,index)"/><img @click="deleteTel1(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
                     </div>
                   </div>
-                  <div class="comfirm-need-bottom" @click="addTel1"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
+                  <div class="comfirm-need-bottom" @click="addTel1"><img style="" src="../assets/image/add1.png" alt="" >{{$t("m.add")}}</div>
                 </div>
               </div>
               <!-- <div class="form-input">
@@ -307,8 +308,8 @@
                 </div>
               </div> -->
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">物资提供时间</span>
-                <van-field v-model="form2.startTime" placeholder="选择时间" readonly @click="startTimePopNeed = true"/>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.timewhen')}}</span>
+                <van-field v-model="form2.startTime" :placeholder="$t('m.setime')" readonly @click="startTimePopNeed = true"/>
                 <van-popup v-model="startTimePopNeed" position="bottom">
                   <van-datetime-picker
                     v-model="currentDateNeed"
@@ -321,11 +322,11 @@
                 </van-popup>
               </div>
               <div class="form-input">
-                <span>其他说明</span>
-                <van-field v-model="form2.descr" type="textarea" placeholder="备注"/>
+                <span>{{$t('m.othermsg')}}</span>
+                <van-field v-model="form2.descr" type="textarea" :placeholder="$t('m.remark')"/>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">身份证明</span>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.proof')}}</span>
                 <div class="need-img-wrapper">
                   <van-uploader
                     v-model="form2.fileList"
@@ -335,33 +336,33 @@
                     :max-count="2"
                   />
                 </div>
-                  <span class="desc">企业提供方请上传营业执照照片，个人提供方请上传身份证正反面照片，最多可上传2张照片</span>
+                  <span class="desc">{{$t('m.needremark1')}}</span>
               </div>
-              <div class="confirm-btn" @click="confirmtwo">提交</div>
+              <div class="confirm-btn" @click="confirmtwo">{{$t('m.submit')}}</div>
             </div>
-            <div class="form-wrapper" v-if="curTabIndex==3">
+            <div class="form-wrapper" v-if="curtabindex==3">
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">机构名称</span>
-                <van-field v-model="form3.name" type="text" @input="searchSaming(form3.name,3)" placeholder="请填写" :error-message="errorMessage3.hispotalName"/>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.namehelp')}}</span>
+                <van-field v-model="form3.name" type="text" @input="searchSaming(form3.name,3)" :placeholder="$t('m.please')" :error-message="errorMessage3.hispotalName"/>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
-                <van-field v-model="form3.address2" type="text" readonly placeholder="省市" :error-message="errorMessage3.address2" @click="showPicker = true"/>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.district')}}</span>
+                <van-field v-model="form3.address2" type="text" readonly :placeholder="$t('m.please')" :error-message="errorMessage3.address2" @click="showPicker = true"/>
                 <!-- <van-popup v-model="showPicker" position="bottom">
                     <van-picker show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm3" @change="onChange" />
                 </van-popup> -->
                 <van-popup  v-model="showPicker" round position="bottom" overlay-class="countey">
                   <van-icon style="position:absolute;top:12px;right:14px;" color="#333333" name="close" size="24px" @click="showPicker=false" />
                     <van-tabs style="margin-top:35px" color="#174fce" @click="isxiaosa" v-model="activechina">
-                      <van-tab title="中国">中国</van-tab>
-                      <van-tab title="海外国家/地区">海外国家/地区</van-tab>
+                      <van-tab :title="$t('m.china')">{{$t('m.china')}}</van-tab>
+                      <van-tab :title="$t('m.overseas')">{{$t('m.overseas')}}</van-tab>
                     </van-tabs>
-                    <van-picker v-if="activechina==0" show-toolbar :visible-item-count="9" :columns="columns" @cancel="onCancel" @confirm="onConfirm3" @change="onChange" />
+                    <van-picker v-if="activechina==0" show-toolbar :cancel-button-text="$t('m.cancel')" :confirm-button-text="$t('m.confirm')" :visible-item-count="9" :columns="columns" @cancel="onCancel" @confirm="onConfirm3" @change="onChange" />
                     <div class="chinabox" v-if="activechina==1">
                       <van-index-bar class="indexBar"  :sticky="false" highlight-color="#fb6463">
                               <van-index-anchor    v-for="(item,index) in firstName" :key="index" :index="index">
                                 <span class="indexWord" style="margin-left:20px">{{index}}</span>
-                                <van-cell @click="ischange(citem,cindex,3)" v-for="(citem,cindex) in item" :key="cindex"  :title="citem.name"/>
+                                <van-cell @click="ischange(citem,cindex,3)" v-for="(citem,cindex) in item" :key="cindex"  :title="$i18n.locale=='zh-CN'?citem.name:citem.en"/>
                               </van-index-anchor>
                       </van-index-bar>
                       <!-- <div @click="ischange(item,index,3)" :style="{color:iswg==index?'#174fce':''}" v-for="(item,index) in nochinaData" :key="index">{{item.name}}</div> -->
@@ -370,16 +371,16 @@
                 </van-popup>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">详细地址(门牌号)</span>
-                <van-field v-model="form3.address" type="text" placeholder="街道、门牌号等" :error-message="errorMessage3.address"/>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.address')}}</span>
+                <van-field v-model="form3.address" type="text" :placeholder="$t('m.Detailadd')" :error-message="errorMessage3.address"/>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">服务覆盖范围</span>
-                <van-field v-model="form3.serviceRange" type="text" placeholder="输入例如：山东全省16个地市" :error-message="errorMessage3.serviceRange"/>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.range')}}</span>
+                <van-field v-model="form3.serviceRange" type="text" :placeholder="$t('m.rangeholder')" :error-message="errorMessage3.serviceRange"/>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">请选择可提供服务的起始日期</span>
-                <van-field v-model="form3.startTime" placeholder="选择时间" readonly @click="startTimePop3 = true"/>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.helptime')}}</span>
+                <van-field v-model="form3.startTime" :placeholder="$t('m.setime')" readonly @click="startTimePop3 = true"/>
                 <van-popup v-model="startTimePop3" position="bottom">
                   <van-datetime-picker
                     v-model="currentDate3"
@@ -393,8 +394,8 @@
                 </van-popup>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">请选择可提供服务的结束日期</span>
-                <van-field v-model="form3.endTime" placeholder="选择时间" readonly @click="startTimePop4 = true"/>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.helptime1')}}</span>
+                <van-field v-model="form3.endTime" :placeholder="$t('m.setime')" readonly @click="startTimePop4 = true"/>
                 <van-popup v-model="startTimePop4" position="bottom">
                   <van-datetime-picker
                     v-model="currentDate1"
@@ -407,39 +408,39 @@
                 </van-popup>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">机构类型</span>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.typehelp')}}</span>
                 <div class="comfirm-radio">
                   <van-radio-group v-model="form3.type" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruOriginizeTypeRadio" :key="i+item.name">
 
-                    <van-radio :name="item.id" checked-color="#2D65E3">{{item.name}}</van-radio>
+                    <van-radio :name="item.id" checked-color="#2D65E3">{{$t(item.name)}}</van-radio>
                     </div>
                   </van-radio-group>
                 </div>
               </div>
               <div class="form-input">
-                <span>链接</span>
-                <van-field v-model="form3.linkUrl" type="textarea" placeholder="请填写" :error-message="errorMessage3.linkUrl"/>
+                <span>{{$t('m.link')}}</span>
+                <van-field v-model="form3.linkUrl" type="textarea" :placeholder="$t('m.please')" :error-message="errorMessage3.linkUrl"/>
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.contact')}}</span>
                 <div class="comfirm-need-input-wrapper">
                   <div class="comfirm-need-top comfirm-need-top-tel">
 
                     <div class="comfirm-need-head">
-                      <div class="name">联系人</div>
-                      <div class="num">联系方式</div>
+                      <div class="name">{{$t('m.contactp')}}</div>
+                      <div class="num">{{$t('m.contactt')}}</div>
                     </div>
                     <div class="comfirm-need-body" v-for="(iteam,index) in form3.contectTelList" :key="index">
                       <div class="name">
                         <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
 
-                        <van-field class="sup-name" v-model="iteam.name" type="text" placeholder="输入联系人"   input-align="center"/>
+                        <van-field class="sup-name" v-model="iteam.name" type="text" :placeholder="$t('m.contactp')"   input-align="center"/>
                       </div>
-                      <div class="num"><van-field class="tel" v-model="iteam.tel" type="text" placeholder="输入电话号码(建议手机)"  @blur="linkTelBlur(3,iteam.tel,index)"/><img @click="deleteTel2(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
+                      <div class="num"><van-field class="tel" v-model="iteam.tel" type="text" :placeholder="$t('m.contactt')"  @blur="linkTelBlur(3,iteam.tel,index)"/><img @click="deleteTel2(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
                     </div>
                   </div>
-                  <div class="comfirm-need-bottom" @click="addTel2"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
+                  <div class="comfirm-need-bottom" @click="addTel2"><img style="" src="../assets/image/add1.png" alt="" >{{$t('m.add')}}</div>
                 </div>
               </div>
               <!-- <div class="form-input">
@@ -453,25 +454,25 @@
                 </div>
               </div> -->
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">服务提供类型</span>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.helptyname')}}</span>
                 <div class="comfirm-radio">
                   <van-checkbox-group @change="changetype" v-model="form3.materialDetails1" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruOriginizeSupRadio" :key="i+item.name">
-                    <van-checkbox shape="square" checked-color="#2D65E3" :name="item.name">{{item.name}}</van-checkbox>
+                    <van-checkbox shape="square" checked-color="#2D65E3" :name="$t(item.name)">{{$t(item.name)}}</van-checkbox>
                     </div>
                    </van-checkbox-group>
                   <div class="author">
-                    <span>备注(若选择其他，请填写备注)</span>
-                    <van-field v-model="form3.needsDescr" type="textarea" class="author-textarea" placeholder="请输入例如：枢纽组织" :error-message="errorMessage3.author"/>
+                    <span>{{$t('m.helpremark')}}</span>
+                    <van-field v-model="form3.needsDescr" type="textarea" class="author-textarea" :placeholder="$t('m.helpremark1')"  :error-message="errorMessage3.author"/>
                   </div>
                 </div>
               </div>
               <div class="form-input">
-                <span>其他说明</span>
-                <van-field v-model="form3.descr" type="textarea" placeholder="请填写" />
+                <span>{{$t('m.others')}}</span>
+                <van-field v-model="form3.descr" type="textarea" :placeholder="$t('m.others1')" />
               </div>
               <div class="form-input">
-                <span><img style="" src="../assets/image/star.png" alt="">身份证明</span>
+                <span><img style="" src="../assets/image/star.png" alt="">{{$t('m.proof')}}</span>
                 <div class="need-img-wrapper">
                   <van-uploader
                     v-model="filst"
@@ -482,9 +483,9 @@
                   />
                   
                 </div>
-                <span class="desc">企业提供方请上传营业执照照片，个人提供方请上传身份证正反面照片，最多可上传2张照片</span>
+                <span class="desc">{{$t('m.needremark1')}}</span>
               </div>
-              <div class="confirm-btn" @click="confirmthree">提交</div>
+              <div class="confirm-btn" @click="confirmthree">{{$t('m.submit')}}</div>
             </div>
 
           </div>
@@ -498,10 +499,12 @@
 <script>
 import json from "@/libs/city_code.json"
 import nochina from "@/libs/nochina.json"
+import mapboxgl from 'mapbox-gl';
 export default {
   data() {
     return {
       bannerback:"url("+require("../assets/image/banner.png")+")",
+      bannerback1:"url("+require("../assets/image/banner@3x.png")+")",
       showmaterial:false,
       nochinaData:[],
       
@@ -688,95 +691,129 @@ export default {
       showimg:false,
       luruSelectData:[ //录入选择数据
         {
-          name: "我有需求",
+          name: "m.needs",
           type:1
         },{
-          name: "我有物资",
+          name: "m.supply",
           type:2
         },{
-          name: "我要出力",
+          name: "m.help",
           type:3
         }
       ],
       luruTypeRadio:[ //录入类型单选数据
+        // {
+        //   id:4,
+        //   name:"定点医院"
+        // },{
+        //   id:5,
+        //   name:"发热门诊"
+        // },{
+        //   id:6,
+        //   name:"防控指挥部"
+        // },{
+        //   id:7,
+        //   name:"普通医院"
+        // },{
+        //   id:0,
+        //   name:"其他抗疫单位"
+        // },
         {
-          id:4,
-          name:"定点医院"
+          id:14,
+          name:"m.typename1"
         },{
-          id:5,
-          name:"发热门诊"
+          id:11,
+          name:"m.typename2"
+        },{
+          id:12,
+          name:"m.typename3"
         },{
           id:6,
-          name:"防控指挥部"
+          name:"m.typename4"
         },{
-          id:7,
-          name:"普通医院"
+          id:3,
+          name:"m.typename5"
+        },
+        {
+          id:9,
+          name:"m.typename6"
         },{
           id:0,
-          name:"其他抗疫单位"
+          name:"m.typename7"
+        },{
+          id:13,
+          name:"m.typename8"
         },
       ], 
       luruTypeRadio1:[ //录入类型单选数据
         {
           id:3,
-          name:"企业"
+          name:"m.typesup1"
         },{
           id:8,
-          name:"个人"
+          name:"m.typesup2"
         },{
           id:9,
-          name:"公益组织"
+          name:"m.typesup3"
         },{
           id:10,
-          name:"海外组织"
+          name:"m.typesup4"
         },
       ], 
       luruSupRadio:[ //录入物资对接情况单选数据
         {
           id:1,
-          name:"接受个人捐赠"
+          name:"m.materialname1"
         },{
           id:2,
-          name:"接受企业捐赠"
+          name:"m.materialname2"
         },{
           id:3,
-          name:"接受采购"
+          name:"m.materialname3"
         },
       ], 
       luruSupRadio1:[ //录入物资对接情况单选数据
         {
           id:4,
-          name:"捐赠"
+          name:"m.siptype1"
         },{
           id:5,
-          name:"采购"
+          name:"m.siptype2"
         },
       ], 
       luruneedRadio:[ //录入需求来源单选数据
         {
           id:1,
-          name:"是"
+          name:"m.yes"
         },{
           id:0,
-          name:"否"
+          name:"m.no"
         }
       ],
       luruSourceRadio:[ //录入需求来源单选数据
         {
+          id:0,
+          name:"m.sour1"
+        },{
           id:1,
-          name:"政府发布"
+          name:"m.sour2"
         },{
           id:2,
-          name:"医院官方渠道"
+          name:"m.sour3"
         },{
           id:3,
-          name:"公益平台"
+          name:"m.sour6"
         },{
           id:4,
-          name:"微信公众号"
-        },{
+          name:"m.sour7"
+        },
+        {
           id:5,
-          name:"其他"
+          name:"m.sour4"
+        },
+        {
+          id:6,
+          name:"m.sour5"
         },
       ],
       currentDate:new Date(),
@@ -796,37 +833,40 @@ export default {
       luruOriginizeTypeRadio:[ // 录入机构类型单选数据
         {
           id:1,
-          name:"民间组织"
+          name:"m.helpname1"
         },{
           id:2,
-          name:"志愿者团队"
+          name:"m.helpname2"
         },{
           id:3,
-          name:"企业"
+          name:"m.helpname3"
+        },{
+          id:8,
+          name:"m.helpname4"
         },
       ],
       luruOriginizeSupRadio:[ // 录入机构类型单选数据
         {
           id:1,
-          name:"医疗救助"
+          name:"m.helptyname7"
         },{
           id:2,
-          name:"心理干预"
+          name:"m.helptyname2"
         },{
           id:3,
-          name:"物资发放"
+          name:"m.helptyname3"
         },{
           id:4,
-          name:"疫情排查"
+          name:"m.helptyname4"
         },{
           id:5,
-          name:"宣传倡导"
+          name:"m.helptyname1"
         },{
           id:6,
-          name:"社区服务"
+          name:"m.helptyname5"
         },{
           id:7,
-          name:"其他服务"
+          name:"m.helptyname6"
         },
       ],
       columns:[
@@ -841,7 +881,10 @@ export default {
             defaultIndex: 0
         },
       ],
-      needList:["N95口罩","外科口罩","一次性医用口罩","隔离衣","一次性手术衣","医用帽","护目镜","防护眼罩","防护面罩","医用手套","防污染鞋套","长筒防护靴","测温仪","84消毒液","75%浓度酒精","一次性消毒床罩","消毒设备","对口药品","负压担架","负压救护车","消洗设备","全面型呼吸防护器","其他"],
+      // needList:["m.needtablename1","m.needtablename2","m.needtablename21","m.needtablename3","m.needtablename4","m.needtablename5",
+      // "m.needtablename6","m.needtablename7","m.needtablename8","m.needtablename9","m.needtablename10","m.needtablename11","m.needtablename12",
+      // "m.needtablename13","m.needtablename14","m.needtablename15","m.needtablename16",
+      // "m.needtablename17","m.needtablename18","m.needtablename19","m.needtablename20","m.needtablename21","m.needtablename22"],
       currentCity:[],
       startTimePopNeedName:false,
       selectIndex:0,
@@ -857,36 +900,28 @@ export default {
       firstName:{},
     };
   },
-   props: {
-      curTabIndex:Number,
-      required: true,
-    },
+  props:['curtabindex'],
   created() {
     // this.nochinaData=nochina
     nochina.forEach(iteam=>{
       iteam.pinyin=iteam.pinyin.substr(0, 1).toUpperCase()
       this.nochinaData.push(iteam)
     })
-    
     // let firstName = {};
-    let FirstPin= ["A", "B", "C", "D", "E", "F", "G", "H","I","J", "K", "L", "M", "N", "O","P", "Q", "R", "S", "T","U","V", "W", "X", "Y", "Z"]
-    FirstPin.forEach((item)=>{
-        this.firstName[item] = [];
-        this.nochinaData.forEach((el)=>{
-            let first = el.pinyin;
-            if( first == item ){
-              this.firstName[item].push(el)
-            }       
-        })
-    })
-    console.log(this.firstName)
+    
   },
   watch:{
+    curtabindex:function(newName, oldName){
+      console.log(this.$i18n.locale)
+      this.changefirst()
+    }
   },
  computed: {
   
  },
  mounted () {
+   
+   this.changefirst()
      this.columns[0].values = Object.values(this.allCity).map(function(e){
         return {text:e.name}
     })
@@ -898,6 +933,30 @@ export default {
     }
   },
 methods:{
+  changefirst(){
+    let FirstPin= ["A", "B", "C", "D", "E", "F", "G", "H","I","J", "K", "L", "M", "N", "O","P", "Q", "R", "S", "T","U","V", "W", "X", "Y", "Z"]
+    if(this.$i18n.locale=='zh-CN'){
+      FirstPin.forEach((item)=>{
+          this.firstName[item] = [];
+          this.nochinaData.forEach((el)=>{
+              let first = el.pinyin
+              if( first == item ){
+                this.firstName[item].push(el)
+              }       
+          })
+      })
+    }else{
+      FirstPin.forEach((item)=>{
+          this.firstName[item] = [];
+          this.nochinaData.forEach((el)=>{
+              let first = el.short
+              if( first == item ){
+                this.firstName[item].push(el)
+              }       
+          })
+      })
+    }
+  },
   changechina(row){
   },
   clearForm1(){
@@ -1160,47 +1219,29 @@ closebig(){
 },
 //地址解析
 addresschange(address){
-      // let myGeo = new BMap.Geocoder();
-      // // 将地址解析结果显示在地图上,并调整地图视野
-      // myGeo.getPoint(province+city+address, (point)=>{
-      //   if (point) {
-      //     this.form3.longitude=point.lng
-      //     this.form3.latitude=point.lat
-      //     this.$fetchPost("material/save",this.form3,'json').then(res=> {
-      //       if(res.code=="success"){
-      //         this.showresult=true
-      //         this.clearForm3()
-      //       }else{
-      //         this.$toast(res.message);
-      //       }
-      //     })
-      //   }else{
-      //     alert("您选择地址没有解析到结果!");
-      //   }
-      // }, province+city);
-
-       var geocoder = new AMap.Geocoder();
-        geocoder.getLocation(address, (status, result)=> {
-            if (status === 'complete'&&result.geocodes.length) {
-            
-              let lnglat = result.geocodes[0].location
-              //  return lnglat
-              this.form3.longitude=lnglat.lng
-              this.form3.latitude=lnglat.lat
-              this.form3.country="中国"
-              this.$fetchPost("material/save",this.form3,'json').then(res=> {
-                  if(res.code=="success"){
-                    this.showresult=true
-                    this.clearForm3()
-                  }else{
-                    this.$toast(res.message);
-                  }
-              })
-              
+      mapboxgl.accessToken = 'pk.eyJ1Ijoid2FuZ3hzMiIsImEiOiJjazNpaTVpYjkwOGRyM25ycHJ4d3g3N29uIn0.Vi4TSzhNcxvwh_zeGJhQ_g';
+      let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+      mapboxClient.geocoding
+      .forwardGeocode({
+      query: address,
+      autocomplete: false,
+      limit: 1
+      })
+      .send()
+      .then((response)=> {
+        let feature = response.body.features[0].center;
+        console.log(feature)
+        this.form3.longitude=feature[0]
+        this.form3.latitude=feature[1]
+        this.$fetchPost("material/save",this.form3,'json').then(res=> {
+            if(res.code=="success"){
+              this.showresult=true
+              this.clearForm3()
             }else{
-                // log.error('根据地址查询位置失败');
+              this.$toast(res.message);
             }
-        });
+          })
+      })
 },
 cancleNeedName(){
   this.startTimePopNeedName=false
@@ -1209,12 +1250,11 @@ changeNeedName(picker, value, index){
   this.form1.selectItem=value
 },
 confirmNeedName1(value){
-  
-  if(value=="其他"){
+  if(value=="其他"||value=="other"){
     this.curNeed2=1
     this.readonly2=false
     this.form2.materialDetails[this.selectIndex1].needsName=''
-    this.$toast("请输入其他物资名称")
+    this.$toast(this.$i18n.locale=='zh-CN'?"请输入其他物资名称":"Please enter another material name")
   }else {
     this.form2.materialDetails[this.selectIndex1].needsName=value
   }
@@ -1239,7 +1279,7 @@ linkTelBlur(type,tel,index){
             this.form3.contectTelList[index].tel=''
             
           }
-            this.$toast('当前填写电话格式有误')
+            this.$toast(this.$i18n.locale=='zh-CN'?"当前填写电话格式有误":"The format of the current phone is incorrect")
         }
     },
     secectRadio(index){
@@ -1263,15 +1303,16 @@ linkTelBlur(type,tel,index){
         var strTel=/^[\d\-]+$/g
         if (!strTel.test(tel)){
             this.form3.contectTelList[index].tel=""
-            this.$toast('当前填写电话格式有误')
+            // this.$toast('当前填写电话格式有误')
+            this.$toast(this.$i18n.locale=='zh-CN'?"当前填写电话格式有误":"The format of the current phone is incorrect")
         }
       },
       confirmNeedName(value){
-        if(value=="其他"){
+        if(value=="其他"||value=="other"){
           this.curNeed1=1
           this.readonly1=false
           this.form1.materialDetails[this.selectIndex].needsName=''
-          this.$toast("请输入其他物资名称")
+          this.$toast(this.$i18n.locale=='zh-CN'?"请输入其他物资名称":"Please enter another material name")
         }else {
           this.form1.materialDetails[this.selectIndex].needsName=value
         }
@@ -1314,7 +1355,8 @@ linkTelBlur(type,tel,index){
           return item.needsName == ""
       })
       if(x||this.form1.materialDetails[this.testindex].needsName==''){
-        this.$toast('请完善信息(至少输入物资名称)');
+        // this.$toast('请完善信息(至少输入物资名称)');
+        this.$toast(this.$i18n.locale=='zh-CN'?"请完善信息(至少输入物资名称)":"Please perfect the information (at least enter the material name)")
       }else{
         this.testindex++
         this.form1.materialDetails.push({
@@ -1350,7 +1392,8 @@ linkTelBlur(type,tel,index){
       if(this.testindex<1){
         this.form1.materialDetails[index].needsName=''
         this.form1.materialDetails[index].needsNum=''
-        this.$toast('至少添加一条需求');
+        // this.$toast('至少添加一条需求');
+        this.$toast(this.$i18n.locale=='zh-CN'?"至少添加一条需求":"Add at least one requirement")
       }else{
         this.form1.materialDetails.splice(index,1)
         this.testindex--
@@ -1364,7 +1407,8 @@ linkTelBlur(type,tel,index){
           return item.needsName == ""||item.needsNum == ""
       })
       if(x||this.form2.materialDetails[this.testindex1].needsName==''||this.form2.materialDetails[this.testindex1].needsNum==''){
-        this.$toast('请完善信息');
+        // this.$toast('请完善信息');
+        this.$toast(this.$i18n.locale=='zh-CN'?"请完善信息":"Please improve the information")
       }else{
         this.testindex1++
         this.form2.materialDetails.push({
@@ -1378,7 +1422,8 @@ linkTelBlur(type,tel,index){
       if(this.testindex1<1){
         this.form2.materialDetails[index].needsName=''
         this.form2.materialDetails[index].needsNum=''
-        this.$toast('至少添加一条需求');
+        // this.$toast('至少添加一条需求');
+        this.$toast(this.$i18n.locale=='zh-CN'?"至少添加一条需求":"Add at least one requirement")
       }else{
         this.form2.materialDetails.splice(index,1)
         this.testindex1--
@@ -1459,7 +1504,7 @@ linkTelBlur(type,tel,index){
     },
     // 录入需求提供切换
     needTi(type){
-      this.curTabIndex=type
+      this.curtabindex=type
     },
     //民间组织录入身份证明
     uploadImgsa (file) {
@@ -1468,7 +1513,8 @@ linkTelBlur(type,tel,index){
         this.$fetchPost("material/uploadPicFiles",{
           ImgBytes:file
         },"json").then(res=> {
-            this.$toast("图片上传成功");
+            // this.$toast("图片上传成功");
+            this.$toast(this.$i18n.locale=='zh-CN'?"图片上传成功":"Picture uploaded successfully")
             if(res.code=='success'){
               this.meedUrlArr.push(res.content)
               this.meedUrlArr.forEach(item => {
@@ -1542,8 +1588,7 @@ linkTelBlur(type,tel,index){
         this.meedUrlArr = (this.meedUrlArr + '').split(',');
         this.meedUrlArr = this.meedUrlArr.toString().split(',');
         this.meedUrlArr = this.meedUrlArr.join().split(',');
-        
-        this.$toast("图片删除成功");
+        this.$toast(this.$i18n.locale=='zh-CN'?"图片删除成功":"Picture deleted successfully")
         this.meedUrlArr.splice(detail.index, 1)
       
       }
@@ -1557,20 +1602,19 @@ linkTelBlur(type,tel,index){
       this.showPicker=false
       this.showPicker1=false
       if(type==1){
-        
-        this.form1.address=row.name
-        this.form1.country=row.name
-        this.form1.province=""
+        this.form1.address=this.$i18n.locale=='zh-CN'?row.name:row.en
+        this.form1.country=this.$i18n.locale=='zh-CN'?row.name:row.en
+        this.form1.province=this.$i18n.locale=='zh-CN'?row.name:row.en
         this.form1.city=""
       }else if(type==2){
-        this.form2.country=row.name
-        this.form2.address=row.name
-        this.form2.province=""
+        this.form2.country=this.$i18n.locale=='zh-CN'?row.name:row.en
+        this.form2.address=this.$i18n.locale=='zh-CN'?row.name:row.en
+        this.form2.province=this.$i18n.locale=='zh-CN'?row.name:row.en
         this.form2.city=""
       }else{
-        this.form3.country=row.name
-        this.form3.address2=row.name
-        this.form3.province=""
+        this.form3.country=this.$i18n.locale=='zh-CN'?row.name:row.en
+        this.form3.address2=this.$i18n.locale=='zh-CN'?row.name:row.en
+        this.form3.province=this.$i18n.locale=='zh-CN'?row.name:row.en
         this.form3.city=""
       }
     },
@@ -1583,13 +1627,13 @@ linkTelBlur(type,tel,index){
       if(this.form3.name==""
       ||this.form3.address2==""||this.form3.serviceRange==""||
       this.form3.startTime==""||this.form3.endTime==""||this.form3.materialDetails1.length==0||this.meedUrlArr.length==0){
-        this.$toast('请完善信息');
+        this.$toast(this.$i18n.locale=='zh-CN'?"请完善信息":"Please improve the information")
       }else if (y){
-        this.$toast('请输入联系人、联系电话且相互对应');
+        this.$toast(this.$i18n.locale=='zh-CN'?"请输入联系人、联系电话且相互对应":"Please enter the contact person and telephone number and correspond to each other.")
       }else{
         this.form3.materialDetails1.forEach(iteam=>{
           let obj={}
-          if(iteam=="其他服务"){
+          if(iteam=="其他服务"||iteam=="Other service"){
             obj.needsName=iteam
             obj.needsNum=null
             obj.descr=this.form3.needsDescr
@@ -1608,17 +1652,18 @@ linkTelBlur(type,tel,index){
         }),
         this.form3.linkPeople=arr.join(",")
         this.form3.picUrl=this.meedUrlArr.join(",")
-        if(this.form3.city==""){
-               this.$fetchPost("material/save",this.form3,'json').then(res=> {
-                  this.$toast(res.message);
-                  if(res.code=="success"){
-                    this.showresult=true
-                    this.clearForm1()
-                  }
-              })
-        }else{
-          this.addresschange(this.form3.province+this.form3.city+this.form3.address)
-        }
+        this.addresschange(this.form3.province+this.form3.city+this.form3.address)
+        // if(this.form3.city==""){
+        //        this.$fetchPost("material/save",this.form3,'json').then(res=> {
+        //           this.$toast(res.message);
+        //           if(res.code=="success"){
+        //             this.showresult=true
+        //             this.clearForm1()
+        //           }
+        //       })
+        // }else{
+        //   this.addresschange(this.form3.province+this.form3.city+this.form3.address)
+        // }
         
         
       }
@@ -1788,8 +1833,7 @@ linkTelBlur(type,tel,index){
         this.meedUrlArr1 = (this.meedUrlArr1 + '').split(',');
         this.meedUrlArr1 = this.meedUrlArr1.toString().split(',');
         this.meedUrlArr1 = this.meedUrlArr1.join().split(',');
-        
-        this.$toast("图片删除成功");
+        this.$toast(this.$i18n.locale=='zh-CN'?"图片删除成功":"Picture deleted successfully")
         this.meedUrlArr1.splice(detail.index, 1)
       
       }
@@ -1805,8 +1849,7 @@ linkTelBlur(type,tel,index){
         this.meedUrlArr2 = (this.meedUrlArr2 + '').split(',');
         this.meedUrlArr2 = this.meedUrlArr2.toString().split(',');
         this.meedUrlArr2 = this.meedUrlArr2.join().split(',');
-        
-        this.$toast("图片删除成功");
+        this.$toast(this.$i18n.locale=='zh-CN'?"图片删除成功":"Picture deleted successfully")
         this.meedUrlArr2.splice(detail.index, 1)
       
       }
@@ -1821,9 +1864,9 @@ linkTelBlur(type,tel,index){
           return item.tel == ""||item.name=='' //返回true
       })
         if (this.form1.hispotalName==""|| this.form1.address==""||this.form1.addressDetail==""||this.form1.sup.length==0||x||this.form1.startTime==""||this.meedUrlArr1.length==0){
-            this.$toast('请完善信息');
+          this.$toast(this.$i18n.locale=='zh-CN'?"请完善信息":"Please improve the information")
         }else if (y){
-        this.$toast('请输入联系人、联系电话且相互对应');
+        this.$toast(this.$i18n.locale=='zh-CN'?"请输入联系人、联系电话且相互对应":"Please enter the contact person and telephone number and correspond to each other.")
       }else{
          this.form1.contectTelList.forEach(v=> {
            if (v.tel||v.name&&v.tel){
@@ -1849,18 +1892,19 @@ linkTelBlur(type,tel,index){
               descr:this.form1.descr
       
           }
-          if(this.params1.city==""){
-               this.$fetchPost("material/save",this.params1,'json').then(res=> {
-                  this.$toast(res.message);
-                  if(res.code=="success"){
-                    this.showresult=true
-                    this.clearForm1()
-                  }
-              })
-            }else{
-              this.addresschange1(this.params1.province+this.params1.city+this.params1.address,1)
+          this.addresschange1(this.params1.province+this.params1.city+this.params1.address,1)
+          // if(this.params1.city==""){
+          //      this.$fetchPost("material/save",this.params1,'json').then(res=> {
+          //         this.$toast(res.message);
+          //         if(res.code=="success"){
+          //           this.showresult=true
+          //           this.clearForm1()
+          //         }
+          //     })
+          //   }else{
+          //     this.addresschange1(this.params1.province+this.params1.city+this.params1.address,1)
 
-            }
+          //   }
         }
          
     },
@@ -1874,9 +1918,9 @@ linkTelBlur(type,tel,index){
           return item.tel == ""||item.name=='' //返回true
       })
       if (this.form2.hispotalName==""||this.form2.address==""||this.form2.addressDetail==""||x||this.form2.startTime==""||this.meedUrlArr2.length==0){
-          this.$toast('请完善信息');
+          this.$toast(this.$i18n.locale=='zh-CN'?"请完善信息":"Please improve the information")
       }else if (y){
-        this.$toast('请输入联系人、联系电话且相互对应');
+        this.$toast(this.$i18n.locale=='zh-CN'?"请输入联系人、联系电话且相互对应":"Please enter the contact person and telephone number and correspond to each other.")
       }else{
          this.form2.contectTelList.forEach(v=> {
            if (v.tel||v.name&&v.tel){
@@ -1902,31 +1946,38 @@ linkTelBlur(type,tel,index){
               descr:this.form2.descr
         
             }
-            if(this.params2.city==""){
-               this.$fetchPost("material/save",this.params2,'json').then(res=> {
-                  this.$toast(res.message);
-                  if(res.code=="success"){
-                    this.showresult=true
-                    this.clearForm1()
-                  }
-              })
-            }else{
-               this.addresschange1(this.params2.province+this.params2.city+this.params2.address,2)
-            }
+            this.addresschange1(this.params2.province+this.params2.city+this.params2.address,2)
+            // if(this.params2.city==""){
+            //    this.$fetchPost("material/save",this.params2,'json').then(res=> {
+            //       this.$toast(res.message);
+            //       if(res.code=="success"){
+            //         this.showresult=true
+            //         this.clearForm1()
+            //       }
+            //   })
+            // }else{
+            //    this.addresschange1(this.params2.province+this.params2.city+this.params2.address,2)
+            // }
       }
     },
     //地址解析
     addresschange1(address,type){
-         var geocoder = new AMap.Geocoder();
-      geocoder.getLocation(address, (status, result)=> {
-          if (status === 'complete'&&result.geocodes.length) {
-          
-            let lnglat = result.geocodes[0].location
-            //  return lnglat
-            if (type==1){
-              this.params1.longitude=lnglat.lng
-              this.params1.latitude=lnglat.lat
-              this.params1.country="中国"
+      mapboxgl.accessToken = 'pk.eyJ1Ijoid2FuZ3hzMiIsImEiOiJjazNpaTVpYjkwOGRyM25ycHJ4d3g3N29uIn0.Vi4TSzhNcxvwh_zeGJhQ_g';
+      let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+      mapboxClient.geocoding
+      .forwardGeocode({
+      query: address,
+      autocomplete: false,
+      limit: 1
+      })
+      .send()
+      .then((response)=> {
+        let feature = response.body.features[0].center;
+        console.log(feature)
+        if (type==1){
+              this.params1.longitude=feature[0]
+              this.params1.latitude=feature[1]
+              // this.params1.country="中国"
               this.$fetchPost("material/save",this.params1,'json').then(res=> {
                   this.$toast(res.message);
                   if(res.code=="success"){
@@ -1934,10 +1985,10 @@ linkTelBlur(type,tel,index){
                     this.clearForm1()
                   }
               })
-            }else if (type==2){
-              this.params2.longitude=lnglat.lng
-              this.params2.latitude=lnglat.lat
-              this.params2.country="中国"
+        }else if (type==2){
+              this.params2.longitude=feature[0]
+              this.params2.latitude=feature[1]
+              // this.params2.country="中国"
               this.$fetchPost("material/save",this.params2,'json').then(res=> {
                   this.$toast(res.message);
                   if(res.code=="success"){
@@ -1945,12 +1996,8 @@ linkTelBlur(type,tel,index){
                     this.clearForm2()
                   }
               })
-            }
-            
-          }else{
-              // log.error('根据地址查询位置失败');
-          }
-      });
+        }
+      })
     },
     // 点击确定
     confirmTime() {
@@ -2305,9 +2352,9 @@ linkTelBlur(type,tel,index){
               .radio-group{
                 display:flex;
                 flex-wrap: wrap;
-                justify-content: space-between;
+                justify-content: flex-start;
                 .sig-radio{
-                  width: 50%;
+                  width: 100%;
                   padding: 6px 0;
                 }
               }
@@ -2366,14 +2413,14 @@ linkTelBlur(type,tel,index){
                     display: flex;
                     justify-content: center;
                     align-items:center;
-                    width: 104px;
+                    width: 50%;
                     border-right: 1px solid #F1F2F5;
                   }
                   .num{
                     display: flex;
                     justify-content: center;
                     align-items:center;
-                    width: 209px;
+                    width: 50%;
                   }
 
                 }
@@ -2381,7 +2428,7 @@ linkTelBlur(type,tel,index){
                   display: flex;
                   justify-content: flex-start;
                   height: 30px;
-                  background:#E5EAF2;
+                  background:rgba(229,234,242,0.5);
                   border-top-left-radius:5px;
                   border-top-right-radius:5px;
                   border-bottom: 1px solid #F1F2F5;
@@ -2438,14 +2485,14 @@ linkTelBlur(type,tel,index){
               }
             }
             .desc{
-              font-size:12px;
+              font-size:13px;
               font-family:PingFang SC;
               font-weight:500;
               color:rgba(118,160,255,1);
               line-height: 14px;
               &.need-table-desc{
                 height:20px;
-                margin-top: 5px;
+                margin-top: -10px;
 
               }
             }

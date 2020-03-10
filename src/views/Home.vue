@@ -1,13 +1,13 @@
 <template>
   <div class="home">
     <div class="onebif">
-      <div style="font-size:12px">近1月数据</div>
-      <div style="font-size:12px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span></div>
-      <!-- <div style="font-size:14px" @click="changeLangEvent">点击切换中英文{{$t('m.demander')}}</div> -->
+      <div style="font-size:12px">{{$t("m.within")}} <span style="margin:0 6px"></span> {{zanz.view}}{{$t('m.views')}}</div>
+      <!-- <div style="font-size:12px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span></div> -->
+      <div style="font-size:14px" @click="changeLangEvent">切换{{lang=="zh-CN"?"English":'中文'}}</div>
     </div>
-    <div class="twobif">{{zanz.encourage}}次</div>
+    <div class="twobif">{{zanz.encourage}}</div>
     <div class="threebif" @click="dzanclick">
-      <van-icon  name="good-job" :size="30" color="#ffffff" />
+      <!-- <van-icon  name="good-job" :size="30" color="#ffffff" /> -->
     </div>
     <transition name="likeAddAnimate">
      <div class="dzan" v-if="isdzan">+1</div>
@@ -35,15 +35,16 @@
     <div class="bottom-btn-write">
       <div class="bottom-btn">
         <div class="btn-list" v-for="(item,i) in bottomBtnList" :key="i" :style="item.backgroundImgStyle" @click="luruSelectBtn(item.type)">
-          <span>{{item.name}}</span>
+          <span>{{$t(item.name)}}</span>
         </div>
       </div>
       <div class="write-wrapper">
 
         <div class="write">
-          <p>更多物资跟踪：新冠肺炎物资捐赠对接记录 <span style="color:#1989fa" @click="agreement=true">用户协议</span></p>
+          <p>{{$t('m.more')}} <span style="color:#1989fa" @click="agreement=true">{{$t('m.user')}}</span></p>
         </div>
-        <div class="countbottom"><span style="color:#216AFF"><a href="http://www.acfic.org.cn">中华全国工商业联合会</a></span> <span style="color:#216AFF"><a href="http://www.scf.org.cn">上海市慈善基金会</a></span> <span style="color:#216AFF"><a href="hforettps://www.siti.sh.cn">上海产业技术研究院</a></span>联合发布</div>
+        <div class="countbottom" v-if="lang=='zh-CN'"><span style="color:#216AFF"><a href="http://www.acfic.org.cn">中华全国工商业联合会</a></span> <span style="color:#216AFF"><a href="http://www.scf.org.cn">上海市慈善基金会</a></span> <span style="color:#216AFF"><a href="hforettps://www.siti.sh.cn">上海产业技术研究院</a></span>联合发布</div>
+        <div class="countbottom" v-if="lang=='en-US'">Jointly released by<span style="color:#216AFF"><a href="http://www.acfic.org.cn">CFIC,</a></span> <span style="color:#216AFF"><a href="http://www.scf.org.cn">SCF</a></span>and <span style="color:#216AFF"><a href="hforettps://www.siti.sh.cn">SITI</a></span></div>
       </div>
     </div>
     <!-- 搜索框 -->
@@ -52,7 +53,7 @@
       <div class="search-postion-content" @click="searchBtn">
         <img src="../assets/image/icon_search.png"/>
         <div class="search-position-input">
-          <van-field v-model="searchText" placeholder="医院/物资/区域" readonly />
+          <van-field v-model="searchText" :placeholder="$t('m.search')" readonly />
         </div>
         <!-- <span v-if="searchText">{{searchText}}</span>
         <span v-else>医院/物资/区域</span> -->
@@ -77,12 +78,12 @@
       <div class="txtimg" v-for="(iteam,index) in menuList"
         :key="index"
         @click="toRouterIndex(iteam,index)">
-        <div :class="selectIndex==index?'imgbox txt-active':'imgbox'">{{iteam.name}}</div>
+        <div :class="selectIndex==index?'imgbox txt-active':'imgbox'">{{$t(iteam.name)}}</div>
       </div>
     </div>
     <!-- 防止过快的切换 -->
     <van-overlay :z-index="2002" :show="showmap">
-      <div class="wrapperfast" >
+      <div class="wrapperfast">
         <van-loading size="64px" color="#1989fa"></van-loading>
       </div>
     </van-overlay>
@@ -91,7 +92,7 @@
     <div id="myMap" class="container"></div>
     
     <!-- 医院的详情弹框 -->
-    <van-overlay  :show="isDetail" :z-index="99" :duration="0"	>
+    <van-popup position="bottom" round v-model="isDetail" :z-index="99">
       <div class="hospatilBox">
         <div class="contentDetail">
           <van-icon class="closeimg" @click="isDetail=false" :size="24" name="cross" />
@@ -155,7 +156,7 @@
           </div>
         </div>
       </div>
-    </van-overlay>
+    </van-popup>
     <van-popup
         :z-index="100"
         v-model="phoneshow"
@@ -266,8 +267,6 @@
     <!-- 搜索录入图标 -->
     <div class="search-write">
       <div class="img-icon" @click="contectBtn">
-        <img src="../assets/image/contect.png" />
-        <span style="font-size:9px">联系我们</span>
       </div>
     </div>
     <div :class="[fugongModel?'icon-direction1':'icon-direction']" @click="getPosition" >
@@ -276,7 +275,7 @@
 
     <!-- 录入缺省页 -->
     <van-popup v-model="reduceShow" position="bottom" :style="{ height: '100%' }">
-      <luru @fatherMethod="fatherMethod" :curTabIndex="curTabIndex"></luru>
+      <luru @fatherMethod="fatherMethod" :curtabindex="curtabindex"></luru>
       
     </van-popup>
 
@@ -633,7 +632,7 @@
       <div class="cur-time-img" @click="curTimeBtn(1)">
         <!-- <img src="../assets/image/zhsa.png" alt=""> -->
         <div class="zhsa"></div>
-        <div style="color:#ff6f18;font-size:12px">资助信息</div>
+        <!-- <div style="color:#ff6f18;font-size:12px">资助信息</div> -->
       </div>
     </div>
 
@@ -713,7 +712,7 @@ export default {
       menuList: [
         {
           id:1,
-          name: "需方",
+          name: "m.demander",
           imgUrl: [
             require("../assets/image/icon7.png"),
             require("../assets/image/list1.png")
@@ -721,7 +720,7 @@ export default {
         },
         {
           id:2,
-          name: "供方",
+          name: "m.supplier",
           imgUrl: [
             require("../assets/image/list4.png"),
             require("../assets/image/list3.png")
@@ -729,7 +728,7 @@ export default {
         },
         {
           id:3,
-          name: "民间组织",
+          name: "m.ngos",
           imgUrl: [
             require("../assets/image/list6.png"),
             require("../assets/image/list5.png")
@@ -745,7 +744,7 @@ export default {
       myMap:null,
       mass:null,
       markerSa:null,
-      pointGroup: new AMap.OverlayGroup(), // 省集合
+      pointGroup: null, // 省集合
       isDetail:false,
       agreement:false,
       specifications:false,//医用规则说明
@@ -785,7 +784,7 @@ export default {
         hour:'',
         orgType:1,
       },
-      curTabIndex:1, // 录入当前切换
+      curtabindex:1, // 录入当前切换
       clickTabPoint:0, // 录入提交是否选择tab按钮指针
       conUs:[ // 录入联系人
         {
@@ -810,6 +809,7 @@ export default {
           tel: "18817582880",
         },
       ],
+      mayGroup:[],
       isdzan:false,
       styleUp:true,
       isoneClosePoint:1,
@@ -835,7 +835,7 @@ export default {
             backgroundRepeat:'no-repeat',
             backgroundSize:'100% 100%'
           },
-          name: "我有需求",
+          name: "m.need",
           type:1
         },{
           backgroundImgStyle:{
@@ -843,7 +843,7 @@ export default {
             backgroundRepeat:'no-repeat',
             backgroundSize:'100% 100%'
           },
-          name: "我有物资",
+          name: "m.supply",
           type:2
         },{
           backgroundImgStyle:{
@@ -851,7 +851,7 @@ export default {
             backgroundRepeat:'no-repeat',
             backgroundSize:'100% 100%'
           },
-          name: "我要捐赠",
+          name: "m.donate",
           type:4
         },{
           backgroundImgStyle:{
@@ -859,12 +859,12 @@ export default {
             backgroundRepeat:'no-repeat',
             backgroundSize:'100% 100%'
           },
-          name: "我要出力",
+          name: "m.help",
           type:3
         }
       ],
       curSearchTabItem:0, //搜索当前选择组织
-      fugongModel:true, // 复工
+      fugongModel:false, // 复工
     }
   },
   created() {
@@ -872,12 +872,8 @@ export default {
     this.getWuziList()
     this.getCityList()
     this.getCurTimeContent()
-    console.log(coordTransform)
-    // this.getProvinMark("#216AFF")
   },
  mounted () {
-  //  console.log(wx)
-    // this.getMap()
     this.getMapbox()
     var scrolltop = document.body.scrollTop;
     $('input').focus(function(){
@@ -925,7 +921,6 @@ export default {
         let data={url:window.location.href.split('#')[0]};
         this.$fetchGet('signature/getSignature',data)
         .then((res)=>{
-          console.log(res)
           wx.config({
             debug: false, //开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: 'wxc941dba7ff69275c', //必填，公众号的唯一标识
@@ -1024,9 +1019,15 @@ export default {
       if ( this.lang === 'zh-CN' ) {
               this.lang = 'en-US';
               this.$i18n.locale = this.lang;//关键语句
+              this.initmapbox()
+              this.getDataList()
+              // this.myMap.addControl(new MapboxLanguage({defaultLanguage: ''}));
       }else {
           this.lang = 'zh-CN';
           this.$i18n.locale = this.lang;//关键语句
+          this.initmapbox()
+          this.myMap.addControl(new MapboxLanguage({defaultLanguage: 'zh'}));
+          this.getDataList()
       }
     },
     //一键关注
@@ -1035,51 +1036,43 @@ export default {
     },
     //获取当前位置
     getPosition(){
-      // if(this.markerSa){
-      //   this.markerSa.setMap(null);
-      // }
-      // let geolocation = new AMap.Geolocation({
-      //   enableHighAccuracy: true, //是否使用高精度定位，默认:true
-      //   timeout: 10000, //超过10秒后停止定位，默认：无穷大
-      //   maximumAge: 0, //定位结果缓存0毫秒，默认：0
-      //   convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
-      //   showButton: true, //显示定位按钮，默认：true
-      //   buttonPosition: "RB", //定位按钮停靠位置，默认：'LB'，左下角
-      //   buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-      //   showMarker: false, //定位成功后在定位到的位置显示点标记，默认：true
-      //   showCircle: true, //定位成功后用圆圈表示定位精度范围，默认：true
-      //   panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
-      //   useNative: true,
-      //   zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-      // });
-      // geolocation.getCurrentPosition((status, result) => {
-      //   if(status=='complete'){
-      //     this.addMarker (result.position)
-      //   }else{
-      //     this.$toast("获取当前位置失败");
-      //   }
-      // });
+      let self=this;
+      if(this.markerSa){
+        this.markerSa.remove()
+      }
+       if (navigator.geolocation){
+          navigator.geolocation.getCurrentPosition(function(position) {
+              let p1=[position.coords.longitude,position.coords.latitude]
+              self.getmarkers(p1)
+              },(error)=>{
+          })
+      }else{
+          this.$toast("Geolocation is not supported by this browser.");
+      }
     },
-    // 实例化当前点点标记
-    addMarker (val) {
-      var startIcon = new AMap.Icon({
-        // 图标尺寸
-          size: new AMap.Size(33, 33),
-          // 图标的取图地址
-          image: require('../assets/image/iconpr.png'),
-          // 图标所用图片大小
-          imageSize: new AMap.Size(33, 33),
-          // 图标取图偏移量
-          // imageOffset: new AMap.Pixel(-9, -3)
-      });
-      this.markerSa = new AMap.Marker({
-        map: this.myMap,
-        icon: startIcon,
-        position: val,
-        // offset: new AMap.Pixel(-10, -10)
-      });
-      this.myMap.setZoomAndCenter(8, val);
-      this.markerSa.setMap(this.myMap);
+    getmarkers(point){
+      let el = document.createElement('div');
+          el.className = 'poin';
+          el.style.backgroundImage =`url(${require('../assets/image/iconpr.png')})`
+          el.style.backgroundSize="100% 100%"
+          el.style.width = '33px';
+          el.style.height = '33px';
+          
+          el.addEventListener('click', ()=> {
+            this.isDetail=true
+            this.mapobj=marker
+          });
+          // console.log(coordTransform.gcj02towgs84(121.450605,31.187983))
+          // let point=coordTransform.gcj02towgs84(121.450605,31.187983)
+          // add marker to map
+          this.markerSa=new mapboxgl.Marker(el)
+          .setLngLat(point)
+          .addTo(this.myMap);
+          this.myMap.flyTo({
+            center: point,
+            essential: true // this animation is considered essential with respect to prefers-reduced-motion
+          })
+      
     },
     clearSearchText(){
       this.total=''
@@ -1100,12 +1093,12 @@ export default {
     // 录入弹框隐藏
     luruSelect(){
       this.luruSelectModel=false
-      this.curTabIndex=null
+      this.curtabindex=null
     },
     // 录入弹框选择
     luruSelectBtn(type) {
       if (type!=4){
-        this.curTabIndex=type
+        this.curtabindex=type
         // this.luruSelectModel=false
         this.reduceShow=true
       }else{
@@ -1194,69 +1187,6 @@ export default {
     },
     
     createMarks(citys){
-      let style = [{
-            url: require('../assets/image/icon4.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        }, {
-            url: require('../assets/image/icon5.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        }, {
-            url: require('../assets/image/icon4.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        }, {
-            url: require('../assets/image/icon2.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        }, {
-            url: require('../assets/image/icon51.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        }, {
-            url: require('../assets/image/icon3.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        }, {
-            url: require('../assets/image/icon1.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        }, {
-            url: require('../assets/image/list4.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        }, {
-            url: require('../assets/image/list6.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        },{
-            url: require('../assets/image/list8.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        },{
-            url: require('../assets/image/list9.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        },{
-            url: require('../assets/image/list10.png'),
-            anchor: new AMap.Pixel(9, 9),
-            size: new AMap.Size(18, 18)
-        }
-      ];
-      this.mass = new AMap.MassMarks(citys, {
-        zIndex: 111,
-        cursor: 'pointer',
-        style: style
-        });
-      this.mass.on("click", (e) => {
-        this.isDetail=true
-        if(e.data){
-          let str=e.data
-          this.mapobj=str
-        }
-      })
-        this.mass.setMap(this.myMap);
     },
     //初始化 获取省的点
     getProvinMark(color){
@@ -1280,18 +1210,6 @@ export default {
     },
     //创建省的聚合点
     createdProvin(color,row){
-      let marker = new AMap.Marker({
-        position: new AMap.LngLat(row.longitude, row.latitude),
-        offset: new AMap.Pixel(-40, -40),
-        content: this.setContent(color, row),
-        topWhenClick: true,
-        extData: { row }
-      })
-    marker.on("click", (e) => {
-      this.myMap.setZoomAndCenter(6, e.lnglat);
-      this.getDataList()
-    })
-      return marker
     },
     //设置圆圈的颜色
     setContent(color, row) {
@@ -1347,10 +1265,12 @@ export default {
     },
     getDataList(){
       this.showmap=true
+      if(this.mayGroup){
+        this.clearmarker(this.mayGroup)
+      }
       this.dataList=[]
       let phonearr=[]
       let monarr=[]
-      
       if(this.mass){
        this.mass.clear()
        this.mass=null
@@ -1388,9 +1308,9 @@ export default {
                 itam.linkTelarr1.push(decodeURIComponent(encrypt.Decrypt(itm)))
               })
             }
-            if(itam.gaodeLat&&itam.gaodeLon){
-              itam.gaodeLat=decodeURIComponent(encrypt.Decrypt(itam.gaodeLat))
-              itam.gaodeLon=decodeURIComponent(encrypt.Decrypt(itam.gaodeLon))
+            if(itam.longitude&&itam.latitude){
+              itam.longitude=decodeURIComponent(encrypt.Decrypt(itam.longitude))
+              itam.latitude=decodeURIComponent(encrypt.Decrypt(itam.latitude))
               if(this.query.orgType==2){
                 if(itam.status){
                 itam.style=itam.status==1?9:itam.status==2?10:itam.status==3?11:11
@@ -1414,12 +1334,10 @@ export default {
       })
     },
     getmapbox(row){
-      console.log(111)
       // add markers to map
       row.forEach((marker)=> {
-        console.log(222)
-        // console.log()
             // create a DOM element for the marker
+        if(marker.longitude&&marker.latitude){
           let el = document.createElement('div');
           el.className = 'marker';
           el.style.backgroundImage =`url(${this.mapBoxstyle[marker.style]})`
@@ -1428,41 +1346,29 @@ export default {
           el.style.height = '22px';
           
           el.addEventListener('click', ()=> {
-            console.log(123)
             this.isDetail=true
             this.mapobj=marker
           });
-          // console.log(markerhospitalName)
+          // console.log(marker.hospitalName)
+          // console.log(marker.id)
           // console.log(marker.gaodeLon,marker.gaodeLat)
           let point=coordTransform.gcj02towgs84(marker.gaodeLon,marker.gaodeLat)
-          console.log(point)
+          // console.log()
           // add marker to map
-          new mapboxgl.Marker(el)
-          .setLngLat(point)
+
+          let iteamark=new mapboxgl.Marker(el)
+          .setLngLat([marker.longitude,marker.latitude])
           .addTo(this.myMap);
-      
+          this.mayGroup.push(iteamark)
+          }
       });
     },
-    getmarkers(){
-      let el = document.createElement('div');
-          el.className = 'poin';
-          el.style.backgroundImage =`url(${this.mapBoxstyle[0]})`
-          el.style.backgroundSize="100% 100%"
-          el.style.width = '22px';
-          el.style.height = '22px';
-          
-          el.addEventListener('click', ()=> {
-            console.log(123)
-            this.isDetail=true
-            this.mapobj=marker
-          });
-          console.log(coordTransform.gcj02towgs84(121.450605,31.187983))
-          let point=coordTransform.gcj02towgs84(121.450605,31.187983)
-          // add marker to map
-          new mapboxgl.Marker(el)
-          .setLngLat(point)
-          .addTo(this.myMap);
-      
+    //清除mapbox的点
+    clearmarker(row){
+      console.log(456)
+      row.forEach((marker)=> {
+        marker.remove();
+      });
     },
     // 选择时间
     selectTimeItem(item) {
@@ -1576,25 +1482,28 @@ export default {
         // this.zanz=res.content
       });
     },
-    getMap () {
-      // this.myMap = new AMap.Map("myMap", {
-      //   animateEnable: false,
-      //   resizeEnable: true,
-      //   center:[111.160477,32.1624],
-      //   zoom:4,
-      //   mapStyle:'amap://styles/9fb204085bdb47adb66e074fca3376be',
-      // });
-      this.initMap()
-    },
     getMapbox(){
       mapboxgl.accessToken = 'pk.eyJ1Ijoid2FuZ3hzMiIsImEiOiJjazNpaTVpYjkwOGRyM25ycHJ4d3g3N29uIn0.Vi4TSzhNcxvwh_zeGJhQ_g';
       this.myMap = new mapboxgl.Map({
       container: 'myMap',
       zoom: 2,
       center: [114, 38.54],
+      localIdeographFontFamily: "'Noto Sans', 'Noto Sans CJK SC', sans-serif",
       style: 'mapbox://styles/mapbox/streets-v9'
       });
+      this.myMap.addControl(new MapboxLanguage({defaultLanguage: 'zh'}));
       this.initMap()
+    },
+    initmapbox(){
+      mapboxgl.accessToken = 'pk.eyJ1Ijoid2FuZ3hzMiIsImEiOiJjazNpaTVpYjkwOGRyM25ycHJ4d3g3N29uIn0.Vi4TSzhNcxvwh_zeGJhQ_g';
+      this.myMap = new mapboxgl.Map({
+      container: 'myMap',
+      zoom: 2,
+      center: [114, 38.54],
+      localIdeographFontFamily: "'Noto Sans', 'Noto Sans CJK SC', sans-serif",
+      style: 'mapbox://styles/mapbox/streets-v9'
+      });
+
     },
     
     detailright(row){
@@ -1653,20 +1562,22 @@ export default {
   }
   .peopleTeam{
     position:absolute;
-    top:126px;
-    left:0;
+    bottom:140px;
+    left:12px;
     z-index:10;
     display:flex;
-    flex-direction:column;
-    justify-content: space-around;
+    // flex-direction:column;s
+    justify-content: space-between;
     align-items: center;
-    width:38px;
-    height:200px;
-    background:url("../assets/image/circle.png") no-repeat;
-    background-size:38px 200px;
-    padding: 20px 0;
+    // width:38px;
+    // height:27px;
+    background:#ffffff;
+    // background:url("../assets/image/circle.png") no-repeat;
+    // background-size:38px 200px;
+    padding: 4px 10px;
     box-sizing:border-box;
     padding-right:8px;
+    border-radius: 4px;
     .txtimg{
       display:flex;
       flex-direction:column;
@@ -1676,16 +1587,15 @@ export default {
       // padding-bottom:4px;
       // margin-bottom:4px;
       .imgbox{
-        width:16px;
+        // width:16px;
         font-size:15px;
         font-family:PingFang SC;
         font-weight:500;
         color:#666666;
-        padding:6px 0;
-        padding-bottom:4px;
+        padding:0 8px;
         text-align:center;
-        border-radius: 8px;
-        line-height:16px;
+        border-radius: 10px;
+        // line-height:16px;
         &.txt-active{
           background:#216AFF;
           color:#fff;
@@ -1781,17 +1691,19 @@ export default {
   }
   .threebif{
     position:absolute;
-    top:37px;
-    right:12px;
+    top:36px;
+    right:16px;
     z-index:10;
     width:44px;
     height:44px;
-    line-height:44px;
-    background:rgba(254,59,57,1);
-    border:3px solid rgba(255,255,255,1);
-    box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32), 0px 0px 16px 0px rgba(221,2,0,1);
-    border-radius:50%;
-    box-sizing:border-box;
+    // line-height:44px;
+    // background:rgba(254,59,57,1);
+    background:url("../assets/image/dainzan.png") no-repeat;
+    background-size:100% 100%;
+    // border:3px solid rgba(255,255,255,1);
+    // box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32), 0px 0px 16px 0px rgba(221,2,0,1);
+    // border-radius:50%;
+    // box-sizing:border-box;
    
   }
   .threebif:active {
@@ -2031,21 +1943,25 @@ export default {
       border-bottom:1px solid #DDDDDD;
         .btn-list{
           display:flex;
-          flex-direction:column;
+          // flex-direction:column;
+          justify-content:center;
           width:80px;
           height: 60px;
+          align-items:flex-end;
           span{
             font-size:13px;
             font-family:PingFang SC;
             font-weight:500;
             color:rgba(255,255,255,1);
-            margin-top:36px;
+            margin-bottom: 4px;
           }
         }
         .btn-list:nth-child(3){
           opacity:0.4;
           span{
+            margin-bottom:4px;
             color:#dddddd;
+            line-height: 12px;
           }
         }
     }
@@ -2054,7 +1970,7 @@ export default {
       flex-direction:column;
       justify-content:center;
       align-items:center;
-      padding:5px 12px;
+      padding:5px 0px;
       .write{
         font-size:11px;
         width:100%;
@@ -2065,7 +1981,7 @@ export default {
         }
       }
       .countbottom{
-        margin-top:5px;
+        margin-top:2px;
         width:100%;
         font-size:11px;
         color:#999999;
@@ -2553,8 +2469,8 @@ export default {
     justify-content:center;
     align-items:center;
     background:#fff;
-    width:44px;
-    height:44px;
+    width:40px;
+    height:40px;
     border-radius:50%;
     box-shadow:0px 0px 8px 0px rgba(0, 0, 0, 0.16);
     img{
@@ -2574,29 +2490,17 @@ export default {
     top: 190px;
     right: 12px;
     z-index:10;
+    background:#ffffff;
+    padding:5px 4px;
+    border-radius:5px;
+    box-sizing:border-box;
+    box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32);
     .img-icon{
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      // width: 40px;
-      // height: 40px;
-      padding:8px 4px ;
-      border-radius: 6px;
-      background: #fff;
-      box-shadow:0px 0px 8px 0px rgba(0, 0, 0, 0.32);
-      // &:last-child{
-        // margin-top:10px;
-      // }
-      img{
-        width: 16.5px;
-        height: 17px;
-      }
-      span{
-        font-size: 8px;
-        color: #216AFF;
-        padding-top: 1px;
-      }
+      width: 30px;
+      height: 30px;
+      background-image:url("../assets/image/contect.png");
+      background-size: cover;
+     
     }
   }
   .cur-time-donate{
@@ -2874,7 +2778,7 @@ export default {
     box-shadow:0px 0px 16px 0px rgba(0, 0, 0, 0.32);
     border-radius:6px;
     box-sizing:border-box;
-    padding:2px 4px;
+    padding:2px;
     z-index:10;
     .cur-time-img{
       display:flex;
@@ -2884,20 +2788,20 @@ export default {
       width: 100%;
       height: 40px;
       .zhsa{
-        width:25px;
-        height:28px;
+        width:36px;
+        height:36px;
         background-image:url("../assets/image/zhsa.png");
         background-size: 100% 100%;
         margin-top:2px;
       }
       img{
-        width:28px;
-        height: 26px;
+        width:30px;
+        height: 30px;
       }
       &:last-child{
         img{
           width:32px;
-          height: 29px;
+          height: 32px;
         }
       }
     }

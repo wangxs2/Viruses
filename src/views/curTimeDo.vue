@@ -3,7 +3,7 @@
         <div class="cur-time-donate">
             <div class="time-donate">
                 <van-tabs @click="timeDonateTab" v-model="activeName">
-                    <van-tab title="实时播报"> 
+                    <van-tab :title="$t('m.realin')"> 
                         <!-- <div class="top" id="top-content"><img src="../assets/image/curtimewrite.png" alt=""><span class="top-content-write">{{curTimeTopContent}}</span><van-icon name="cross" size="20" @click="closeCurTime"/></div> -->
                         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :error.sync="error" error-text="请求失败，点击重新加载">
                             <div class="donate-list-wrapper">
@@ -42,7 +42,7 @@
                         </van-list>
 
                     </van-tab>
-                    <van-tab title="资助信息">
+                    <van-tab :title="$t('m.realin1')">
                         <van-list v-model="loading1" :finished="finished1" finished-text="没有更多了" @load="onLoad1" :error.sync="error1" error-text="请求失败，点击重新加载">
                             <van-cell v-for="(item, i) in curTimeDataList" :key="i">
                                 <div class="donate-list1">
@@ -65,7 +65,7 @@
                         </van-list>
 
                     </van-tab>
-                    <van-tab title="求购详情">
+                    <van-tab :title="$t('m.realin2')">
                         <van-list v-model="loading2" :finished="finished2" finished-text="没有更多了" @load="onLoad2" :error.sync="error2" error-text="请求失败，点击重新加载">
                             <van-cell v-for="(item, i) in curTimeDataList" :key="i">
                                 <div class="donate-list1">
@@ -89,7 +89,7 @@
                         </van-list>
 
                     </van-tab>
-                    <van-tab title="供应详情">
+                    <van-tab :title="$t('m.realin3')">
                         <van-list v-model="loading3" :finished="finished3" finished-text="没有更多了" @load="onLoad3" :error.sync="error3" error-text="请求失败，点击重新加载">
                             <van-cell v-for="(item, i) in curTimeDataList" :key="i">
                                 <div class="donate-list1">
@@ -461,6 +461,9 @@ export default {
     }
     .van-tabs__nav--line{
         padding-bottom:0;
+        box-sizing:border-box;
+        padding:0 16px;
+        padding-right:0px;
     }
     .van-tabs__line{
         bottom:0;
@@ -487,6 +490,8 @@ export default {
       left:-4px;
       padding:0 10px 10px 0;
       z-index:10;
+      margin-top:4px;
+      margin-left:4px;
 
   }
   .time-donate{

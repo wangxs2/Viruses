@@ -7,7 +7,7 @@
       "pinyin": "a"
     },
     {
-      "short": "A",
+      "short": "U",
       "name": "阿拉伯联合酋长国",
       "en": "UnitedArabEmirates",
       "tel": "971",
@@ -161,7 +161,7 @@
   
     },
     {
-      "short": "B",
+      "short": "P",
       "name": "巴勒斯坦",
       "en": "Palestine",
       "tel": "970",
@@ -265,7 +265,7 @@
   
     },
     {
-      "short": "C",
+      "short": "S",
       "name": "瑞士",
       "en": "Switzerland",
       "tel": "41",
@@ -281,7 +281,7 @@
   
     },
     {
-      "short": "CL",
+      "short": "C",
       "name": "智利",
       "en": "Chile",
       "tel": "56",
@@ -297,7 +297,7 @@
   
     },
     {
-      "short": "CO",
+      "short": "C",
       "name": "哥伦比亚",
       "en": "Colombia",
       "tel": "57",
@@ -305,7 +305,7 @@
   
     },
     {
-      "short": "CR",
+      "short": "C",
       "name": "哥斯达黎加",
       "en": "CostaRica",
       "tel": "506",
@@ -313,7 +313,7 @@
   
     },
     {
-      "short": "CS",
+      "short": "C",
       "name": "捷克",
       "en": "Czech",
       "tel": "420",
@@ -321,7 +321,7 @@
   
     },
     {
-      "short": "CU",
+      "short": "C",
       "name": "古巴",
       "en": "Cuba",
       "tel": "53",
@@ -329,7 +329,7 @@
   
     },
     {
-      "short": "CY",
+      "short": "C",
       "name": "塞浦路斯",
       "en": "Cyprus",
       "tel": "357",
@@ -337,7 +337,7 @@
   
     },
     {
-      "short": "CZ",
+      "short": "C",
       "name": "捷克",
       "en": "CzechRepublic",
       "tel": "420",
@@ -345,7 +345,7 @@
   
     },
     {
-      "short": "DE",
+      "short": "G",
       "name": "德国",
       "en": "Germany",
       "tel": "49",
@@ -353,7 +353,7 @@
   
     },
     {
-      "short": "DJ",
+      "short": "D",
       "name": "吉布提",
       "en": "Djibouti",
       "tel": "253",
@@ -361,7 +361,7 @@
   
     },
     {
-      "short": "DK",
+      "short": "D",
       "name": "丹麦",
       "en": "Denmark",
       "tel": "45",
@@ -369,7 +369,7 @@
   
     },
     {
-      "short": "DO",
+      "short": "D",
       "name": "多米尼加共和国",
       "en": "DominicaRep.",
       "tel": "1890",
@@ -377,7 +377,7 @@
   
     },
     {
-      "short": "DZ",
+      "short": "A",
       "name": "阿尔及利亚",
       "en": "Algeria",
       "tel": "213",
@@ -385,7 +385,7 @@
   
     },
     {
-      "short": "EC",
+      "short": "E",
       "name": "厄瓜多尔",
       "en": "Ecuador",
       "tel": "593",
@@ -393,7 +393,7 @@
   
     },
     {
-      "short": "EE",
+      "short": "E",
       "name": "爱沙尼亚",
       "en": "Estonia",
       "tel": "372",
@@ -401,7 +401,7 @@
   
     },
     {
-      "short": "EG",
+      "short": "E",
       "name": "埃及",
       "en": "Egypt",
       "tel": "20",
@@ -409,7 +409,7 @@
   
     },
     {
-      "short": "ES",
+      "short": "S",
       "name": "西班牙",
       "en": "Spain",
       "tel": "34",
@@ -417,7 +417,7 @@
   
     },
     {
-      "short": "ET",
+      "short": "E",
       "name": "埃塞俄比亚",
       "en": "Ethiopia",
       "tel": "251",
@@ -425,7 +425,7 @@
   
     },
     {
-      "short": "FI",
+      "short": "F",
       "name": "芬兰",
       "en": "Finland",
       "tel": "358",
@@ -433,7 +433,7 @@
   
     },
     {
-      "short": "FJ",
+      "short": "F",
       "name": "斐济",
       "en": "Fiji",
       "tel": "679",
@@ -441,7 +441,7 @@
   
     },
     {
-      "short": "FR",
+      "short": "F",
       "name": "法国",
       "en": "France",
       "tel": "33",
@@ -449,7 +449,7 @@
   
     },
     {
-      "short": "GA",
+      "short": "G",
       "name": "加蓬",
       "en": "Gabon",
       "tel": "241",
@@ -457,7 +457,7 @@
   
     },
     {
-      "short": "GB",
+      "short": "U",
       "name": "英国",
       "en": "UnitedKiongdom",
       "tel": "44",
@@ -465,7 +465,7 @@
   
     },
     {
-      "short": "GD",
+      "short": "G",
       "name": "格林纳达",
       "en": "Grenada",
       "tel": "1809",
@@ -473,7 +473,7 @@
   
     },
     {
-      "short": "GE",
+      "short": "G",
       "name": "格鲁吉亚",
       "en": "Georgia",
       "tel": "995",
@@ -481,7 +481,7 @@
   
     },
     {
-      "short": "GF",
+      "short": "F",
       "name": "法属圭亚那",
       "en": "FrenchGuiana",
       "tel": "594",
@@ -489,7 +489,7 @@
   
     },
     {
-      "short": "GH",
+      "short": "G",
       "name": "加纳",
       "en": "Ghana",
       "tel": "233",
@@ -497,7 +497,7 @@
   
     },
     {
-      "short": "GI",
+      "short": "G",
       "name": "直布罗陀",
       "en": "Gibraltar",
       "tel": "350",
@@ -505,7 +505,7 @@
   
     },
     {
-      "short": "GM",
+      "short": "G",
       "name": "冈比亚",
       "en": "Gambia",
       "tel": "220",
@@ -513,7 +513,7 @@
   
     },
     {
-      "short": "GN",
+      "short": "G",
       "name": "几内亚",
       "en": "Guinea",
       "tel": "224",
@@ -521,7 +521,7 @@
   
     },
     {
-      "short": "GR",
+      "short": "G",
       "name": "希腊",
       "en": "Greece",
       "tel": "30",
@@ -529,7 +529,7 @@
   
     },
     {
-      "short": "GT",
+      "short": "G",
       "name": "危地马拉",
       "en": "Guatemala",
       "tel": "502",
@@ -537,7 +537,7 @@
   
     },
     {
-      "short": "GU",
+      "short": "G",
       "name": "关岛",
       "en": "Guam",
       "tel": "1671",
@@ -545,7 +545,7 @@
   
     },
     {
-      "short": "GY",
+      "short": "G",
       "name": "圭亚那",
       "en": "Guyana",
       "tel": "592",
@@ -553,7 +553,7 @@
   
     },
     {
-      "short": "HN",
+      "short": "H",
       "name": "洪都拉斯",
       "en": "Honduras",
       "tel": "504",
@@ -561,7 +561,7 @@
   
     },
     {
-      "short": "HT",
+      "short": "H",
       "name": "海地",
       "en": "Haiti",
       "tel": "509",
@@ -569,7 +569,7 @@
   
     },
     {
-      "short": "HU",
+      "short": "H",
       "name": "匈牙利",
       "en": "Hungary",
       "tel": "36",
@@ -577,7 +577,7 @@
   
     },
     {
-      "short": "ID",
+      "short": "I",
       "name": "印度尼西亚",
       "en": "Indonesia",
       "tel": "62",
@@ -585,7 +585,7 @@
   
     },
     {
-      "short": "IE",
+      "short": "I",
       "name": "爱尔兰",
       "en": "Ireland",
       "tel": "353",
@@ -593,7 +593,7 @@
   
     },
     {
-      "short": "IL",
+      "short": "I",
       "name": "以色列",
       "en": "Israel",
       "tel": "972",
@@ -601,7 +601,7 @@
   
     },
     {
-      "short": "IN",
+      "short": "I",
       "name": "印度",
       "en": "India",
       "tel": "91",
@@ -609,7 +609,7 @@
   
     },
     {
-      "short": "IQ",
+      "short": "I",
       "name": "伊拉克",
       "en": "Iraq",
       "tel": "964",
@@ -617,7 +617,7 @@
   
     },
     {
-      "short": "IR",
+      "short": "I",
       "name": "伊朗",
       "en": "Iran",
       "tel": "98",
@@ -625,7 +625,7 @@
   
     },
     {
-      "short": "IS",
+      "short": "I",
       "name": "冰岛",
       "en": "Iceland",
       "tel": "354",
@@ -633,7 +633,7 @@
   
     },
     {
-      "short": "IT",
+      "short": "I",
       "name": "意大利",
       "en": "Italy",
       "tel": "39",
@@ -641,7 +641,7 @@
   
     },
     {
-      "short": "",
+      "short": "I",
       "name": "科特迪瓦",
       "en": "IvoryCoast",
       "tel": "225",
@@ -649,7 +649,7 @@
   
     },
     {
-      "short": "JM",
+      "short": "J",
       "name": "牙买加",
       "en": "Jamaica",
       "tel": "1876",
@@ -657,7 +657,7 @@
   
     },
     {
-      "short": "JO",
+      "short": "J",
       "name": "约旦",
       "en": "Jordan",
       "tel": "962",
@@ -665,7 +665,7 @@
   
     },
     {
-      "short": "JP",
+      "short": "J",
       "name": "日本",
       "en": "Japan",
       "tel": "81",
@@ -673,7 +673,7 @@
   
     },
     {
-      "short": "KE",
+      "short": "K",
       "name": "肯尼亚",
       "en": "Kenya",
       "tel": "254",
@@ -681,7 +681,7 @@
   
     },
     {
-      "short": "KG",
+      "short": "K",
       "name": "吉尔吉斯坦",
       "en": "Kyrgyzstan",
       "tel": "331",
@@ -689,7 +689,7 @@
   
     },
     {
-      "short": "KH",
+      "short": "K",
       "name": "柬埔寨",
       "en": "Kampuchea(Cambodia)",
       "tel": "855",
@@ -697,7 +697,7 @@
   
     },
     {
-      "short": "KP",
+      "short": "N",
       "name": "朝鲜",
       "en": "NorthKorea",
       "tel": "850",
@@ -705,7 +705,7 @@
   
     },
     {
-      "short": "KR",
+      "short": "K",
       "name": "韩国",
       "en": "Korea",
       "tel": "82",
@@ -714,7 +714,7 @@
   
     },
     {
-      "short": "KT",
+      "short": "R",
       "name": "科特迪瓦共和国",
       "en": "RepublicofIvoryCoast",
       "tel": "225",
@@ -722,7 +722,7 @@
   
     },
     {
-      "short": "KW",
+      "short": "K",
       "name": "科威特",
       "en": "Kuwait",
       "tel": "965",
@@ -730,7 +730,7 @@
   
     },
     {
-      "short": "KZ",
+      "short": "K",
       "name": "哈萨克斯坦",
       "en": "Kazakstan",
       "tel": "327",
@@ -738,7 +738,7 @@
   
     },
     {
-      "short": "LA",
+      "short": "L",
       "name": "老挝",
       "en": "Laos",
       "tel": "856",
@@ -746,7 +746,7 @@
   
     },
     {
-      "short": "LB",
+      "short": "L",
       "name": "黎巴嫩",
       "en": "Lebanon",
       "tel": "961",
@@ -754,7 +754,7 @@
   
     },
     {
-      "short": "LC",
+      "short": "S",
       "name": "圣卢西亚",
       "en": "St.Lucia",
       "tel": "1758",
@@ -762,7 +762,7 @@
   
     },
     {
-      "short": "LI",
+      "short": "L",
       "name": "列支敦士登",
       "en": "Liechtenstein",
       "tel": "423",
@@ -770,7 +770,7 @@
   
     },
     {
-      "short": "LK",
+      "short": "S",
       "name": "斯里兰卡",
       "en": "SriLanka",
       "tel": "94",
@@ -778,7 +778,7 @@
   
     },
     {
-      "short": "LR",
+      "short": "L",
       "name": "利比里亚",
       "en": "Liberia",
       "tel": "231",
@@ -786,7 +786,7 @@
   
     },
     {
-      "short": "LS",
+      "short": "L",
       "name": "莱索托",
       "en": "Lesotho",
       "tel": "266",
@@ -794,7 +794,7 @@
   
     },
     {
-      "short": "LT",
+      "short": "L",
       "name": "立陶宛",
       "en": "Lithuania",
       "tel": "370",
@@ -802,7 +802,7 @@
   
     },
     {
-      "short": "LU",
+      "short": "L",
       "name": "卢森堡",
       "en": "Luxembourg",
       "tel": "352",
@@ -810,7 +810,7 @@
   
     },
     {
-      "short": "LV",
+      "short": "L",
       "name": "拉脱维亚",
       "en": "Latvia",
       "tel": "371",
@@ -818,7 +818,7 @@
   
     },
     {
-      "short": "LY",
+      "short": "L",
       "name": "利比亚",
       "en": "Libya",
       "tel": "218",
@@ -826,7 +826,7 @@
   
     },
     {
-      "short": "MA",
+      "short": "M",
       "name": "摩洛哥",
       "en": "Morocco",
       "tel": "212",
@@ -834,7 +834,7 @@
   
     },
     {
-      "short": "MC",
+      "short": "M",
       "name": "摩纳哥",
       "en": "Monaco",
       "tel": "377",
@@ -842,7 +842,7 @@
   
     },
     {
-      "short": "MD",
+      "short": "M",
       "name": "摩尔多瓦",
       "en": "Moldova,Republicof",
       "tel": "373",
@@ -850,7 +850,7 @@
   
     },
     {
-      "short": "MG",
+      "short": "M",
       "name": "马达加斯加",
       "en": "Madagascar",
       "tel": "261",
@@ -858,7 +858,7 @@
   
     },
     {
-      "short": "ML",
+      "short": "M",
       "name": "马里",
       "en": "Mali",
       "tel": "223",
@@ -866,7 +866,7 @@
   
     },
     {
-      "short": "MM",
+      "short": "B",
       "name": "缅甸",
       "en": "Burma",
       "tel": "95",
@@ -874,7 +874,7 @@
   
     },
     {
-      "short": "MN",
+      "short": "M",
       "name": "蒙古",
       "en": "Mongolia",
       "tel": "976",
@@ -882,7 +882,7 @@
   
     },
     {
-      "short": "MS",
+      "short": "M",
       "name": "蒙特塞拉特岛",
       "en": "MontserratIs",
       "tel": "1664",
@@ -890,7 +890,7 @@
   
     },
     {
-      "short": "MT",
+      "short": "M",
       "name": "马耳他",
       "en": "Malta",
       "tel": "356",
@@ -898,7 +898,7 @@
   
     },
     {
-      "short": "",
+      "short": "M",
       "name": "马里亚那群岛",
       "en": "MarianaIs",
       "tel": "1670",
@@ -906,7 +906,7 @@
   
     },
     {
-      "short": "",
+      "short": "M",
       "name": "马提尼克",
       "en": "Martinique",
       "tel": "596",
@@ -914,7 +914,7 @@
   
     },
     {
-      "short": "MU",
+      "short": "M",
       "name": "毛里求斯",
       "en": "Mauritius",
       "tel": "230",
@@ -922,7 +922,7 @@
   
     },
     {
-      "short": "MV",
+      "short": "M",
       "name": "马尔代夫",
       "en": "Maldives",
       "tel": "960",
@@ -931,7 +931,7 @@
   
     },
     {
-      "short": "MW",
+      "short": "M",
       "name": "马拉维",
       "en": "Malawi",
       "tel": "265",
@@ -939,7 +939,7 @@
   
     },
     {
-      "short": "MX",
+      "short": "M",
       "name": "墨西哥",
       "en": "Mexico",
       "tel": "52",
@@ -947,7 +947,7 @@
   
     },
     {
-      "short": "MY",
+      "short": "M",
       "name": "马来西亚",
       "en": "Malaysia",
       "tel": "60",
@@ -955,7 +955,7 @@
   
     },
     {
-      "short": "MZ",
+      "short": "M",
       "name": "莫桑比克",
       "en": "Mozambique",
       "tel": "258",
@@ -963,7 +963,7 @@
   
     },
     {
-      "short": "NA",
+      "short": "N",
       "name": "纳米比亚",
       "en": "Namibia",
       "tel": "264",
@@ -971,7 +971,7 @@
   
     },
     {
-      "short": "NE",
+      "short": "N",
       "name": "尼日尔",
       "en": "Niger",
       "tel": "977",
@@ -979,7 +979,7 @@
   
     },
     {
-      "short": "NG",
+      "short": "N",
       "name": "尼日利亚",
       "en": "Nigeria",
       "tel": "234",
@@ -987,7 +987,7 @@
   
     },
     {
-      "short": "NI",
+      "short": "N",
       "name": "尼加拉瓜",
       "en": "Nicaragua",
       "tel": "505",
@@ -995,7 +995,7 @@
   
     },
     {
-      "short": "NL",
+      "short": "N",
       "name": "荷兰",
       "en": "Netherlands",
       "tel": "31",
@@ -1003,7 +1003,7 @@
   
     },
     {
-      "short": "NO",
+      "short": "N",
       "name": "挪威",
       "en": "Norway",
       "tel": "47",
@@ -1011,7 +1011,7 @@
   
     },
     {
-      "short": "NP",
+      "short": "N",
       "name": "尼泊尔",
       "en": "Nepal",
       "tel": "977",
@@ -1019,7 +1019,7 @@
   
     },
     {
-      "short": "",
+      "short": "N",
       "name": "荷属安的列斯",
       "en": "NetheriandsAntilles",
       "tel": "599",
@@ -1027,7 +1027,7 @@
   
     },
     {
-      "short": "NR",
+      "short": "N",
       "name": "瑙鲁",
       "en": "Nauru",
       "tel": "674",
@@ -1035,7 +1035,7 @@
   
     },
     {
-      "short": "NZ",
+      "short": "N",
       "name": "新西兰",
       "en": "NewZealand",
       "tel": "64",
@@ -1043,7 +1043,7 @@
   
     },
     {
-      "short": "OM",
+      "short": "O",
       "name": "阿曼",
       "en": "Oman",
       "tel": "968",
@@ -1051,7 +1051,7 @@
   
     },
     {
-      "short": "PA",
+      "short": "P",
       "name": "巴拿马",
       "en": "Panama",
       "tel": "507",
@@ -1059,7 +1059,7 @@
   
     },
     {
-      "short": "PE",
+      "short": "P",
       "name": "秘鲁",
       "en": "Peru",
       "tel": "51",
@@ -1067,7 +1067,7 @@
   
     },
     {
-      "short": "PF",
+      "short": "F",
       "name": "法属玻利尼西亚",
       "en": "FrenchPolynesia",
       "tel": "689",
@@ -1075,7 +1075,7 @@
   
     },
     {
-      "short": "PG",
+      "short": "P",
       "name": "巴布亚新几内亚",
       "en": "PapuaNewCuinea",
       "tel": "675",
@@ -1083,7 +1083,7 @@
   
     },
     {
-      "short": "PH",
+      "short": "P",
       "name": "菲律宾",
       "en": "Philippines",
       "tel": "63",
@@ -1091,7 +1091,7 @@
   
     },
     {
-      "short": "PK",
+      "short": "P",
       "name": "巴基斯坦",
       "en": "Pakistan",
       "tel": "92",
@@ -1099,7 +1099,7 @@
   
     },
     {
-      "short": "PL",
+      "short": "P",
       "name": "波兰",
       "en": "Poland",
       "tel": "48",
@@ -1107,7 +1107,7 @@
   
     },
     {
-      "short": "PR",
+      "short": "P",
       "name": "波多黎各",
       "en": "PuertoRico",
       "tel": "1787",
@@ -1115,7 +1115,7 @@
   
     },
     {
-      "short": "PT",
+      "short": "P",
       "name": "葡萄牙",
       "en": "Portugal",
       "tel": "351",
@@ -1123,7 +1123,7 @@
   
     },
     {
-      "short": "PY",
+      "short": "P",
       "name": "巴拉圭",
       "en": "Paraguay",
       "tel": "595",
@@ -1131,7 +1131,7 @@
   
     },
     {
-      "short": "QA",
+      "short": "Q",
       "name": "卡塔尔",
       "en": "Qatar",
       "tel": "974",
@@ -1139,7 +1139,7 @@
   
     },
     {
-      "short": "",
+      "short": "R",
       "name": "留尼旺",
       "en": "Reunion",
       "tel": "262",
@@ -1147,7 +1147,7 @@
   
     },
     {
-      "short": "RO",
+      "short": "R",
       "name": "罗马尼亚",
       "en": "Romania",
       "tel": "40",
@@ -1155,7 +1155,7 @@
   
     },
     {
-      "short": "RU",
+      "short": "R",
       "name": "俄罗斯",
       "en": "Russia",
       "tel": "7",
@@ -1163,7 +1163,7 @@
   
     },
     {
-      "short": "SA",
+      "short": "S",
       "name": "沙特阿拉伯",
       "en": "SaudiArabia",
       "tel": "966",
@@ -1171,7 +1171,7 @@
   
     },
     {
-      "short": "SB",
+      "short": "S",
       "name": "所罗门群岛",
       "en": "SolomonIs",
       "tel": "677",
@@ -1179,7 +1179,7 @@
   
     },
     {
-      "short": "SC",
+      "short": "S",
       "name": "塞舌尔",
       "en": "Seychelles",
       "tel": "248",
@@ -1187,7 +1187,7 @@
   
     },
     {
-      "short": "SD",
+      "short": "S",
       "name": "苏丹",
       "en": "Sudan",
       "tel": "249",
@@ -1195,7 +1195,7 @@
   
     },
     {
-      "short": "SE",
+      "short": "S",
       "name": "瑞典",
       "en": "Sweden",
       "tel": "46",
@@ -1203,7 +1203,7 @@
   
     },
     {
-      "short": "SG",
+      "short": "S",
       "name": "新加坡",
       "en": "Singapore",
       "tel": "65",
@@ -1211,7 +1211,7 @@
   
     },
     {
-      "short": "SI",
+      "short": "S",
       "name": "斯洛文尼亚",
       "en": "Slovenia",
       "tel": "386",
@@ -1219,7 +1219,7 @@
   
     },
     {
-      "short": "SK",
+      "short": "S",
       "name": "斯洛伐克",
       "en": "Slovakia",
       "tel": "421",
@@ -1227,7 +1227,7 @@
   
     },
     {
-      "short": "SL",
+      "short": "S",
       "name": "塞拉利昂",
       "en": "SierraLeone",
       "tel": "232",
@@ -1235,7 +1235,7 @@
   
     },
     {
-      "short": "SM",
+      "short": "S",
       "name": "圣马力诺",
       "en": "SanMarino",
       "tel": "378",
@@ -1243,7 +1243,7 @@
   
     },
     {
-      "short": "",
+      "short": "S",
       "name": "东萨摩亚(美)",
       "en": "SamoaEastern",
       "tel": "684",
@@ -1251,7 +1251,7 @@
   
     },
     {
-      "short": "",
+      "short": "S",
       "name": "西萨摩亚",
       "en": "SanMarino",
       "tel": "685",
@@ -1259,7 +1259,7 @@
   
     },
     {
-      "short": "SN",
+      "short": "S",
       "name": "塞内加尔",
       "en": "Senegal",
       "tel": "221",
@@ -1267,7 +1267,7 @@
   
     },
     {
-      "short": "SO",
+      "short": "S",
       "name": "索马里",
       "en": "Somali",
       "tel": "252",
@@ -1275,7 +1275,7 @@
   
     },
     {
-      "short": "SR",
+      "short": "S",
       "name": "苏里南",
       "en": "Suriname",
       "tel": "597",
@@ -1283,7 +1283,7 @@
   
     },
     {
-      "short": "ST",
+      "short": "S",
       "name": "圣多美和普林西比",
       "en": "SaoTomeandPrincipe",
       "tel": "239",
@@ -1291,7 +1291,7 @@
   
     },
     {
-      "short": "SV",
+      "short": "S",
       "name": "萨尔瓦多",
       "en": "EISalvador",
       "tel": "503",
@@ -1299,7 +1299,7 @@
   
     },
     {
-      "short": "SY",
+      "short": "S",
       "name": "叙利亚",
       "en": "Syria",
       "tel": "963",
@@ -1307,7 +1307,7 @@
   
     },
     {
-      "short": "SZ",
+      "short": "S",
       "name": "斯威士兰",
       "en": "Swaziland",
       "tel": "268",
@@ -1315,7 +1315,7 @@
   
     },
     {
-      "short": "TD",
+      "short": "C",
       "name": "乍得",
       "en": "Chad",
       "tel": "235",
@@ -1323,7 +1323,7 @@
   
     },
     {
-      "short": "TG",
+      "short": "T",
       "name": "多哥",
       "en": "Togo",
       "tel": "228",
@@ -1331,7 +1331,7 @@
   
     },
     {
-      "short": "TH",
+      "short": "T",
       "name": "泰国",
       "en": "Thailand",
       "tel": "66",
@@ -1339,7 +1339,7 @@
   
     },
     {
-      "short": "TJ",
+      "short": "T",
       "name": "塔吉克斯坦",
       "en": "Tajikstan",
       "tel": "992",
@@ -1347,7 +1347,7 @@
   
     },
     {
-      "short": "TM",
+      "short": "T",
       "name": "土库曼斯坦",
       "en": "Turkmenistan",
       "tel": "993",
@@ -1355,7 +1355,7 @@
   
     },
     {
-      "short": "TN",
+      "short": "T",
       "name": "突尼斯",
       "en": "Tunisia",
       "tel": "216",
@@ -1363,7 +1363,7 @@
   
     },
     {
-      "short": "TO",
+      "short": "T",
       "name": "汤加",
       "en": "Tonga",
       "tel": "676",
@@ -1371,7 +1371,7 @@
   
     },
     {
-      "short": "TR",
+      "short": "T",
       "name": "土耳其",
       "en": "Turkey",
       "tel": "90",
@@ -1379,7 +1379,7 @@
   
     },
     {
-      "short": "TT",
+      "short": "T",
       "name": "特立尼达和多巴哥",
       "en": "TrinidadandTobago",
       "tel": "1809",
@@ -1387,7 +1387,7 @@
   
     },
     {
-      "short": "TZ",
+      "short": "T",
       "name": "坦桑尼亚",
       "en": "Tanzania",
       "tel": "255",
@@ -1395,7 +1395,7 @@
   
     },
     {
-      "short": "UA",
+      "short": "U",
       "name": "乌克兰",
       "en": "Ukraine",
       "tel": "380",
@@ -1403,7 +1403,7 @@
   
     },
     {
-      "short": "UG",
+      "short": "U",
       "name": "乌干达",
       "en": "Uganda",
       "tel": "256",
@@ -1411,7 +1411,7 @@
   
     },
     {
-      "short": "US",
+      "short": "U",
       "name": "美国",
       "en": "UnitedStatesofAmerica",
       "tel": "1",
@@ -1419,7 +1419,7 @@
   
     },
     {
-      "short": "UY",
+      "short": "U",
       "name": "乌拉圭",
       "en": "Uruguay",
       "tel": "598",
@@ -1427,7 +1427,7 @@
   
     },
     {
-      "short": "UZ",
+      "short": "U",
       "name": "乌兹别克斯坦",
       "en": "Uzbekistan",
       "tel": "233",
@@ -1435,7 +1435,7 @@
   
     },
     {
-      "short": "VC",
+      "short": "S",
       "name": "圣文森特岛",
       "en": "SaintVincent",
       "tel": "1784",
@@ -1443,7 +1443,7 @@
   
     },
     {
-      "short": "VE",
+      "short": "V",
       "name": "委内瑞拉",
       "en": "Venezuela",
       "tel": "58",
@@ -1451,7 +1451,7 @@
   
     },
     {
-      "short": "VN",
+      "short": "V",
       "name": "越南",
       "en": "Vietnam",
       "tel": "84",
@@ -1459,7 +1459,7 @@
   
     },
     {
-      "short": "YE",
+      "short": "Y",
       "name": "也门",
       "en": "Yemen",
       "tel": "967",
@@ -1467,7 +1467,7 @@
   
     },
     {
-      "short": "YU",
+      "short": "Y",
       "name": "南斯拉夫",
       "en": "Yugoslavia",
       "tel": "381",
@@ -1475,7 +1475,7 @@
   
     },
     {
-      "short": "ZA",
+      "short": "S",
       "name": "南非",
       "en": "SouthAfrica",
       "tel": "27",
@@ -1483,7 +1483,7 @@
   
     },
     {
-      "short": "ZM",
+      "short": "Z",
       "name": "赞比亚",
       "en": "Zambia",
       "tel": "260",
@@ -1491,7 +1491,7 @@
   
     },
     {
-      "short": "ZR",
+      "short": "Z",
       "name": "扎伊尔",
       "en": "Zaire",
       "tel": "243",
@@ -1499,11 +1499,10 @@
   
     },
     {
-      "short": "ZW",
+      "short": "Z",
       "name": "津巴布韦",
       "en": "Zimbabwe",
       "tel": "263",
       "pinyin": "jbbw"
-  
     }
   ]

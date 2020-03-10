@@ -742,26 +742,26 @@ closebig(){
 },
 //地址解析
 addresschange(address){
-  var geocoder = new AMap.Geocoder();
-  geocoder.getLocation(address, (status, result)=> {
-      if (status === 'complete'&&result.geocodes.length) {
+  // var geocoder = new AMap.Geocoder();
+  // geocoder.getLocation(address, (status, result)=> {
+  //     if (status === 'complete'&&result.geocodes.length) {
        
-        let lnglat = result.geocodes[0].location
-        //  return lnglat
-         this.form3.longitude=lnglat.lng
-         this.form3.latitude=lnglat.lat
-         this.$fetchPost("material/save",this.form3,'json').then(res=> {
-            if(res.code=="success"){
-              this.showresult=true
-            }else{
-              this.$toast(res.message);
-            }
-        })
+  //       let lnglat = result.geocodes[0].location
+  //       //  return lnglat
+  //        this.form3.longitude=lnglat.lng
+  //        this.form3.latitude=lnglat.lat
+  //        this.$fetchPost("material/save",this.form3,'json').then(res=> {
+  //           if(res.code=="success"){
+  //             this.showresult=true
+  //           }else{
+  //             this.$toast(res.message);
+  //           }
+  //       })
          
-      }else{
-          // log.error('根据地址查询位置失败');
-      }
-  });
+  //     }else{
+  //         // log.error('根据地址查询位置失败');
+  //     }
+  // });
 },
 cancleNeedName(){
   this.startTimePopNeedName=false
@@ -1329,36 +1329,36 @@ linkTelBlur(type,tel,index){
     },
     //地址解析
     addresschange1(address,type){
-      var geocoder = new AMap.Geocoder();
-      geocoder.getLocation(address, (status, result)=> {
-          if (status === 'complete'&&result.geocodes.length) {
+      // var geocoder = new AMap.Geocoder();
+      // geocoder.getLocation(address, (status, result)=> {
+      //     if (status === 'complete'&&result.geocodes.length) {
           
-            let lnglat = result.geocodes[0].location
-            //  return lnglat
-            if (type==1){
-              this.params1.longitude=lnglat.lng
-              this.params1.latitude=lnglat.lat
-              this.$fetchPost("material/save",this.params1,'json').then(res=> {
-                  this.$toast(res.message);
-                  if(res.code=="success"){
-                    this.showresult=true
-                  }
-              })
-            }else if (type==2){
-              this.params2.longitude=lnglat.lng
-              this.params2.latitude=lnglat.lat
-              this.$fetchPost("material/save",this.params2,'json').then(res=> {
-                  this.$toast(res.message);
-                  if(res.code=="success"){
-                    this.showresult=true
-                  }
-              })
-            }
+      //       let lnglat = result.geocodes[0].location
+      //       //  return lnglat
+      //       if (type==1){
+      //         this.params1.longitude=lnglat.lng
+      //         this.params1.latitude=lnglat.lat
+      //         this.$fetchPost("material/save",this.params1,'json').then(res=> {
+      //             this.$toast(res.message);
+      //             if(res.code=="success"){
+      //               this.showresult=true
+      //             }
+      //         })
+      //       }else if (type==2){
+      //         this.params2.longitude=lnglat.lng
+      //         this.params2.latitude=lnglat.lat
+      //         this.$fetchPost("material/save",this.params2,'json').then(res=> {
+      //             this.$toast(res.message);
+      //             if(res.code=="success"){
+      //               this.showresult=true
+      //             }
+      //         })
+      //       }
             
-          }else{
-              // log.error('根据地址查询位置失败');
-          }
-      });
+      //     }else{
+      //         // log.error('根据地址查询位置失败');
+      //     }
+      // });
     },
     // 点击确定
     confirmTime() {

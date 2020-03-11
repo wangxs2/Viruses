@@ -82,7 +82,7 @@ export const m = {
     yes:'Yes',
     no:'No',
     timewhen:'When ready to sponsor',
-    needremark1:"Please upload photos of business licence or both sides of ID(two photos max.",
+    needremark1:"Please upload photos of business licence or both sides of ID(two photos max.)",
     //我有物资表单
     namehelp:'Names of organization',
     range:"Districts covered",

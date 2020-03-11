@@ -99,11 +99,11 @@
           <div style="font-size:18px;text-align:left">{{mapobj.hospitalName}}</div>
           <div class="address"> 
             <div class="left-font" v-if="mapobj.hospitalAddress!==undefined&&mapobj.hospitalAddress!==''" style="color:#666666;width:75%;word-wrap:break-word;text-align:left"><van-icon name="location-o" size="20" /> <div class="van-van-multi-ellipsis--l2" style="margin-left:2px;font-size:15px">{{mapobj.hospitalAddress}}</div></div>
-            <div v-if="mapobj.type==1" class="right-btn">{{$t("m.hosp1")}}</div>
-            <div v-if="mapobj.type==2" class="right-btn right-btn1">{{$t("m.hosp2")}}</div>
-            <div v-if="mapobj.status&&mapobj.status==1" class="right-btn right-btn2">{{$t("m.hosp3")}}</div>
-            <div v-if="mapobj.status&&mapobj.status==2" class="right-btn right-btn3">{{$t("m.hosp4")}}</div>
-            <div v-if="mapobj.status&&mapobj.status==3" class="right-btn right-btn4">{{$t("m.hosp5")}}</div>
+            <div v-if="mapobj.type==1" class="right-btn">定点医院</div>
+            <div v-if="mapobj.type==2" class="right-btn right-btn1">发热门诊</div>
+            <div v-if="mapobj.status&&mapobj.status==1" class="right-btn right-btn2">正常经营</div>
+            <div v-if="mapobj.status&&mapobj.status==2" class="right-btn right-btn3">政府托管</div>
+            <div v-if="mapobj.status&&mapobj.status==3" class="right-btn right-btn4">尚未核实</div>
           </div>
           <div class="address" style="font-size:12px"> 
             <div v-if="mapobj.source!==undefined&&mapobj.source!==''" style="color:#666666">{{$t("m.grommsg")}}：{{mapobj.source}}  <span style="color:#216AFF;cursor:pointer"> </span></div>
@@ -232,11 +232,11 @@
                 <div>{{item.hospitalAddress}}</div>
               </div>
               
-              <div v-if="item.type==1" class="right-btn">{{$t("m.hosp1")}}</div>
-              <div v-if="item.type==2" class="right-btn right-btn1">{{$t("m.hosp2")}}</div>
-              <div v-if="item.status&&item.status==1" class="right-btn right-btn2">{{$t("m.hosp3")}}</div>
-              <div v-if="item.status&&item.status==2" class="right-btn right-btn3">{{$t("m.hosp4")}}</div>
-              <div v-if="item.status&&item.status==3" class="right-btn right-btn4">{{$t("m.hosp5")}}</div>
+              <div v-if="item.type==1" class="right-btn">定点医院</div>
+              <div v-if="item.type==2" class="right-btn right-btn1">发热门诊</div>
+              <div v-if="item.status&&item.status==1" class="right-btn right-btn2">正常经营</div>
+              <div v-if="item.status&&item.status==2" class="right-btn right-btn3">政府托管</div>
+              <div v-if="item.status&&item.status==3" class="right-btn right-btn4">尚未核实</div>
 
             </div>
             <div class="wuzi-list" v-if="item.needsName"><span v-for="(items,i) in item.needsName.split(',')">{{items}}</span></div>

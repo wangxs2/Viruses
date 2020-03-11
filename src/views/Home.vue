@@ -1513,6 +1513,12 @@ export default {
       if(this.$i18n.locale=="zh-CN"){
         this.myMap.addControl(new MapboxLanguage({defaultLanguage: 'zh'}));
       }
+      // mapboxgl.accessToken = 'pk.eyJ1Ijoid2FuZ3hzMiIsImEiOiJjazNpaTVpYjkwOGRyM25ycHJ4d3g3N29uIn0.Vi4TSzhNcxvwh_zeGJhQ_g';
+      let geositi=new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl
+      })
+      console.log(geositi)
        this.getPosition()
       this.initMap()
     },

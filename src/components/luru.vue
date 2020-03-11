@@ -24,7 +24,7 @@
         <van-loading size="64px" color="#1989fa"></van-loading>
       </div>
     </van-overlay>
-    <van-dialog v-model="showresult" :title="$t('m.suncuccess')" @confirm="closebig">
+    <van-dialog :confirmButtonText="$t('m.confirm')" v-model="showresult" :title="$t('m.suncuccess')" @confirm="closebig">
       <div>{{$t('m.suncuccess1')}}<br>{{$t('m.suncuccess2')}}</div>
     </van-dialog>
     <!-- 防止过快的切换 -->
@@ -148,6 +148,8 @@
                 <van-field v-model="form1.startTime" :placeholder="$t('m.setime')" readonly @click="startTimePop = true"/>
                 <van-popup v-model="startTimePop" position="bottom">
                   <van-datetime-picker
+                    :cancel-button-text="$t('m.cancel')"
+                    :confirm-button-text="$t('m.confirm')"
                     v-model="currentDate"
                     type="date"
                     :min-date="minDate"
@@ -383,6 +385,8 @@
                 <van-field v-model="form3.startTime" :placeholder="$t('m.setime')" readonly @click="startTimePop3 = true"/>
                 <van-popup v-model="startTimePop3" position="bottom">
                   <van-datetime-picker
+                    :cancel-button-text="$t('m.cancel')"
+                    :confirm-button-text="$t('m.confirm')"
                     v-model="currentDate3"
                     type="date"
                     :min-date="minDate"
@@ -398,6 +402,8 @@
                 <van-field v-model="form3.endTime" :placeholder="$t('m.setime')" readonly @click="startTimePop4 = true"/>
                 <van-popup v-model="startTimePop4" position="bottom">
                   <van-datetime-picker
+                  :cancel-button-text="$t('m.cancel')"
+                  :confirm-button-text="$t('m.confirm')"
                     v-model="currentDate1"
                     type="date"
                     :min-date="minDate1"
@@ -903,6 +909,7 @@ export default {
   props:['curtabindex'],
   created() {
     // this.nochinaData=nochina
+    
     nochina.forEach(iteam=>{
       iteam.pinyin=iteam.pinyin.substr(0, 1).toUpperCase()
       this.nochinaData.push(iteam)
@@ -1231,16 +1238,24 @@ addresschange(address){
       .then((response)=> {
         let feature = response.body.features[0].center;
         console.log(feature)
-        this.form3.longitude=feature[0]
-        this.form3.latitude=feature[1]
-        this.$fetchPost("material/save",this.form3,'json').then(res=> {
-            if(res.code=="success"){
-              this.showresult=true
-              this.clearForm3()
-            }else{
-              this.$toast(res.message);
-            }
-          })
+        console.log()
+        if(feature){
+          this.form3.longitude=feature[0]
+          this.form3.latitude=feature[1]
+          this.$fetchPost("material/save",this.form3,'json').then(res=> {
+              if(res.code=="success"){
+                this.showresult=true
+                this.clearForm3()
+              }else{
+                this.$toast(res.message);
+              }
+            })
+          }else{
+            this.$toast("当前位置有误,请从新输入")
+          }
+      })
+      .catch(res=>{
+         this.$toast("当前位置有误,请稍后重试")
       })
 },
 cancleNeedName(){
@@ -1974,28 +1989,32 @@ linkTelBlur(type,tel,index){
       .then((response)=> {
         let feature = response.body.features[0].center;
         console.log(feature)
-        if (type==1){
-              this.params1.longitude=feature[0]
-              this.params1.latitude=feature[1]
-              // this.params1.country="中国"
-              this.$fetchPost("material/save",this.params1,'json').then(res=> {
-                  this.$toast(res.message);
-                  if(res.code=="success"){
-                    this.showresult=true
-                    this.clearForm1()
-                  }
-              })
-        }else if (type==2){
-              this.params2.longitude=feature[0]
-              this.params2.latitude=feature[1]
-              // this.params2.country="中国"
-              this.$fetchPost("material/save",this.params2,'json').then(res=> {
-                  this.$toast(res.message);
-                  if(res.code=="success"){
-                    this.showresult=true
-                    this.clearForm2()
-                  }
-              })
+        if(feature){
+          if (type==1){
+                this.params1.longitude=feature[0]
+                this.params1.latitude=feature[1]
+                // this.params1.country="中国"
+                this.$fetchPost("material/save",this.params1,'json').then(res=> {
+                    this.$toast(res.message);
+                    if(res.code=="success"){
+                      this.showresult=true
+                      this.clearForm1()
+                    }
+                })
+          }else if (type==2){
+                this.params2.longitude=feature[0]
+                this.params2.latitude=feature[1]
+                // this.params2.country="中国"
+                this.$fetchPost("material/save",this.params2,'json').then(res=> {
+                    this.$toast(res.message);
+                    if(res.code=="success"){
+                      this.showresult=true
+                      this.clearForm2()
+                    }
+                })
+          }
+        }else{
+          this.$toast("当前位置有误,请从新输入")
         }
       })
     },
@@ -2037,11 +2056,11 @@ linkTelBlur(type,tel,index){
     formatter(type, value) {
       // 格式化选择器日期
       if (type === "year") {
-        return `${value}年`;
+        return `${value}`;
       } else if (type === "month") {
-        return `${value}月`;
+        return `${value}`;
       } else if (type === "day") {
-        return `${value}日`;
+        return `${value}`;
       }
       return value;
     },
@@ -2085,11 +2104,11 @@ linkTelBlur(type,tel,index){
     formatter1(type, value) {
       // 格式化选择器日期
       if (type === "year") {
-        return `${value}年`;
+        return `${value}`;
       } else if (type === "month") {
-        return `${value}月`;
+        return `${value}`;
       } else if (type === "day") {
-        return `${value}日`;
+        return `${value}`;
       }
       return value;
     },

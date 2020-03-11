@@ -137,6 +137,7 @@ export const m = {
     hosp3:"正常经营",
     hosp4:"政府托管",
     hosp5:"尚未核实",
+    sure:"当前位置有误,请重新输入正确的地址",
     // realin4:'供应详情',
 
 

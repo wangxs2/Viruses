@@ -1251,11 +1251,11 @@ addresschange(address){
               }
             })
           }else{
-            this.$toast("当前位置有误,请从新输入")
+            this.$toast(this.$t("m.sure"))
           }
       })
       .catch(res=>{
-         this.$toast("当前位置有误,请稍后重试")
+         this.$toast(this.$t("m.sure"))
       })
 },
 cancleNeedName(){
@@ -2014,7 +2014,7 @@ linkTelBlur(type,tel,index){
                 })
           }
         }else{
-          this.$toast("当前位置有误,请从新输入")
+          this.$toast(this.$t("m.sure"))
         }
       })
     },

@@ -137,5 +137,6 @@ export const m = {
     hosp3:"NormalOperation",
     hosp4:"Government hosting",
     hosp5:"To be verified",
+    sure:"Please enter the correct address",
     
   }

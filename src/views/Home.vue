@@ -3,7 +3,7 @@
     <div class="onebif">
       <div style="font-size:12px">{{$t("m.within")}} <span style="margin:0 6px"></span> {{zanz.view}}{{$t('m.views')}}</div>
       <!-- <div style="font-size:12px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span></div> -->
-      <div style="font-size:14px" @click="changeLangEvent">切换{{lang=="zh-CN"?"English":'中文'}}</div>
+      <div style="font-size:14px" @click="changeLangEvent">{{lang=="zh-CN"?"Switch English":'切换中文'}}</div>
     </div>
     <div class="twobif">{{zanz.encourage}}</div>
     <div class="threebif" @click="dzanclick">
@@ -99,30 +99,30 @@
           <div style="font-size:18px;text-align:left">{{mapobj.hospitalName}}</div>
           <div class="address"> 
             <div class="left-font" v-if="mapobj.hospitalAddress!==undefined&&mapobj.hospitalAddress!==''" style="color:#666666;width:75%;word-wrap:break-word;text-align:left"><van-icon name="location-o" size="20" /> <div class="van-van-multi-ellipsis--l2" style="margin-left:2px;font-size:15px">{{mapobj.hospitalAddress}}</div></div>
-            <div v-if="mapobj.type==1" class="right-btn">定点医院</div>
-            <div v-if="mapobj.type==2" class="right-btn right-btn1">发热门诊</div>
-            <div v-if="mapobj.status&&mapobj.status==1" class="right-btn right-btn2">正常经营</div>
-            <div v-if="mapobj.status&&mapobj.status==2" class="right-btn right-btn3">政府托管</div>
-            <div v-if="mapobj.status&&mapobj.status==3" class="right-btn right-btn4">尚未核实</div>
+            <div v-if="mapobj.type==1" class="right-btn">{{$t("m.hosp1")}}</div>
+            <div v-if="mapobj.type==2" class="right-btn right-btn1">{{$t("m.hosp2")}}</div>
+            <div v-if="mapobj.status&&mapobj.status==1" class="right-btn right-btn2">{{$t("m.hosp3")}}</div>
+            <div v-if="mapobj.status&&mapobj.status==2" class="right-btn right-btn3">{{$t("m.hosp4")}}</div>
+            <div v-if="mapobj.status&&mapobj.status==3" class="right-btn right-btn4">{{$t("m.hosp5")}}</div>
           </div>
           <div class="address" style="font-size:12px"> 
-            <div v-if="mapobj.source!==undefined&&mapobj.source!==''" style="color:#666666">信息来源：{{mapobj.source}}  <span style="color:#216AFF;cursor:pointer"> </span></div>
-            <div v-if="mapobj.createTime!==undefined">发布日期：{{(mapobj.createTime).replace("+"," ")}}</div>
+            <div v-if="mapobj.source!==undefined&&mapobj.source!==''" style="color:#666666">{{$t("m.grommsg")}}：{{mapobj.source}}  <span style="color:#216AFF;cursor:pointer"> </span></div>
+            <div v-if="mapobj.createTime!==undefined">{{$t("m.realdata")}}：{{(mapobj.createTime).replace("+"," ")}}</div>
           </div>
           <div class="tel-phone" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0">
             <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr1"
                   :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr1==undefined?"":mapobj.linkPeoplearr1[index]}}  {{iteam}}</div></div>
           </div>
-          <div class="tel-desc" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0" style="display:flex;justify-content:flex-start;align-items:center;font-size:12px;line-height:15px;color:#216AFF;text-align:left;margin-bottom:12px;"> <van-icon name="warning-o" color="#216AFF"  size="12" style="margin-right:2px;"/><span>以上为虚拟号码，随时更新，真实号码已受保护！</span></div>
+          <div class="tel-desc" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0" style="display:flex;justify-content:flex-start;align-items:center;font-size:12px;line-height:15px;color:#216AFF;text-align:left;margin-bottom:12px;"> <van-icon name="warning-o" color="#216AFF"  size="12" style="margin-right:2px;"/><span>{{$t("m.tepnum")}}</span></div>
           <div class="service-title-time" v-if="query.orgType==3">
             <div class="service-title" style="color:#666" v-if="!mapobj.startTime&&!mapobj.endTime">
-              暂未提供服务时间
+              {{$t("m.ntime")}}
             </div>
             <div class="service-title" v-else>
-              服务时间段
-              <span v-if="mapobj.timeStatus==1" style="color:#ff388c">(未来将提供服务)</span>
-              <span v-else-if="mapobj.timeStatus==2" style="color:#999999">(过期)</span>
-              <span v-else-if="mapobj.timeStatus==3" style="color:#D247FF">(正在提供服务)</span>
+              {{$t("m.timeserv")}}
+              <span v-if="mapobj.timeStatus==1" style="color:#ff388c">{{$t("m.fulltime")}}</span>
+              <span v-else-if="mapobj.timeStatus==2" style="color:#999999">{{$t("m.fulltime1")}}</span>
+              <span v-else-if="mapobj.timeStatus==3" style="color:#D247FF">{{$t("m.fulltime2")}}</span>
             </div>
             <div class="service-time">
               <div v-if="(mapobj.startTime&&!mapobj.endTime)||(!mapobj.startTime&&mapobj.endTime)">
@@ -137,7 +137,7 @@
                 <span class="start-end-time">{{mapobj.endTime}}</span>
               </div>
               <div v-else-if="!mapobj.startTime&&!mapobj.endTime">
-                <span class="start-end-time">暂无</span>
+                <span class="start-end-time">{{$t("m.nodata")}}</span>
               </div>
             </div>
           </div>
@@ -151,8 +151,8 @@
                   :key="index" class="remark">{{itrm}}</div> -->
           <div v-if="mapobj.orgDescr!==undefined" style="font-size:12px;color:#999999;text-align:left">备注：{{mapobj.orgDescr}}</div>
           <div class="btnSty-wrapper">
-            <div class="btnSty" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0"  style="margin-right:12px" @click="dialPhoneNumber()">我要联系</div>
-            <div class="btnSty" style="background:linear-gradient(90deg,rgba(255,102,0,1),rgba(255,123,16,1));" @click="shakeTime(mapobj.hospitalName)"><van-icon color="#ffffff" size="20" name="good-job" /><span>点赞加油 {{mapobj.encourageNum}}次</span></div>
+            <div class="btnSty" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0"  style="margin-right:12px" @click="dialPhoneNumber()">{{$t("m.telman1")}}</div>
+            <div class="btnSty" style="background:linear-gradient(90deg,rgba(255,102,0,1),rgba(255,123,16,1));" @click="shakeTime(mapobj.hospitalName)"><van-icon color="#ffffff" size="20" name="good-job" /><span>{{$t("m.likes")}} {{mapobj.encourageNum}}</span></div>
           </div>
         </div>
       </div>
@@ -171,7 +171,7 @@
       <div class="search-wrapper">
         <div class="tab-item-list">
           <div v-for="(item,i) in menuList" :key="i" @click="searchTabItem(i)" :class="selectIndex==i?'tab-item tab-item-span-active':'tab-item'">
-          {{item.name}}
+          {{$t(item.name)}}
             
           </div>
         </div>
@@ -179,9 +179,9 @@
           <img src="../assets/image/search.png" alt="" @click="search">
 
           <form action="javascript:return true"> 
-            <input type="search" placeholder="查询继续支援医院、物资、区域" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==0"> 
-            <input type="search" placeholder="查询继续支援企业、物资、区域" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==1"> 
-            <input type="search" placeholder="查询继续支援组织、物资、区域" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==2">
+            <input type="search" :placeholder="$t('m.search')" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==0"> 
+            <input type="search" :placeholder="$t('m.search')" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==1"> 
+            <input type="search" :placeholder="$t('m.search')" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==2">
           </form>
 
 
@@ -189,16 +189,16 @@
         </div>
         <div class="tab-list-wrapper" v-if="!downUpImg">
 
-            <p class="title">疫情防控物资</p>
+            <p class="title">{{$t('m.outbreak')}}</p>
           <div class="list list1">
             <span v-for="(item,i) in wuziList" :key="i" @click="selectItem(item)">{{item}}</span>
           </div>
-          <p class="title">疫情城市查询</p>
+          <p class="title">{{$t('m.outbreakcity')}}</p>
           <div class="list list2">
             <span v-for="(item,i) in cityList" :key="i" @click="selectItem(item)">{{item}}</span>
           </div>
           
-          <p class="title">发布时间查询</p>
+          <p class="title">{{$t('m.timesearch')}}</p>
           <div class="list list3">
             <span v-for="(item,i) in timeList" :key="i" @click="selectTimeItem(item)"><img src="../assets/image/time.png" alt="">{{item}}</span>
           </div>
@@ -207,11 +207,11 @@
           <div class="img-write" v-if="downUpImg">
 
             <img class="down-up" src="../assets/image/down.png" alt="">  
-            <span>收起</span>
+            <span>{{$t('m.putaway')}}</span>
           </div>
           <div class="img-write" v-else>
             <img class="down-up" src="../assets/image/up.png" alt="">
-            <span>收起</span>
+            <span>{{$t('m.putaway')}}</span>
           </div>
         </div>
         
@@ -232,18 +232,18 @@
                 <div>{{item.hospitalAddress}}</div>
               </div>
               
-              <div v-if="item.type==1" class="right-btn">定点医院</div>
-              <div v-if="item.type==2" class="right-btn right-btn1">发热门诊</div>
-              <div v-if="item.status&&item.status==1" class="right-btn right-btn2">正常经营</div>
-              <div v-if="item.status&&item.status==2" class="right-btn right-btn3">政府托管</div>
-              <div v-if="item.status&&item.status==3" class="right-btn right-btn4">尚未核实</div>
+              <div v-if="item.type==1" class="right-btn">{{$t("m.hosp1")}}</div>
+              <div v-if="item.type==2" class="right-btn right-btn1">{{$t("m.hosp2")}}</div>
+              <div v-if="item.status&&item.status==1" class="right-btn right-btn2">{{$t("m.hosp3")}}</div>
+              <div v-if="item.status&&item.status==2" class="right-btn right-btn3">{{$t("m.hosp4")}}</div>
+              <div v-if="item.status&&item.status==3" class="right-btn right-btn4">{{$t("m.hosp5")}}</div>
 
             </div>
             <div class="wuzi-list" v-if="item.needsName"><span v-for="(items,i) in item.needsName.split(',')">{{items}}</span></div>
 
             
 
-            <div class="time" v-if="item.createTime!==undefined&&item.createTime!==''">发布日期：{{item.createTime!==undefined?item.createTime.substring(0,16).replace("+"," "):''}}</div>
+            <div class="time" v-if="item.createTime!==undefined&&item.createTime!==''">{{$t("m.realdata")}}：{{item.createTime!==undefined?item.createTime.substring(0,16).replace("+"," "):''}}</div>
             <!-- <div class="phone" v-if="item.linkTelarr1!==undefined&&item.linkTelarr1.length > 0">
               <p  v-for="(items,i) in item.linkTelarr1" :key="i"><van-icon name="phone-o" size="20" /><span>{{item.linkPeoplearr1==undefined?"":item.linkPeoplearr1[i]}}</span><span @click="searchRightModelPhone(items)">{{items}}</span></p>
             </div> -->
@@ -654,7 +654,7 @@
         <div class="us-need us">
           <div class="title">
             <span class="dot" v-for="(item,i) in 3" :key="i+'s'"></span>
-            <span class="title-name">联系我们</span>
+            <span class="title-name">{{$t('m.telman')}}</span>
             <span class="dot" v-for="(item,i) in 3" :key="i+'d'"></span>
           </div>
           <div class="message-wrapper">
@@ -672,7 +672,7 @@
           <div class="code">
             <img style="" src="../assets/image/gzh.jpg" alt="">
             <!-- <div class="btn">长按识别公众号</div> -->
-            <span class="btn">云逆行·新冠肺炎物资公益平台</span>
+            <span class="btn">{{this.$t('m.title')}}</span>
             <!-- <div>长按识别公众号</div> -->
           </div>
         </div>
@@ -704,7 +704,7 @@ export default {
       require('../assets/image/icon1.png'),require('../assets/image/list4.png'),require('../assets/image/list6.png'),
       require('../assets/image/list8.png'),require('../assets/image/list9.png'),require('../assets/image/list10.png'),
       ],
-      lang:'zh-CN',
+      lang:'',
       showmap:false,
       fenxi_img:'https://medicalsupplies.sitiits.com/share.png',
       fenxi_title:'云逆行·新冠肺炎物资公益平台',
@@ -868,16 +868,30 @@ export default {
     }
   },
   created() {
+   
     this.getDataList()
     this.getWuziList()
     this.getCityList()
     this.getCurTimeContent()
+    console.log(this.$route.query.islang)
+    if(this.$route.query.islang==1){
+      return
+    }else{
+      if(navigator.language=="zh-CN"){
+        this.lang="zh-CN"
+        this.$i18n.locale = this.lang;//关键语句
+      }else{
+        this.lang="en-US"
+        this.$i18n.locale = this.lang;//关键语句
+      }
+    }
+    
   },
  mounted () {
     this.getMapbox()
     var scrolltop = document.body.scrollTop;
     $('input').focus(function(){
-    interval = setInterval(function(){
+    let interval = setInterval(function(){
     document.body.scrollTop = document.body.scrollHeight;
     },100)
     }).blur(function(){
@@ -885,6 +899,7 @@ export default {
     document.body.scrollTop =scrolltop;
     });
     this.WeChatshare()
+   
     //地图的放大缩小
     // this.myMap.on("zoomend", () => {
     //   let numberMap = this.myMap.getZoom();
@@ -932,36 +947,37 @@ export default {
           //拼接当前地址 
           let shareUrl=window.location.href.split('#')[0]+'#'+window.location.href.split('#')[1];
           // shareUrl = shareUrl.split('#')[0] + 'static/html/redirect.html?app3Redirect=' + encodeURIComponent(shareUrl);
+          console.log(that.$t('m.title'))
           wx.ready(function () {
             //分享给朋友
             wx.onMenuShareAppMessage({
-              title: that.fenxi_title,
-              desc: that.fenxi_desc,
+              title: that.$t('m.title'),
+              desc: that.$t('m.contenttit'),
               link: shareUrl,
               imgUrl: that.fenxi_img,
               success: function (res) {
-                that.$toast("分享成功！");
+                // that.$toast("分享成功！");
               },
               cancel:function(res){
-                that.$toast("分享失败！");
+                // that.$toast("分享失败！");
               }
             })
             //分享到朋友圈
             wx.onMenuShareTimeline({
-              title: that.fenxi_title,
+              title: that.$t('m.title'),
               link: shareUrl,
               imgUrl: that.fenxi_img,
               success: function (res) {
-                that.$toast("分享成功！");
+                // that.$toast("分享成功！");
               },
               cancel:function(res){
-                that.$toast("分享失败！");
+                // that.$toast("分享失败！");
               }
             })
             //“分享到QQ
             wx.onMenuShareQQ({
-              title: that.fenxi_title, // 分享标题
-              desc: that.fenxi_desc, // 分享描述
+              title: that.$t('m.title'), // 分享标题
+              desc: that.$t('m.contenttit'), // 分享描述
               link: shareUrl, // 分享链接
               imgUrl: that.fenxi_img, // 分享图标
               success: function () {
@@ -973,8 +989,8 @@ export default {
             });
             //“分享到分享到腾讯微博
             wx.onMenuShareWeibo({
-              title: that.fenxi_title, // 分享标题
-              desc: that.fenxi_desc, // 分享描述
+              title: that.$t('m.title'), // 分享标题
+              desc: that.$t('m.contenttit'), // 分享描述
               link: shareUrl, // 分享链接
               imgUrl: that.fenxi_img, // 分享图标
               success: function () {
@@ -986,8 +1002,8 @@ export default {
             });
             //“分享到QQ空间
             wx.onMenuShareQZone({
-              title: that.fenxi_title, // 分享标题
-              desc: that.fenxi_desc, // 分享描述
+              title: that.$t('m.title'), // 分享标题
+              desc: that.$t('m.contenttit'), // 分享描述
               link: shareUrl, // 分享链接
               imgUrl: that.fenxi_img, // 分享图标
               success: function () {
@@ -1019,12 +1035,14 @@ export default {
       if ( this.lang === 'zh-CN' ) {
               this.lang = 'en-US';
               this.$i18n.locale = this.lang;//关键语句
+              this.WeChatshare()
               this.initmapbox()
               this.getDataList()
               // this.myMap.addControl(new MapboxLanguage({defaultLanguage: ''}));
       }else {
           this.lang = 'zh-CN';
           this.$i18n.locale = this.lang;//关键语句
+          this.WeChatshare()
           this.initmapbox()
           this.myMap.addControl(new MapboxLanguage({defaultLanguage: 'zh'}));
           this.getDataList()
@@ -1102,7 +1120,8 @@ export default {
         // this.luruSelectModel=false
         this.reduceShow=true
       }else{
-        this.$toast("拼命开发中");
+        // this.$toast("拼命开发中");
+        window.location.href = "https://tools2.lianquan.org/JointDonation_JointDonationStep3?id=27576"
       }
     },
     getCurTimeContent(){
@@ -1491,7 +1510,10 @@ export default {
       localIdeographFontFamily: "'Noto Sans', 'Noto Sans CJK SC', sans-serif",
       style: 'mapbox://styles/mapbox/streets-v9'
       });
-      this.myMap.addControl(new MapboxLanguage({defaultLanguage: 'zh'}));
+      if(this.$i18n.locale=="zh-CN"){
+        this.myMap.addControl(new MapboxLanguage({defaultLanguage: 'zh'}));
+      }
+       this.getPosition()
       this.initMap()
     },
     initmapbox(){
@@ -1957,10 +1979,10 @@ export default {
           }
         }
         .btn-list:nth-child(3){
-          opacity:0.4;
+          // opacity:0.4;
           span{
             margin-bottom:4px;
-            color:#dddddd;
+            // color:#dddddd;
             line-height: 12px;
           }
         }
@@ -2075,7 +2097,7 @@ export default {
         
         
         .right-btn{
-          width:64px;
+          // width:64px;
           height:20px;
           background:#a485fd;
           border-radius:10px;
@@ -2384,7 +2406,7 @@ export default {
           }
         }
         .right-btn{
-          width:64px;
+          // width:64px;
           height:18px;
           background:#a485fd;
           border-radius:10px;

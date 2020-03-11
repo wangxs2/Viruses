@@ -12,6 +12,18 @@ export const m = {
     supply:"我有物资",
     help:"我要出力",
     donate:'我要捐赠',
+    telman:'联系我们',
+    telman1:"我要联系",
+    likes:"点赞加油",
+    realdata:"发布日期",
+    grommsg:"信息来源",
+    ntime:"暂未提供服务时间",
+    fulltime:"(未来将提供服务)",
+    fulltime1:"过期",
+    fulltime2:"正在提供服务",
+    timeserv:"服务时间段" ,
+    nodata:"没有数据",
+    tepnum:"以上为虚拟号码，随时更新，真实号码已受保护！",
     //我有需求表单
     name:'名称',//
     please:'请填写',
@@ -109,7 +121,24 @@ export const m = {
     realin1:'资助信息',
     realin2:'求购详情',
     realin3:'供应详情',
+    outbreak:"疫情防控物资",
+    outbreakcity:"疫情城市查询",
+    timesearch:"发布时间查询",
+    putaway:'收起',
+    verified:'已核实',
+    verified1:"已完结",
+    noverified:'未核实',
+    watie:'等待资助',
+    watie1:'资助完成',
+    title:"云逆行·新冠肺炎物资公益平台",
+    contenttit:"由中华全国工商业联合会、上海市慈善基金会、上海产业技术研究院联合发布",
+    hosp1:"定点医院",
+    hosp2:"发热门诊",
+    hosp3:"正常经营",
+    hosp4:"政府托管",
+    hosp5:"尚未核实",
     // realin4:'供应详情',
+
 
 
   }

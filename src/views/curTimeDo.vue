@@ -57,8 +57,8 @@
                                             <span class="time" v-if="item.updateTime">{{item.updateTime.substring(0,10)}}</span>
                                             <span class="btn" @click="showPdf(item.linksCur)" v-if="item.links"><img class="down-up" src="../assets/image/pdf.png" alt="">查看任务详单</span>
                                         </div>
-                                        <div class="tab" style="background:rgba(255,69,69,1)" v-if="item.status==0">等待资助</div>
-                                        <div class="tab" style="background:rgba(2,199,150,1)" v-else-if="item.status==1">资助完成</div>
+                                        <div class="tab" style="background:rgba(255,69,69,1)" v-if="item.status==0">{{$t('m.watie')}}</div>
+                                        <div class="tab" style="background:rgba(2,199,150,1)" v-else-if="item.status==1">{{$t('m.watie1')}}</div>
                                     </div>
                                 </div>
                             </van-cell>
@@ -80,9 +80,9 @@
                                             <span class="time" v-if="item.updateTime">{{item.updateTime.substring(0,10)}}</span>
                                             <span class="btn" @click="showPdf(item.linksCur)" v-if="item.links"><img class="down-up" src="../assets/image/pdf.png" alt="">查看任务详单</span>
                                         </div>
-                                        <div class="tab1" style="color:#FF4545" v-if="item.status==0">未核实</div>
-                                        <div class="tab1" style="color:#02C796" v-else-if="item.status==2">已完结</div>
-                                        <div class="tab1" style="color:#216AFF" v-else-if="item.status==1">已核实</div>
+                                        <div class="tab1" style="color:#FF4545" v-if="item.status==0">{{$t('m.noverified')}}</div>
+                                        <div class="tab1" style="color:#02C796" v-else-if="item.status==2">{{$t('m.verified1')}}</div>
+                                        <div class="tab1" style="color:#216AFF" v-else-if="item.status==1">{{$t('m.verified')}}</div>
                                     </div>
                                 </div>
                             </van-cell>
@@ -104,9 +104,9 @@
                                             <span class="time" v-if="item.updateTime">{{item.updateTime.substring(0,10)}}</span>
                                             <span class="btn" @click="showPdf(item.linksCur)" v-if="item.links"><img class="down-up" src="../assets/image/pdf.png" alt="">查看任务详单</span>
                                         </div>
-                                        <div class="tab1" style="color:#FF4545" v-if="item.status==0">未核实</div>
-                                        <div class="tab1" style="color:#02C796" v-else-if="item.status==2">已完结</div>
-                                        <div class="tab1" style="color:#216AFF" v-else-if="item.status==1">已核实</div>
+                                        <div class="tab1" style="color:#FF4545" v-if="item.status==0">{{$t('m.noverified')}}</div>
+                                        <div class="tab1" style="color:#02C796" v-else-if="item.status==2">{{$t('m.verified1')}}</div>
+                                        <div class="tab1" style="color:#216AFF" v-else-if="item.status==1">{{$t('m.verified')}}</div>
                                     </div>
                                 </div>
                             </van-cell>
@@ -413,7 +413,9 @@ export default {
       })
     },
     closeCurTime(){
-      this.$router.push({path:"/"})
+      this.$router.push({path:"/",query: {
+          islang:1
+        }})
       this.curTimeDonate=false
       this.showHome=true
       this.curTimeParams.page=1
@@ -422,7 +424,9 @@ export default {
 
     },
     goBackHome(){
-        this.$router.push({path:'/'})
+        this.$router.push({path:'/',query: {
+          islang:1
+        }})
     }
   }
 };

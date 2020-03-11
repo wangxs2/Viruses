@@ -102,7 +102,7 @@
 
                         <van-field class="sup-name" :readonly="readonly1" v-model="iteam.needsName" type="text" :placeholder="$t('m.please')"   input-align="center" @focus="needFocus(index)" @blur="needBlur(index)"/>
                         <van-popup v-model="startTimePopNeedName" position="bottom">
-                        <van-picker show-toolbar :columns="$t('m.needList')" @confirm="confirmNeedName" @cancel="cancleNeedName" @change="changeNeedName" />
+                        <van-picker :cancel-button-text="$t('m.cancel')" :confirm-button-text="$t('m.confirm')" show-toolbar :columns="$t('m.needList')" @confirm="confirmNeedName" @cancel="cancleNeedName" @change="changeNeedName" />
                         </van-popup>
                       </div>
                       <div class="num"><van-field class="sup-num" v-model="iteam.needsNum" type="number" :placeholder="$t('m.please')" testnum input-align="center" /><img @click="deleteDemand(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
@@ -267,7 +267,7 @@
                         
                         <van-field class="sup-name" v-model="iteam.needsName" :readonly="readonly2" type="text" :placeholder="$t('m.please')"   input-align="center"  @focus="needFocus1(index)" @blur="needBlur1(index)"/>
                         <van-popup v-model="startTimePopNeedName" position="bottom">
-                        <van-picker show-toolbar :columns="$t('m.needList')" @confirm="confirmNeedName1" @cancel="cancleNeedName" @change="changeNeedName1" />
+                        <van-picker :cancel-button-text="$t('m.cancel')" :confirm-button-text="$t('m.confirm')" show-toolbar :columns="$t('m.needList')" @confirm="confirmNeedName1" @cancel="cancleNeedName" @change="changeNeedName1" />
                         </van-popup>
                       </div>
                       <div class="num"><van-field class="sup-num" v-model="iteam.needsNum" type="number" :placeholder="$t('m.please')" testnum input-align="center" /><img @click="deleteDemand1(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
@@ -1071,7 +1071,7 @@ methods:{
       if(this.telindex<1){
         this.form1.contectTelList[index].name=''
         this.form1.contectTelList[index].tel=''
-        this.$toast('至少添加一条联系人');
+        this.$toast(this.$i18n.locale=='zh-CN'?"至少添加一条联系人":"Add at least one contact")
       }else{
         this.form1.contectTelList.splice(index,1)
         this.telindex--
@@ -1083,7 +1083,7 @@ methods:{
           return item.name == ""||item.tel == ""
       })
       if(x||this.form1.contectTelList[this.telindex].name==''||this.form1.contectTelList[this.telindex].tel==''){
-        this.$toast('请完善信息');
+        this.$toast(this.$i18n.locale=='zh-CN'?"请完善信息":"Please improve the information")
       }else{
         this.telindex++
         this.form1.contectTelList.push({
@@ -1097,7 +1097,7 @@ methods:{
       if(this.telindex1<1){
         this.form2.contectTelList[index].name=''
         this.form2.contectTelList[index].tel=''
-        this.$toast('至少添加一条联系人');
+        this.$toast(this.$i18n.locale=='zh-CN'?"至少添加一条联系人":"Add at least one contact")
       }else{
         this.form2.contectTelList.splice(index,1)
         this.telindex1--
@@ -1109,7 +1109,7 @@ methods:{
           return item.name == ""||item.tel == ""
       })
       if(x||this.form2.contectTelList[this.telindex1].name==''||this.form2.contectTelList[this.telindex1].tel==''){
-        this.$toast('请完善信息');
+        this.$toast(this.$i18n.locale=='zh-CN'?"请完善信息":"Please improve the information")
       }else{
         this.telindex1++
         this.form2.contectTelList.push({
@@ -1123,7 +1123,7 @@ methods:{
       if(this.telindex2<1){
         this.form3.contectTelList[index].name=''
         this.form3.contectTelList[index].tel=''
-        this.$toast('至少添加一条联系人');
+        this.$toast(this.$i18n.locale=='zh-CN'?"至少添加一条联系人":"Add at least one contact")
       }else{
         this.form3.contectTelList.splice(index,1)
         this.telindex2--
@@ -1203,7 +1203,7 @@ methods:{
           return item.name == ""||item.tel == ""
       })
       if(x||this.form3.contectTelList[this.telindex2].name==''||this.form3.contectTelList[this.telindex2].tel==''){
-        this.$toast('请完善信息');
+        this.$toast(this.$i18n.locale=='zh-CN'?"请完善信息":"Please improve the information")
       }else{
         this.telindex2++
         this.form3.contectTelList.push({

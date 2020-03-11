@@ -2,8 +2,18 @@ export const m = {
     demander: 'Demanders',//需方
     supplier: 'Suppliers',//供方
     ngos: 'NGOs',//民间组织
-    within:'within one month',//近1个月数据
-    views:'views',//浏览量
+    within:'Data within one month',//近1个月数据
+    views:'Views',//浏览量
+    likes:"like",
+    realdata:"Release date",
+    nodata:"no data",
+    grommsg:"Source of info",
+    timeserv:"Time to serve" ,
+    ntime:"No service time",
+    fulltime:"(Services will be provided in the future)",
+    fulltime1:"Expired",
+    fulltime2:"Providing service",
+    tepnum:"The above are virtual numbers, updated at any time, and the real numbers have been protected!",
     search:"Search",//搜索
     more:'More goods on track',//更多物资跟踪
     user:'User agreement',//用户协议
@@ -109,5 +119,23 @@ export const m = {
     realin1:'Sponsor',
     realin2:'demands',
     realin3:'supply ',
+    outbreak:'Outbreak prevention and control materials',
+    outbreakcity:"Outbreak city inquiry",
+    timesearch:"Time query",
+    putaway:'Put away',
+    verified:'verified',
+    verified1:"finished",
+    noverified:'to be verified',
+    watie:'Waiting for sponsors',
+    watie1:'Sponsorship completed',
+    telman:'Contact us',
+    telman1:"I want to contact",
+    title:"YunNiXing  COVID-19 Support Platform",
+    contenttit:"Issued by the All-China Federation of Industry and Commerce, Shanghai Charity Foundation, and Shanghai Industrial Technology Research Institute",
+    hosp1:"Designated hospital",
+    hosp2:"fever clinics",
+    hosp3:"NormalOperation",
+    hosp4:"Government hosting",
+    hosp5:"To be verified",
     
   }

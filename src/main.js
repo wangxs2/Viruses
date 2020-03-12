@@ -22,6 +22,7 @@ const i18n = new VueI18n({
     'en-US': require('./common/lang/en')    // 英文语言包
   }
 })
+console.log(window.document.title)
 router.beforeEach((to, from, next) => {
   next()
 })

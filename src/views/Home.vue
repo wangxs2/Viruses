@@ -99,11 +99,11 @@
           <div style="font-size:18px;text-align:left">{{mapobj.hospitalName}}</div>
           <div class="address"> 
             <div class="left-font" v-if="mapobj.hospitalAddress!==undefined&&mapobj.hospitalAddress!==''" style="color:#666666;width:75%;word-wrap:break-word;text-align:left"><van-icon name="location-o" size="20" /> <div class="van-van-multi-ellipsis--l2" style="margin-left:2px;font-size:15px">{{mapobj.hospitalAddress}}</div></div>
-            <div v-if="mapobj.type==1" class="right-btn">定点医院</div>
-            <div v-if="mapobj.type==2" class="right-btn right-btn1">发热门诊</div>
-            <div v-if="mapobj.status&&mapobj.status==1" class="right-btn right-btn2">正常经营</div>
-            <div v-if="mapobj.status&&mapobj.status==2" class="right-btn right-btn3">政府托管</div>
-            <div v-if="mapobj.status&&mapobj.status==3" class="right-btn right-btn4">尚未核实</div>
+            <div v-if="mapobj.type==1" class="right-btn">{{$t('m.hosp1')}}</div>
+            <div v-if="mapobj.type==2" class="right-btn right-btn1">{{$t('m.hosp2')}}</div>
+            <div v-if="mapobj.status&&mapobj.status==1" class="right-btn right-btn2">{{$t('m.hosp3')}}</div>
+            <div v-if="mapobj.status&&mapobj.status==2" class="right-btn right-btn3">{{$t('m.hosp4')}}</div>
+            <div v-if="mapobj.status&&mapobj.status==3" class="right-btn right-btn4">{{$t('m.hosp5')}}</div>
           </div>
           <div class="address" style="font-size:12px"> 
             <div v-if="mapobj.source!==undefined&&mapobj.source!==''" style="color:#666666">{{$t("m.grommsg")}}：{{mapobj.source}}  <span style="color:#216AFF;cursor:pointer"> </span></div>
@@ -142,7 +142,7 @@
             </div>
           </div>
           <!-- <span class="person">接受个人捐赠</span> -->
-          <div v-if="mapobj.needsNamearr!==undefined" style="display:flex;justify-content:flex-start;align-items:center;font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'所需疫情防控物资':'可提供的物资或者服务'}} <van-icon v-if="query.orgType==1" style="margin-left:10px;margin-right:1px" name="warning-o" color="#FF2727"  size="12" /> <span v-if="query.orgType==1" @click="specifications=true" style="color:#FF2727;font-size:12px">物资标准</span></div>
+          <div v-if="mapobj.needsNamearr!==undefined" style="display:flex;justify-content:flex-start;align-items:center;font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?$t('m.need12'):$t('m.need13')}} <van-icon v-if="query.orgType==1" style="margin-left:10px;margin-right:1px" name="warning-o" color="#FF2727"  size="12" /> <span v-if="query.orgType==1" @click="specifications=true" style="color:#FF2727;font-size:12px">{{$t('m.need14')}}</span></div>
           <div class="material" v-if="mapobj.needsNamearr!==undefined">
             <div v-for="(item,index) in mapobj.needsNamearr"
                   :key="index" class="boll-item"><span class="boll"></span>{{item}}</div>
@@ -232,11 +232,11 @@
                 <div>{{item.hospitalAddress}}</div>
               </div>
               
-              <div v-if="item.type==1" class="right-btn">定点医院</div>
-              <div v-if="item.type==2" class="right-btn right-btn1">发热门诊</div>
-              <div v-if="item.status&&item.status==1" class="right-btn right-btn2">正常经营</div>
-              <div v-if="item.status&&item.status==2" class="right-btn right-btn3">政府托管</div>
-              <div v-if="item.status&&item.status==3" class="right-btn right-btn4">尚未核实</div>
+              <div v-if="item.type==1" class="right-btn">{{$t('m.hosp1')}}</div>
+              <div v-if="item.type==2" class="right-btn right-btn1">{{$t('m.hosp2')}}</div>
+              <div v-if="item.status&&item.status==1" class="right-btn right-btn2">{{$t('m.hosp3')}}</div>
+              <div v-if="item.status&&item.status==2" class="right-btn right-btn3">{{$t('m.hosp4')}}</div>
+              <div v-if="item.status&&item.status==3" class="right-btn right-btn4">{{$t('m.hosp5')}}</div>
 
             </div>
             <div class="wuzi-list" v-if="item.needsName"><span v-for="(items,i) in item.needsName.split(',')">{{items}}</span></div>
@@ -657,7 +657,7 @@
             <span class="title-name">{{$t('m.telman')}}</span>
             <span class="dot" v-for="(item,i) in 3" :key="i+'d'"></span>
           </div>
-          <div class="message-wrapper">
+          <div class="message-wrapper" v-if="lang=='zh-CN'">
             <div class="message" v-for="(item,i) in conUs" :key="i">
               <div class="message-content">
                 <div class="name-tel">
@@ -669,11 +669,20 @@
               <span class="btn" @click="commitTel(item.tel)">立即拨打</span>
             </div>
           </div>
+          <div class="message-wrapper" v-if="lang=='en-US'">
+            <div class="message">Platform contact ： Mr. Chai </div>
+            <div class="message">Wechat number ：ispief- </div>
+            <div class="messageone">
+              <div>Email：</div>
+              <div>
+                <p style="margin-bottom:8px">chaitianxin@yunnixing.cn</p>
+                <p>kanpengpeng@yunnixing.cn</p>
+              </div>
+            </div>
+          </div>
           <div class="code">
             <img style="" src="../assets/image/gzh.jpg" alt="">
-            <!-- <div class="btn">长按识别公众号</div> -->
-            <span class="btn">{{this.$t('m.title')}}</span>
-            <!-- <div>长按识别公众号</div> -->
+            <span class="btn">{{lang=="zh-CN"?"云逆行·新冠肺炎物资公益平台":'Wechat public account: “gh_a220ea2b4bb8”'}}</span>
           </div>
         </div>
         <div class="close-luru-model" @click="contectSelect"><van-icon name="cross" size="16" color="#fff"/></div>
@@ -880,9 +889,11 @@ export default {
       if(navigator.language=="zh-CN"){
         this.lang="zh-CN"
         this.$i18n.locale = this.lang;//关键语句
+        window.document.title="云逆行·新冠肺炎物资公益平台"
       }else{
         this.lang="en-US"
         this.$i18n.locale = this.lang;//关键语句
+        window.document.title="YunNiXing  COVID-19 Support Platform"
       }
     }
     
@@ -1034,6 +1045,7 @@ export default {
       console.log(this.lang)
       if ( this.lang === 'zh-CN' ) {
               this.lang = 'en-US';
+              window.document.title="YunNiXing  COVID-19 Support Platform"
               this.$i18n.locale = this.lang;//关键语句
               this.WeChatshare()
               this.initmapbox()
@@ -1041,6 +1053,7 @@ export default {
               // this.myMap.addControl(new MapboxLanguage({defaultLanguage: ''}));
       }else {
           this.lang = 'zh-CN';
+          window.document.title="云逆行·新冠肺炎物资公益平台"
           this.$i18n.locale = this.lang;//关键语句
           this.WeChatshare()
           this.initmapbox()
@@ -1309,6 +1322,9 @@ export default {
           arrsa.forEach(itam=>{
             if(itam.hospitalAddress){
               itam.hospitalAddress=decodeURIComponent(encrypt.Decrypt(itam.hospitalAddress))
+            }
+            if(itam.needsName!==undefined){
+              itam.needsNamearr=itam.needsName.split(",")
             }
             if(itam.hospitalName){
               itam.hospitalName=decodeURIComponent(encrypt.Decrypt(itam.hospitalName))
@@ -2954,6 +2970,19 @@ export default {
           background: #3A6FE5;
           padding: 0 10px;
           margin: 0 24px;
+          .messageone{
+            display:flex;
+            justify-content: flex-start;
+            align-items:flex-start;
+            font-size:15px;
+            color:rgba(232,245,255,1);
+            box-sizing:border-box;
+            padding:10px 0;
+            p{
+              margin:0;
+              text-align:left;
+            }
+          }
           .message{
             display:flex;
             justify-content: space-between;
@@ -3002,8 +3031,8 @@ export default {
             align-items:center;
             padding: 18px 0 30px;
           img{
-            width: 63px;
-            height: 63px;
+            width: 110px;
+            height: 110px;
             margin-bottom:10px;
           }
           .btn{

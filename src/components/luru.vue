@@ -127,7 +127,7 @@
 
                         <van-field class="sup-name" v-model="iteam.name" type="text" :placeholder="$t('m.contactp')"   input-align="center"/>
                       </div>
-                      <div class="num"><van-field class="tel" v-model="iteam.tel" type="text" :placeholder="$t('m.contactt')" @blur="linkTelBlur(1,iteam.tel,index)"/><img @click="deleteTel(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
+                      <div class="num"><van-field class="tel" v-model="iteam.tel" type="text" :placeholder="$t('m.contactt')" /><img @click="deleteTel(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
                     </div>
                   </div>
                   <div class="comfirm-need-bottom" @click="addTel"><img style="" src="../assets/image/add1.png" alt="" >{{$t("m.add")}}</div>
@@ -293,7 +293,7 @@
 
                         <van-field class="sup-name" v-model="iteam.name" type="text" :placeholder="$t('m.contactp')"   input-align="center"/>
                       </div>
-                      <div class="num"><van-field class="tel" v-model="iteam.tel" type="text" :placeholder="$t('m.contactt')"  @blur="linkTelBlur(2,iteam.tel,index)"/><img @click="deleteTel1(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
+                      <div class="num"><van-field class="tel" v-model="iteam.tel" type="text" :placeholder="$t('m.contactt')" /><img @click="deleteTel1(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
                     </div>
                   </div>
                   <div class="comfirm-need-bottom" @click="addTel1"><img style="" src="../assets/image/add1.png" alt="" >{{$t("m.add")}}</div>
@@ -443,7 +443,7 @@
 
                         <van-field class="sup-name" v-model="iteam.name" type="text" :placeholder="$t('m.contactp')"   input-align="center"/>
                       </div>
-                      <div class="num"><van-field class="tel" v-model="iteam.tel" type="text" :placeholder="$t('m.contactt')"  @blur="linkTelBlur(3,iteam.tel,index)"/><img @click="deleteTel2(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
+                      <div class="num"><van-field class="tel" v-model="iteam.tel" type="text" :placeholder="$t('m.contactt')"/><img @click="deleteTel2(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
                     </div>
                   </div>
                   <div class="comfirm-need-bottom" @click="addTel2"><img style="" src="../assets/image/add1.png" alt="" >{{$t('m.add')}}</div>
@@ -1236,18 +1236,21 @@ addresschange(address){
       })
       .send()
       .then((response)=> {
-        let feature = response.body.features[0].center;
+        let feature = response.body.features;
         console.log(feature)
         console.log()
-        if(feature){
-          this.form3.longitude=feature[0]
-          this.form3.latitude=feature[1]
+        if(feature.length!==0){
+          let arraddress=feature[0].center
+          this.form3.longitude=arraddress[0]
+          this.form3.latitude=arraddress[1]
           this.$fetchPost("material/save",this.form3,'json').then(res=> {
               if(res.code=="success"){
                 this.showresult=true
                 this.clearForm3()
+              }else if(res.code==504){
+                this.$toast(this.$i18n.locale=='zh-CN'?"2分钟内不可再次提交，请稍后再试！":"Not resubmit within 2 minutes, please try again later")
               }else{
-                this.$toast(res.message);
+                this.$toast(this.$i18n.locale=='zh-CN'?"提交失败":"Submission Failed")
               }
             })
           }else{
@@ -1665,22 +1668,11 @@ linkTelBlur(type,tel,index){
             arr.push(item.name+":"+item.tel)
           }
         }),
+        
+        this.form3.country=this.form3.city==!""?"中国":this.form3.country
         this.form3.linkPeople=arr.join(",")
         this.form3.picUrl=this.meedUrlArr.join(",")
         this.addresschange(this.form3.province+this.form3.city+this.form3.address)
-        // if(this.form3.city==""){
-        //        this.$fetchPost("material/save",this.form3,'json').then(res=> {
-        //           this.$toast(res.message);
-        //           if(res.code=="success"){
-        //             this.showresult=true
-        //             this.clearForm1()
-        //           }
-        //       })
-        // }else{
-        //   this.addresschange(this.form3.province+this.form3.city+this.form3.address)
-        // }
-        
-        
       }
     },
     //民间组织录入身份证明
@@ -1688,10 +1680,11 @@ linkTelBlur(type,tel,index){
         let formdata1 = new FormData();
         formdata1.append('files', file);
         this.$fetchPostFile("material/uploadPicFiles",formdata1).then(res=> {
-            this.$toast(res.message);
             if(res.code=='success'){
+              this.$toast(this.$i18n.locale=='zh-CN'?"上传成功":"uploaded successfully")
               this.meedUrlArr.push(res.content)
-              
+            }else{
+              this.$toast(this.$i18n.locale=='zh-CN'?"上传失败":"uploaded error")
             }
             this.showimg=false
         })
@@ -1703,8 +1696,8 @@ linkTelBlur(type,tel,index){
         this.$fetchPost("material/uploadPicFiles",{
           ImgBytes:file
         },"json").then(res=> {
-            this.$toast(res.message);
             if(res.code=='success'){
+              this.$toast(this.$i18n.locale=='zh-CN'?"上传成功":"uploaded successfully")
               this.meedUrlArr1.push(res.content)
               
               this.meedUrlArr1.forEach(item => {
@@ -1715,6 +1708,8 @@ linkTelBlur(type,tel,index){
               this.meedUrlArr1 = this.meedUrlArr1.toString().split(',');
               this.meedUrlArr1 = this.meedUrlArr1.join().split(',');
               
+            }else{
+              this.$toast(this.$i18n.locale=='zh-CN'?"上传失败":"uploaded error")
             }
             this.showimg=false
         })
@@ -1727,8 +1722,8 @@ linkTelBlur(type,tel,index){
         this.$fetchPost("material/uploadPicFiles",{
           ImgBytes:file
         },"json").then(res=> {
-            this.$toast(res.message);
             if(res.code=='success'){
+              this.$toast(this.$i18n.locale=='zh-CN'?"上传成功":"uploaded successfully")
               this.meedUrlArr2.push(res.content)
               this.meedUrlArr2.forEach(item => {
 
@@ -1739,6 +1734,8 @@ linkTelBlur(type,tel,index){
               this.meedUrlArr2 = this.meedUrlArr2.join().split(',');
 
               
+            }else{
+              this.$toast(this.$i18n.locale=='zh-CN'?"上传失败":"uploaded error")
             }
             this.showimg=false
         })
@@ -1890,7 +1887,7 @@ linkTelBlur(type,tel,index){
          })
           this.params1= { 
             materialType:1,
-            country:this.form1.country,
+            country:this.form1.city!==""?"中国":this.form1.country,
             name:this.form1.hispotalName,
             province:this.form1.province,
             city:this.form1.city,
@@ -1944,7 +1941,7 @@ linkTelBlur(type,tel,index){
          })
             this.params2= { 
               materialType:2,
-              country:this.form2.country,
+              country:this.form2.city==!""?"中国":this.form2.country,
               name:this.form2.hispotalName,
               province:this.form2.province,
               city:this.form2.city,
@@ -1987,29 +1984,36 @@ linkTelBlur(type,tel,index){
       })
       .send()
       .then((response)=> {
-        let feature = response.body.features[0].center;
+        let feature = response.body.features;
         console.log(feature)
-        if(feature){
+        if(feature.length!==0){
+          let arraddress=feature[0].center
           if (type==1){
-                this.params1.longitude=feature[0]
-                this.params1.latitude=feature[1]
+                this.params1.longitude=arraddress[0]
+                this.params1.latitude=arraddress[1]
                 // this.params1.country="中国"
                 this.$fetchPost("material/save",this.params1,'json').then(res=> {
-                    this.$toast(res.message);
                     if(res.code=="success"){
                       this.showresult=true
                       this.clearForm1()
+                    }else if(res.code==504){
+                      this.$toast(this.$i18n.locale=='zh-CN'?"2分钟内不可再次提交，请稍后再试！":"Not resubmit within 2 minutes, please try again later")
+                    }else{
+                      this.$toast(this.$i18n.locale=='zh-CN'?"提交失败":"Submission Failed")
                     }
                 })
           }else if (type==2){
-                this.params2.longitude=feature[0]
-                this.params2.latitude=feature[1]
+                this.params2.longitude=arraddress[0]
+                this.params2.latitude=arraddress[1]
                 // this.params2.country="中国"
                 this.$fetchPost("material/save",this.params2,'json').then(res=> {
-                    this.$toast(res.message);
                     if(res.code=="success"){
                       this.showresult=true
                       this.clearForm2()
+                    }else if(res.code==504){
+                      this.$toast(this.$i18n.locale=='zh-CN'?"2分钟内不可再次提交，请稍后再试！":"Not resubmit within 2 minutes, please try again later")
+                    }else{
+                      this.$toast(this.$i18n.locale=='zh-CN'?"提交失败":"Submission Failed")
                     }
                 })
           }

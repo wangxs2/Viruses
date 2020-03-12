@@ -1492,11 +1492,11 @@ export default {
         hospitalName:val
       }).then(res => {
         if(res.code=="success"){
-         this.$toast('已经成功点赞');
+         this.$toast(this.$i18n.locale=='zh-CN'?"已经成功点赞":"You've liked it")
          this.initMap()
          this.mapobj.encourageNum++
         }else{
-          this.$toast('您已点赞，请稍后点赞');
+          this.$toast(this.$i18n.locale=='zh-CN'?"您已点赞，请稍后点赞":"You have already asked for like. Please ask for like later")
         }
         
       });

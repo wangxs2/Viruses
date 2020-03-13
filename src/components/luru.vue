@@ -328,7 +328,7 @@
               </div>
               <div class="confirm-btn" @click="confirmtwo">提交</div>
             </div>
-            <div class="form-wrapper" v-if="curTabIndex==3">
+            <div class="form-wrapper" v-if="curTabIndex==4">
               <div class="form-input">
                 <span><img style="" src="../assets/image/star.png" alt="">机构名称</span>
                 <van-field v-model="form3.name" type="text" placeholder="请填写机构全称" :error-message="errorMessage3.hispotalName"/>
@@ -471,6 +471,157 @@
               </div>
               <div class="confirm-btn" @click="confirmthree">提交</div>
             </div>
+            <div class="form-wrapper" v-if="curTabIndex==3">
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">学校名称</span>
+                <van-field v-model="form4.hispotalName" type="text" placeholder="请填写学校名称" :error-message="errorMessage4.hispotalName"/>
+              </div>
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">所在地区</span>
+                <van-field v-model="form4.address" type="text" readonly placeholder="请选择学校所在省市" :error-message="errorMessage4.address" @click="showPicker1 = true"/>
+                <van-popup v-model="showPicker1" position="bottom">
+                    <van-picker show-toolbar :columns="columns" @cancel="onCancel1" @confirm="onConfirm4" @change="onChange1" />
+                </van-popup>
+              </div>
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">详细地址</span>
+                <van-field v-model="form4.addressDetail" type="text" placeholder="请输入详细地址（街道、门牌号）" :error-message="errorMessage4.addressDetail"/>
+              </div>
+              <div class="form-input">
+                <span>办学模式</span>
+                <div class="comfirm-radio">
+                  <van-radio-group v-model="form4.serviceRange" class="radio-group">
+                    <div class="sig-radio" v-for="(item,i) in luruTypeRadioSchool" :key="i+item.name">
+
+                    <van-radio :name="item.name" checked-color="#2D65E3">{{item.name}}</van-radio>
+                    </div>
+                  </van-radio-group>
+                </div>
+              </div>
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">学校类型</span>
+                <div class="comfirm-radio">
+                  <van-radio-group v-model="form4.type" class="radio-group">
+                    <div class="sig-radio" v-for="(item,i) in luruTypeRadio4" :key="i+item.name">
+
+                    <van-radio :name="item.name" checked-color="#2D65E3">{{item.name}}</van-radio>
+                    </div>
+                  </van-radio-group>
+                </div>
+              </div>
+              <!-- <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">物资提供方式</span>
+                <div class="comfirm-radio">
+                  <van-radio-group v-model="form4.sup" class="radio-group">
+                    <div class="sig-radio" v-for="(item,i) in luruSupRadio1" :key="i+item.name">
+                    <van-radio :name="item.id" checked-color="#2D65E3">{{item.name}}</van-radio>
+                    </div>
+                  </van-radio-group>
+                </div>
+              </div> -->
+              <!-- <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">是否需要物流</span>
+                <div class="comfirm-radio">
+                  <van-radio-group v-model="form4.sup1" class="radio-group">
+                    <div class="sig-radio" v-for="(item,i) in luruneedRadio" :key="i+item.name">
+                    <van-radio :name="item.id" checked-color="#2D65E3">{{item.name}}</van-radio>
+                    </div>
+                  </van-radio-group>
+                </div>
+              </div> -->
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">学生总数</span>
+                <div class="comfirm-need-input-wrapper">
+                  <div class="comfirm-need-top">
+
+                    <div class="comfirm-need-head">
+                      <div class="name">主要专业</div>
+                      <div class="num">学生人数</div>
+                    </div>
+                    <div class="comfirm-need-body" v-for="(iteam,index) in form4.materialDetails" :key="index">
+                      <div class="name">
+                        <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
+
+                        
+                        <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入专业"   input-align="center"/>
+                        <!-- <van-popup v-model="startTimePopNeedName" position="bottom">
+                        <van-picker show-toolbar :columns="needList" @confirm="confirmNeedName1" @cancel="cancleNeedName" @change="changeNeedName1" />
+                        </van-popup> -->
+                      </div>
+                      <div class="num"><van-field class="sup-num" v-model="iteam.needsNum" type="number" placeholder="请输入人数" testnum input-align="center" /><img @click="deleteDemand4(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
+                    </div>
+                  </div>
+                  <div class="comfirm-need-bottom" @click="addDemand4"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
+                </div>
+              </div>
+              <!-- <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">联系人-联系方式</span>
+                <div class="comfirm-input-wrapper">
+                  <div class="comfirm-input" v-for="(item,i) in form4.contectTelList" :key="i">
+                    <van-field class="contect" v-model="item.name" type="text" placeholder="输入联系人" />-
+                    <van-field class="tel" v-model="item.tel" type="text" placeholder="输入电话号码(建议手机)"  @blur="linkTelBlur(2,item.tel,i)"/>
+                    
+                  </div>
+                </div>
+              </div> -->
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">预计到岗时间</span>
+                <van-field v-model="form4.startTime" placeholder="选择时间" readonly @click="startTimePopNeed = true"/>
+                <van-popup v-model="startTimePopNeed" position="bottom">
+                  <van-datetime-picker
+                    v-model="currentDateNeed"
+                    type="date"
+                    :min-date="minDate"
+                    @confirm="confirmTimeNeed4"
+                    @cancel="cancelTimeNeed"
+                    :formatter="formatter"
+                  />
+                </van-popup>
+              </div>
+              <div class="form-input">
+                <span>网站链接</span>
+                <van-field v-model="form4.sourceLink" type="text" placeholder="请上传信息详情的网站链接" :error-message="errorMessage4.sourceLink"/>
+              </div>
+              <div class="form-input">
+                <span>具体说明</span>
+                <van-field v-model="form4.descr" type="textarea" maxlength="200" placeholder="请填写具体说明，最多可填200字" show-word-limit/>
+              </div>
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">联系方式</span>
+                <div class="comfirm-need-input-wrapper">
+                  <div class="comfirm-need-top comfirm-need-top-tel">
+
+                    <div class="comfirm-need-head">
+                      <div class="name">联系人</div>
+                      <div class="num">联系方式</div>
+                    </div>
+                    <div class="comfirm-need-body" v-for="(iteam,index) in form4.contectTelList" :key="index">
+                      <div class="name">
+                        <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
+
+                        <van-field class="sup-name" v-model="iteam.name" type="text" placeholder="输入联系人"   input-align="center"/>
+                      </div>
+                      <div class="num"><van-field class="tel" v-model="iteam.tel" type="text" placeholder="输入电话号码(建议手机)"  @blur="linkTelBlur(4,iteam.tel,index)"/><img @click="deleteTel4(index)" style="" src="../assets/image/reduce1.png" alt=""></div>
+                    </div>
+                  </div>
+                  <div class="comfirm-need-bottom" @click="addTel4"><img style="" src="../assets/image/add1.png" alt="" >添加</div>
+                </div>
+              </div>
+              <div class="form-input">
+                <span><img style="" src="../assets/image/star.png" alt="">证明材料</span>
+                <div class="need-img-wrapper">
+                  <van-uploader
+                    v-model="form4.fileList"
+                    multiple
+                    :after-read="xiaoRead" 
+                    @delete="xiaodelete"
+                    :max-count="5"
+                  />
+                </div>
+                  <span class="desc">请上传公函等证明材料照片，最多5张。</span>
+              </div>
+              <div class="confirm-btn" @click="confirmfour">提交</div>
+            </div>
 
           </div>
         </div>
@@ -498,9 +649,11 @@ export default {
       loadmaterial:false,
       testindex:0,
       testindex1:0,
+      testindex4:0,
       telindex:0,
       telindex1:0,
       telindex2:0,
+      telindex4:0,
       testnum:'',
       form1:{ // 录入表单
         selectItem:'',
@@ -647,9 +800,64 @@ export default {
         // materialDetails:[],
         // materialDetails1:[],
       },
+      form4:{ // 录入表单
+        selectItem:'',
+        hispotalName:'',
+        addressArr:[],
+        province:'',//省
+        city:'',//市
+        address:'',
+        addressDetail:"",
+        type:"985",
+        descr:'',
+        materialDetails:[
+          {
+            needsName:'',
+            needsNum:'',
+          }
+        ],//需求表
+        needList:{
+            name:'',
+            num:''
+        },
+        contectTelList:[
+            {
+                name:'',
+                tel:'',
+            }
+        ],
+        longitude:'',
+        latitude:'',
+        fileList:[],
+        startTime:'',
+        needOrgin:'',
+        needImg:'',
+        descr:'',
+        sourceLink:'',
+        serviceRange:'公办'
+      },
+      errorMessage4:{
+        hispotalName:'',
+        address:'',
+        addressDetail:"",
+        type:'',
+        sup:'',
+        needList:{
+            name:'',
+            num:'',
+        },
+        contectTelList:{
+            name:'',
+            tel:'',
+        },
+        startTime:'',
+        needImg:'',
+        sourceLink:''
+      },
       meedUrlArr:[],
       meedUrlArr1:[],
       meedUrlArr2:[],
+      meedUrlArr4:[],
       errorMessage3:{
         hispotalName:'',
         address:'',
@@ -681,8 +889,11 @@ export default {
           name: "我有工人",
           type:2
         },{
-          name: "我要出力",
+          name: "校联招聘",
           type:3
+        },{
+          name: "我要出力",
+          type:4
         }
       ],
       luruOrgType:[
@@ -819,6 +1030,36 @@ export default {
           name:"其他"
         },
       ],
+      luruTypeRadio4:[ //录入类型单选数据
+        {
+          id:3,
+          name:"985"
+        },{
+          id:8,
+          name:"211"
+        },{
+          id:9,
+          name:"普通高校"
+        },{
+          id:10,
+          name:"高专[职]"
+        },{
+          id:10,
+          name:"其他"
+        },
+      ], 
+      luruTypeRadioSchool:[
+        {
+          id:9,
+          name:"公办"
+        },{
+          id:10,
+          name:"民办"
+        },{
+          id:10,
+          name:"其他"
+        },
+      ],
       currentDate:new Date(),
       startTime:'',
       minDate: new Date(),
@@ -901,10 +1142,12 @@ export default {
       needWritePoint1:0,
       params1:{},
       params2:{},
+      params4:{},
       readonly1:true,//需求表中输入框是否可读
       readonly2:true,//需求表中输入框是否可读
       curNeed1:0,// 当前选择需求为其他
       curNeed2:0,// 当前选择需求为其他
+      curNeed4:0,// 当前选择需求为其他
     };
   },
    props: {
@@ -1071,6 +1314,48 @@ methods:{
         this.filst=[]
         this.telindex2=0
   },
+  clearForm4(){
+
+        this.form4.selectItem=''
+        this.form4.hispotalName=''
+        this.form4.addressArr=[]
+        this.form4.province=''
+        this.form4.city=''
+        this.form4.address=''
+        this.form4.addressDetail=''
+        this.form4.type="985"
+        this.form4.materialDetails=[
+          {
+            needsName:'',
+            needsNum:'',
+          }
+        ]
+        this.form4.needList={
+            name:'',
+            num:''
+        }
+        this.form4.contectTelList=[
+            {
+                name:'',
+                tel:'',
+            }
+        ]
+        this.form4.longitude=''
+        this.form4.latitude=''
+        this.form4.fileList=[]
+        this.form4.startTime=''
+        this.form4.needOrgin=''
+        this.form4.needImg=''
+        this.form4.descr=''
+        this.form4.sourceLink=''
+        this.form4.serviceRange='公办'
+        this.meedUrlArr4=[]
+        
+        this.curNeed4=0
+        this.testindex4=0
+        this.telindex4=0
+
+  },
   deleteTel(index){
       if(this.telindex<1){
         this.form1.contectTelList[index].name=''
@@ -1131,6 +1416,32 @@ methods:{
       }else{
         this.form3.contectTelList.splice(index,1)
         this.telindex2--
+      }
+
+  },
+  deleteTel4(index){
+      if(this.telindex4<1){
+        this.form4.contectTelList[index].name=''
+        this.form4.contectTelList[index].tel=''
+        this.$toast('至少添加一条联系人');
+      }else{
+        this.form4.contectTelList.splice(index,1)
+        this.telindex4--
+      }
+
+  },
+  addTel4(){
+    let x=this.form4.contectTelList.some(item =>{
+          return item.name == ""||item.tel == ""
+      })
+      if(x||this.form4.contectTelList[this.telindex4].name==''||this.form4.contectTelList[this.telindex4].tel==''){
+        this.$toast('请完善信息');
+      }else{
+        this.telindex4++
+        this.form4.contectTelList.push({
+          name:'',
+          tel:'',
+        })
       }
 
   },
@@ -1281,6 +1592,9 @@ linkTelBlur(type,tel,index){
           }else if(type==3){
             this.form3.contectTelList[index].tel=''
             
+          }else if(type==4){
+            this.form3.contectTelList[index].tel=''
+            
           }
             this.$toast('当前填写电话格式有误')
         }
@@ -1299,6 +1613,12 @@ linkTelBlur(type,tel,index){
         this.form2.address=value[0].text+value[1].text
         this.form2.province=value[0].text
         this.form2.city=value[1].text
+    },
+    onConfirm4(value){
+        this.showPicker1=false
+        this.form4.address=value[0].text+value[1].text
+        this.form4.province=value[0].text
+        this.form4.city=value[1].text
     },
     //验证手机号的格式
     checkTel(index,tel)
@@ -1426,6 +1746,33 @@ linkTelBlur(type,tel,index){
       }else{
         this.form2.materialDetails.splice(index,1)
         this.testindex1--
+      }
+    },
+    //删除需求表
+    deleteDemand4(index){
+      if(this.testindex4<1){
+        this.form4.materialDetails[index].needsName=''
+        this.form4.materialDetails[index].needsNum=''
+        this.$toast('至少添加一条需求');
+      }else{
+        this.form4.materialDetails.splice(index,1)
+        this.testindex4--
+      }
+    },
+    //添加需求表
+    addDemand4(){
+      this.curNeed4=0
+      let x=this.form4.materialDetails.some(item =>{
+          return item.needsName == ""||item.needsNum == ""
+      })
+      if(x||this.form4.materialDetails[this.testindex4].needsName==''||this.form4.materialDetails[this.testindex4].needsNum==''){
+        this.$toast('请完善信息');
+      }else{
+        this.testindex4++
+        this.form4.materialDetails.push({
+          needsName:'',
+          needsNum:'',
+        })
       }
     },
       
@@ -1694,6 +2041,29 @@ linkTelBlur(type,tel,index){
             this.showimg=false
         })
     },
+    //校招录入身份证明
+    uploadImg4 (file) {
+        let formdata1 = new FormData();
+        formdata1.append('files', file);
+        this.$fetchPost("material/uploadPicFiles",{
+          ImgBytes:file
+        },"json").then(res=> {
+            this.$toast(res.message);
+            if(res.code=='success'){
+              this.meedUrlArr4.push(res.content)
+              this.meedUrlArr4.forEach(item => {
+
+                item=item.split(',')
+              })
+              this.meedUrlArr4 = (this.meedUrlArr4 + '').split(',');
+              this.meedUrlArr4 = this.meedUrlArr4.toString().split(',');
+              this.meedUrlArr4 = this.meedUrlArr4.join().split(',');
+
+              
+            }
+            this.showimg=false
+        })
+    },
     xuRead(val){
       // if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
       //   this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
@@ -1789,6 +2159,54 @@ linkTelBlur(type,tel,index){
 
       // }
     },
+    xiaoRead(val){
+      // if (val.file.type!=="image/jpeg"&&val.file.type!=="image/jpg"&&val.file.type!=="image/png"){
+      //   this.$toast("只能上传图片(注：格式为png,jpeg,jpg)")
+      // }else {
+        
+        let selectImg=[]
+        this.showimg=true
+        if (val&&!Array.isArray(val)){   
+          val=[val]
+
+        }
+        
+        val.forEach(item => {
+          let obj={}
+          lrz(item.file, {
+            quality: 0.2    //自定义使用压缩方式
+          })  
+          .then(rst=> {
+              //成功时执行
+            let file = new window.File([rst.file], item.file.name, {
+                type: item.file.type
+            }) //把blob转化成file
+            let reader = new FileReader();    //html5读文件
+
+            reader.readAsDataURL(file); //转BASE64 
+            let that=this
+            reader.onload = function (e) {        //读取完毕后调用接口
+
+              obj={
+                ImgByte: e.target.result
+              }
+              selectImg.push(obj)
+              if(val.length>0&&val.length==selectImg.length){
+                  that.uploadImg4(selectImg)
+                }
+            }
+
+              
+          }).catch(error=> {
+              //失败时执行
+          }).always(()=> {
+        
+              //不管成功或失败，都会执行
+          })
+        })
+
+      // }
+    },
     //删除图片的回调
     xudelete(val,detail){
       if (this.meedUrlArr1&&this.meedUrlArr1.length){
@@ -1819,6 +2237,22 @@ linkTelBlur(type,tel,index){
         
         this.$toast("图片删除成功");
         this.meedUrlArr2.splice(detail.index, 1)
+      
+      }
+    },
+    //删除图片的回调
+    xiaodelete(val,detail){
+      if (this.meedUrlArr4&&this.meedUrlArr4.length){
+        this.meedUrlArr4.forEach(item => {
+
+          item=item.split(',')
+        })
+        this.meedUrlArr4 = (this.meedUrlArr4 + '').split(',');
+        this.meedUrlArr4 = this.meedUrlArr4.toString().split(',');
+        this.meedUrlArr4 = this.meedUrlArr4.join().split(',');
+        
+        this.$toast("图片删除成功");
+        this.meedUrlArr4.splice(detail.index, 1)
       
       }
     },
@@ -1924,6 +2358,51 @@ linkTelBlur(type,tel,index){
       }
           
     },
+    confirmfour(){
+      console.log(this.form4)
+      let linkPeopleArr=[],fileImgArr=[]
+         
+      let x=this.form4.materialDetails.some(item =>{
+          return item.needsName == ""||item.needsNum == "" //返回true
+      })
+      let y=this.form4.contectTelList.some(item =>{
+          return item.tel == ""||item.name=='' //返回true
+      })
+      let str=/^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(.)+$/
+      if (this.form4.hispotalName==""||this.form4.province==""||this.form4.city==""|| this.form4.addressDetail==""||x||this.meedUrlArr4.length==0||this.form4.startTime==''){
+          this.$toast('请完善信息');
+      }else if (y){
+        this.$toast('请输入联系人、联系电话且相互对应');
+      }else if(this.form4.sourceLink&&!str.test(this.form4.sourceLink)){
+          this.$toast('请输入以http://或https://开头网址链接');
+      }else{
+         this.form4.contectTelList.forEach(v=> {
+           if (v.tel||v.name&&v.tel){
+            linkPeopleArr.push(v.name+":"+v.tel)
+           }
+         })
+            this.params4= { 
+              materialType:4,
+              name:this.form4.hispotalName,
+              province:this.form4.province,
+              city:this.form4.city,
+              address:this.form4.addressDetail,
+              materialDetails:this.form4.materialDetails,//需求表
+              type:this.form4.type,
+              linkPeople:linkPeopleArr.join(','),
+              createTime:this.form4.startTime,
+              picUrl:this.meedUrlArr4.join(","),
+              longitude:'',
+              latitude:'',
+              descr:this.form4.descr,
+              sourceLink:this.form4.sourceLink,
+              serviceRange:this.form4.serviceRange,
+        
+            }
+            this.addresschange1(this.params4.province+this.params4.city+this.params4.address,4)
+      }
+          
+    },
     //地址解析
     addresschange1(address,type){
       var geocoder = new AMap.Geocoder();
@@ -1950,6 +2429,16 @@ linkTelBlur(type,tel,index){
                   if(res.code=="success"){
                     this.showresult=true
                     this.clearForm2()
+                  }
+              })
+            }else if (type==4){
+              this.params4.longitude=lnglat.lng
+              this.params4.latitude=lnglat.lat
+              this.$fetchPost("material/save",this.params4,'json').then(res=> {
+                  this.$toast(res.message);
+                  if(res.code=="success"){
+                    this.showresult=true
+                    this.clearForm4()
                   }
               })
             }
@@ -1983,6 +2472,20 @@ linkTelBlur(type,tel,index){
         let dd=this.currentDateNeed.getDate()>=10?this.currentDateNeed.getDate():'0'+this.currentDateNeed.getDate()
       this.startTimePopNeed = false;
       this.form2.startTime =
+        this.currentDateNeed.getFullYear() +
+        "-" +
+        MM +
+        "-" +
+        dd
+    },
+    
+    // 点击确定
+    confirmTimeNeed4() {
+        
+        let MM=(Number(this.currentDateNeed.getMonth()) + 1)>=10?(Number(this.currentDateNeed.getMonth()) + 1):'0'+(Number(this.currentDateNeed.getMonth()) + 1)
+        let dd=this.currentDateNeed.getDate()>=10?this.currentDateNeed.getDate():'0'+this.currentDateNeed.getDate()
+      this.startTimePopNeed = false;
+      this.form4.startTime =
         this.currentDateNeed.getFullYear() +
         "-" +
         MM +

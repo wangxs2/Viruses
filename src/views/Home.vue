@@ -1044,7 +1044,7 @@ export default {
           }else if(this.query.orgType==3){
             item.style=3
           }else if(this.query.orgType==4){
-            item.style=13
+            item.style=12
           }else{
             item.style=1
           }

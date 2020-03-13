@@ -144,15 +144,17 @@
             </div>
           </div>
           <!-- <span class="person">接受个人捐赠</span> -->
-          <div v-if="mapobj.needsName!==undefined" style="display:flex;justify-content:flex-start;align-items:center;font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'招聘岗位':'提供的岗位和服务'}} 
+          <div v-if="mapobj.needsName!==undefined" style="display:flex;justify-content:flex-start;align-items:center;font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'招聘岗位':query.orgType==4?'提供专业':'提供的岗位和服务'}} 
             <!-- <van-icon v-if="query.orgType==1" style="margin-left:10px;margin-right:1px" name="warning-o" color="#FF2727"  size="12" /> -->
             </div>
 
           <div class="table-wrapper-needs" v-if="mapobj.needsName!==undefined">
               <div class="table-wrapper">
                 <div class="tab-head">
-                  <div class="tab-items-name">岗位名称</div>
+                  <div class="tab-items-name" v-if="query.orgType!=4">岗位名称</div>
+                  <div class="tab-items-name" v-else>主要专业</div>
                   <div class="tab-items-num" v-if="query.orgType==1">需求数量</div>
+                  <div class="tab-items-num" v-else-if="query.orgType==4">学生人数</div>
                   <div class="tab-items-num" v-else>提供岗位数量</div>
                 </div>
                 <div :class="[mapobj.needsDescrList.length<=4?'tab-body-noheight':'tab-body']">
@@ -167,6 +169,7 @@
           <div class="need-descr" v-if="mapobj.descr&&query.orgType==1">需求说明：{{mapobj.descr}}</div>
           <div class="need-descr" v-if="mapobj.descr&&query.orgType==2">提供岗位描述：{{mapobj.descr}}</div>
           <div class="need-descr" v-if="mapobj.descr&&query.orgType==3">提供服务描述：{{mapobj.descr}}</div>
+          <div class="need-descr" v-if="mapobj.descr&&query.orgType==4">具体说明：{{mapobj.descr}}</div>
           <!-- <div class="material" v-if="mapobj.needsNamearr!==undefined">
             <div v-for="(item,index) in mapobj.needsNamearr"
                   :key="index" class="boll-item"><span class="boll"></span>{{item}}</div>

@@ -3,7 +3,7 @@
     <div class="onebif">
       <div style="font-size:12px">{{$t("m.within")}} <span style="margin:0 6px"></span> {{zanz.view}}{{$t('m.views')}}</div>
       <!-- <div style="font-size:12px;display:flex;justify-content: space-between;align-items: center"><span style="padding-right: 10px;">{{zanz.view}}次浏览</span></div> -->
-      <div style="font-size:14px" @click="changeLangEvent">{{lang=="zh-CN"?"Switch English":'切换中文'}}</div>
+      <div style="font-size:14px" @click="changeLangEvent">{{$i18n.locale=="zh-CN"?"Switch English":'切换中文'}}</div>
     </div>
     <div class="twobif">{{zanz.encourage}}</div>
     <div class="threebif" @click="dzanclick">
@@ -43,8 +43,8 @@
         <div class="write">
           <p>{{$t('m.more')}} <span style="color:#1989fa" @click="agreement=true">{{$t('m.user')}}</span></p>
         </div>
-        <div class="countbottom" v-if="lang=='zh-CN'"><span style="color:#216AFF"><a href="http://www.acfic.org.cn">中华全国工商业联合会</a></span> <span style="color:#216AFF"><a href="http://www.scf.org.cn">上海市慈善基金会</a></span> <span style="color:#216AFF"><a href="hforettps://www.siti.sh.cn">上海产业技术研究院</a></span>联合发布</div>
-        <div class="countbottom" v-if="lang=='en-US'">Jointly released by<span style="color:#216AFF"><a href="http://www.acfic.org.cn">CFIC,</a></span> <span style="color:#216AFF"><a href="http://www.scf.org.cn">SCF</a></span>and <span style="color:#216AFF"><a href="hforettps://www.siti.sh.cn">SITI</a></span></div>
+        <div class="countbottom" v-if="$i18n.locale=='zh-CN'"><span style="color:#216AFF"><a href="http://www.acfic.org.cn">中华全国工商业联合会</a></span> <span style="color:#216AFF"><a href="http://www.scf.org.cn">上海市慈善基金会</a></span> <span style="color:#216AFF"><a href="hforettps://www.siti.sh.cn">上海产业技术研究院</a></span>联合发布</div>
+        <div class="countbottom" v-if="$i18n.locale=='en-US'">Jointly released by<span style="color:#216AFF"><a href="http://www.acfic.org.cn">CFIC,</a></span> <span style="color:#216AFF"><a href="http://www.scf.org.cn">SCF</a></span>and <span style="color:#216AFF"><a href="hforettps://www.siti.sh.cn">SITI</a></span></div>
       </div>
     </div>
     <!-- 搜索框 -->
@@ -1202,7 +1202,7 @@ export default {
           this.initMap()
            
         }else{
-          this.$toast(res.message);
+          this.$toast(this.$i18n.locale=='zh-CN'?"操作太过频繁，请稍后操作":"Operation is too frequent, please operate later")
         }
         this.isdzan=false
         
@@ -1315,8 +1315,7 @@ export default {
             this.mass=null
             }
           this.total=0
-          
-          this.$toast('暂无数据！');
+          this.$toast(this.$t('m.nodata'));
         }else{
           let arrsa=res.content
           arrsa.forEach(itam=>{
@@ -1450,7 +1449,7 @@ export default {
         this.query.content=this.searchText
         this.getDataList()
       }else {
-        this.$toast('请输入或选择搜索关键字');
+        this.$toast(this.$i18n.locale=='zh-CN'?"请输入或选择搜索关键字":"Please enter or select search keywords")
       }
     },
     // 第一搜索获取焦点

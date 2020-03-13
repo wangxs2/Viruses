@@ -211,6 +211,7 @@
             <input type="search" placeholder="查询继续支援用工、工人、地区" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==0"> 
             <input type="search" placeholder="查询继续支援用工、工人、地区" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==1"> 
             <input type="search" placeholder="查询继续支援用工、工人、地区" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==2">
+            <input type="search" placeholder="查询继续支援用工、工人、地区" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==3">
           </form>
 
 
@@ -478,6 +479,14 @@ export default {
         },
         {
           id:3,
+          name: "高校",
+          imgUrl: [
+            require("../assets/image/list4.png"),
+            require("../assets/image/list3.png")
+          ],
+        },
+        {
+          id:4,
           name: "出力方",
           imgUrl: [
             require("../assets/image/list6.png"),
@@ -596,12 +605,20 @@ export default {
           type:2
         },{
           backgroundImgStyle:{
+            backgroundImage:'url(' + require('../assets/image/image_3_1.png') + ')',
+            backgroundRepeat:'no-repeat',
+            backgroundSize:'100% 100%'
+          },
+          name: "校联招聘",
+          type:3
+        },{
+          backgroundImgStyle:{
             backgroundImage:'url(' + require('../assets/image/image_4_1.png') + ')',
             backgroundRepeat:'no-repeat',
             backgroundSize:'100% 100%'
           },
           name: "我要出力",
-          type:3
+          type:4
         },
         // {
         //   backgroundImgStyle:{
@@ -824,8 +841,15 @@ export default {
         })
       },
     searchTabItem(index){
+      if (index==2){
+        this.query.orgType=4
+      } else if (index==3){
+        this.query.orgType=3
+      } else {
+
+        this.query.orgType=index+1
+      }
       this.selectIndex=index
-      this.query.orgType=index+1
       this.dataList=[]
       this.getDataList()
       this.getWuziList()
@@ -936,8 +960,15 @@ export default {
     },
     //三类民间组织
     toRouterIndex(iteam,index){
+      if (index==2){
+        this.query.orgType=4
+      } else if (index==3){
+        this.query.orgType=3
+      } else {
+
+        this.query.orgType=index+1
+      }
       this.selectIndex=index
-      this.query.orgType=index+1
       // if(this.mass){
       //   this.mass.clear()
       //   this.mass=null
@@ -1012,6 +1043,8 @@ export default {
             item.style=2
           }else if(this.query.orgType==3){
             item.style=3
+          }else if(this.query.orgType==4){
+            item.style=13
           }else{
             item.style=1
           }
@@ -1074,7 +1107,11 @@ export default {
             url: require('../assets/image/list10.png'),
             anchor: new AMap.Pixel(9, 9),
             size: new AMap.Size(18, 18)
-        }
+        },{
+            url: require('../assets/image/icon-04.svg'),
+            anchor: new AMap.Pixel(12, 12),
+            size: new AMap.Size(24, 24)
+        },
       ];
       this.mass = new AMap.MassMarks(citys, {
         zIndex: 111,
@@ -1614,9 +1651,9 @@ export default {
     justify-content: space-around;
     align-items: center;
     width:38px;
-    height:200px;
+    height:220px;
     background:url("../assets/image/circle.png") no-repeat;
-    background-size:38px 200px;
+    background-size:38px 220px;
     padding: 20px 0;
     box-sizing:border-box;
     padding-right:8px;
@@ -1995,15 +2032,15 @@ export default {
         .btn-list{
           display:flex;
           flex-direction:column;
-          width:108px;
-          height: 64px;
+          width:80px;
+          height: 68px;
           background-size:100% 100%;
           span{
             font-size:13px;
             font-family:PingFang SC;
             font-weight:500;
             color:rgba(255,255,255,1);
-            margin-top:36px;
+            margin-top:44px;
 
           }
         }

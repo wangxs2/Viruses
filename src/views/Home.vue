@@ -210,7 +210,7 @@
           <form action="javascript:return true"> 
             <input type="search" placeholder="查询继续支援用工、工人、地区" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==0"> 
             <input type="search" placeholder="查询继续支援用工、工人、地区" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==1"> 
-            <input type="search" placeholder="查询继续支援用工、工人、地区" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==2">
+            <input type="search" placeholder="查询继续支援高校、专业、地区" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==2">
             <input type="search" placeholder="查询继续支援用工、工人、地区" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==3">
           </form>
 
@@ -219,7 +219,8 @@
         </div>
         <div class="tab-list-wrapper" v-if="!downUpImg">
 
-            <p class="title">用工</p>
+            <p class="title" v-if="selectIndex!=2">用工</p>
+            <p class="title" v-else>专业</p>
           <div class="list list1">
             <span v-for="(item,i) in wuziList" :key="i" @click="selectItem(item)" v-if="item">{{item}}</span>
           </div>

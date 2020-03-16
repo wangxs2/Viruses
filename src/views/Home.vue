@@ -934,14 +934,14 @@ export default {
     },
     // 录入弹框选择
     luruSelectBtn(type) {
-      if (type!=4){
+      // if (type!=4){
 
         this.curTabIndex=type
         // this.luruSelectModel=false
         this.reduceShow=true
-      }else{
-        this.curTimeBtn(0)
-      }
+      // }else{
+      //   this.curTimeBtn(0)
+      // }
     },
     getCurTimeContent(){
       this.$fetchGet("donateCount/findDonateCount").then(res=> {

@@ -1593,7 +1593,7 @@ linkTelBlur(type,tel,index){
             this.form3.contectTelList[index].tel=''
             
           }else if(type==4){
-            this.form3.contectTelList[index].tel=''
+            this.form4.contectTelList[index].tel=''
             
           }
             this.$toast('当前填写电话格式有误')

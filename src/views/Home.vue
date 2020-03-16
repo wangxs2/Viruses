@@ -109,11 +109,15 @@
             <div v-if="mapobj.source!==undefined&&mapobj.source!==''" style="color:#666666">{{$t("m.grommsg")}}：{{mapobj.source}}  <span style="color:#216AFF;cursor:pointer"> </span></div>
             <div v-if="mapobj.createTime!==undefined">{{$t("m.realdata")}}：{{(mapobj.createTime).replace("+"," ")}}</div>
           </div>
-          <div class="tel-phone" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0">
+          <div class="tel-phone" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0&&mapobj.orgType!==3">
             <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr1"
                   :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr1==undefined?"":mapobj.linkPeoplearr1[index]}}  {{iteam}}</div></div>
           </div>
-          <div class="tel-desc" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0" style="display:flex;justify-content:flex-start;align-items:center;font-size:12px;line-height:15px;color:#216AFF;text-align:left;margin-bottom:12px;"> <van-icon name="warning-o" color="#216AFF"  size="12" style="margin-right:2px;"/><span>{{$t("m.tepnum")}}</span></div>
+          <div class="tel-phone" v-if="mapobj.linkTelarr2!==undefined&&mapobj.linkTelarr2.length > 0&&mapobj.orgType==3">
+            <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr2"
+                  :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr1==undefined?"":mapobj.linkPeoplearr1[index]}}  {{iteam}}</div></div>
+          </div>
+          <div class="tel-desc" v-if="mapobj.linkTelarr2!==undefined&&mapobj.linkTelarr2.length > 0&&mapobj.orgType==3" style="display:flex;justify-content:flex-start;align-items:center;font-size:12px;line-height:15px;color:#216AFF;text-align:left;margin-bottom:12px;"> <van-icon name="warning-o" color="#216AFF"  size="12" style="margin-right:2px;"/><span>{{$t("m.tepnum")}}</span></div>
           <div class="service-title-time" v-if="query.orgType==3">
             <div class="service-title" style="color:#666" v-if="!mapobj.startTime&&!mapobj.endTime">
               {{$t("m.ntime")}}
@@ -142,7 +146,19 @@
             </div>
           </div>
           <!-- <span class="person">接受个人捐赠</span> -->
-          <div v-if="mapobj.needsNamearr!==undefined" style="display:flex;justify-content:flex-start;align-items:center;font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?$t('m.need12'):$t('m.need13')}} <van-icon v-if="query.orgType==1" style="margin-left:10px;margin-right:1px" name="warning-o" color="#FF2727"  size="12" /> <span v-if="query.orgType==1" @click="specifications=true" style="color:#FF2727;font-size:12px">{{$t('m.need14')}}</span></div>
+          <div v-if="mapobj.needsNamearr!==undefined&&$i18n.locale=='zh-CN'" style="display:flex;justify-content:flex-start;align-items:center;font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?$t('m.need12'):$t('m.need13')}} <van-icon v-if="query.orgType==1" style="margin-left:10px;margin-right:1px" name="warning-o" color="#FF2727"  size="12" />
+           <span v-if="query.orgType==1" @click="specifications=true" style="color:#FF2727;font-size:12px">{{$t('m.need14')}}</span>
+           <span v-if="query.orgType==2&&mapobj.materialStatus!==undefined" style="color:#FF2727;font-size:12px">{{mapobj.materialStatus==4?$t('m.siptype1'):mapobj.materialStatus==5?$t('m.siptype2'):''}}</span>
+          </div>
+          <div v-if="mapobj.needsNamearr!==undefined&&$i18n.locale=='en-US'" style="text-align:left">
+            <div style="text-align:left;font-weight:bold;font-size:16px">{{query.orgType==1?$t('m.need12'):$t('m.need13')}}</div>
+            <div  style="display:flex;justify-content:flex-start;align-items:center;">
+              <van-icon v-if="query.orgType==1" style="margin-right:2px" name="warning-o" color="#FF2727"  size="12" /> 
+              <span v-if="query.orgType==1" @click="specifications=true" style="color:#FF2727;font-size:12px">{{$t('m.need14')}}</span>
+              <span v-if="query.orgType==2&&mapobj.materialStatus!==undefined" style="color:#FF2727;font-size:12px">{{mapobj.materialStatus==4?$t('m.siptype1'):mapobj.materialStatus==5?$t('m.siptype2'):''}}</span>
+            </div>
+            
+          </div>
           <div class="material" v-if="mapobj.needsNamearr!==undefined">
             <div v-for="(item,index) in mapobj.needsNamearr"
                   :key="index" class="boll-item"><span class="boll"></span>{{item}}</div>
@@ -151,7 +167,8 @@
                   :key="index" class="remark">{{itrm}}</div> -->
           <div v-if="mapobj.orgDescr!==undefined" style="font-size:12px;color:#999999;text-align:left">备注：{{mapobj.orgDescr}}</div>
           <div class="btnSty-wrapper">
-            <div class="btnSty" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0"  style="margin-right:12px" @click="dialPhoneNumber()">{{$t("m.telman1")}}</div>
+            <div class="btnSty" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0&&mapobj.orgType!==3"  style="margin-right:12px" @click="dialPhoneNumber()">{{$t("m.telman1")}}</div>
+            <div class="btnSty" v-if="mapobj.linkTelarr2!==undefined&&mapobj.linkTelarr2.length > 0&&mapobj.orgType==3"  style="margin-right:12px" @click="dialPhoneNumber()">{{$t("m.telman1")}}</div>
             <div class="btnSty" style="background:linear-gradient(90deg,rgba(255,102,0,1),rgba(255,123,16,1));" @click="shakeTime(mapobj.hospitalName)"><van-icon color="#ffffff" size="20" name="good-job" /><span>{{$t("m.likes")}} {{mapobj.encourageNum}}</span></div>
           </div>
         </div>
@@ -161,8 +178,12 @@
         :z-index="100"
         v-model="phoneshow"
         position="right">
-      <div style="padding:12px 24px" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0">
+      <div style="padding:12px 24px" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0&&mapobj.orgType!==3">
         <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr1"
+                 :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" color="#1989fa" size="34"  /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr1==undefined?"":mapobj.linkPeoplearr1[index]}}  {{iteam}}</div></div>
+      </div>
+      <div style="padding:12px 24px" v-if="mapobj.linkTelarr2!==undefined&&mapobj.linkTelarr2.length > 0&&mapobj.orgType==3">
+        <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr2"
                  :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" color="#1989fa" size="34"  /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr1==undefined?"":mapobj.linkPeoplearr1[index]}}  {{iteam}}</div></div>
       </div>
     </van-popup>
@@ -1302,6 +1323,7 @@ export default {
       }
       this.dataList=[]
       let phonearr=[]
+      let phonetwo=[]
       let monarr=[]
       if(this.mass){
        this.mass.clear()
@@ -1340,6 +1362,13 @@ export default {
               phonearr=itam.linkTel.split(",")
               phonearr.forEach(itm=>{
                 itam.linkTelarr1.push(decodeURIComponent(encrypt.Decrypt(itm)))
+              })
+            }
+            if(itam.linkTelOrig!==undefined){
+              itam.linkTelarr2=[]
+              phonetwo=itam.linkTelOrig.split(",")
+              phonearr.forEach(itm=>{
+                itam.linkTelarr2.push(decodeURIComponent(encrypt.Decrypt(itm)))
               })
             }
             if(itam.longitude&&itam.latitude){

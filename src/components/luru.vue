@@ -1243,24 +1243,48 @@ addresschange(address){
           let arraddress=feature[0].center
           this.form3.longitude=arraddress[0]
           this.form3.latitude=arraddress[1]
-          this.$fetchPost("material/save",this.form3,'json').then(res=> {
-              if(res.code=="success"){
-                this.showresult=true
-                this.clearForm3()
-              }else if(res.code==504){
-                this.$toast(this.$i18n.locale=='zh-CN'?"2分钟内不可再次提交，请稍后再试！":"Not resubmit within 2 minutes, please try again later")
-              }else{
-                this.$toast(this.$i18n.locale=='zh-CN'?"提交失败":"Submission Failed")
-              }
-            })
+          this.catcherror(this.form3,3)
+          // this.$fetchPost("material/save",this.form3,'json').then(res=> {
+          //     if(res.code=="success"){
+          //       this.showresult=true
+          //       this.clearForm3()
+          //     }else if(res.code==504){
+          //       this.$toast(this.$i18n.locale=='zh-CN'?"2分钟内不可再次提交，请稍后再试！":"Not resubmit within 2 minutes, please try again later")
+          //     }else{
+          //       this.$toast(this.$i18n.locale=='zh-CN'?"提交失败":"Submission Failed")
+          //     }
+          //   })
           }else{
-            this.$toast(this.$t("m.sure"))
+            // this.$toast(this.$t("m.sure"))
+            this.catcherror(this.form3,3)
           }
       })
-      .catch(res=>{
-         this.$toast(this.$t("m.sure"))
+      .catch((res)=>{
+        //  this.$toast(this.$t("m.sure"))
+        this.catcherror(this.form3,3)
       })
+},  
+//整合的请求接口
+catcherror(row,type){
+  this.$fetchPost("material/save",row,'json').then(res=> {
+    if(res.code=="success"){
+      this.showresult=true
+      if(type==3){
+        this.clearForm3()
+      }else if(type==2){
+        this.clearForm2()
+      }else{
+        this.clearForm1()
+      }
+    }else if(res.code==504){
+      this.$toast(this.$i18n.locale=='zh-CN'?"2分钟内不可再次提交，请稍后再试！":"Not resubmit within 2 minutes, please try again later")
+    }else{
+      this.$toast(this.$i18n.locale=='zh-CN'?"提交失败":"Submission Failed")
+    }
+  })
+
 },
+
 cancleNeedName(){
   this.startTimePopNeedName=false
 },
@@ -1992,34 +2016,47 @@ linkTelBlur(type,tel,index){
                 this.params1.longitude=arraddress[0]
                 this.params1.latitude=arraddress[1]
                 // this.params1.country="中国"
-                this.$fetchPost("material/save",this.params1,'json').then(res=> {
-                    if(res.code=="success"){
-                      this.showresult=true
-                      this.clearForm1()
-                    }else if(res.code==504){
-                      this.$toast(this.$i18n.locale=='zh-CN'?"2分钟内不可再次提交，请稍后再试！":"Not resubmit within 2 minutes, please try again later")
-                    }else{
-                      this.$toast(this.$i18n.locale=='zh-CN'?"提交失败":"Submission Failed")
-                    }
-                })
+                // this.$fetchPost("material/save",this.params1,'json').then(res=> {
+                //     if(res.code=="success"){
+                //       this.showresult=true
+                //       this.clearForm1()
+                //     }else if(res.code==504){
+                //       this.$toast(this.$i18n.locale=='zh-CN'?"2分钟内不可再次提交，请稍后再试！":"Not resubmit within 2 minutes, please try again later")
+                //     }else{
+                //       this.$toast(this.$i18n.locale=='zh-CN'?"提交失败":"Submission Failed")
+                //     }
+                // })
+                this.catcherror(this.params1,1)
           }else if (type==2){
                 this.params2.longitude=arraddress[0]
                 this.params2.latitude=arraddress[1]
                 // this.params2.country="中国"
-                this.$fetchPost("material/save",this.params2,'json').then(res=> {
-                    if(res.code=="success"){
-                      this.showresult=true
-                      this.clearForm2()
-                    }else if(res.code==504){
-                      this.$toast(this.$i18n.locale=='zh-CN'?"2分钟内不可再次提交，请稍后再试！":"Not resubmit within 2 minutes, please try again later")
-                    }else{
-                      this.$toast(this.$i18n.locale=='zh-CN'?"提交失败":"Submission Failed")
-                    }
-                })
+                // this.$fetchPost("material/save",this.params2,'json').then(res=> {
+                //     if(res.code=="success"){
+                //       this.showresult=true
+                //       this.clearForm2()
+                //     }else if(res.code==504){
+                //       this.$toast(this.$i18n.locale=='zh-CN'?"2分钟内不可再次提交，请稍后再试！":"Not resubmit within 2 minutes, please try again later")
+                //     }else{
+                //       this.$toast(this.$i18n.locale=='zh-CN'?"提交失败":"Submission Failed")
+                //     }
+                // })
+                this.catcherror(this.params2,2)
           }
         }else{
-          this.$toast(this.$t("m.sure"))
+          // this.$toast(this.$t("m.sure"))
+          if(type==1){
+            this.catcherror(this.params1,1)
+          }else{
+            this.catcherror(this.params2,2)
+          }
         }
+      }).catch((res)=>{
+          if(type==1){
+            this.catcherror(this.params1,1)
+          }else{
+            this.catcherror(this.params2,2)
+          }
       })
     },
     // 点击确定

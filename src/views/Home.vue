@@ -109,15 +109,11 @@
             <div v-if="mapobj.source!==undefined&&mapobj.source!==''" style="color:#666666">{{$t("m.grommsg")}}：{{mapobj.source}}  <span style="color:#216AFF;cursor:pointer"> </span></div>
             <div v-if="mapobj.createTime!==undefined">{{$t("m.realdata")}}：{{(mapobj.createTime).replace("+"," ")}}</div>
           </div>
-          <div class="tel-phone" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0&&mapobj.orgType!==3">
+          <div class="tel-phone" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0">
             <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr1"
                   :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr1==undefined?"":mapobj.linkPeoplearr1[index]}}  {{iteam}}</div></div>
           </div>
-          <div class="tel-phone" v-if="mapobj.linkTelarr2!==undefined&&mapobj.linkTelarr2.length > 0&&mapobj.orgType==3">
-            <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr2"
-                  :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" size="20" /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr1==undefined?"":mapobj.linkPeoplearr1[index]}}  {{iteam}}</div></div>
-          </div>
-          <div class="tel-desc" v-if="mapobj.linkTelarr2!==undefined&&mapobj.linkTelarr2.length > 0&&mapobj.orgType==3" style="display:flex;justify-content:flex-start;align-items:center;font-size:12px;line-height:15px;color:#216AFF;text-align:left;margin-bottom:12px;"> <van-icon name="warning-o" color="#216AFF"  size="12" style="margin-right:2px;"/><span>{{$t("m.tepnum")}}</span></div>
+          <div class="tel-desc" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0&&mapobj.orgType==3" style="display:flex;justify-content:flex-start;align-items:center;font-size:12px;line-height:15px;color:#216AFF;text-align:left;margin-bottom:12px;"> <van-icon name="warning-o" color="#216AFF"  size="12" style="margin-right:2px;"/><span>{{$t("m.tepnum")}}</span></div>
           <div class="service-title-time" v-if="query.orgType==3">
             <div class="service-title" style="color:#666" v-if="!mapobj.startTime&&!mapobj.endTime">
               {{$t("m.ntime")}}
@@ -159,16 +155,15 @@
             </div>
             
           </div>
-          <div class="material" v-if="mapobj.needsNamearr!==undefined">
-            <div v-for="(item,index) in mapobj.needsNamearr"
+          <div class="material" v-if="mapobj.needsNamearr3!==undefined">
+            <div v-for="(item,index) in mapobj.needsNamearr3"
                   :key="index" class="boll-item"><span class="boll"></span>{{item}}</div>
           </div>
           <!-- <div v-if="mapobj.needsDescrarr!==undefined&&mapobj.needsDescrarr!==''" v-for="(itrm,index) in mapobj.needsDescrarr"
                   :key="index" class="remark">{{itrm}}</div> -->
           <div v-if="mapobj.orgDescr!==undefined" style="font-size:12px;color:#999999;text-align:left">备注：{{mapobj.orgDescr}}</div>
           <div class="btnSty-wrapper">
-            <div class="btnSty" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0&&mapobj.orgType!==3"  style="margin-right:12px" @click="dialPhoneNumber()">{{$t("m.telman1")}}</div>
-            <div class="btnSty" v-if="mapobj.linkTelarr2!==undefined&&mapobj.linkTelarr2.length > 0&&mapobj.orgType==3"  style="margin-right:12px" @click="dialPhoneNumber()">{{$t("m.telman1")}}</div>
+            <div class="btnSty" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0"  style="margin-right:12px" @click="dialPhoneNumber()">{{$t("m.telman1")}}</div>
             <div class="btnSty" style="background:linear-gradient(90deg,rgba(255,102,0,1),rgba(255,123,16,1));" @click="shakeTime(mapobj.hospitalName)"><van-icon color="#ffffff" size="20" name="good-job" /><span>{{$t("m.likes")}} {{mapobj.encourageNum}}</span></div>
           </div>
         </div>
@@ -178,12 +173,8 @@
         :z-index="100"
         v-model="phoneshow"
         position="right">
-      <div style="padding:12px 24px" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0&&mapobj.orgType!==3">
+      <div style="padding:12px 24px" v-if="mapobj.linkTelarr1!==undefined&&mapobj.linkTelarr1.length > 0">
         <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr1"
-                 :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" color="#1989fa" size="34"  /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr1==undefined?"":mapobj.linkPeoplearr1[index]}}  {{iteam}}</div></div>
-      </div>
-      <div style="padding:12px 24px" v-if="mapobj.linkTelarr2!==undefined&&mapobj.linkTelarr2.length > 0&&mapobj.orgType==3">
-        <div class="left-font" v-for="(iteam,index) in mapobj.linkTelarr2"
                  :key="index" @click="dialPhoneNumber1(iteam)"><van-icon name="phone-o" color="#1989fa" size="34"  /> <div style="font-size:15px;margin-left:4px">{{mapobj.linkPeoplearr1==undefined?"":mapobj.linkPeoplearr1[index]}}  {{iteam}}</div></div>
       </div>
     </van-popup>
@@ -1344,8 +1335,21 @@ export default {
             if(itam.hospitalAddress){
               itam.hospitalAddress=decodeURIComponent(encrypt.Decrypt(itam.hospitalAddress))
             }
+            itam.needsNamearr1=[]
+            itam.needsNamearr2=[]
+            itam.needsNamearr3=[]
             if(itam.needsName!==undefined){
               itam.needsNamearr=itam.needsName.split(",")
+              itam.needsNamearr.forEach(ele=>{
+                console.log(this.$t("m.needtabs")[ele])
+                if(this.$t("m.needtabs")[ele]!==undefined){
+                  itam.needsNamearr1.push(this.$t("m.needtabs")[ele])
+                }else{
+                  itam.needsNamearr2.push(ele)
+                }
+                // if()
+              })
+              itam.needsNamearr3=itam.needsNamearr1.concat(itam.needsNamearr2)
             }
             if(itam.hospitalName){
               itam.hospitalName=decodeURIComponent(encrypt.Decrypt(itam.hospitalName))
@@ -1362,13 +1366,6 @@ export default {
               phonearr=itam.linkTel.split(",")
               phonearr.forEach(itm=>{
                 itam.linkTelarr1.push(decodeURIComponent(encrypt.Decrypt(itm)))
-              })
-            }
-            if(itam.linkTelOrig!==undefined){
-              itam.linkTelarr2=[]
-              phonetwo=itam.linkTelOrig.split(",")
-              phonearr.forEach(itm=>{
-                itam.linkTelarr2.push(decodeURIComponent(encrypt.Decrypt(itm)))
               })
             }
             if(itam.longitude&&itam.latitude){

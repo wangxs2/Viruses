@@ -464,7 +464,7 @@
                 <div class="comfirm-radio">
                   <van-checkbox-group @change="changetype" v-model="form3.materialDetails1" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruOriginizeSupRadio" :key="i+item.name">
-                    <van-checkbox shape="square" checked-color="#2D65E3" :name="$t(item.name)">{{$t(item.name)}}</van-checkbox>
+                    <van-checkbox shape="square" checked-color="#2D65E3" :name="$t(item.id)">{{$t(item.name)}}</van-checkbox>
                     </div>
                    </van-checkbox-group>
                   <div class="author">
@@ -853,25 +853,25 @@ export default {
       ],
       luruOriginizeSupRadio:[ // 录入机构类型单选数据
         {
-          id:1,
+          id:29,
           name:"m.helptyname7"
         },{
-          id:2,
+          id:24,
           name:"m.helptyname2"
         },{
-          id:3,
+          id:25,
           name:"m.helptyname3"
         },{
-          id:4,
+          id:26,
           name:"m.helptyname4"
         },{
-          id:5,
+          id:23,
           name:"m.helptyname1"
         },{
-          id:6,
+          id:27,
           name:"m.helptyname5"
         },{
-          id:7,
+          id:28,
           name:"m.helptyname6"
         },
       ],
@@ -919,7 +919,6 @@ export default {
   },
   watch:{
     curtabindex:function(newName, oldName){
-      console.log(this.$i18n.locale)
       this.changefirst()
     }
   },
@@ -1237,8 +1236,6 @@ addresschange(address){
       .send()
       .then((response)=> {
         let feature = response.body.features;
-        console.log(feature)
-        console.log()
         if(feature.length!==0){
           let arraddress=feature[0].center
           this.form3.longitude=arraddress[0]
@@ -1266,6 +1263,7 @@ addresschange(address){
 },  
 //整合的请求接口
 catcherror(row,type){
+  console.log(row.country)
   this.$fetchPost("material/save",row,'json').then(res=> {
     if(res.code=="success"){
       this.showresult=true
@@ -1298,7 +1296,8 @@ confirmNeedName1(value){
     this.form2.materialDetails[this.selectIndex1].needsName=''
     this.$toast(this.$i18n.locale=='zh-CN'?"请输入其他物资名称":"Please enter another material name")
   }else {
-    this.form2.materialDetails[this.selectIndex1].needsName=value
+    const index = this.$t('m.needList').findIndex(fruit => fruit === value)
+    this.form2.materialDetails[this.selectIndex1].needsName=index+1
   }
   this.startTimePopNeedName=false
 },
@@ -1332,12 +1331,15 @@ linkTelBlur(type,tel,index){
         this.form1.address=value[0].text+value[1].text
         this.form1.province=value[0].text
         this.form1.city=value[1].text
+        this.form1.country="中国"
+
     },
     onConfirm1(value){
         this.showPicker1=false
         this.form2.address=value[0].text+value[1].text
         this.form2.province=value[0].text
         this.form2.city=value[1].text
+        this.form2.country="中国"
     },
     //验证手机号的格式
     checkTel(index,tel)
@@ -1356,7 +1358,10 @@ linkTelBlur(type,tel,index){
           this.form1.materialDetails[this.selectIndex].needsName=''
           this.$toast(this.$i18n.locale=='zh-CN'?"请输入其他物资名称":"Please enter another material name")
         }else {
-          this.form1.materialDetails[this.selectIndex].needsName=value
+          
+          const index = this.$t('m.needList').findIndex(fruit => fruit === value)
+          // console.log(index)
+          this.form1.materialDetails[this.selectIndex].needsName=index+1
         }
         this.startTimePopNeedName=false
       },
@@ -1371,8 +1376,9 @@ linkTelBlur(type,tel,index){
           this.readonly1=false
           this.startTimePopNeedName=false
         }else {
+
           if (this.form1.materialDetails[index].needsName) {
-            this.needList.forEach(v=> {
+            this.$t('m.needList').forEach(v=> {
               if (this.form1.materialDetails[index].needsName==v){
                 this.readonly1=true
                 this.startTimePopNeedName=true
@@ -1413,7 +1419,7 @@ linkTelBlur(type,tel,index){
           this.startTimePopNeedName=false
         }else {
           if (this.form2.materialDetails[index].needsName) {
-            this.needList.forEach(v=> {
+            this.$t('m.needList').forEach(v=> {
               if (this.form2.materialDetails[index].needsName==v){
                 this.readonly2=true
                 this.startTimePopNeedName=true
@@ -1478,6 +1484,7 @@ linkTelBlur(type,tel,index){
       this.form3.address2=value[0].text+value[1].text
       this.form3.province=value[0].text
       this.form3.city=value[1].text
+      this.form2.country="中国"
     },
     //民间组织选择时间
     quemsg(val){
@@ -1491,6 +1498,7 @@ linkTelBlur(type,tel,index){
     },
     //服务提供类型
     changetype(){
+      console.log(this.form3.materialDetails1)
     },
     //格式化时间
     utiltime(date){
@@ -1513,12 +1521,12 @@ linkTelBlur(type,tel,index){
     },
     onChange(picker, values,index){
           picker.setColumnValues(1,this.cityDate(this.allCity,values[0].text))
-          
+          // console.log(values)
         this.form1.addressArr=values
     }, 
     onChange1(picker, values,index){
           picker.setColumnValues(1,this.cityDate(this.allCity,values[0].text))
-          
+          console.log(values)
         this.form2.addressArr=values
     }, 
     cityDate(data,province){
@@ -1645,19 +1653,19 @@ linkTelBlur(type,tel,index){
       this.showPicker1=false
       if(type==1){
         this.form1.address=this.$i18n.locale=='zh-CN'?row.name:row.en
-        this.form1.country=this.$i18n.locale=='zh-CN'?row.name:row.en
         this.form1.province=this.$i18n.locale=='zh-CN'?row.name:row.en
         this.form1.city=""
+        this.form1.country=this.$i18n.locale=='zh-CN'?row.name:row.en
       }else if(type==2){
-        this.form2.country=this.$i18n.locale=='zh-CN'?row.name:row.en
         this.form2.address=this.$i18n.locale=='zh-CN'?row.name:row.en
         this.form2.province=this.$i18n.locale=='zh-CN'?row.name:row.en
         this.form2.city=""
+        this.form2.country=this.$i18n.locale=='zh-CN'?row.name:row.en
       }else{
-        this.form3.country=this.$i18n.locale=='zh-CN'?row.name:row.en
         this.form3.address2=this.$i18n.locale=='zh-CN'?row.name:row.en
         this.form3.province=this.$i18n.locale=='zh-CN'?row.name:row.en
         this.form3.city=""
+        this.form3.country=this.$i18n.locale=='zh-CN'?row.name:row.en
       }
     },
     confirmthree(){
@@ -1693,7 +1701,8 @@ linkTelBlur(type,tel,index){
           }
         }),
         
-        this.form3.country=this.form3.city==!""?"中国":this.form3.country
+        // this.form3.country=this.form3.city==!""?"中国":this.form3.country
+        // console.log(this.form3.country)
         this.form3.linkPeople=arr.join(",")
         this.form3.picUrl=this.meedUrlArr.join(",")
         this.addresschange(this.form3.province+this.form3.city+this.form3.address)
@@ -1911,10 +1920,10 @@ linkTelBlur(type,tel,index){
          })
           this.params1= { 
             materialType:1,
-            country:this.form1.city!==""?"中国":this.form1.country,
             name:this.form1.hispotalName,
             province:this.form1.province,
             city:this.form1.city,
+            country:this.form1.country,
             address:this.form1.addressDetail,
             materialDetails:this.form1.materialDetails,//需求表
             type:this.form1.type,
@@ -1928,6 +1937,7 @@ linkTelBlur(type,tel,index){
               descr:this.form1.descr
       
           }
+          console.log(this.params1.country)
           this.addresschange1(this.params1.province+this.params1.city+this.params1.address,1)
           // if(this.params1.city==""){
           //      this.$fetchPost("material/save",this.params1,'json').then(res=> {
@@ -1965,10 +1975,10 @@ linkTelBlur(type,tel,index){
          })
             this.params2= { 
               materialType:2,
-              country:this.form2.city==!""?"中国":this.form2.country,
               name:this.form2.hispotalName,
               province:this.form2.province,
               city:this.form2.city,
+              country:this.form2.country,
               address:this.form2.addressDetail,
               materialDetails:this.form2.materialDetails,//需求表
               type:this.form2.type,
@@ -1982,6 +1992,7 @@ linkTelBlur(type,tel,index){
               descr:this.form2.descr
         
             }
+            
             this.addresschange1(this.params2.province+this.params2.city+this.params2.address,2)
             // if(this.params2.city==""){
             //    this.$fetchPost("material/save",this.params2,'json').then(res=> {
@@ -2009,7 +2020,6 @@ linkTelBlur(type,tel,index){
       .send()
       .then((response)=> {
         let feature = response.body.features;
-        console.log(feature)
         if(feature.length!==0){
           let arraddress=feature[0].center
           if (type==1){

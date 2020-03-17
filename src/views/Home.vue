@@ -97,7 +97,7 @@
         <div class="contentDetail">
           <van-icon class="closeimg" @click="isDetail=false" :size="24" name="cross" />
           <div style="font-size:18px;text-align:left">{{mapobj.hospitalName}}</div>
-          <div v-if="mapobj.authNumarr1!==undefined&&mapobj.authNumarr1.length > 0">
+          <div v-if="mapobj.authNumarr1!==undefined&&mapobj.authNumarr1.length > 0" style="text-align:left">
               <van-tag v-for="(item,index) in mapobj.authNumarr1" :key="index" mark type="primary">{{item}}</van-tag>
           </div>
           
@@ -915,7 +915,7 @@ export default {
     
   },
  mounted () {
-    this.getMapbox()
+  this.getMapbox()
     var scrolltop = document.body.scrollTop;
     $('input').focus(function(){
     let interval = setInterval(function(){
@@ -1543,7 +1543,7 @@ export default {
       });
     },
     getMapbox(){
-      mapboxgl.accessToken = 'pk.eyJ1Ijoid2FuZ3hzMiIsImEiOiJjazNpaTVpYjkwOGRyM25ycHJ4d3g3N29uIn0.Vi4TSzhNcxvwh_zeGJhQ_g';
+      mapboxgl.accessToken = 'pk.eyJ1Ijoid2FuZ3hzMiIsImEiOiJjazd2OHZpdG8wNGJpM2VsdTE1MmZoOWN2In0.-JN8mEy3GgikNrZosccxmA';
       this.myMap = new mapboxgl.Map({
       container: 'myMap',
       zoom: 2,
@@ -1563,7 +1563,7 @@ export default {
       this.initMap()
     },
     initmapbox(){
-      mapboxgl.accessToken = 'pk.eyJ1Ijoid2FuZ3hzMiIsImEiOiJjazNpaTVpYjkwOGRyM25ycHJ4d3g3N29uIn0.Vi4TSzhNcxvwh_zeGJhQ_g';
+      mapboxgl.accessToken = 'pk.eyJ1Ijoid2FuZ3hzMiIsImEiOiJjazd2OHZpdG8wNGJpM2VsdTE1MmZoOWN2In0.-JN8mEy3GgikNrZosccxmA';
       this.myMap = new mapboxgl.Map({
       container: 'myMap',
       zoom: 2,

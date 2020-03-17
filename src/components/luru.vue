@@ -99,8 +99,7 @@
                     <div class="comfirm-need-body" v-for="(iteam,index) in form1.materialDetails" :key="index">
                       <div class="name">
                         <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
-
-                        <van-field class="sup-name" :readonly="readonly1" v-model="$t('m.needList')[iteam.needsName-1]" type="text" :placeholder="$t('m.please')"   input-align="center" @focus="needFocus(index)" @blur="needBlur(index)"/>
+                        <van-field class="sup-name" :readonly="iteam.readonly" v-model="$t('m.needList')[iteam.needsName-1]!==undefined?$t('m.needList')[iteam.needsName-1]:iteam.needsName" type="text" :placeholder="$t('m.please')"   input-align="center" @click="needFocus(index)"/>
                         <van-popup v-model="startTimePopNeedName" position="bottom">
                         <van-picker :cancel-button-text="$t('m.cancel')" :confirm-button-text="$t('m.confirm')" show-toolbar :columns="$t('m.needList')" @confirm="confirmNeedName" @cancel="cancleNeedName" @change="changeNeedName" />
                         </van-popup>
@@ -267,7 +266,7 @@
                         <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
 
                         
-                        <van-field class="sup-name" v-model="iteam.needsName" :readonly="readonly2" type="text" :placeholder="$t('m.please')"   input-align="center"  @focus="needFocus1(index)" @blur="needBlur1(index)"/>
+                        <van-field class="sup-name" v-model="$t('m.needList')[iteam.needsName-1]" :readonly="readonly2" type="text" :placeholder="$t('m.please')"   input-align="center"  @click="needFocus1(index)"/>
                         <van-popup v-model="startTimePopNeedName" position="bottom">
                         <van-picker :cancel-button-text="$t('m.cancel')" :confirm-button-text="$t('m.confirm')" show-toolbar :columns="$t('m.needList')" @confirm="confirmNeedName1" @cancel="cancleNeedName" @change="changeNeedName1" />
                         </van-popup>
@@ -542,6 +541,7 @@ export default {
         materialDetails:[
           {
             needsName:0,
+            readonly:true,
             needsNum:'',
           }
         ],//需求表
@@ -603,6 +603,7 @@ export default {
         materialDetails:[
           {
             needsName:0,
+            readonly:true,
             needsNum:'',
           }
         ],//需求表
@@ -976,6 +977,7 @@ methods:{
         this.form1.materialDetails=[
           {
             needsName:'',
+            readonly:true,
             needsNum:'',
           }
         ]
@@ -1018,6 +1020,7 @@ methods:{
         this.form2.materialDetails=[
           {
             needsName:'',
+            readonly:true,
             needsNum:'',
           }
         ]
@@ -1225,7 +1228,7 @@ closebig(){
 },
 //地址解析
 addresschange(address){
-      mapboxgl.accessToken = 'pk.eyJ1Ijoid2FuZ3hzMiIsImEiOiJjazNpaTVpYjkwOGRyM25ycHJ4d3g3N29uIn0.Vi4TSzhNcxvwh_zeGJhQ_g';
+      mapboxgl.accessToken = 'pk.eyJ1Ijoid2FuZ3hzMiIsImEiOiJjazd2OHZpdG8wNGJpM2VsdTE1MmZoOWN2In0.-JN8mEy3GgikNrZosccxmA';
       let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
       mapboxClient.geocoding
       .forwardGeocode({
@@ -1291,9 +1294,7 @@ changeNeedName(picker, value, index){
 },
 confirmNeedName1(value){
   if(value=="其他"||value=="other"){
-    this.curNeed2=1
-    this.readonly2=false
-    this.form2.materialDetails[this.selectIndex1].needsName=''
+    this.form2.materialDetails[this.selectIndex].readonly=false
     this.$toast(this.$i18n.locale=='zh-CN'?"请输入其他物资名称":"Please enter another material name")
   }else {
     const index = this.$t('m.needList').findIndex(fruit => fruit === value)
@@ -1353,14 +1354,10 @@ linkTelBlur(type,tel,index){
       },
       confirmNeedName(value){
         if(value=="其他"||value=="other"){
-          this.curNeed1=1
-          this.readonly1=false
-          this.form1.materialDetails[this.selectIndex].needsName=''
+          this.form1.materialDetails[this.selectIndex].readonly=false
           this.$toast(this.$i18n.locale=='zh-CN'?"请输入其他物资名称":"Please enter another material name")
         }else {
-          
           const index = this.$t('m.needList').findIndex(fruit => fruit === value)
-          // console.log(index)
           this.form1.materialDetails[this.selectIndex].needsName=index+1
         }
         this.startTimePopNeedName=false
@@ -1372,32 +1369,35 @@ linkTelBlur(type,tel,index){
         this.curNeed2=0
       },
       needFocus(index){
-        if (this.curNeed1){
-          this.readonly1=false
-          this.startTimePopNeedName=false
-        }else {
-
-          if (this.form1.materialDetails[index].needsName) {
-            this.$t('m.needList').forEach(v=> {
-              if (this.form1.materialDetails[index].needsName==v){
-                this.readonly1=true
-                this.startTimePopNeedName=true
-              }else {
-                this.readonly1=false
-              }
-            })
-          } else {
-            this.readonly1=true
-            this.startTimePopNeedName=true
-          }
+        // if (this.curNeed1){
+        //   this.readonly1=false
+        //   this.startTimePopNeedName=false
+        // }else {
+        //   if (this.form1.materialDetails[index].needsName) {
+        //     this.$t('m.needList').forEach(v=> {
+        //       if (this.form1.materialDetails[index].needsName==v){
+        //         this.readonly1=true
+        //         this.startTimePopNeedName=true
+        //       }else {
+        //         this.readonly1=false
+        //       }
+        //     })
+        //   } else {
+        //     this.readonly1=true
+        //     this.startTimePopNeedName=true
+        //   }
+        // }
+        console.log(index)
+        if(this.form1.materialDetails[index].readonly){
+          this.startTimePopNeedName=true
         }
-        this.curNeed1=0
         this.selectIndex=index
       },
     //添加需求表
     addDemand(){
       
-      this.curNeed1=0
+      // this.curNeed1=0
+      this.readonly1=true
       let x=this.form1.materialDetails.some(item =>{
           // return item.needsName == ""||item.needsNum == ""
           return item.needsName == ""
@@ -1410,35 +1410,21 @@ linkTelBlur(type,tel,index){
         this.form1.materialDetails.push({
           needsName:'',
           needsNum:'',
+          readonly:true,
         })
       }
     },
-      needFocus1(index){
-        if (this.curNeed2){
-          this.readonly2=false
-          this.startTimePopNeedName=false
-        }else {
-          if (this.form2.materialDetails[index].needsName) {
-            this.$t('m.needList').forEach(v=> {
-              if (this.form2.materialDetails[index].needsName==v){
-                this.readonly2=true
-                this.startTimePopNeedName=true
-              }else {
-                this.readonly2=false
-              }
-            })
-          } else {
-            this.readonly2=true
-            this.startTimePopNeedName=true
-          }
-        }
-        this.curNeed2=0
-        this.selectIndex1=index
-      },
+    needFocus1(index){
+      if(this.form2.materialDetails[index].readonly){
+        this.startTimePopNeedName=true
+      }
+      this.selectIndex1=index
+    },
     //删除需求表
     deleteDemand(index){
       if(this.testindex<1){
         this.form1.materialDetails[index].needsName=''
+        this.form1.materialDetails[index].readonly=true
         this.form1.materialDetails[index].needsNum=''
         // this.$toast('至少添加一条需求');
         this.$toast(this.$i18n.locale=='zh-CN'?"至少添加一条需求":"Add at least one requirement")
@@ -1461,6 +1447,7 @@ linkTelBlur(type,tel,index){
         this.testindex1++
         this.form2.materialDetails.push({
           needsName:'',
+          readonly:true,
           needsNum:'',
         })
       }
@@ -1469,6 +1456,7 @@ linkTelBlur(type,tel,index){
     deleteDemand1(index){
       if(this.testindex1<1){
         this.form2.materialDetails[index].needsName=''
+        this.form2.materialDetails[index].readonly=true
         this.form2.materialDetails[index].needsNum=''
         // this.$toast('至少添加一条需求');
         this.$toast(this.$i18n.locale=='zh-CN'?"至少添加一条需求":"Add at least one requirement")
@@ -1484,7 +1472,7 @@ linkTelBlur(type,tel,index){
       this.form3.address2=value[0].text+value[1].text
       this.form3.province=value[0].text
       this.form3.city=value[1].text
-      this.form2.country="中国"
+      this.form3.country="中国"
     },
     //民间组织选择时间
     quemsg(val){
@@ -2009,7 +1997,7 @@ linkTelBlur(type,tel,index){
     },
     //地址解析
     addresschange1(address,type){
-      mapboxgl.accessToken = 'pk.eyJ1Ijoid2FuZ3hzMiIsImEiOiJjazNpaTVpYjkwOGRyM25ycHJ4d3g3N29uIn0.Vi4TSzhNcxvwh_zeGJhQ_g';
+      mapboxgl.accessToken = 'pk.eyJ1Ijoid2FuZ3hzMiIsImEiOiJjazd2OHZpdG8wNGJpM2VsdTE1MmZoOWN2In0.-JN8mEy3GgikNrZosccxmA';
       let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
       mapboxClient.geocoding
       .forwardGeocode({

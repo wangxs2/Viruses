@@ -97,6 +97,10 @@
         <div class="contentDetail">
           <van-icon class="closeimg" @click="isDetail=false" :size="24" name="cross" />
           <div style="font-size:18px;text-align:left">{{mapobj.hospitalName}}</div>
+          <div v-if="mapobj.authNumarr1!==undefined&&mapobj.authNumarr1.length > 0">
+              <van-tag v-for="(item,index) in mapobj.authNumarr1" :key="index" mark type="primary">{{item}}</van-tag>
+          </div>
+          
           <div class="address"> 
             <div class="left-font" v-if="mapobj.hospitalAddress!==undefined&&mapobj.hospitalAddress!==''" style="color:#666666;width:75%;word-wrap:break-word;text-align:left"><van-icon name="location-o" size="20" /> <div class="van-van-multi-ellipsis--l2" style="margin-left:2px;font-size:15px">{{mapobj.hospitalAddress}}</div></div>
             <div v-if="mapobj.type==1" class="right-btn">{{$t('m.hosp1')}}</div>
@@ -830,6 +834,7 @@ export default {
           tel: "18817582880",
         },
       ],
+      authNumtab:["","TUV","CE","UL","SGS","NSF","GS"],
       mayGroup:[],
       isdzan:false,
       styleUp:true,
@@ -894,7 +899,6 @@ export default {
     this.getWuziList()
     this.getCityList()
     this.getCurTimeContent()
-    console.log(this.$route.query.islang)
     if(this.$route.query.islang==1){
       return
     }else{
@@ -970,7 +974,6 @@ export default {
           //拼接当前地址 
           let shareUrl=window.location.href.split('#')[0]+'#'+window.location.href.split('#')[1];
           // shareUrl = shareUrl.split('#')[0] + 'static/html/redirect.html?app3Redirect=' + encodeURIComponent(shareUrl);
-          console.log(that.$t('m.title'))
           wx.ready(function () {
             //分享给朋友
             wx.onMenuShareAppMessage({
@@ -1039,7 +1042,6 @@ export default {
           });
         })
         .catch((res)=>{
-          // console.log(res);
         })
       },
     searchTabItem(index){
@@ -1054,7 +1056,6 @@ export default {
  * 切换语言 
  */ 
     changeLangEvent() {
-      console.log(this.lang)
       if ( this.lang === 'zh-CN' ) {
               this.lang = 'en-US';
               window.document.title="YunNiXing  COVID-19 Support Platform"
@@ -1105,7 +1106,6 @@ export default {
             this.isDetail=true
             this.mapobj=marker
           });
-          // console.log(coordTransform.gcj02towgs84(121.450605,31.187983))
           // let point=coordTransform.gcj02towgs84(121.450605,31.187983)
           // add marker to map
           this.markerSa=new mapboxgl.Marker(el)
@@ -1341,13 +1341,11 @@ export default {
             if(itam.needsName!==undefined){
               itam.needsNamearr=itam.needsName.split(",")
               itam.needsNamearr.forEach(ele=>{
-                console.log(this.$t("m.needtabs")[ele])
                 if(this.$t("m.needtabs")[ele]!==undefined){
                   itam.needsNamearr1.push(this.$t("m.needtabs")[ele])
                 }else{
                   itam.needsNamearr2.push(ele)
                 }
-                // if()
               })
               itam.needsNamearr3=itam.needsNamearr1.concat(itam.needsNamearr2)
             }
@@ -1359,6 +1357,15 @@ export default {
               itam.linkPeoplearr1=[]
               monarr.forEach(iteam=>{
                 itam.linkPeoplearr1.push(decodeURIComponent(encrypt.Decrypt(iteam)))
+              })
+            }
+            itam.authNumarr1=[]
+            if(itam.authNum!==undefined){
+              itam.authNumarr=itam.authNum.split(",")
+              itam.authNumarr.forEach(ele=>{
+                if(this.authNumtab[ele]!==undefined){
+                    itam.authNumarr1.push(this.authNumtab[ele])
+                }
               })
             }
             if(itam.linkTel!==undefined){
@@ -1409,11 +1416,7 @@ export default {
             this.isDetail=true
             this.mapobj=marker
           });
-          // console.log(marker.hospitalName)
-          // console.log(marker.id)
-          // console.log(marker.gaodeLon,marker.gaodeLat)
           let point=coordTransform.gcj02towgs84(marker.gaodeLon,marker.gaodeLat)
-          // console.log()
           // add marker to map
 
           let iteamark=new mapboxgl.Marker(el)
@@ -1425,7 +1428,6 @@ export default {
     },
     //清除mapbox的点
     clearmarker(row){
-      console.log(456)
       row.forEach((marker)=> {
         marker.remove();
       });
@@ -1559,7 +1561,6 @@ export default {
         accessToken: mapboxgl.accessToken,
         mapboxgl: mapboxgl
       })
-      console.log(geositi)
        this.getPosition()
       this.initMap()
     },

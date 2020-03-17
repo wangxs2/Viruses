@@ -266,7 +266,7 @@
                         <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
 
                         
-                        <van-field class="sup-name" v-model="$t('m.needList')[iteam.needsName-1]" :readonly="readonly2" type="text" :placeholder="$t('m.please')"   input-align="center"  @click="needFocus1(index)"/>
+                        <van-field class="sup-name" :readonly="iteam.readonly" v-model="$t('m.needList')[iteam.needsName-1]!==undefined?$t('m.needList')[iteam.needsName-1]:iteam.needsName" type="text" :placeholder="$t('m.please')"   input-align="center"  @click="needFocus1(index)"/>
                         <van-popup v-model="startTimePopNeedName" position="bottom">
                         <van-picker :cancel-button-text="$t('m.cancel')" :confirm-button-text="$t('m.confirm')" show-toolbar :columns="$t('m.needList')" @confirm="confirmNeedName1" @cancel="cancleNeedName" @change="changeNeedName1" />
                         </van-popup>
@@ -540,7 +540,7 @@ export default {
         addressDetail:"",
         materialDetails:[
           {
-            needsName:0,
+            needsName:'',
             readonly:true,
             needsNum:'',
           }
@@ -602,7 +602,7 @@ export default {
         descr:'',
         materialDetails:[
           {
-            needsName:0,
+            needsName:"",
             readonly:true,
             needsNum:'',
           }
@@ -900,10 +900,6 @@ export default {
       needWritePoint1:0,
       params1:{},
       params2:{},
-      readonly1:true,//需求表中输入框是否可读
-      readonly2:true,//需求表中输入框是否可读
-      curNeed1:0,// 当前选择需求为其他
-      curNeed2:0,// 当前选择需求为其他
       firstName:{},
     };
   },
@@ -1294,7 +1290,7 @@ changeNeedName(picker, value, index){
 },
 confirmNeedName1(value){
   if(value=="其他"||value=="other"){
-    this.form2.materialDetails[this.selectIndex].readonly=false
+    this.form2.materialDetails[this.selectIndex1].readonly=false
     this.$toast(this.$i18n.locale=='zh-CN'?"请输入其他物资名称":"Please enter another material name")
   }else {
     const index = this.$t('m.needList').findIndex(fruit => fruit === value)

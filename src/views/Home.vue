@@ -1411,14 +1411,12 @@ export default {
           el.style.backgroundSize="100% 100%"
           el.style.width = '22px';
           el.style.height = '22px';
-          
           el.addEventListener('click', ()=> {
             this.isDetail=true
             this.mapobj=marker
           });
           let point=coordTransform.gcj02towgs84(marker.gaodeLon,marker.gaodeLat)
           // add marker to map
-
           let iteamark=new mapboxgl.Marker(el)
           .setLngLat([marker.longitude,marker.latitude])
           .addTo(this.myMap);

@@ -100,7 +100,7 @@
                       <div class="name">
                         <!-- <van-field class="sup-name" v-model="iteam.needsName" type="text" placeholder="输入物资名称"   input-align="center"/> -->
 
-                        <van-field class="sup-name" :readonly="readonly1" v-model="iteam.needsName" type="text" :placeholder="$t('m.please')"   input-align="center" @focus="needFocus(index)" @blur="needBlur(index)"/>
+                        <van-field class="sup-name" :readonly="readonly1" v-model="$t('m.needList')[iteam.needsName-1]" type="text" :placeholder="$t('m.please')"   input-align="center" @focus="needFocus(index)" @blur="needBlur(index)"/>
                         <van-popup v-model="startTimePopNeedName" position="bottom">
                         <van-picker :cancel-button-text="$t('m.cancel')" :confirm-button-text="$t('m.confirm')" show-toolbar :columns="$t('m.needList')" @confirm="confirmNeedName" @cancel="cancleNeedName" @change="changeNeedName" />
                         </van-popup>
@@ -464,7 +464,7 @@
                 <div class="comfirm-radio">
                   <van-checkbox-group @change="changetype" v-model="form3.materialDetails1" class="radio-group">
                     <div class="sig-radio" v-for="(item,i) in luruOriginizeSupRadio" :key="i+item.name">
-                    <van-checkbox shape="square" checked-color="#2D65E3" :name="$t(item.id)">{{$t(item.name)}}</van-checkbox>
+                    <van-checkbox shape="square" checked-color="#2D65E3" :name="$t(item.name)">{{$t(item.name)}}</van-checkbox>
                     </div>
                    </van-checkbox-group>
                   <div class="author">
@@ -541,7 +541,7 @@ export default {
         addressDetail:"",
         materialDetails:[
           {
-            needsName:'',
+            needsName:0,
             needsNum:'',
           }
         ],//需求表
@@ -602,7 +602,7 @@ export default {
         descr:'',
         materialDetails:[
           {
-            needsName:'',
+            needsName:0,
             needsNum:'',
           }
         ],//需求表
@@ -1498,7 +1498,7 @@ linkTelBlur(type,tel,index){
     },
     //服务提供类型
     changetype(){
-      console.log(this.form3.materialDetails1)
+      console.log()
     },
     //格式化时间
     utiltime(date){

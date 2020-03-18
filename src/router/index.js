@@ -8,7 +8,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: Home
+    component: resolve => require(['../views/Home.vue'], resolve) 
   },
   {
     path: '/about',
@@ -16,7 +16,8 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    // component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: resolve => require(['../views/About.vue'], resolve) 
   },
   {
     path: '/curTime',
@@ -24,7 +25,8 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/curTime.vue')
+    // component: () => import(/* webpackChunkName: "about" */ '../views/curTime.vue')
+    component: resolve => require(['../views/curTime.vue'], resolve) 
   },
   {
     path: '/PDF',
@@ -32,7 +34,8 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/PDF.vue')
+    // component: () => import(/* webpackChunkName: "about" */ '../views/PDF.vue')
+    component: resolve => require(['../views/PDF.vue'], resolve)
   },
   {
     path: '/curTimeDo',
@@ -40,7 +43,8 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/curTimeDo.vue')
+    // component: () => import(/* webpackChunkName: "about" */ '../views/curTimeDo.vue')
+    component: resolve => require(['../views/curTimeDo.vue'], resolve)
   },
   {
     path: '/systemPre',
@@ -48,7 +52,8 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/systemPre.vue')
+    // component: () => import(/* webpackChunkName: "about" */ '../views/systemPre.vue')
+    component: resolve => require(['../views/systemPre.vue'], resolve)
   },
   {
     path: '/test',

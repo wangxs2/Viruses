@@ -255,7 +255,7 @@
               <div v-if="item.status&&item.status==3" class="right-btn right-btn4">{{$t('m.hosp5')}}</div>
 
             </div>
-            <div class="wuzi-list" v-if="item.needsName"><span v-for="(items,i) in item.needsName.split(',')">{{items}}</span></div>
+            <div class="wuzi-list" v-if="item.needsNamearr3"><span v-for="(items,i) in item.needsNamearr3">{{items}}</span></div>
 
             
 
@@ -717,6 +717,7 @@
  import luru from '@/components/luru'
  import wx from 'weixin-js-sdk'
  import mapboxgl from 'mapbox-gl';
+//  import MapboxLanguage  from '@mapbox/mapbox-gl-language'
 export default {
   name: "home",
   components:{
@@ -915,6 +916,7 @@ export default {
     
   },
  mounted () {
+   document.body.removeChild(document.getElementById('loading'))
   this.getMapbox()
     var scrolltop = document.body.scrollTop;
     $('input').focus(function(){
@@ -1622,6 +1624,7 @@ export default {
   background: #f1f1f1;
   display:flex;
   position:relative;
+  overflow:hidden;
   .wrapperfast{
      display: flex;
     align-items: center;
@@ -2077,9 +2080,9 @@ export default {
     font-size: 18px;
   }
   .container{
-   flex:1;
-    // margin-top:6px;
-    position:relative;
+    width: 100%;
+    height: 100%;
+    // position:relative;
     .top-fix{
       position:absolute;
       top:0;

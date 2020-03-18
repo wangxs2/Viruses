@@ -7,6 +7,7 @@ import 'amfe-flexible/index.js'
 import Vant from 'vant';
 import common from './libs/common.js'
 import 'vant/lib/index.css'
+// import 'mapbox-gl/src/css/mapbox-gl.css'
 import lrz from 'lrz'  
 import VueI18n from 'vue-i18n'
 Vue.use(VueI18n) // 通过插件的形式挂载

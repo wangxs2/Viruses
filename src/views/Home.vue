@@ -45,6 +45,7 @@
         </div>
         <div class="countbottom" v-if="$i18n.locale=='zh-CN'"><span style="color:#216AFF"><a href="http://www.acfic.org.cn">中华全国工商业联合会</a></span> <span style="color:#216AFF"><a href="http://www.scf.org.cn">上海市慈善基金会</a></span> <span style="color:#216AFF"><a href="hforettps://www.siti.sh.cn">上海产业技术研究院</a></span>联合发布</div>
         <div class="countbottom" v-if="$i18n.locale=='en-US'">Jointly released by<span style="color:#216AFF"><a href="http://www.acfic.org.cn">CFIC,</a></span> <span style="color:#216AFF"><a href="http://www.scf.org.cn">SCF</a></span>and <span style="color:#216AFF"><a href="hforettps://www.siti.sh.cn">SITI</a></span></div>
+        <div class="beian" style="margin-top:4px">版权所有2020 上海产业技术研究院浙江创新院   <a href="http://www.beian.miit.gov.cn/">浙ICP备19035850号</a></div>
       </div>
     </div>
     <!-- 搜索框 -->
@@ -207,7 +208,7 @@
 
             <p class="title">{{$t('m.outbreak')}}</p>
           <div class="list list1">
-            <span v-for="(item,i) in wuziList" :key="i" @click="selectItem(item)">{{item}}</span>
+            <span v-for="(item,i) in wuziList" :key="i" @click="selectItem($i18n.locale=='zh-CN'?item.cNnames:item.eNnames)">{{$i18n.locale=="zh-CN"?item.cNnames:item.eNnames}}</span>
           </div>
           <p class="title">{{$t('m.outbreakcity')}}</p>
           <div class="list list2">
@@ -644,11 +645,13 @@
       <div class="cur-time-img" @click="curTimeBtn(0)">
         <img src="../assets/image/curtimewrite.png" alt="">
       </div>
-      <div class="line"></div>
+      <!-- <div class="line"></div> -->
       <div class="cur-time-img" @click="curTimeBtn(1)">
-        <!-- <img src="../assets/image/zhsa.png" alt=""> -->
         <div class="zhsa"></div>
-        <!-- <div style="color:#ff6f18;font-size:12px">资助信息</div> -->
+      </div>
+      <div class="cur-time-img" @click="curTimeBtn(0)">
+        <div class="clorfont">健康咨询</div>
+        <!-- <img src="../assets/image/curtimewrite.png" alt=""> -->
       </div>
     </div>
 
@@ -916,7 +919,9 @@ export default {
     
   },
  mounted () {
-   document.body.removeChild(document.getElementById('loading'))
+   if(document.getElementById('loading')){
+     document.body.removeChild(document.getElementById('loading'))
+   }
   this.getMapbox()
     var scrolltop = document.body.scrollTop;
     $('input').focus(function(){
@@ -1633,7 +1638,7 @@ export default {
   }
   .peopleTeam{
     position:absolute;
-    bottom:140px;
+    bottom:144px;
     left:12px;
     z-index:10;
     display:flex;
@@ -2002,7 +2007,7 @@ export default {
     bottom:0;
     left:0;
     right: 0;
-    height: 126px;
+    height: 140px;
     background:#fff;
     z-index:10;
     .bottom-btn{
@@ -2041,7 +2046,7 @@ export default {
       flex-direction:column;
       justify-content:center;
       align-items:center;
-      padding:5px 0px;
+      padding:2px 0px;
       .write{
         font-size:11px;
         width:100%;
@@ -2063,6 +2068,10 @@ export default {
           -moz-user-focus: none;
           -moz-user-select: none;
         }
+      }
+      .beian{
+        font-size:11px;
+        color:#999999;
       }
     }
   }
@@ -2558,7 +2567,7 @@ export default {
 //   }
   .search-write{
     position: fixed;
-    top: 190px;
+    top: 220px;
     right: 12px;
     z-index:10;
     background:#ffffff;
@@ -2858,6 +2867,17 @@ export default {
       align-items:center;
       width: 100%;
       height: 40px;
+      .clorfont{
+        width: 35px;
+        font-size: 15px;
+        line-height: 17px;
+        font-style:italic;
+        font-weight:800;
+        background-image:linear-gradient(180deg,rgba(255,70,0,1),rgba(255,145,0,1));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color:transparent;
+        margin-right: 4px;
+      }
       .zhsa{
         width:36px;
         height:36px;

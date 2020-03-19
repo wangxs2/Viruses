@@ -74,7 +74,7 @@ export const m = {
     needtabs:[" ","N95 masks","Disposal medical masks","Disposal surgical wear","Medical gloves","Surgical masks","Safety goggles",
     "Eyes shield","Face shield","Shoes cover","Protection suits","Isolation gowns","Infrared thermometer","Medical hats",
     "Disinfectants","75% alcohol","Disinfecting device","Medicine",
-    "Ear thermometer","FDA-P","Isolation ambulance","U. V. lights","Full Cover Respirator","other"],
+    "Ear thermometer","FDA-P","Isolation ambulance","U. V. lights","Full Cover Respirator","Promotion","Psycho interference","Goods distribution","Investigations and checks","Community service","Other service","Medical assistance"],
     //我有物资表单
     namesup:'Name of supplier',
     suptype:'Ways of sponsorhsip',

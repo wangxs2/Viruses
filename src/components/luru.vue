@@ -496,8 +496,9 @@
           </div>
         </div>
         
-        
+         <div class="beian">版权所有2020 上海产业技术研究院浙江创新院   <a href="http://www.beian.miit.gov.cn/">浙ICP备19035850号</a></div>
       </div>
+      
     </div>
 </template> 
 
@@ -999,6 +1000,9 @@ methods:{
         this.curNeed1=0
         this.testindex=0
         this.telindex=0
+        this.meedUrlArr=[]
+        this.meedUrlArr1=[]
+        this.meedUrlArr2=[]
 
   },
   clearForm2(){
@@ -1041,7 +1045,9 @@ methods:{
         this.curNeed2=0
         this.testindex1=0
         this.telindex1=0
-
+        this.meedUrlArr=[]
+        this.meedUrlArr1=[]
+        this.meedUrlArr2=[]
   },
   clearForm3(){
         this.form3.materialType=3
@@ -1071,6 +1077,9 @@ methods:{
         this.form3.needsDescr=''
         this.filst=[]
         this.telindex2=0
+        this.meedUrlArr=[]
+        this.meedUrlArr1=[]
+        this.meedUrlArr2=[]
   },
   deleteTel(index){
       if(this.telindex<1){
@@ -1274,7 +1283,7 @@ catcherror(row,type){
         this.clearForm1()
       }
     }else if(res.code==504){
-      this.$toast(this.$i18n.locale=='zh-CN'?"2分钟内不可再次提交，请稍后再试！":"Not resubmit within 2 minutes, please try again later")
+      this.$toast(this.$i18n.locale=='zh-CN'?"5秒内不可再次提交，请稍后再试！":"Not resubmit within 5 second, please try again later")
     }else{
       this.$toast(this.$i18n.locale=='zh-CN'?"提交失败":"Submission Failed")
     }
@@ -2233,6 +2242,14 @@ linkTelBlur(type,tel,index){
   .reduce-content{
     background:#2D65E3;
     padding-bottom:40px;
+    .beian{
+       margin-top:4px;
+       font-size:12px;
+       color:#ffffff;
+       a{
+         color:#eeeeee;
+       }
+    }
     .chinabox{
       color:#333333;
       font-size:16px;

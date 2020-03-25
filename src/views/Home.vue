@@ -43,8 +43,8 @@
         <div class="write">
           <p>{{$t('m.more')}} <span style="color:#1989fa" @click="agreement=true">{{$t('m.user')}}</span></p>
         </div>
-        <div class="countbottom" v-if="$i18n.locale=='zh-CN'"><span style="color:#216AFF"><a href="http://www.acfic.org.cn">中华全国工商业联合会</a></span> <span style="color:#216AFF"><a href="http://www.scf.org.cn">上海市慈善基金会</a></span> <span style="color:#216AFF"><a href="hforettps://www.siti.sh.cn">上海产业技术研究院</a></span>联合发布</div>
-        <div class="countbottom" v-if="$i18n.locale=='en-US'">Jointly released by<span style="color:#216AFF"><a href="http://www.acfic.org.cn">CFIC,</a></span> <span style="color:#216AFF"><a href="http://www.scf.org.cn">SCF</a></span>and <span style="color:#216AFF"><a href="hforettps://www.siti.sh.cn">SITI</a></span></div>
+        <div class="countbottom" v-if="$i18n.locale=='zh-CN'"><span style="color:#216AFF"><a href="http://www.acfic.org.cn">中华全国工商业联合会</a></span> <span style="color:#216AFF"><a href="http://www.scf.org.cn">上海市慈善基金会</a></span> <span style="color:#216AFF"><a href="https://www.siti.sh.cn">上海产业技术研究院</a></span>联合发布</div>
+        <div class="countbottom" v-if="$i18n.locale=='en-US'">Jointly released by<span style="color:#216AFF"><a href="http://www.acfic.org.cn">CFIC,</a></span> <span style="color:#216AFF"><a href="http://www.scf.org.cn">SCF</a></span>and <span style="color:#216AFF"><a href="https://www.siti.sh.cn">SITI</a></span></div>
         <div class="beian" style="margin-top:4px">版权所有2020 上海产业技术研究院浙江创新院   <a href="http://www.beian.miit.gov.cn/">浙ICP备19035850号</a></div>
       </div>
     </div>
@@ -649,10 +649,9 @@
       <div class="cur-time-img" @click="curTimeBtn(1)">
         <div class="zhsa"></div>
       </div>
-      <div class="cur-time-img" @click="curTimeBtn(0)">
+      <!-- <div class="cur-time-img" @click="curTimeBtn(0)">
         <div class="clorfont">健康咨询</div>
-        <!-- <img src="../assets/image/curtimewrite.png" alt=""> -->
-      </div>
+      </div> -->
     </div>
 
     <!-- 录入弹框 -->
@@ -919,9 +918,7 @@ export default {
     
   },
  mounted () {
-   if(document.getElementById('loading')){
-     document.body.removeChild(document.getElementById('loading'))
-   }
+   
   this.getMapbox()
     var scrolltop = document.body.scrollTop;
     $('input').focus(function(){
@@ -2567,7 +2564,7 @@ export default {
 //   }
   .search-write{
     position: fixed;
-    top: 220px;
+    top: 180px;
     right: 12px;
     z-index:10;
     background:#ffffff;

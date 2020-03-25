@@ -212,10 +212,18 @@ export default {
   },
   created() {
     this.getCurTimeContent()
+    
   },
  mounted () {
-     this.activeName=this.$route.query.curIndex
-   
+   console.log(this.$i18n.locale)
+    // if(navigator.language=="zh-CN"){
+    //     this.$i18n.locale = "zh-CN";//关键语句
+    //     window.document.title="云逆行·新冠肺炎物资公益平台"
+    // }else{
+    //     this.$i18n.locale = "en-US";//关键语句
+    //     window.document.title="YunNiXing  COVID-19 Support Platform"
+    // }
+    this.activeName=this.$route.query.curIndex
   },
   methods:{
     showPdf(curUrl){

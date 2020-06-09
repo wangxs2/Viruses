@@ -17,7 +17,6 @@
     </div> -->
     <!-- 企业复工招聘 -->
     <div class="fugong-wrapper" v-if="fugongModel">
-
       <div class="fugong">
         <span class="title">企业用工复工招聘 全面启动</span>
         <div class="sub-title-btn">

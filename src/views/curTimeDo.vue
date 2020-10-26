@@ -3,7 +3,7 @@
         <div class="cur-time-donate">
             <div class="time-donate">
                 <div class="go-back-home" @click="goBackHome">
-                  <van-icon name="arrow-left" color="#ffffff" size="16"/>
+                  <van-icon name="arrow-left" color="#ffffff" size="20"/>
                 </div>
                 <van-tabs @click="timeDonateTab" v-model="activeName">
                     <van-tab title="实时播报"> 
@@ -35,36 +35,15 @@
                                                 <span class="title" v-else-if="!item.isTop&&!item.isNew&&item.headline&&item.headline.length>14">{{item.headline.substring(0,13)}}...</span> -->
                                                 <span class="title">{{item.headline}}</span>
                                             </div>
-                                            <div class="articl"><div class="van-multi-ellipsis--l3">{{item.mainBody}}</div></div>
+                                            <!-- <div class="articl"> -->
+                                              <div class="van-multi-ellipsis--l3 articl">{{item.mainBody}}</div>
+                                            <!-- </div> -->
                                             <div class="origin">信息来源：<span>{{item.publishSource}}</span></div>
                                             </a>
                                         </div>
                                     </div>
                                 </van-cell>
                             </div>
-                        </van-list>
-
-                    </van-tab>
-                    <van-tab title="出力进展">
-                        <van-list v-model="loading1" :finished="finished1" finished-text="没有更多了" @load="onLoad1" :error.sync="error1" error-text="请求失败，点击重新加载">
-                            <van-cell v-for="(item, i) in curTimeDataList" :key="i">
-                                <div class="donate-list1">
-                                    <div class="renwu-list-item">
-                                        <div class="list-item-top">
-                                            <div class="title">
-                                                <span class="title-name">{{item.title}}</span>
-                                            </div>
-                                            <div class="desc">{{item.body}}</div>
-                                        </div>
-                                        <div class="list-item-bottom">
-                                            <span class="time" v-if="item.updateTime">{{item.updateTime.substring(0,10)}}</span>
-                                            <span class="btn" @click="showPdf(item.linksCur)" v-if="item.links"><img class="down-up" src="../assets/image/pdf.png" alt="">查看任务详单</span>
-                                        </div>
-                                        <div class="tab" style="background:rgba(255,69,69,1)" v-if="item.status==0">等待资助</div>
-                                        <div class="tab" style="background:rgba(2,199,150,1)" v-else-if="item.status==1">资助完成</div>
-                                    </div>
-                                </div>
-                            </van-cell>
                         </van-list>
 
                     </van-tab>
@@ -110,6 +89,29 @@
                                         <div class="tab1" style="color:#FF4545" v-if="item.status==0">未核实</div>
                                         <div class="tab1" style="color:#02C796" v-else-if="item.status==2">已完结</div>
                                         <div class="tab1" style="color:#216AFF" v-else-if="item.status==1">已核实</div>
+                                    </div>
+                                </div>
+                            </van-cell>
+                        </van-list>
+
+                    </van-tab>
+                    <van-tab title="出力进展">
+                        <van-list v-model="loading1" :finished="finished1" finished-text="没有更多了" @load="onLoad1" :error.sync="error1" error-text="请求失败，点击重新加载">
+                            <van-cell v-for="(item, i) in curTimeDataList" :key="i">
+                                <div class="donate-list1">
+                                    <div class="renwu-list-item">
+                                        <div class="list-item-top">
+                                            <div class="title">
+                                                <span class="title-name">{{item.title}}</span>
+                                            </div>
+                                            <div class="desc">{{item.body}}</div>
+                                        </div>
+                                        <div class="list-item-bottom">
+                                            <span class="time" v-if="item.updateTime">{{item.updateTime.substring(0,10)}}</span>
+                                            <span class="btn" @click="showPdf(item.linksCur)" v-if="item.links"><img class="down-up" src="../assets/image/pdf.png" alt="">查看任务详单</span>
+                                        </div>
+                                        <div class="tab" style="background:rgba(255,69,69,1)" v-if="item.status==0">等待资助</div>
+                                        <div class="tab" style="background:rgba(2,199,150,1)" v-else-if="item.status==1">用工成功</div>
                                     </div>
                                 </div>
                             </van-cell>
@@ -258,12 +260,12 @@ export default {
       this.error3= false
         if (name==0&&this.loading){
             this.onLoad()
-        }else if (name==1&&this.loading1){
-            this.onLoad1()
-        }else if (name==2&&this.loading2){
+        }else if (name==1&&this.loading2){
             this.onLoad2()
-        }else if (name==3&&this.loading3){
+        }else if (name==2&&this.loading3){
             this.onLoad3()
+        }else if (name==3&&this.loading1){
+            this.onLoad1()
         }
     },
     // 获取实时资讯数据
@@ -485,7 +487,7 @@ export default {
     }
     .van-tabs__content{
       position:absolute;
-      left:-35px;
+      left:0;
       right:0;
     }
     .van-cell{
@@ -509,6 +511,10 @@ export default {
 
   }
   .go-back-home{
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:10;
       display:flex;
       justify-content:center;
       align-items:center;
@@ -663,7 +669,7 @@ export default {
               font-weight:500;
               color:rgba(102,102,102,1);
               line-height:15px;
-              margin: 12px 0;
+              margin: 5px 0 0 0;
               text-align: left;
 
             }
@@ -697,7 +703,7 @@ export default {
                     justify-content:space-between;
                     align-items:center;
                     .title-name{
-                        width:253px;
+                        width:200px;
                         font-size:15px;
                         font-family:PingFang SC;
                         font-weight:bold;

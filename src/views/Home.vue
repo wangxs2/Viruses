@@ -93,7 +93,7 @@
     <van-overlay  :show="isDetail" :z-index="99" :duration="0"	>
       <div class="hospatilBox">
         <div class="contentDetail">
-          <van-icon class="closeimg" @click="isDetail=false" :size="24" name="cross" />
+          <van-icon class="closeimg" @click="closeDetail" :size="24" name="cross" />
           <div style="font-size:17px;text-align:left">{{mapobj.hospitalName}}</div>
           <div class="address"> 
             <div class="left-font" v-if="mapobj.hospitalAddress!==undefined&&mapobj.hospitalAddress!==''" style="color:#666666;width:75%;word-wrap:break-word;text-align:left"><van-icon name="location-o" size="15" /> <div class="van-van-multi-ellipsis--l2" style="margin-left:2px;font-size:14px">{{mapobj.hospitalAddress}}</div></div>
@@ -103,7 +103,7 @@
             <div v-if="mapobj.status&&mapobj.status==2" class="right-btn right-btn3">政府托管</div>
             <div v-if="mapobj.status&&mapobj.status==3" class="right-btn right-btn4">尚未核实</div> -->
           </div>
-          <div class="link-go" v-if="mapobj.sourceLink" @click="goHref(mapobj.sourceLink)">
+          <div class="link-go" v-if="mapobj.sourceLinkReg" @click="goHref(mapobj.sourceLinkReg)">
             <img src="../assets/image/link-icon.png"/>
             <span>点击查看企业</span>
           </div>
@@ -144,15 +144,18 @@
             </div>
           </div>
           <!-- <span class="person">接受个人捐赠</span> -->
-          <div v-if="mapobj.needsName!==undefined" style="display:flex;justify-content:flex-start;align-items:center;font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'招聘岗位':'提供的岗位和服务'}} 
+          <div v-if="mapobj.needsName!==undefined" style="display:flex;justify-content:flex-start;align-items:center;font-weight:bold;font-size:16px;text-align:left;margin-bottom:14px">{{query.orgType==1?'招聘岗位':query.orgType==4?'提供专业':'提供的岗位和服务'}} 
             <!-- <van-icon v-if="query.orgType==1" style="margin-left:10px;margin-right:1px" name="warning-o" color="#FF2727"  size="12" /> -->
             </div>
 
           <div class="table-wrapper-needs" v-if="mapobj.needsName!==undefined">
               <div class="table-wrapper">
                 <div class="tab-head">
-                  <div class="tab-items-name">岗位名称</div>
-                  <div class="tab-items-num">需求数量</div>
+                  <div class="tab-items-name" v-if="query.orgType!=4">岗位名称</div>
+                  <div class="tab-items-name" v-else>主要专业</div>
+                  <div class="tab-items-num" v-if="query.orgType==1">需求数量</div>
+                  <div class="tab-items-num" v-else-if="query.orgType==4">学生人数</div>
+                  <div class="tab-items-num" v-else>提供岗位数量</div>
                 </div>
                 <div :class="[mapobj.needsDescrList.length<=4?'tab-body-noheight':'tab-body']">
                   <div class="tab-items" v-for="(item,i) in mapobj.needsDescrList" :key="i">
@@ -163,7 +166,10 @@
               </div>
 
           </div>
-          <div class="need-descr" v-if="mapobj.descr">需求说明：{{mapobj.descr}}</div>
+          <div class="need-descr" v-if="mapobj.descr&&query.orgType==1">需求说明：{{mapobj.descr}}</div>
+          <div class="need-descr" v-if="mapobj.descr&&query.orgType==2">提供岗位描述：{{mapobj.descr}}</div>
+          <div class="need-descr" v-if="mapobj.descr&&query.orgType==3">提供服务描述：{{mapobj.descr}}</div>
+          <div class="need-descr" v-if="mapobj.descr&&query.orgType==4">具体说明：{{mapobj.descr}}</div>
           <!-- <div class="material" v-if="mapobj.needsNamearr!==undefined">
             <div v-for="(item,index) in mapobj.needsNamearr"
                   :key="index" class="boll-item"><span class="boll"></span>{{item}}</div>
@@ -192,7 +198,7 @@
       <div class="search-wrapper">
         <div class="tab-item-list">
           <div class="go-back-home" @click="show=false">
-              <van-icon name="arrow-left" color="#ffffff" size="18"/>
+              <van-icon name="arrow-left" color="#ffffff" size="20"/>
           </div>
           <div class="tab-all-wrapper">
             <div v-for="(item,i) in menuList" :key="i" @click="searchTabItem(i)" :class="selectIndex==i?'tab-item tab-item-span-active':'tab-item'">
@@ -207,7 +213,8 @@
           <form action="javascript:return true"> 
             <input type="search" placeholder="查询继续支援用工、工人、地区" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==0"> 
             <input type="search" placeholder="查询继续支援用工、工人、地区" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==1"> 
-            <input type="search" placeholder="查询继续支援用工、工人、地区" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==2">
+            <input type="search" placeholder="查询继续支援高校、专业、地区" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==2">
+            <input type="search" placeholder="查询继续支援用工、工人、地区" v-model="searchText" @focus="inputFocus" @keyup.13="search" v-if="selectIndex==3">
           </form>
 
 
@@ -215,7 +222,8 @@
         </div>
         <div class="tab-list-wrapper" v-if="!downUpImg">
 
-            <p class="title">用工</p>
+            <p class="title" v-if="selectIndex!=2">用工</p>
+            <p class="title" v-else>专业</p>
           <div class="list list1">
             <span v-for="(item,i) in wuziList" :key="i" @click="selectItem(item)" v-if="item">{{item}}</span>
           </div>
@@ -415,7 +423,7 @@
         <div class="help-wrapper">
           <div class="help-top">
             <div class="go-back" @click="helpInfoShow=false">
-              <van-icon name="arrow-left" color="#fff" size="18"/>
+              <van-icon name="arrow-left" color="#fff" size="20"/>
             </div>
             <span>使用说明</span>
           </div>
@@ -475,6 +483,14 @@ export default {
         },
         {
           id:3,
+          name: "高校",
+          imgUrl: [
+            require("../assets/image/list4.png"),
+            require("../assets/image/list3.png")
+          ],
+        },
+        {
+          id:4,
           name: "出力方",
           imgUrl: [
             require("../assets/image/list6.png"),
@@ -535,17 +551,23 @@ export default {
       clickTabPoint:0, // 录入提交是否选择tab按钮指针
       conUs:[ // 录入联系人
         {
+<<<<<<< HEAD
           job:"我要用工",
           name: "郭 伟",
           tel: "18513356222",
+=======
+          job:"需求对接",
+          name: "王晓勃",
+          tel: "13811968222",
+>>>>>>> a98e528dc174247c8a79393bf66d899ec2207483
         },{
-          job:"我有工人",
+          job:"需求对接",
           name: "刘  帅",
           tel: "17310189770",
         },{
-          job:"我要出力",
-          name: "曹  倩",
-          tel: "13581845886",
+          job:"需求对接",
+          name: "庞亚辉",
+          tel: "13717571601",
         },{
           job:"技术维护",
           name: "夏存宏",
@@ -593,12 +615,20 @@ export default {
           type:2
         },{
           backgroundImgStyle:{
+            backgroundImage:'url(' + require('../assets/image/image_3_1.png') + ')',
+            backgroundRepeat:'no-repeat',
+            backgroundSize:'100% 100%'
+          },
+          name: "校联招聘",
+          type:3
+        },{
+          backgroundImgStyle:{
             backgroundImage:'url(' + require('../assets/image/image_4_1.png') + ')',
             backgroundRepeat:'no-repeat',
             backgroundSize:'100% 100%'
           },
           name: "我要出力",
-          type:3
+          type:4
         },
         // {
         //   backgroundImgStyle:{
@@ -705,7 +735,31 @@ export default {
   },
   methods:{
     goHref(url){
-       window.open(url);
+      if (url.indexOf("http://") != -1 || url.indexOf("https://") != -1){
+
+        var a=document.createElement('a')
+        a.setAttribute('href',`${url}`)
+        a.setAttribute('target','_blank');
+        a.click();
+        document.getElementsByTagName("body")[0].appendChild(a)
+      } else {
+        var p=window.location.protocol
+        var a=document.createElement('a')
+        a.setAttribute('href',`${p}//${url}`)
+        a.setAttribute('target','_blank');
+        a.click();
+        document.getElementsByTagName("body")[0].appendChild(a)
+
+      }
+
+    },
+    closeDetail(){
+      this.isDetail=false
+      if (this.mapobj.sourceLinkReg){
+
+        let x=document.getElementsByTagName("body")[0].lastChild
+        document.getElementsByTagName("body")[0].removeChild(x)
+      }
     },
     //微信分享
       WeChatshare(){
@@ -797,8 +851,15 @@ export default {
         })
       },
     searchTabItem(index){
+      if (index==2){
+        this.query.orgType=4
+      } else if (index==3){
+        this.query.orgType=3
+      } else {
+
+        this.query.orgType=index+1
+      }
       this.selectIndex=index
-      this.query.orgType=index+1
       this.dataList=[]
       this.getDataList()
       this.getWuziList()
@@ -879,14 +940,14 @@ export default {
     },
     // 录入弹框选择
     luruSelectBtn(type) {
-      if (type!=4){
+      // if (type!=4){
 
         this.curTabIndex=type
         // this.luruSelectModel=false
         this.reduceShow=true
-      }else{
-        this.curTimeBtn(0)
-      }
+      // }else{
+      //   this.curTimeBtn(0)
+      // }
     },
     getCurTimeContent(){
       this.$fetchGet("donateCount/findDonateCount").then(res=> {
@@ -909,8 +970,15 @@ export default {
     },
     //三类民间组织
     toRouterIndex(iteam,index){
+      if (index==2){
+        this.query.orgType=4
+      } else if (index==3){
+        this.query.orgType=3
+      } else {
+
+        this.query.orgType=index+1
+      }
       this.selectIndex=index
-      this.query.orgType=index+1
       // if(this.mass){
       //   this.mass.clear()
       //   this.mass=null
@@ -985,6 +1053,8 @@ export default {
             item.style=2
           }else if(this.query.orgType==3){
             item.style=3
+          }else if(this.query.orgType==4){
+            item.style=12
           }else{
             item.style=1
           }
@@ -1047,7 +1117,11 @@ export default {
             url: require('../assets/image/list10.png'),
             anchor: new AMap.Pixel(9, 9),
             size: new AMap.Size(18, 18)
-        }
+        },{
+            url: require('../assets/image/icon-04.svg'),
+            anchor: new AMap.Pixel(12, 12),
+            size: new AMap.Size(24, 24)
+        },
       ];
       this.mass = new AMap.MassMarks(citys, {
         zIndex: 111,
@@ -1063,17 +1137,26 @@ export default {
             this.mapobj.needsNamearr=str.needsName.split(",")
           }
           if (str.needsDescr){
-            this.mapobj.needsDescrList=str.needsDescr.split(",")
+            this.mapobj.needsDescrList1=str.needsDescr.split(",")
             let obj={}
-            this.mapobj.needsDescrList.forEach(v=> {
-              this.mapobj.needsDescrList=[]
-              v=v.split(":")
-              obj={
-                name:v[0],
-                num:v[1],
-              } 
-              this.mapobj.needsDescrList.push(obj)
-            })
+            let x=this.mapobj.needsDescrList1
+            for(let i=0;i<x.length;i++){
+              x[i]=x[i].split(":")
+            }
+            this.mapobj.needsDescrList=this.jsonFormat(x)
+          }
+      
+          if (str.sourceLink){
+            var reg = /[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/gi; 
+            var reg1 = /^\d+$/
+            if(!reg.test(str.sourceLink)&&!reg1.test(str.sourceLink)){
+            this.mapobj.sourceLinkReg=str.sourceLink
+            } else {
+              this.mapobj.sourceLinkReg=''
+            }
+
+          } else {
+            this.mapobj.sourceLinkReg=''
           }
         }
       })
@@ -1384,6 +1467,19 @@ export default {
       })
     
     },
+
+    jsonFormat (dataset) {
+      const data = dataset
+      let datajson = {}
+      var jsonresult = []
+      for (let i = 0; i < data.length; i++) {
+        datajson.name=data[i][0]
+        datajson.num=data[i][1]
+        jsonresult.push(datajson)
+        datajson = {}
+      }
+      return jsonresult
+    },
     detailright(row){
       this.isDetail=true
       this.mapobj=row
@@ -1391,17 +1487,26 @@ export default {
         this.mapobj.needsNamearr=row.needsName.split(",")
       }
       if (row.needsDescr){
-        this.mapobj.needsDescrList=row.needsDescr.split(",")
+        this.mapobj.needsDescrList1=row.needsDescr.split(",")
         let obj={}
-        this.mapobj.needsDescrList.forEach(v=> {
-          this.mapobj.needsDescrList=[]
-          v=v.split(":")
-          obj={
-            name:v[0],
-            num:v[1],
-          } 
-          this.mapobj.needsDescrList.push(obj)
-        })
+        let x=this.mapobj.needsDescrList1
+        for(let i=0;i<x.length;i++){
+          x[i]=x[i].split(":")
+        }
+        this.mapobj.needsDescrList=this.jsonFormat(x)
+      }
+      
+      if (row.sourceLink){
+        var reg = /[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/gi; 
+        var reg1 = /^\d+$/
+        if(!reg.test(row.sourceLink)&&!reg1.test(row.sourceLink)){
+        this.mapobj.sourceLinkReg=row.sourceLink
+        } else {
+          this.mapobj.sourceLinkReg=''
+        }
+
+      } else {
+        this.mapobj.sourceLinkReg=''
       }
 
     },
@@ -1470,17 +1575,27 @@ export default {
         this.mapobj.needsNamearr=str.needsName.split(",")
       }
       if (str.needsDescr){
-        this.mapobj.needsDescrList=str.needsDescr.split(",")
+        this.mapobj.needsDescrList1=str.needsDescr.split(",")
         let obj={}
-        this.mapobj.needsDescrList.forEach(v=> {
-          this.mapobj.needsDescrList=[]
-          v=v.split(":")
-          obj={
-            name:v[0],
-            num:v[1],
-          } 
-          this.mapobj.needsDescrList.push(obj)
-        })
+        let x=this.mapobj.needsDescrList1
+        for(let i=0;i<x.length;i++){
+          x[i]=x[i].split(":")
+        }
+        this.mapobj.needsDescrList=this.jsonFormat(x)
+      }
+      
+      
+      if (str.sourceLink){
+        var reg = /[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/gi; 
+        var reg1 = /^\d+$/
+        if(!reg.test(str.sourceLink)&&!reg1.test(str.sourceLink)){
+        this.mapobj.sourceLinkReg=str.sourceLink
+        } else {
+          this.mapobj.sourceLinkReg=''
+        }
+
+      } else {
+        this.mapobj.sourceLinkReg=''
       }
     })
      return marker
@@ -1546,9 +1661,9 @@ export default {
     justify-content: space-around;
     align-items: center;
     width:38px;
-    height:200px;
+    height:220px;
     background:url("../assets/image/circle.png") no-repeat;
-    background-size:38px 200px;
+    background-size:38px 220px;
     padding: 20px 0;
     box-sizing:border-box;
     padding-right:8px;
@@ -1927,15 +2042,15 @@ export default {
         .btn-list{
           display:flex;
           flex-direction:column;
-          width:108px;
-          height: 64px;
+          width:80px;
+          height: 68px;
           background-size:100% 100%;
           span{
             font-size:13px;
             font-family:PingFang SC;
             font-weight:500;
             color:rgba(255,255,255,1);
-            margin-top:36px;
+            margin-top:44px;
 
           }
         }
